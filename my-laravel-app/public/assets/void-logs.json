@@ -1,0 +1,53 @@
+[
+    {
+      "id": 1,
+      "receipt_no": "PH-20240318001",
+      "item": "Smartphone",
+      "customer": "Juan Dela Cruz",
+      "cashier": "Maria Santos",
+      "amount_voided": "₱5,999.50",
+      "voided_by": "Supervisor - Jose Reyes",
+      "date_voided": "2025-03-18 14:30:00"
+    },
+    {
+      "id": 2,
+      "receipt_no": "PH-20240318002",
+      "item": "Laptop",
+      "customer": "Ana Villanueva",
+      "cashier": "Mark Fernandez",
+      "amount_voided": "₱34,999.75",
+      "voided_by": "Supervisor - Carla Domingo",
+      "date_voided": "2025-03-18 15:15:00"
+    },
+    {
+      "id": 3,
+      "receipt_no": "PH-20240318003",
+      "item": "Wireless Earbuds",
+      "customer": "Pedro Magtanggol",
+      "cashier": "Angela Cruz",
+      "amount_voided": "₱2,999.00",
+      "voided_by": "Manager - Lito Ramos",
+      "date_voided": "2025-03-18 16:00:00"
+    },
+    {
+      "id": 4,
+      "receipt_no": "PH-20240318004",
+      "item": "LED TV 55-inch",
+      "customer": "Carlos Mendoza",
+      "cashier": "Joanna Lim",
+      "amount_voided": "₱24,999.99",
+      "voided_by": "Supervisor - Noel Bautista",
+      "date_voided": "2025-03-18 16:45:00"
+    },
+    {
+      "id": 5,
+      "receipt_no": "PH-20240318005",
+      "item": "Gaming Chair",
+      "customer": "Rafael Suarez",
+      "cashier": "Kevin Tan",
+      "amount_voided": "₱7,999.50",
+      "voided_by": "Manager - Miguel Sy",
+      "date_voided": "2025-03-18 17:30:00"
+    }
+  ]
+  
