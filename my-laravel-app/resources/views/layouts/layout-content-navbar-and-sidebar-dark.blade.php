@@ -1,7 +1,12 @@
-<html>
-<head><title>404 Not Found</title></head>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Content Navbar and Sidebar Dark Layout</title>
+    <!-- Add your CSS and JS links here -->
+</head>
 <body>
-<center><h1>404 Not Found</h1></center>
-<hr><center>nginx/1.24.0</center>
+    <!-- Add your layout content here -->
 </body>
 </html>
