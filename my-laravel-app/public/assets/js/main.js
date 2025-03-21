@@ -1,3 +1,4 @@
+const assetsPath = '/assets/';
 (window.isRtl = window.Helpers.isRtl()),
     (window.isDarkStyle = window.Helpers.isDarkStyle());
 let menu,
