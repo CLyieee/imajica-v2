@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", function(o) {
+    // Define isDarkStyle variable if not already defined
+    if (typeof isDarkStyle === 'undefined') {
+        window.isDarkStyle = document.documentElement.getAttribute("data-bs-theme") === "dark";
+    }
+
     var r = "#836AF9",
         t = "#ffe800",
         e = "#28dac6",

@@ -153,7 +153,7 @@ let menu,
                 localStorage.getItem(
                     "templateCustomizer-" + templateName + "--Theme"
                 ) ||
-                (window.templateCustomizer?.settings?.defaultStyle ??
+                (window.templateCustomizer?.settings?.defaultStyle ?? 
                     document.documentElement.getAttribute("data-bs-theme"));
             function o() {
                 var e =
@@ -230,9 +230,13 @@ let menu,
                                     assetsPath + "json/locales/{{lng}}.json",
                             },
                             returnObjects: !0,
+                            load: 'languageOnly'
                         })
                         .then(function (e) {
                             i();
+                        })
+                        .catch(function(err) {
+                            console.warn("i18n initialization error:", err);
                         }),
                 (a = document.getElementsByClassName("dropdown-language"))
                     .length)
@@ -450,18 +454,34 @@ function isMacOS() {
     return /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
 }
 function loadSearchData() {
-    var e = $("#layout-menu").hasClass("menu-horizontal")
-        ? "search-horizontal.json"
-        : "search-vertical.json";
-    fetch(assetsPath + "json/" + e)
-        .then((e) => {
-            if (e.ok) return e.json();
-            throw new Error("Failed to fetch data");
-        })
-        .then((e) => {
-            (data = e), initializeAutocomplete();
-        })
-        .catch((e) => console.error("Error loading JSON:", e));
+    try {
+        var e = $("#layout-menu").hasClass("menu-horizontal")
+            ? "search-horizontal.json"
+            : "search-vertical.json";
+        
+        // Check if we can skip loading JSON if it's not essential
+        if (!document.getElementById("autocomplete")) {
+            return;
+        }
+        
+        fetch(assetsPath + "json/" + e)
+            .then((e) => {
+                if (e.ok) return e.json();
+                console.warn("Search JSON file not found, using empty data");
+                return { suggestions: {}, navigation: {} };
+            })
+            .then((e) => {
+                (data = e), initializeAutocomplete();
+            })
+            .catch((e) => {
+                console.warn("Search functionality disabled:", e);
+                data = { suggestions: {}, navigation: {} };
+                initializeAutocomplete();
+            });
+    } catch (error) {
+        console.warn("Search initialization error:", error);
+        data = { suggestions: {}, navigation: {} };
+    }
 }
 function initializeAutocomplete() {
     if (document.getElementById("autocomplete"))
@@ -589,7 +609,7 @@ function initializeAutocomplete() {
                 `;
                                     },
                                 },
-                            }))),
+                            }))))),
                         t.push(...e),
                         data.navigation.files &&
                             t.push({
