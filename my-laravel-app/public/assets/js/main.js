@@ -1,4 +1,4 @@
-const assetsPath = '/assets/';
+const assetsPath = "/assets/";
 (window.isRtl = window.Helpers.isRtl()),
     (window.isDarkStyle = window.Helpers.isDarkStyle());
 let menu,
@@ -99,6 +99,49 @@ let menu,
                     })),
                         window.Helpers.scrollToActive((animate = !1)),
                         (window.Helpers.mainMenu = menu);
+
+                    // Add click event handling for menu items with submenus
+                    e.querySelectorAll(".menu-toggle, .menu-link").forEach(
+                        (menuItem) => {
+                            menuItem.addEventListener("click", function (e) {
+                                if (this.classList.contains("menu-toggle")) {
+                                    const parent = this.closest("li");
+                                    if (
+                                        parent &&
+                                        parent.classList.contains("menu-item")
+                                    ) {
+                                        const submenu =
+                                            parent.querySelector(".menu-sub");
+                                        if (submenu) {
+                                            // Toggle the open class
+                                            parent.classList.toggle("open");
+
+                                            // Check if this menu is already expanded
+                                            const isExpanded =
+                                                submenu.style.display ===
+                                                "block";
+
+                                            // Toggle submenu visibility
+                                            if (isExpanded) {
+                                                submenu.style.display = "none";
+                                            } else {
+                                                submenu.style.display = "block";
+                                            }
+
+                                            // Prevent default only for menu toggles
+                                            if (
+                                                this.classList.contains(
+                                                    "menu-toggle"
+                                                )
+                                            ) {
+                                                e.preventDefault();
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    );
                 }),
                 document
                     .querySelectorAll(".layout-menu-toggle")
@@ -153,7 +196,7 @@ let menu,
                 localStorage.getItem(
                     "templateCustomizer-" + templateName + "--Theme"
                 ) ||
-                (window.templateCustomizer?.settings?.defaultStyle ?? 
+                (window.templateCustomizer?.settings?.defaultStyle ??
                     document.documentElement.getAttribute("data-bs-theme"));
             function o() {
                 var e =
@@ -230,12 +273,12 @@ let menu,
                                     assetsPath + "json/locales/{{lng}}.json",
                             },
                             returnObjects: !0,
-                            load: 'languageOnly'
+                            load: "languageOnly",
                         })
                         .then(function (e) {
                             i();
                         })
-                        .catch(function(err) {
+                        .catch(function (err) {
                             console.warn("i18n initialization error:", err);
                         }),
                 (a = document.getElementsByClassName("dropdown-language"))
@@ -458,12 +501,12 @@ function loadSearchData() {
         var e = $("#layout-menu").hasClass("menu-horizontal")
             ? "search-horizontal.json"
             : "search-vertical.json";
-        
+
         // Check if we can skip loading JSON if it's not essential
         if (!document.getElementById("autocomplete")) {
             return;
         }
-        
+
         fetch(assetsPath + "json/" + e)
             .then((e) => {
                 if (e.ok) return e.json();
@@ -609,39 +652,40 @@ function initializeAutocomplete() {
                 `;
                                     },
                                 },
-                            }))))),
-                        t.push(...e),
+                            }))),
+                        e && e.length && t.push(...e)),
+                    data.navigation &&
                         data.navigation.files &&
-                            t.push({
-                                sourceId: "files",
-                                getItems({ query: t }) {
-                                    var e = data.navigation.files;
-                                    return t
-                                        ? e.filter((e) =>
-                                              e.name
-                                                  .toLowerCase()
-                                                  .includes(t.toLowerCase())
-                                          )
-                                        : e;
+                        t.push({
+                            sourceId: "files",
+                            getItems({ query: t }) {
+                                var e = data.navigation.files;
+                                return t
+                                    ? e.filter((e) =>
+                                          e.name
+                                              .toLowerCase()
+                                              .includes(t.toLowerCase())
+                                      )
+                                    : e;
+                            },
+                            getItemUrl({ item: e }) {
+                                return e.url;
+                            },
+                            templates: {
+                                header({ items: e, html: t }) {
+                                    return 0 === e.length
+                                        ? null
+                                        : t`<span class="search-headings">Files</span>`;
                                 },
-                                getItemUrl({ item: e }) {
-                                    return e.url;
-                                },
-                                templates: {
-                                    header({ items: e, html: t }) {
-                                        return 0 === e.length
-                                            ? null
-                                            : t`<span class="search-headings">Files</span>`;
-                                    },
-                                    item({ item: e, html: t }) {
-                                        return t`
+                                item({ item: e, html: t }) {
+                                    return t`
                   <a href="${
                       e.url
                   }" class="d-flex align-items-center position-relative px-4 py-2">
                     <div class="file-preview me-2">
                       <img src="${assetsPath}${e.src}" alt="${
-                                            e.name
-                                        }" class="rounded" width="42" />
+                                        e.name
+                                    }" class="rounded" width="42" />
                     </div>
                     <div class="flex-grow-1">
                       <h6 class="mb-0">${e.name}</h6>
@@ -658,10 +702,11 @@ function initializeAutocomplete() {
                     }
                   </a>
                 `;
-                                    },
                                 },
-                            }),
-                        data.navigation.members) &&
+                            },
+                        }),
+                    data.navigation &&
+                        data.navigation.members &&
                         t.push({
                             sourceId: "members",
                             getItems({ query: t }) {
