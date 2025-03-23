@@ -76,4 +76,10 @@ Route::get('/user-list', [DashboardController::class, 'user_list'])->name('page.
 
 Route::get('/booking', [DashboardController::class, 'booking'])->name('page.booking');
 
+Route::get('/customer-report', [DashboardController::class, 'customer_report'])->name('page.customer-report');
 
+Route::get('/service-product', [DashboardController::class, 'service_product'])->name('page.service-product');
+
+Route::get('/employee-report', [DashboardController::class, 'employee_report'])->name('page.employee-report');
+
+Route::get('/expenses-report', [DashboardController::class, 'expenses_report'])->name('page.expenses-report');
