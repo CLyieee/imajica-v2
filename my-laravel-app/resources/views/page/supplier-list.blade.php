@@ -1312,6 +1312,7 @@
     <!-- Form Validation -->
     <script src="../../assets/vendor/libs/%40form-validation/popular.js"></script>
     <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
+    
     <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
     <script>
       $(document).ready(function () {
@@ -1339,5 +1340,8 @@
           ],
           order: [[0, "asc"]], // Sort by company name by default
         });
+      });
+    </script>
+
   </body>
 </html>

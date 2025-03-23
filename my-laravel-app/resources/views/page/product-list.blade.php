@@ -654,8 +654,8 @@
       </div>
     </div>
     <div class="card-datatable">
-      <table class="datatables-products table">
-        <thead class="border-top">
+      <table class="table datatables-products table-striped">
+        <thead class="border-top table-light">
           <tr>
             <th></th>
             <th></th>
