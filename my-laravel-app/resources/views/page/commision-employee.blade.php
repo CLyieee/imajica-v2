@@ -747,7 +747,7 @@
       <script src="../../assets/js/main.js"></script>
     
 
-    <!-- Page JS -->
+
   <script src="../../assets/js/commision.js"></script>
   <script src="../../assets/comissions.json"></script>
 
