@@ -76,4 +76,26 @@ Route::get('/user-list', [DashboardController::class, 'user_list'])->name('page.
 
 Route::get('/booking', [DashboardController::class, 'booking'])->name('page.booking');
 
+// Service Routes
+Route::post('/services/add', [App\Http\Controllers\serviceController::class, 'add_service'])->name('add.service');
+Route::get('/services/all', [App\Http\Controllers\serviceController::class, 'get_services'])->name('get.services');
+Route::get('/services/branch/{branch_code}', [App\Http\Controllers\serviceController::class, 'get_services_by_branch'])->name('get.services.by.branch');
+Route::get('/services/{id}', [App\Http\Controllers\serviceController::class, 'get_service'])->name('get.service');
+Route::put('/services/{id}', [App\Http\Controllers\serviceController::class, 'update_service'])->name('update.service');
+Route::delete('/services/{id}', [App\Http\Controllers\serviceController::class, 'delete_service'])->name('delete.service');
+
+// Branch Routes
+Route::post('/branch/add', [App\Http\Controllers\branchController::class, 'add_branch'])->name('add.branch');
+Route::get('/branch/all', [App\Http\Controllers\branchController::class, 'get_branches'])->name('get.branches');
+Route::get('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'get_branch'])->name('get.branch');
+Route::put('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'update_branch'])->name('update.branch');
+Route::delete('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'delete_branch'])->name('delete.branch');
+
+// Supplier Routes
+Route::post('/supplier/add', [App\Http\Controllers\supplierController::class, 'add_supplier'])->name('add.supplier');
+Route::get('/supplier/all', [App\Http\Controllers\supplierController::class, 'get_suppliers'])->name('get.suppliers');
+Route::get('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'get_supplier'])->name('get.supplier');
+Route::put('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'update_supplier'])->name('update.supplier');
+Route::delete('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'delete_supplier'])->name('delete.supplier');
+
 

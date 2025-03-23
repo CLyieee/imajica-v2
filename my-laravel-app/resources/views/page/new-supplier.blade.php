@@ -106,7 +106,17 @@
 
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
+    <script>
+        const supplierRoutes = {
+            add: "{{ route('add.supplier') }}",
+            getAll: "{{ route('get.suppliers') }}",
+            get: "{{ route('get.supplier', ['id' => '__ID__']) }}",
+            update: "{{ route('update.supplier', ['id' => '__ID__']) }}",
+            delete: "{{ route('delete.supplier', ['id' => '__ID__']) }}"
+        };
+    </script>
   </head>
 
   <body>
@@ -350,109 +360,121 @@
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <div class="row g-6">
-                            <div class="col-md-6">
-                              <label class="form-label" for="fullname"
-                                >Supplier Name</label
-                              >
-                              <input
-                                type="text"
-                                id="fullname"
-                                class="form-control"
-                                placeholder="Supplier Name"
-                              />
+                          <form id="addSupplierForm">
+                            @csrf
+                            <div class="row g-6">
+                              <div class="col-md-6">
+                                <label class="form-label" for="supplier_name"
+                                  >Supplier Name</label
+                                >
+                                <input
+                                  type="text"
+                                  id="supplier_name"
+                                  name="supplier_name"
+                                  class="form-control"
+                                  placeholder="Supplier Name"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="email"
+                                  >Email Address</label
+                                >
+                                <input
+                                  type="email"
+                                  id="email"
+                                  name="email"
+                                  class="form-control"
+                                  placeholder="Email Address"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="contactNumber"
+                                  >Contact Number</label
+                                >
+                                <input
+                                  type="text"
+                                  id="contactNumber"
+                                  name="contactNumber"
+                                  class="form-control"
+                                  placeholder="Contact Number"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="supplier_type">Supplier Type</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  list="supplierHistory"
+                                  id="supplier_type"
+                                  name="supplier_type"
+                                  placeholder="Enter Supplier Type"
+                                  required
+                                />
+                                <datalist id="supplierHistory">
+                                  <option value="Product Supplier"></option>
+                                  <option value="Service Provider"></option>
+                                  <option value="Equipment Supplier"></option>
+                                  <option value="Other"></option>
+                                </datalist>
+                              </div>
+
+                              <div class="col-12">
+                                <label class="form-label" for="address"
+                                  >Supplier Address</label
+                                >
+                                <textarea
+                                  name="address"
+                                  class="form-control"
+                                  id="address"
+                                  rows="4"
+                                  placeholder="Supplier Address"
+                                  required
+                                ></textarea>
+                              </div>
+
+                              <div class="col-12">
+                                <label class="form-label" for="product_offered"
+                                  >Products/Services Offered</label
+                                >
+                                <textarea
+                                  name="product_offered"
+                                  class="form-control"
+                                  id="product_offered"
+                                  rows="4"
+                                  placeholder="List of Products/Services Offered"
+                                ></textarea>
+                              </div>
+
+                              <div class="col-12">
+                                <label class="form-label" for="notes"
+                                  >Additional Notes</label
+                                >
+                                <textarea
+                                  name="notes"
+                                  class="form-control"
+                                  id="notes"
+                                  rows="4"
+                                  placeholder="Additional Notes"
+                                ></textarea>
+                              </div>
                             </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label" for="email"
-                                >Email Address</label
-                              >
-                              <input
-                                type="text"
-                                id="email"
-                                class="form-control"
-                                placeholder="Email Address"
-                              />
+                            <br />
+                            <div class="col-sm-2 col-4 d-grid">
+                              <button type="submit" class="btn btn-primary" id="addSupplierBtn">
+                                Add Supplier
+                              </button>
                             </div>
-
-                            <div class="col-md-6">
-                              <label class="form-label" for="contact"
-                                >Contact Number</label
-                              >
-                              <input
-                                type="text"
-                                id="contact"
-                                class="form-control"
-                                placeholder="Contact Number"
-                              />
-                            </div>
-
-                            <div class="col-md-6">
-                              <label class="form-label">Supplier Type</label>
-                              <input
-                                type="text"
-                                class="form-control"
-                                list="supplierHistory"
-                                id="supplierType"
-                                placeholder="Enter Supplier Type"
-                              />
-                              <datalist id="supplierHistory">
-                                <option value="Product Supplier"></option>
-                                <option value="Service Provider"></option>
-                                <option value="Equipment Supplier"></option>
-                                <option value="Other"></option>
-                              </datalist>
-                            </div>
-
-                            <div class="col-12">
-                              <label class="form-label" for="address"
-                                >Supplier Address</label
-                              >
-                              <textarea
-                                name="address"
-                                class="form-control"
-                                id="address"
-                                rows="4"
-                                placeholder="Supplier Address"
-                              ></textarea>
-                            </div>
-
-                            <div class="col-12">
-                              <label class="form-label" for="products"
-                                >Products/Services Offered</label
-                              >
-                              <textarea
-                                name="products"
-                                class="form-control"
-                                id="products"
-                                rows="4"
-                                placeholder="List of Products/Services Offered"
-                              ></textarea>
-                            </div>
-
-                            <div class="col-12">
-                              <label class="form-label" for="notes"
-                                >Additional Notes</label
-                              >
-                              <textarea
-                                name="notes"
-                                class="form-control"
-                                id="notes"
-                                rows="4"
-                                placeholder="Additional Notes"
-                              ></textarea>
-                            </div>
-                          </div>
-
+                          </form>
                           <br />
-                          <div class="col-sm-2 col-4 d-grid">
-                            <button class="btn btn-primary">
-                              Add Supplier
-                            </button>
-                          </div>
-                          <br />
-
-                          <!-- 4. Payment Method -->
+                          <!-- Success/Error Messages -->
+                          <div id="responseMessage" style="display: none;" class="alert mt-3"></div>
                         </div>
                       </div>
                     </div>
@@ -542,6 +564,77 @@
     <!-- Page JS -->
     <script src="../../assets/js/form-layouts.js"></script>
     <script src="../../assets/js/forms-pickers.js"></script>
+    
+    <!-- AJAX Form Submission Script -->
+    <script>
+      $(document).ready(function() {
+        $('#addSupplierForm').on('submit', function(e) {
+          e.preventDefault();
+          
+          // Disable submit button during form submission
+          $('#addSupplierBtn').prop('disabled', true).html('Processing...');
+          
+          // Get form data
+          const formData = $(this).serialize();
+          
+          // Make AJAX request
+          $.ajax({
+            url: supplierRoutes.add,
+            type: "POST",
+            data: formData,
+            dataType: 'json',
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+              if(response.status) {
+                showMessage('success', response.message);
+                
+                // Reset form
+                $('#addSupplierForm')[0].reset();
+              } else {
+                showMessage('error', response.message);
+              }
+            },
+            error: function(xhr) {
+              let errorMessage = 'An error occurred while processing your request.';
+              
+              if(xhr.responseJSON && xhr.responseJSON.errors) {
+                errorMessage = '<ul>';
+                for(let field in xhr.responseJSON.errors) {
+                  errorMessage += `<li>${xhr.responseJSON.errors[field][0]}</li>`;
+                }
+                errorMessage += '</ul>';
+              } else if(xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+              }
+              
+              showMessage('error', errorMessage);
+            },
+            complete: function() {
+              // Re-enable submit button
+              $('#addSupplierBtn').prop('disabled', false).html('Add Supplier');
+            }
+          });
+        });
+        
+        // Function to show success/error message
+        function showMessage(type, message) {
+          const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+          
+          $('#responseMessage')
+            .removeClass('alert-success alert-danger')
+            .addClass(alertClass)
+            .html(message)
+            .show();
+            
+          // Auto hide after 5 seconds
+          setTimeout(() => {
+            $('#responseMessage').fadeOut();
+          }, 5000);
+        }
+      });
+    </script>
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->
