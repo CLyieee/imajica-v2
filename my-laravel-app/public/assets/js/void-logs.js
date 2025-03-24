@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 { data: "cashier" },
                 { data: "amount_voided" },
                 { data: "voided_by" },
-                { data: "date_voided" }
+                { data: "date_voided" },
+                { data: "action" }
             ],
             columnDefs: [
                 {
@@ -68,6 +69,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${item.amount_voided}</td>
                 <td>${item.voided_by}</td>
                 <td>${item.date_voided}</td>  
+                 <td>
+                  <div class='d-flex gap-2'>
+                                    <button class='btn btn-success'>Vieww</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>
+                   <td>
 
             </tr>`;
     }
