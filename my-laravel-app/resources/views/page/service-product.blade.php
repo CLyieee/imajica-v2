@@ -9,8 +9,7 @@
   data-bs-theme="light"
 >
   <head>
-    <title>Sales Report Summary - Imajica</title>
-    <meta charset="utf-8" />
+
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
@@ -18,19 +17,16 @@
 
     <title>Imajica Booking System</title>
 
-    <meta name="description" content="Imajica Booking System" />
+  <meta name="description" content="Imajica Booking System" />
 
-    <meta name="keywords" content="Imajica Booking System" />
-    <meta property="og:title" content="Imajica Booking System" />
-    <meta property="og:type" content="product" />
-    <meta property="og:url" content="Imajica Booking System" />
-    <meta
-      property="og:image"
-      content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png"
-    />
-    <meta property="og:description" content="Imajica Booking System." />
-    <meta property="og:site_name" content="Pixinvent" />
-    <link rel="canonical" href="Imajica Booking System" />
+  <meta name="keywords" content="Imajica Booking System" />
+  <meta property="og:title" content="Imajica Booking System" />
+  <meta property="og:type" content="product" />
+  <meta property="og:url" content="Imajica Booking System" />
+  <meta property="og:image" content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png" />
+  <meta property="og:description" content="Imajica Booking System." />
+  <meta property="og:site_name" content="Pixinvent" />
+  <link rel="canonical" href="Imajica Booking System" />
 
     <!-- End Google Tag Manager -->
 
@@ -205,7 +201,7 @@
         text-align: center;
         padding: 15px;
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(236, 239, 243, 0.9);
         min-width: 200px;
         max-width: 300px;
         flex: 1;
@@ -214,6 +210,7 @@
       .metric-card i {
         font-size: 24px;
         margin-bottom: 1rem;
+  
       }
 
       .metric-card h5 {
@@ -287,6 +284,8 @@
       <h1>Service/Product Report Summary</h1>
     </div>
 
+
+<div class="card mt-4">
     <div class="metrics">
       <div class="metric-card">
         <i class="ti tabler-chart-bar mb-2" style="font-size: 24px; color: #28a745;"></i>
@@ -308,14 +307,14 @@
       </div>
     </div>
 
+  </div>
+
     <div class="card mt-4">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h3 class="mb-0">All Sales</h3>
           <div class="d-flex gap-2">
-            <div class="input-group" style="width: 250px;">
-              <input type="text" class="form-control" id="searchInput" placeholder="Search items...">
-            </div>
+           
             <select class="form-select" style="width: 120px;">
               <option value="">Filter By</option>
               <option value="service">Services</option>
@@ -349,17 +348,17 @@
           </div>
         </div>
         <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr style="background-color: #134013;">
-                <th style="color: white;">NAME</th>
-                <th style="color: white;">PRICE</th>
-                <th style="color: white;">TOTAL QUANTITY</th>
-                <th style="color: white;">TOTAL DISCOUNT</th>
-                <th style="color: white;">GIFT CARD ACCOUNT</th>
-                <th style="color: white;">TOTAL SALES</th>
-                <th style="color: white;">TYPE</th>
-                <th style="color: white;">ACTION</th>
+          <table class="table table-striped table-bordered"  id="service-product-table">
+            <thead class="table-light">
+              <tr>
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>TOTAL QUANTITY</th>
+                <th >TOTAL DISCOUNT</th>
+                <th >GIFT CARD ACCOUNT</th>
+                <th>TOTAL SALES</th>
+                <th>TYPE</th>
+                <th>ACTION</th>
               </tr>
             </thead>
             <tbody>
@@ -371,7 +370,11 @@
                 <td>₱5,000</td>
                 <td>₱147,000</td>
                 <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                <td><button class="btn btn-sm btn-success">VIEW</button></td>
+                <td><div class='d-flex gap-2'>
+                  <button class='btn btn-success'>View</button>
+                  <button class='btn btn-info'>Edit</button>
+                  <button class='btn btn-danger'>Delete</button>
+              </div></td>
               </tr>
               <tr>
                 <td>Shampoo Premium</td>
@@ -381,7 +384,12 @@
                 <td>₱2,000</td>
                 <td>₱42,500</td>
                 <td><span class="badge" style="background-color: rgba(135, 206, 235, 0.2); color:rgb(79, 187, 250);">Product</span></td>
-                <td><button class="btn btn-sm btn-success">VIEW</button></td>
+                <td>
+                  <div class='d-flex gap-2'>
+                    <button class='btn btn-success'>View</button>
+                    <button class='btn btn-info'>Edit</button>
+                    <button class='btn btn-danger'>Delete</button>
+                </div></td>
               </tr>
               <tr>
                 <td>Hair Treatment Oil</td>
@@ -391,7 +399,13 @@
                 <td>₱1,500</td>
                 <td>₱33,500</td>
                 <td><span class="badge" style="background-color: rgba(135, 206, 235, 0.2); color:rgb(79, 187, 250);">Product</span></td>
-                <td><button class="btn btn-sm btn-success">VIEW</button></td>
+                <td>
+                  <div class='d-flex gap-2'>
+                    <button class='btn btn-success'>View</button>
+                    <button class='btn btn-info'>Edit</button>
+                    <button class='btn btn-danger'>Delete</button>
+                </div>
+              </td>
               </tr>
             </tbody>
           </table>
@@ -559,6 +573,14 @@
   <script src="../../assets/js/charts-chartjs-legend.js"></script>
   <script src="../../assets/js/charts-chartjs.js"></script>
   
+<script>
+  $(document).ready(function() {
+    $('#service-product-table').DataTable();
+
+  
+  });
+</script>
+
 </body>
 
 
