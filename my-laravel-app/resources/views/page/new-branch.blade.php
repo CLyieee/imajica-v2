@@ -108,15 +108,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
-    <script>
-        const branchRoutes = {
-            add: "{{ route('add.branch') }}",
-            getAll: "{{ route('get.branches') }}",
-            get: "{{ route('get.branch', ['branch_code' => '__CODE__']) }}",
-            update: "{{ route('update.branch', ['branch_code' => '__CODE__']) }}",
-            delete: "{{ route('delete.branch', ['branch_code' => '__CODE__']) }}"
-        };
-    </script>
+    
   </head>
 
   <body>
@@ -360,14 +352,18 @@
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <!-- 1. Delivery Address -->
-                          <form id="addBranchForm">
+                          <!-- Branch Information Form -->
+                          <form method="post" action="{{ route('branch.create') }}">
                             @csrf
-                            <div class="row g-6">
+                            @method('POST')
+                            <div class="row g-3 mb-4">
+                              <div class="col-12">
+                                <h6 class="fw-semibold">Branch Information</h6>
+                                <hr class="mt-0" />
+                              </div>
+                              
                               <div class="col-md-6">
-                                <label class="form-label" for="branch_code"
-                                  >Branch Code</label
-                                >
+                                <label class="form-label" for="branch_code">Branch Code</label>
                                 <input
                                   type="text"
                                   id="branch_code"
@@ -379,9 +375,7 @@
                               </div>
 
                               <div class="col-md-6">
-                                <label class="form-label" for="branch_name"
-                                  >Branch Name</label
-                                >
+                                <label class="form-label" for="branch_name">Branch Name</label>
                                 <input
                                   type="text"
                                   id="branch_name"
@@ -393,9 +387,7 @@
                               </div>
 
                               <div class="col-12">
-                                <label class="form-label" for="address"
-                                  >Address</label
-                                >
+                                <label class="form-label" for="address">Address</label>
                                 <textarea
                                   name="address"
                                   class="form-control"
@@ -407,14 +399,14 @@
                               </div>
                             </div>
 
-                            <!-- 2. Delivery Type -->
-
-                            <br />
-                            <div class="col-sm-2 col-4 d-grid">
-                              <button type="submit" class="btn btn-primary" id="addBranchBtn">Add Branch</button>
+                            <div class="row">
+                              <div class="col-12 d-flex gap-3">
+                                <button type="submit" class="btn btn-primary">Add Branch</button>
+                                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                              </div>
                             </div>
                           </form>
-                          <br />
+                          
                           <!-- Success/Error Messages -->
                           <div id="responseMessage" style="display: none;" class="alert mt-3"></div>
                         </div>
@@ -508,68 +500,7 @@
     <script src="../../assets/js/forms-pickers.js"></script>
 
     <!-- AJAX Form Submission Script -->
-    <script>
-      $(document).ready(function() {
-        $('#addBranchForm').on('submit', function(e) {
-          e.preventDefault();
-          
-          // Disable submit button during form submission
-          $('#addBranchBtn').prop('disabled', true).html('Processing...');
-          
-          // Get form data
-          const formData = $(this).serialize();
-          
-          // Make AJAX request
-          $.ajax({
-            url: "{{ route('add.branch') }}",
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            success: function(response) {
-              if(response.status) {
-                $('#responseMessage')
-                  .removeClass('alert-danger')
-                  .addClass('alert-success')
-                  .html(response.message)
-                  .show();
-                
-                // Reset form
-                $('#addBranchForm')[0].reset();
-              } else {
-                $('#responseMessage')
-                  .removeClass('alert-success')
-                  .addClass('alert-danger')
-                  .html(response.message)
-                  .show();
-              }
-            },
-            error: function(xhr) {
-              let errorMessage = 'An error occurred while processing your request.';
-              
-              if(xhr.responseJSON && xhr.responseJSON.errors) {
-                errorMessage = '<ul>';
-                for(let field in xhr.responseJSON.errors) {
-                  errorMessage += `<li>${xhr.responseJSON.errors[field][0]}</li>`;
-                }
-                errorMessage += '</ul>';
-              } else if(xhr.responseJSON && xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
-              }
-              
-              $('#responseMessage')
-                .removeClass('alert-success')
-                .addClass('alert-danger')
-                .html(errorMessage)
-                .show();
-            },
-            complete: function() {
-              // Re-enable submit button
-              $('#addBranchBtn').prop('disabled', false).html('Add Branch');
-            }
-          });
-        });
-      });
-    </script>
+  
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->

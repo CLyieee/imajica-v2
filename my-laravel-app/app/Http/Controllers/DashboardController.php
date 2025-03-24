@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Branch;
+
+use App\Models\branch;
+use App\Models\service;
+
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -63,7 +66,9 @@ $branch = Branch::all();
     }  
     public function branch_list()
     {
-        return view('page.branch-list');
+        $branchs = branch::all();
+        
+        return view('page.branch-list', ['branchs'=> $branchs]);
     }
     public function customer_report()
     {
@@ -130,11 +135,16 @@ $branch = Branch::all();
     }
     public function new_services()
     {
-        return view('page.new-services');
+        // Get all branches to display in the form
+        $branches = branch::all();
+        $services = service::all();
+        
+        return view('page.new-services', compact('branches'));
     }
     public function services_list()
     {
-        return view('page.services-list');
+        $services = service::all();
+        return view('page.services-list', compact('services'));
     }
     public function new_user()
     {

@@ -83,7 +83,7 @@ Route::get('/booking', [DashboardController::class, 'booking'])->name('page.book
 Route::get('/customer-report', [DashboardController::class, 'customer_report'])->name('page.customer-report');
 
 // Service Routes
-Route::post('/services/add', [App\Http\Controllers\serviceController::class, 'add_service'])->name('add.service');
+Route::post('/services/create', [App\Http\Controllers\serviceController::class, 'create'])->name('service.create');
 Route::get('/services/all', [App\Http\Controllers\serviceController::class, 'get_services'])->name('get.services');
 Route::get('/services/branch/{branch_code}', [App\Http\Controllers\serviceController::class, 'get_services_by_branch'])->name('get.services.by.branch');
 Route::get('/services/{id}', [App\Http\Controllers\serviceController::class, 'get_service'])->name('get.service');
@@ -91,11 +91,13 @@ Route::put('/services/{id}', [App\Http\Controllers\serviceController::class, 'up
 Route::delete('/services/{id}', [App\Http\Controllers\serviceController::class, 'delete_service'])->name('delete.service');
 
 // Branch Routes
-Route::post('/branch/add', [App\Http\Controllers\branchController::class, 'add_branch'])->name('add.branch');
-Route::get('/branch/all', [App\Http\Controllers\branchController::class, 'get_branches'])->name('branch.getBranches');
-Route::get('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'get_branch'])->name('get.branch');
-Route::put('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'update_branch'])->name('update.branch');
-Route::delete('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'delete_branch'])->name('delete.branch');
+
+Route::post('/branch/create', [App\Http\Controllers\branchController::class, 'create'])->name('branch.create');
+// Fix the update route - remove the {branch} from within the URL and make it a parameter
+Route::put('/branch/update', [App\Http\Controllers\branchController::class, 'update'])->name('branch.update');
+Route::delete('/branch/delete', [App\Http\Controllers\branchController::class, 'delete'])->name('branch.delete');
+Route::get('/branches/all', [App\Http\Controllers\branchController::class, 'getAllBranches'])->name('branch.getAllBranches');
+
 // Supplier Routes
 Route::post('/supplier/add', [App\Http\Controllers\supplierController::class, 'add_supplier'])->name('add.supplier');
 Route::get('/supplier/all', [App\Http\Controllers\supplierController::class, 'get_suppliers'])->name('get.suppliers');

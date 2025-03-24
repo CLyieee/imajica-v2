@@ -1,6 +1,11 @@
-
-
 $(document).ready(function () {
+    // Set up CSRF token for all AJAX requests
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
     // Load all suppliers for supplier listing page
     if ($("#supplierTable").length) {
         loadSuppliers();
@@ -104,11 +109,7 @@ $(document).ready(function () {
             $.ajax({
                 url: supplierRoutes.delete.replace("__ID__", supplierId),
                 type: "DELETE",
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                        "content"
-                    ),
-                },
+                data: { id: supplierId }, // Explicitly include ID in request body
                 dataType: "json",
                 success: function (response) {
                     if (response.status) {

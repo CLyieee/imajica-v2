@@ -4,6 +4,13 @@
  */
 
 $(document).ready(function () {
+    // Set up CSRF token for all AJAX requests
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
     // Load all branches for branch listing page
     if ($("#branchTable").length) {
         loadBranches();
@@ -105,11 +112,7 @@ $(document).ready(function () {
             $.ajax({
                 url: branchRoutes.delete.replace("__CODE__", branchCode),
                 type: "DELETE",
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                        "content"
-                    ),
-                },
+                data: { branch_code: branchCode }, // Pass branch_code explicitly in the request body
                 dataType: "json",
                 success: function (response) {
                     if (response.status) {
