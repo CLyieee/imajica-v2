@@ -4,9 +4,12 @@ t&&new DataTable(t,{ajax:assetsPath+"/product-list.json"
     {data:"id"},
     {data:"id",orderable:!1,render:DataTable.render.select()},
     {data:"product_name"},
-    {data:"category"},{data:"stock"},
-    {data:"sku"},{data:"price"},
-    {data:"quantity"},{data:"status"},
+    {data:"category"},
+    {data:"stock"},
+    {data:"sku"},
+    {data:"price"},
+    {data:"quantity"},
+    {data:"status"},
     {data:"id"}],
     columnDefs:[{className:"control",searchable:!1,orderable:!1,responsivePriority:2,targets:0,render:function(e,t,n,a){return""}},{targets:1,orderable:!1,searchable:!1,responsivePriority:3,checkboxes:!0,checkboxes:{selectAllRender:'<input type="checkbox" class="form-check-input">'},render:function(){return'<input type="checkbox" class="dt-checkboxes form-check-input">'}},{targets:2,responsivePriority:1,render:function(e,t,n,a){var o=n.product_name,s=n.product_brand,r=n.image;let c;return`
     <div class="d-flex justify-content-start align-items-center product-name">
@@ -56,16 +59,11 @@ t&&new DataTable(t,{ajax:assetsPath+"/product-list.json"
         </label>`}[n]}
         <span class="d-none">${n}</span>
       </span>`:n}},{targets:5,render:function(e,t,n,a){return"<span>"+n.sku+"</span>"}},{targets:6,render:function(e,t,n,a){return"<span>"+n.price+"</span>"}},{targets:7,responsivePriority:4,render:function(e,t,n,a){return"<span>"+n.qty+"</span>"}},{targets:-2,render:function(e,t,n,a){n=n.status;return'<span class="badge '+o[n].class+'" text-capitalized>'+o[n].title+"</span>"}},{targets:-1,title:"Actions",searchable:!1,orderable:!1,render:function(e,t,n,a){return`
-    <div class="d-inline-block text-nowrap">
-      <button class="btn btn-text-secondary rounded-pill waves-effect btn-icon"><i class="icon-base ti tabler-edit icon-22px"></i></button>
-      <button class="btn btn-text-secondary rounded-pill waves-effect btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-        <i class="icon-base ti tabler-dots-vertical icon-22px"></i>
-      </button>
-      <div class="dropdown-menu dropdown-menu-end m-0">
-        <a href="javascript:void(0);" class="dropdown-item">View</a>
-        <a href="javascript:void(0);" class="dropdown-item">Suspend</a>
-      </div>
-    </div>
+     <div class='d-flex gap-1'>
+                                    <button class='btn btn-success'>View</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>
   `}}],select:{style:"multi",selector:"td:nth-child(2)"},order:[2,"asc"],displayLength:7,layout:{topStart:{rowClass:"card-header d-flex border-top rounded-0 flex-wrap py-0 flex-column flex-md-row align-items-start",features:[{search:{className:"me-5 ms-n4 pe-5 mb-n6 mb-md-0",placeholder:"Search Product",text:"_INPUT_"}}]},topEnd:{rowClass:"row m-3 my-0 justify-content-between",features:[{pageLength:{menu:[7,10,25,50,100],text:"_MENU_"},buttons:[{extend:"collection",className:"btn btn-label-secondary dropdown-toggle me-4",text:'<span class="d-flex align-items-center gap-1"><i class="icon-base ti tabler-upload icon-xs"></i> <span class="d-none d-sm-inline-block">Export</span></span>',buttons:[{extend:"print",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-printer me-1"></i>Print</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0||!(-1<e.indexOf("<")))return e;{e=(new DOMParser).parseFromString(e,"text/html");let t="";var a=e.querySelectorAll(".product-name");return 0<a.length?a.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;t+=e.trim()+" "}):t=e.body.textContent||e.body.innerText,t.trim()}}}},customize:function(e){e.document.body.style.color=config.colors.headingColor,e.document.body.style.borderColor=config.colors.borderColor,e.document.body.style.backgroundColor=config.colors.bodyBg;e=e.document.body.querySelector("table");e.classList.add("compact"),e.style.color="inherit",e.style.borderColor="inherit",e.style.backgroundColor="inherit"}},{extend:"csv",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-file me-1"></i>Csv</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"excel",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-upload me-1"></i>Excel</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"pdf",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-file-text me-1"></i>Pdf</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"copy",text:'<i class="icon-base ti tabler-copy me-1"></i>Copy',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}}]},{text:'<i class="icon-base ti tabler-plus me-0 me-sm-1 icon-16px"></i><span class="d-none d-sm-inline-block">Add Product</span>',className:"add-new btn btn-primary",action:function(){window.location.href="app-ecommerce-product-add.html"}}]}]},bottomStart:{rowClass:"row mx-3 justify-content-between",features:["info"]},bottomEnd:"paging"},language:{paginate:{next:'<i class="icon-base ti tabler-chevron-right scaleX-n1-rtl icon-18px"></i>',previous:'<i class="icon-base ti tabler-chevron-left scaleX-n1-rtl icon-18px"></i>',first:'<i class="icon-base ti tabler-chevrons-left scaleX-n1-rtl icon-18px"></i>',last:'<i class="icon-base ti tabler-chevrons-right scaleX-n1-rtl icon-18px"></i>'}},responsive:{details:{display:DataTable.Responsive.display.modal({header:function(e){return"Details of "+e.data().product_name}}),type:"column",renderer:function(e,t,n){var a,o,s,n=n.map(function(e){return""!==e.title?`<tr data-dt-row="${e.rowIndex}" data-dt-column="${e.columnIndex}">
             <td>${e.title}:</td>
             <td>${e.data}</td>

@@ -1,7 +1,4 @@
-/**
- * Supplier Management JavaScript
- * Handles CRUD operations for suppliers
- */
+
 
 $(document).ready(function () {
     // Load all suppliers for supplier listing page
