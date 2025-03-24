@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\branch;
 class coupon extends Model
 {
     use HasFactory;
@@ -12,7 +12,6 @@ class coupon extends Model
     protected $table = 'coupons';
     protected $primaryKey = 'coupon_code';
     public $incrementing = false;
-    protected $keyType = 'bigInteger';
     public $timestamps = false;
 
     protected $fillable = [
@@ -29,6 +28,6 @@ class coupon extends Model
 
     public function coupon()
     {
-        return $this->belongsTo(Branch::class, 'branch_code', 'branch_code');
+        return $this->belongsTo(branch::class, 'branch_code', 'branch_code');
     }
 }

@@ -367,68 +367,36 @@
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table id="servicesTable" class="table table-striped">
+                  <table class="table table-striped">
                     <thead class="table-light">
                       <tr>
                         <th>Coupon Code</th>
 
                         <th>Coupon Name</th>
                         <th>Discount Value</th>
+                        <th>Discount Type</th>
+                        <th>Applicable Service</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>GLOW20</td>
-
-                        <td>Glow & Go Discount</td>
-                        <td><span class="badge bg-label-success">20%</span></td>
+                       @foreach ($coupons as $coupon)
+                        <td>{{ $coupon->coupon_code }}</td>
+                        <td>{{ $coupon->discount_name }}</td>
+                        <td>{{ $coupon->discount_value }}</td>
+                        <td>{{ $coupon->discount_type }}</td>
+                        <td>{{ $coupon->applicable_service }}</td>
                         <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
+                          <a href="" class="btn btn-sm btn-success">Edit</a>
+                          <a href="" class="btn btn-sm btn-danger">Delete</a>
                         </td>
-                      </tr>
+                        @endforeach
+                        @if(count($coupons) == 0)
                       <tr>
-                        <td>FRESHLOOK15</td>
-
-                        <td>Fresh Start Promo</td>
-                        <td><span class="badge bg-label-success">150</span></td>
-                        <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
+                        <td colspan="4" class="text-center">No Data found</td>
                       </tr>
-                      <tr>
-                        <td>BEAUTYVIP50</td>
-
-                        <td>VIP Beauty Perk</td>
-                        <td><span class="badge bg-label-success">50%</span></td>
-                        <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>SKINCARE100</td>
-
-                        <td>Radiance Rewards</td>
-                        <td>
-                          <span class="badge bg-label-success">100 </span>
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>SUMMERGLOW25</td>
-
-                        <td>Summer Skin Saver</td>
-                        <td><span class="badge bg-label-success">25%</span></td>
-                        <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
+                      @endif
                       </tr>
                     </tbody>
                   </table>
