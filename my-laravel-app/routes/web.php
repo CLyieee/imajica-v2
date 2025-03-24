@@ -14,6 +14,9 @@ use App\Http\Controllers\DashboardController;
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('page.dashboard');
 
         Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
+        Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
+            
+    
 
         Route::get('/coupon-list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
 
@@ -89,11 +92,10 @@ Route::delete('/services/{id}', [App\Http\Controllers\serviceController::class, 
 
 // Branch Routes
 Route::post('/branch/add', [App\Http\Controllers\branchController::class, 'add_branch'])->name('add.branch');
-Route::get('/branch/all', [App\Http\Controllers\branchController::class, 'get_branches'])->name('get.branches');
+Route::get('/branch/all', [App\Http\Controllers\branchController::class, 'get_branches'])->name('branch.getBranches');
 Route::get('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'get_branch'])->name('get.branch');
 Route::put('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'update_branch'])->name('update.branch');
 Route::delete('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'delete_branch'])->name('delete.branch');
-
 // Supplier Routes
 Route::post('/supplier/add', [App\Http\Controllers\supplierController::class, 'add_supplier'])->name('add.supplier');
 Route::get('/supplier/all', [App\Http\Controllers\supplierController::class, 'get_suppliers'])->name('get.suppliers');
