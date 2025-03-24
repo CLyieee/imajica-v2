@@ -315,19 +315,7 @@
             </ul>
         </li>
 
-        <li class="menu-item">
-            <a href="new-expense.html" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-file-description"></i>
-                <div data-i18n="Expenses">Expenses</div>
-            </a>
-        </li>
-
-        <li class="menu-item">
-            <a href="expense-list.html" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-file-description"></i>
-                <div data-i18n="Expense List">Expense List</div>
-            </a>
-        </li>
+        
 
         <li class="menu-item {{ request()->is('new-loyalty') || request()->is('loyalty-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
