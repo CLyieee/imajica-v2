@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\branch;
 use App\Models\service;
 
@@ -15,7 +16,10 @@ class DashboardController extends Controller
 
     public function new_coupon()
     {
+$branch = Branch::all();
+
         return view('page.new-coupon');
+
     }
 
     public function coupon_list()

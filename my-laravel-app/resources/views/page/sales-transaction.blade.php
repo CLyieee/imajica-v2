@@ -740,11 +740,11 @@
 
 
   <script>
-      $(document).ready(function () {
+    $(document).ready(function () {
         var table = $("#servicesTable").DataTable({
             ajax: {
-                url: '/assets/sales-transaction.json', // Adjusted relative path to your JSON
-                dataSrc: '' // Assuming the JSON is an array of objects
+                url: '/assets/sales-transaction.json',
+                dataSrc: ''
             },
             columns: [
                 { data: 'transaction_id' },
@@ -759,17 +759,29 @@
                     data: null,
                     render: function (data, type, row) {
                         return `<div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
-                                </div>`;
+                            <button onclick='showViewModalll(${JSON.stringify(row)})' class='btn btn-success btn-sm'>
+                          View
+                            </button>
+                            <button class='btn btn-info btn-sm'>
+                              Edit
+                            </button>
+                            <button class='btn btn-danger btn-sm'>
+                              Delete
+                            </button>
+                        </div>`;
                     }
                 }
-            ]
+            ],
+            responsive: true,
+        });
+    
+        // Handle view button click through event delegation
+        $('#servicesTable tbody').on('click', 'button.btn-success', function() {
+            var data = table.row($(this).closest('tr')).data();
+            showViewModal(data);
         });
     });
-</script>
- 
+    </script>
 
 
 <link

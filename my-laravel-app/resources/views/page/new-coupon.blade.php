@@ -343,8 +343,12 @@
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <!-- 1. Delivery Address -->
-
+                      
+                        <form method="POST" action="{{ route('coupon.create') }}">
+                            @csrf
+                            @method('POST')
+                          
+                        
                           <div class="row g-6">
                             <div class="col-md-6">
                               <label class="form-label" for="fullname"
@@ -505,15 +509,13 @@
                                 data-allow-clear="true"
                               >
                                 <option value="">Select Branch</option>
-                                <option value="AL">Pasig City Branch</option>
-                                <option value="AK">
-                                  San Mateo Rizal Branch
-                                </option>
-                                <option value="AK">Cainta Rizal Branch</option>
+                               @foreach($branches as $branch)
+                                <option value="{{ $branch->branch_code }}">{{ $branch->name }}</option>
+                                @endforeach
                               </select>
                             </div>
                           </div>
-
+                        </form>
                           <!-- 2. Delivery Type -->
 
                           <br />

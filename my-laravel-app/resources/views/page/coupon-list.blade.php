@@ -524,7 +524,7 @@
               search: "",
               searchPlaceholder: "Search coupon...",
               paginate: {
-                previous: '<i class="ti tabler-chevron-left"></i>',
+                previous: '<i c lass="ti tabler-chevron-left"></i>',
                 next: '<i class="ti tabler-chevron-right"></i>'
               }
             }
