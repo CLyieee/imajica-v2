@@ -120,10 +120,8 @@
         font-family: "Poppins", sans-serif;
         background: linear-gradient(135deg, #eef2f3, #d0d0d2);
         color: #333;
-        padding: 20px;
-        display: flex;
-        margin: 0;
         padding: 0;
+        display: flex;
         min-height: 100vh;
       }
 
@@ -131,11 +129,26 @@
         max-width: 1200px;
         margin: auto;
         flex: 1;
-        padding: 20px;
-        margin-left: 300px;
         padding: 2rem;
         background: linear-gradient(135deg, #eef2f3, #f5f5f5);
+        margin-left: auto;
+        margin-right: auto;
         margin-top: 15px;
+        width: 100%;
+      }
+
+      .container-p-y {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding: 0 20px;
+        margin-left: 280px;
+      }
+
+      @media (max-width: 1199px) {
+        .container-p-y {
+          margin-left: 0;
+        }
       }
 
       .card {
@@ -322,9 +335,9 @@
                   </div>
                 </div>
                 <div class="dropdown">
-                  <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="width: 120px;">
-                    Export
-                  </button>
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #0066ff;">
+                                Export
+                            </button>
                   <ul class="dropdown-menu" style="min-width: 120px;">
                     <li><a class="dropdown-item" href="#" data-export="pdf">PDF</a></li>
                     <li><a class="dropdown-item" href="#" data-export="excel">Excel</a></li>
