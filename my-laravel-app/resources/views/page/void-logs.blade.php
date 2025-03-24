@@ -581,7 +581,7 @@ background-color: #d1ecf1; /* Light cyan */
                     <div class="card card-custom card-total-voided">
                         <div class="card-body">
                             <p class="card-text"><strong>Total Voided Sales</strong></p>
-                            <h4 class="text-black">₱239,00.00</h4>
+                            <h4 class="text-black">₱239,000.00</h4>
                         </div>
                     </div>
                 </div>
@@ -615,59 +615,10 @@ background-color: #d1ecf1; /* Light cyan */
 
       <div class="card">
         <div class="card-body">
-                        
-
-          <div class="d-flex mb-3 " style="width: 60%; "> 
-       
-            <div class="input-group me-9 " style="width: 70%;"> 
-                <span class="input-group-text" id="search-addon">
-                    <i class="icon-base ti tabler-search"></i>
-                </span>
-                <input type="text" id="searchInput" placeholder="Search for Receipt No. ,Customer, Item" class="form-control" onkeyup="searchVoid()">
-            </div>
-        
-            <div class="d-flex justify-content-end me-auto">
-           
-              <div class="d-flex justify-content-end align-items-center gap-2 me-9 ">
-                <!-- Filter Label -->
-              
-                <label for="dateInput" class="fw-bold" style="white-space: nowrap;">Filter by date:</label>
-
-                <!-- Date Filter Dropdown -->
-                <select id="dateFilter" class="form-select w-auto" onchange="filterByDatee()"> <!-- Added onchange event -->
-                  <option value="Today">Today</option>
-                  <option value="Yesterday">Yesterday</option>
-                  <option value="Last 7 Days">Last 7 Days</option>
-                  <option value="Last 30 Days">Last 30 Days</option>
-                  <option value="This Month">This Month</option>
-                  <option value="Last Month">Last Month</option>
-                  <option value="Custom Range">Custom Range</option>
-              </select>
-              <button id="exportButton" class="btn btn-primary ms-2 " onclick="exportData()">Export  <i class="ti tabler-chevron-right "></i> </button>
-                <!-- Date Input Group -->
-              
-            </div>
-            
-            <!-- Custom Range Date Inputs (Initially Hidden) -->
-            <div id="customDateInputs" class="mt-2 d-none">
-                <input type="date" id="startDate" class="form-control mb-2">
-                <input type="date" id="endDate" class="form-control">
-            </div>
-            
-    
-    <!-- Date input for Custom Range (initially hidden) -->
-    <div id="customDateInputs" style="display: none; margin-top: 10px;">
-    <input type="date" id="startDate" class="form-control mb-2">
-    <input type="date" id="endDate" class="form-control">
-    </div>
-    
-          </div>
-          
-        </div>
               
             <div class="container">
-                <table class="table" id="logsTable">
-                    <thead>
+                <table class="table table-striped" id="voidTable">
+                    <thead class= "table-light">
                         <tr>
                             <th>Id</th>
                             <th>Receipt No.</th>
@@ -677,11 +628,10 @@ background-color: #d1ecf1; /* Light cyan */
                             <th>Amount Voided</th>
                             <th>Voided By</th>
                           <th>Date Voided</th>
+                          <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="logsTablee">
-                        
-                    </tbody>
+                   
                 </table>
             </div>
           </div>
@@ -749,7 +699,7 @@ background-color: #d1ecf1; /* Light cyan */
     
     <script src="../../assets/vendor/libs/%40algolia/autocomplete-js.js"></script>
 
-    
+    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
       
       <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
     
@@ -779,124 +729,110 @@ background-color: #d1ecf1; /* Light cyan */
 
     <!-- Page JS -->
   <script src="../../assets/js/void-logs.js"></script>
-  
+  <script src="../../assets/void-logs.json"></script>
  
+
+
   <script>
-    function filterByDatee() {
-        const filterDate = document.getElementById('dateFilter').value; // Get the selected filter value
-        const startDate = document.getElementById('startDate').value; // Get the start date for custom range
-        const endDate = document.getElementById('endDate').value; // Get the end date for custom range
-        const table = document.getElementById('logsTablee');
-        const tr = table.getElementsByTagName('tr');
-    
-        for (let i = 1; i < tr.length; i++) {
-            const td = tr[i].getElementsByTagName('td');
-            const transactionDate = new Date(td[7].textContent); // Assuming the date is in the 8th column
-            let displayRow = false;
-    
-            if (filterDate === "Custom Range") {
-                const start = new Date(startDate);
-                const end = new Date(endDate);
-                displayRow = transactionDate >= start && transactionDate <= end; // Check if date is within the range
-            } else {
-                const today = new Date();
-                if (filterDate === "Today") {
-                    displayRow = transactionDate.toDateString() === today.toDateString();
-                } else if (filterDate === "Yesterday") {
-                    const yesterday = new Date();
-                    yesterday.setDate(today.getDate() - 1);
-                    displayRow = transactionDate.toDateString() === yesterday.toDateString();
-                } else if (filterDate === "Last 7 Days") {
-                    const last7Days = new Date();
-                    last7Days.setDate(today.getDate() - 7);
-                    displayRow = transactionDate >= last7Days && transactionDate <= today;
-                } else if (filterDate === "Last 30 Days") {
-                    const last30Days = new Date();
-                    last30Days.setDate(today.getDate() - 30);
-                    displayRow = transactionDate >= last30Days && transactionDate <= today;
-                } else if (filterDate === "This Month") {
-                    displayRow = transactionDate.getMonth() === today.getMonth() && transactionDate.getFullYear() === today.getFullYear();
-                } else if (filterDate === "Last Month") {
-                    const lastMonth = new Date();
-                    lastMonth.setMonth(today.getMonth() - 1);
-                    displayRow = transactionDate.getMonth() === lastMonth.getMonth() && transactionDate.getFullYear() === lastMonth.getFullYear();
+      $(document).ready(function () {
+        var table = $("#voidTable").DataTable({
+            ajax: {
+                url: '/assets/void-logs.json', // Adjusted relative path to your JSON
+                dataSrc: '' // Assuming the JSON is an array of objects
+            },
+            columns: [
+                { data: 'id' },
+                { data: 'receipt_no' },
+                { data: 'item' },
+                { data: 'customer' },
+                { data: 'cashier' },
+                { data: 'amount_voided' },
+                { data: 'voided_by' },
+                { data: 'date_voided' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<div class='d-flex gap-2'>
+                                    <button class='btn btn-success'>View</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>`;
+                    }
                 }
-            }
-    
-            tr[i].style.display = displayRow ? "" : "none"; // Show or hide the row based on the filter
-        }
-    }
-    </script>
-
-  <script>
-    function filterByDate() {
-      const input = document.getElementById('dateFilter ');
-      const filterDate = input.value;
-      const table = document.getElementById('logsTablee');
-      const tr = table.getElementsByTagName('tr');
-  
-      for (let i = 1; i < tr.length; i++) {
-        const td = tr[i].getElementsByTagName('td');
-        const transactionDate = td[7].textContent; // Assuming the date is in the 8th column
-        tr[i].style.display = transactionDate === filterDate || filterDate === "" ? "" : "none";
-      }
-    }
-  </script>
-
- 
-  <!-- Add Fetching Functionality for Sales -->
-  <script>
-    // Fetch JSON data and populate the table
-    fetch('../../assets/void-logs.json') // Adjusted relative path
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.getElementById('logsTablee');
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                <td>${item.id}</td>
-                <td>${item.receipt_no}</td>
-                <td>${item.item}</td>
-                <td>${item.customer}</td>
-                <td>${item.cashier}</td>
-                <td>${item.amount_voided}</td>
-                <td>${item.voided_by}</td>
-                <td>${item.date_voided}</td> 
-                `;
-                tableBody.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error fetching the JSON data:', error));
+            ]
+        });
+    });
 </script>
- 
+
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable
+        var table = $('#voidTableee').DataTable({
+            processing: true,
+            pageLength: 10,
+            dom: '<"row"<"col-md-6"l><"col-md-6"f>>' +
+                 '<"row"<"col-sm-12"tr>>' +
+                 '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+            language: {
+                search: "",
+                searchPlaceholder: "Search..."
+            }
+        });
+
+        // Fetch and populate data
+        fetch('/assets/void-logs.json')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    table.row.add([
+                        item.id,
+                        item.receipt_no,
+                        item.item,
+                        item.customer,
+                        item.cashier,
+                        item.amount_voided,
+                        item.voided_by,
+                        item.date_voided,
+                        `<div class='d-flex gap-2'>
+                                    <button class='btn btn-success'>View</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>`
+                
+                    ]).draw(false);
+                });
+            })
+            .catch(error => console.error('Error fetching the JSON data:', error));
+    });
+</script>
+
+<link
+      rel="stylesheet"
+      href="../../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../assets/vendor/libs/flatpickr/flatpickr.css"
+    />
+    <!-- Row Group CSS -->
+    <link
+      rel="stylesheet"
+      href="../../assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css"
+    />
+
+
   </body>
 
 <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/app-invoice-preview.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:26:33 GMT -->
 </html>
 
   <!-- beautify ignore:end -->
-
-<script>
-  function searchVoid() {
-    const input = document.getElementById('searchInput');
-    const filter = input.value.toLowerCase();
-    const table = document.getElementById('logsTablee');
-    const tr = table.getElementsByTagName('tr');
-
-    for (let i = 1; i < tr.length; i++) {
-      const td = tr[i].getElementsByTagName('td');
-      let found = false;
-      for (let j = 0; j < td.length; j++) {
-        if (td[j]) {
-          const txtValue = td[j].textContent || td[j].innerText;
-          if (txtValue.toLowerCase().indexOf(filter) > -1) {
-            found = true;
-            break;
-          }
-        }
-      }
-      tr[i].style.display = found ? "" : "none";
-    }
-  }
-</script>
 

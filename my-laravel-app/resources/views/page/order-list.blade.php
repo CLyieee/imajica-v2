@@ -641,10 +641,10 @@
   <!-- Order List Table -->
   <div class="card">
     <div class="card-datatable table-responsive">
-      <table class="datatables-order table border-top">
-        <thead>
+      <table class="datatables-order table border-top table-striped">
+        <thead class="table-light">
           <tr>
-            <th></th>
+            <th>actions</th>
             <th></th>
             <th>order</th>
             <th>date</th>
@@ -652,7 +652,7 @@
             <th>payment</th>
             <th>status</th>
             <th>method</th>
-            <th>actions</th>
+           
           </tr>
         </thead>
       </table>

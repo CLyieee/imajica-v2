@@ -76,6 +76,9 @@ Route::get('/user-list', [DashboardController::class, 'user_list'])->name('page.
 
 Route::get('/booking', [DashboardController::class, 'booking'])->name('page.booking');
 
+
+Route::get('/customer-report', [DashboardController::class, 'customer_report'])->name('page.customer-report');
+
 // Service Routes
 Route::post('/services/add', [App\Http\Controllers\serviceController::class, 'add_service'])->name('add.service');
 Route::get('/services/all', [App\Http\Controllers\serviceController::class, 'get_services'])->name('get.services');
@@ -99,3 +102,9 @@ Route::put('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'u
 Route::delete('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'delete_supplier'])->name('delete.supplier');
 
 
+
+Route::get('/service-product', [DashboardController::class, 'service_product'])->name('page.service-product');
+
+Route::get('/employee-report', [DashboardController::class, 'employee_report'])->name('page.employee-report');
+
+Route::get('/expenses-report', [DashboardController::class, 'expenses_report'])->name('page.expenses-report');

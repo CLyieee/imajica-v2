@@ -31,21 +31,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Demo: eCommerce Category List - Apps | Vuexy - Bootstrap Dashboard PRO</title>
+    <title>Imajica Booking System</title>
 
-    
-      <meta name="description" content="Vuexy is the best bootstrap 5 dashboard for responsive web apps. Streamline your app development process with ease." />
-      <!-- Canonical SEO -->
-      <meta name="keywords" content="Vuexy bootstrap dashboard, vuexy bootstrap 5 dashboard, themeselection, html dashboard, web dashboard, frontend dashboard, responsive bootstrap theme" />
-      <meta property="og:title" content="Vuexy bootstrap Dashboard by Pixinvent" />
-      <meta property="og:type" content="product" />
-      <meta property="og:url" content="https://themeforest.net/item/vuexy-vuejs-html-laravel-admin-dashboard-template/23328599" />
-      <meta property="og:image" content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png" />
-      <meta property="og:description" content="Vuexy is the best bootstrap 5 dashboard for responsive web apps. Streamline your app development process with ease." />
-      <meta property="og:site_name" content="Pixinvent" />
-      <link rel="canonical" href="https://themeforest.net/item/vuexy-vuejs-html-laravel-admin-dashboard-template/23328599" />
-    
-    
+  <meta name="description" content="Imajica Booking System" />
+
+  <meta name="keywords" content="Imajica Booking System" />
+  <meta property="og:title" content="Imajica Booking System" />
+  <meta property="og:type" content="product" />
+  <meta property="og:url" content="Imajica Booking System" />
+  <meta property="og:image" content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png" />
+  <meta property="og:description" content="Imajica Booking System." />
+  <meta property="og:site_name" content="Pixinvent" />
+  <link rel="canonical" href="Imajica Booking System" />
+
       <!-- ? PROD Only: Google Tag Manager (Default ThemeSelection: GTM-5DDHKGP, PixInvent: GTM-5J3LMKC) -->
       <script>
         (function (w, d, s, l, i) {
@@ -581,107 +579,46 @@
 
         
 
-        <!-- Content wrapper -->
-        <div class="content-wrapper">
-          <!-- Content -->
-          <div class="container-xxl flex-grow-1 container-p-y">
-  <div class="app-ecommerce-category">
-    <!-- Category List Table -->
-    <div class="card">
-      <div class="card-datatable">
-        <table class="datatables-category-list table">
-          <thead>
-            <tr>
-              <th></th>
-              <th></th>
-              <th>Categories</th>
-              <th class="text-nowrap text-sm">Total Products</th>
-              <th class="text-nowrap text-sm">Total Earning</th>
-              <th class="text-lg">Actions</th>
-            </tr>
-          </thead>
-        </table>
+<div class="container">
+  <h3>Category List</h3>
+  <div class="mb-3">
+  </div>
+  
+  <!-- Table for Category List -->
+  <table class="table table-striped  datatables-category-list" >
+    <thead class="table-light">
+      <tr>
+        <th>ID</th>
+        <th>Select</th>
+        <th>Category</th>
+        <th>Total Products</th>
+        <th>Total Earnings</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+  </table>
+</div>
+
+<!-- Offcanvas for Adding New Category -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Add New Category</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form id="eCommerceCategoryListForm">
+      <div class="mb-3">
+        <label for="categoryTitle" class="form-label">Category Title</label>
+        <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" required>
       </div>
-    </div>
-    <!-- Offcanvas to add new customer -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList" aria-labelledby="offcanvasEcommerceCategoryListLabel">
-      <!-- Offcanvas Header -->
-      <div class="offcanvas-header py-6">
-        <h5 id="offcanvasEcommerceCategoryListLabel" class="offcanvas-title">Add Category</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <div class="mb-3">
+        <label for="slug" class="form-label">Slug</label>
+        <input type="text" class="form-control" id="slug" name="slug" required>
       </div>
-      <!-- Offcanvas Body -->
-      <div class="offcanvas-body border-top">
-        <form class="pt-0" id="eCommerceCategoryListForm" onsubmit="return true">
-          <!-- Title -->
-          <div class="mb-6 form-control-validation">
-            <label class="form-label" for="ecommerce-category-title">Title</label>
-            <input type="text" class="form-control" id="ecommerce-category-title" placeholder="Enter category title" name="categoryTitle" aria-label="category title" />
-          </div>
-          <!-- Slug -->
-          <div class="mb-6 form-control-validation">
-            <label class="form-label" for="ecommerce-category-slug">Slug</label>
-            <input type="text" id="ecommerce-category-slug" class="form-control" placeholder="Enter slug" aria-label="slug" name="slug" />
-          </div>
-          <!-- Image -->
-          <div class="mb-6">
-            <label class="form-label" for="ecommerce-category-image">Attachment</label>
-            <input class="form-control" type="file" id="ecommerce-category-image" />
-          </div>
-          <!-- Parent category -->
-          <div class="mb-6 ecommerce-select2-dropdown">
-            <label class="form-label" for="ecommerce-category-parent-category">Parent category</label>
-            <select id="ecommerce-category-parent-category" class="select2 form-select" data-placeholder="Select parent category">
-              <option value="">Select parent Category</option>
-              <option value="Household">Household</option>
-              <option value="Management">Management</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Office">Office</option>
-              <option value="Automotive">Automotive</option>
-            </select>
-          </div>
-          <!-- Description -->
-          <div class="mb-6">
-            <label class="form-label">Description</label>
-            <div class="form-control p-0 py-1">
-              <div class="comment-editor border-0" id="ecommerce-category-description"></div>
-              <div class="comment-toolbar border-0 rounded">
-                <div class="d-flex justify-content-end">
-                  <span class="ql-formats me-0">
-                    <button class="ql-bold"></button>
-                    <button class="ql-italic"></button>
-                    <button class="ql-underline"></button>
-                    <button class="ql-list" value="ordered"></button>
-                    <button class="ql-list" value="bullet"></button>
-                    <button class="ql-link"></button>
-                    <button class="ql-image"></button>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Status -->
-          <div class="mb-6 ecommerce-select2-dropdown">
-            <label class="form-label">Select category status</label>
-            <select id="ecommerce-category-status" class="select2 form-select" data-placeholder="Select category status">
-              <option value="">Select category status</option>
-              <option value="Scheduled">Scheduled</option>
-              <option value="Publish">Publish</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-          </div>
-          <!-- Submit and reset -->
-          <div class="mb-6">
-            <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Add</button>
-            <button type="reset" class="btn btn-label-danger" data-bs-dismiss="offcanvas">Discard</button>
-          </div>
-        </form>
-      </div>
-    </div>
+      <button type="submit" class="btn btn-primary">Save Category</button>
+    </form>
   </div>
 </div>
-          <!-- / Content -->
-
           
             
 
@@ -774,23 +711,179 @@
     
 
     <!-- Page JS -->
-    <script src="../../assets/js/category-list.js"></script>
-    
+    <script src="../../assets/category-list.json"></script>
 
-    <script>
-        var table = new DataTable('.datatables-category-list', {
-            ajax: '../../assets/category-list.json',
-            columns: [
-                { data: "id" },
-                { data: "id", orderable: false, render: DataTable.render.select() },
-                { data: "categories" },
-                { data: "total_products" },
-                { data: "total_earnings" },
-                { data: "id" }
-            ]
-        });
-    </script>
-    
+
+
+ <!-- <script>
+  $(function () {
+  'use strict';
+
+  // Destroy existing DataTable if it exists
+  if ($.fn.DataTable.isDataTable('.datatables-category-list')) {
+    $('.datatables-category-list').DataTable().destroy();
+  }
+
+  let dt_category_table = $('.datatables-category-list');
+
+  if (dt_category_table.length) {
+    const dt_category = dt_category_table.DataTable({
+      ajax: {
+        url: '../../assets/category-list.json',
+        dataSrc: ''
+      },
+      columns: [
+        { data: 'id' },
+        { 
+          data: null,
+          render: function () {
+            return '<input type="checkbox" class="form-check-input select-category">';
+          }
+        },
+        { 
+          data: 'categories',
+          render: function(data, type, row) {
+            return `<div class="d-flex justify-content-start align-items-center">
+              <div class="avatar-wrapper me-3">
+                <div class="avatar rounded-2 bg-label-secondary">
+                  <img src="../../assets/img/products/${row.cat_image}"class="rounded-2">
+                </div>
+              </div>
+              <div class="d-flex flex-column">
+                <h6 class="mb-0">${data}</h6>
+                <small class="text-muted">${row.category_detail}</small>
+              </div>
+            </div>`;
+          }
+        },
+        { data: 'total_products' },
+        { data: 'total_earnings' },
+        {
+          data: null,
+          render: function (data, type, row) {
+            return `
+             <div class='d-flex gap-2'>
+                                    <button class='btn btn-success'>View</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>
+            `;
+          }
+        }
+      ],  
+      responsive: true,
+      pageLength: 10
+    });
+  }
+});
+  </script> -->
+
+
+<script>
+  $(function () {
+  'use strict';
+
+  // Destroy existing DataTable if it exists
+  if ($.fn.DataTable.isDataTable('.datatables-category-list')) {
+    $('.datatables-category-list').DataTable().destroy();
+  }
+
+  let dt_category_table = $('.datatables-category-list');
+
+  if (dt_category_table.length) {
+    const dt_category = dt_category_table.DataTable({
+      ajax: {
+        url: '../../assets/category-list.json',
+        dataSrc: ''
+      },
+      columns: [
+        { data: 'id' },
+        { 
+          data: null,
+          render: function () {
+            return '<input type="checkbox" class="form-check-input select-category">';
+          }
+        },
+        { 
+          data: 'categories',
+          render: function(data, type, row) {
+            return `<div class="d-flex justify-content-start align-items-center">
+              <div class="avatar-wrapper me-3">
+                <div class="avatar rounded-2 bg-label-secondary">
+                  <img src="../../assets/img/products/${row.cat_image}" class="rounded-2">
+                </div>
+              </div>
+              <div class="d-flex flex-column">
+                <h6 class="mb-0">${data}</h6>
+                <small class="text-muted">${row.category_detail}</small>
+              </div>
+            </div>`;
+          }
+        },
+        { data: 'total_products' },
+        { data: 'total_earnings' },
+        {
+          data: null,
+          render: function (data, type, row) {
+            return `
+              <div class="d-flex gap-2">
+                <button class="btn btn-success btn-sm">View</button>
+                <button class="btn btn-info btn-sm">Edit</button>
+                <button class="btn btn-danger btn-sm">Delete</button>
+              </div>
+            `;
+          }
+        }
+      ],
+      
+     
+      buttons: [
+        {
+          
+          text: '<i class="ti tabler-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add Category</span>',
+          className: 'btn btn-primary',
+          action: function(e, dt, node, config) {
+            // Open offcanvas for adding new category
+            var offcanvasElement = document.querySelector('#offcanvasEcommerceCategoryList');
+            var offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+            offcanvas.show();
+          }
+        }
+      ],
+      responsive: true,
+    });
+  }
+
+  // Handle form submission
+  $('#eCommerceCategoryListForm').on('submit', function(e) {
+    e.preventDefault();
+    const categoryTitle = $('#categoryTitle').val();
+    const slug = $('#slug').val();
+
+    // Add your form submission logic here
+    // Example:
+    const newCategory = {
+      id: dt_category_table.DataTable().data().length + 1,
+      categories: categoryTitle,
+      category_detail: '',
+      cat_image: 'default.jpg',
+      total_products: 0,
+      total_earnings: '$0'
+    };
+
+    // Add new row to DataTable
+    dt_category_table.DataTable().row.add(newCategory).draw();
+
+    // Close offcanvas
+    var offcanvasElement = document.querySelector('#offcanvasEcommerceCategoryList');
+    var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+    offcanvas.hide();
+
+    // Reset form
+    this.reset();
+  });
+});
+</script>
 
   </body>
 

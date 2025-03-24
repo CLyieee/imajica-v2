@@ -120,10 +120,8 @@
         font-family: "Poppins", sans-serif;
         background: linear-gradient(135deg, #eef2f3, #d0d0d2);
         color: #333;
-        padding: 20px;
-        display: flex;
-        margin: 0;
         padding: 0;
+        display: flex;
         min-height: 100vh;
       }
 
@@ -131,11 +129,26 @@
         max-width: 1200px;
         margin: auto;
         flex: 1;
-        padding: 20px;
-        margin-left: 300px;
         padding: 2rem;
         background: linear-gradient(135deg, #eef2f3, #f5f5f5);
+        margin-left: auto;
+        margin-right: auto;
         margin-top: 15px;
+        width: 100%;
+      }
+
+      .container-p-y {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding: 0 20px;
+        margin-left: 280px;
+      }
+
+      @media (max-width: 1199px) {
+        .container-p-y {
+          margin-left: 0;
+        }
       }
 
       .card {
@@ -145,6 +158,9 @@
         border-radius: 12px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease-in-out;
+        max-width: 100%;
+        width: 100%;
+        margin: 0 auto;
       }
 
       .card:hover {
@@ -179,9 +195,10 @@
       }
 
       .metrics {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        display: flex;
+        flex-wrap: wrap;
         gap: 20px;
+        justify-content: center;
       }
 
       .metric-card {
@@ -189,11 +206,24 @@
         padding: 15px;
         border-radius: 10px;
         background: rgba(255, 255, 255, 0.9);
+        min-width: 200px;
+        max-width: 300px;
+        flex: 1;
+      }
+
+      .metric-card i {
+        font-size: 24px;
+        margin-bottom: 1rem;
+      }
+
+      .metric-card h5 {
+        margin-bottom: 1.5rem;
+        color: #2b2c2d;
       }
 
       .metric-card h4 {
         font-size: 2rem;
-        margin: 10px 0;
+        margin-bottom: 0.5rem;
       }
 
       #layout-menu {
@@ -237,69 +267,11 @@
           display: block;
         }
       }
-
-      .service-product-report {
-        margin-top: 30px;
-      }
-
-      .service-product-report h2 {
-        text-align: center;
-        font-weight: 600;
-        margin-bottom: 20px;
-      }
-
-      .service-product-report .metrics {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-      }
-
-      .service-product-report .metric-card {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.9);
-      }
-
-      .service-product-report .metric-card h4 {
-        font-size: 2rem;
-        margin: 10px 0;
-      }
-
-      .employee-report {
-        margin-top: 30px;
-        text-align: center; /* Center the content */
-      }
-
-      .employee-report h2 {
-        text-align: center;
-        font-weight: 600;
-        margin-bottom: 20px;
-      }
-
-      .employee-report .metrics {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-margin-top: 20px; /* Add margin to move the cards down */
-      }
-
-      .employee-report .metric-card {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.9);
-      }
-
-      .employee-report .metric-card h4 {
-        font-size: 2rem;
-        margin: 10px 0;
-      }
     </style>
   </head>
 
   <body>
-  @include('components.sidebar')
+    @include('components.sidebar')
     <div class="menu-mobile-toggler d-xl-none rounded-1 layout-wrapper">
       <a
         href="javascript:void(0);"
@@ -309,156 +281,125 @@ margin-top: 20px; /* Add margin to move the cards down */
         <i class="ti tabler-chevron-right icon-base"></i>
       </a>
     </div>
-    <div class="container-p-y">
-      <div class="container rounded">
-        <!-- Removed Customer Report Summary -->
-        <div class="service-product-report">
-          <h2>Service/Product Report Summary</h2>
-      
-          <div class="metrics">
-            <div class="metric-card">
-              <h5>Total Revenue</h5>
-              <h4>₱385,750</h4>
-              <p class="text-success">+15.2%</p>
+<div class="container-p-y">
+  <div class="container rounded">
+    <div class="header">
+      <h1>Service/Product Report Summary</h1>
+    </div>
+
+    <div class="metrics">
+      <div class="metric-card">
+        <i class="ti tabler-chart-bar mb-2" style="font-size: 24px; color: #28a745;"></i>
+        <h5>Overall Sales</h5>
+        <h4>₱385,750.00</h4>
+        <p class="text-success">+15.2% from last month</p>
+      </div>
+      <div class="metric-card">
+        <i class="ti tabler-tool mb-2" style="font-size: 24px; color: #007bff;"></i>
+        <h5>Top Service Based on Sales</h5>
+        <h4>Hair Color Treatment</h4>
+        <p class="text-success">₱147,000 total sales</p>
+      </div>
+      <div class="metric-card">
+        <i class="ti tabler-box mb-2" style="font-size: 24px; color: #dc3545;"></i>
+        <h5>Top Product Based on Sales</h5>
+        <h4>Shampoo Premium</h4>
+        <p class="text-success">₱42,500 total sales</p>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="mb-0">All Sales</h3>
+          <div class="d-flex gap-2">
+            <div class="input-group" style="width: 250px;">
+              <input type="text" class="form-control" id="searchInput" placeholder="Search items...">
             </div>
-            <div class="metric-card">
-              <h5>Total Services</h5>
-              <h4>458</h4>
-              <p class="text-success">+8.5%</p>
-            </div>
-            <div class="metric-card">
-              <h5>Total Products</h5>
-              <h4>275</h4>
-              <p class="text-success">+12.3%</p>
-            </div>
-          </div>
-          
-          <!-- Service/Product Table -->
-          <div class="card mt-4" style="background: rgba(255, 255, 255, 0.9); padding: 20px;">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <!-- Search Bar (Left) -->
-              <div>
-                <input type="text" 
-                    class="form-control" 
-                    style="width: 300px;" 
-                    id="serviceSearchInput" 
-                    placeholder="Search items..." 
-                    role="searchbox"
-                    onkeyup="searchServiceTable()">
-              </div>
-              
-              <!-- Filters and Export (Right) -->
-              <div class="d-flex gap-2">
-                <select class="form-select" style="width: 150px;" id="serviceSort">
-                  <option value="">Filter By</option>
-                  <option value="name">Name</option>
-                  <option value="revenue">Revenue</option>
-                  <option value="quantity">Quantity</option>
+            <select class="form-select" style="width: 120px;">
+              <option value="">Filter By</option>
+              <option value="service">Services</option>
+              <option value="product">Products</option>
+              <option value="revenue">Revenue</option>
+            </select>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                Filter By Date
+              </button>
+              <div class="dropdown-menu p-3" style="min-width: 250px;">
+                <select class="form-select">
+                  <option value="">Select Date Range</option>
+                  <option value="today">Today</option>
+                  <option value="last7">Last 7 Days</option>
+                  <option value="last30">Last 30 Days</option>
+                  <option value="thisMonth">This Month</option>
                 </select>
-                <div class="dropdown">
-                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    Filter By Date
-                  </button>
-                  <div class="dropdown-menu p-3" style="min-width: 250px;">
-                    <select class="form-select" id="serviceDateFilter">
-                      <option value="">Select Date Range</option>
-                      <option value="today">Today</option>
-                      <option value="last7">Last 7 Days</option>
-                      <option value="last30">Last 30 Days</option>
-                      <option value="thisMonth">This Month</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="dropdown">
-                  <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    Export
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">PDF</a></li>
-                    <li><a class="dropdown-item" href="#">Excel</a></li>
-                    <li><a class="dropdown-item" href="#">CSV</a></li>
-                  </ul>
-                </div>
               </div>
             </div>
-            <div class="table-responsive">
-              <table class="table table-hover" id="serviceTable">
-                <tbody>
-                  <tr style="background-color: #134013;">
-                    <td style="color: white;">NAME</td>
-                    <td style="color: white;">PRICE</td>
-                    <td style="color: white;">TOTAL QUANTITY</td>
-                    <td style="color: white;">TOTAL DISCOUNT</td>
-                    <td style="color: white;">GIFT CARD ACCOUNT</td>
-                    <td style="color: white;">TOTAL SALES</td>
-                    <td style="color: white;">TYPE</td>
-                    <td style="color: white;">ACTION</td>
-                  </tr>
-                  <tr>
-                    <td>Hair Color Treatment</td>
-                    <td>₱1,500</td>
-                    <td>98</td>
-                    <td>₱14,700</td>
-                    <td>₱5,000</td>
-                    <td>₱147,000</td>
-                    <td>Service</td>
-                    <td><a href="#" class="btn btn-sm btn-success">VIEW</a></td>
-                  </tr>
-                  <tr>
-                    <td>Shampoo Premium</td>
-                    <td>₱500</td>
-                    <td>85</td>
-                    <td>₱4,250</td>
-                    <td>₱2,000</td>
-                    <td>₱42,500</td>
-                    <td>Product</td>
-                    <td><a href="#" class="btn btn-sm btn-success">VIEW</a></td>
-                  </tr>
-                  <tr>
-                    <td>Hair Treatment Oil</td>
-                    <td>₱500</td>
-                    <td>67</td>
-                    <td>₱3,350</td>
-                    <td>₱1,500</td>
-                    <td>₱33,500</td>
-                    <td>Product</td>
-                    <td><a href="#" class="btn btn-sm btn-success">VIEW</a></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #0066ff;">
+                                Export
+                            </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">PDF</a></li>
+                <li><a class="dropdown-item" href="#">Excel</a></li>
+                <li><a class="dropdown-item" href="#">CSV</a></li>
+              </ul>
             </div>
           </div>
         </div>
-
-        <script>
-          function searchServiceTable() {
-            const input = document.getElementById('serviceSearchInput');
-            const filter = input.value.toLowerCase();
-            const table = document.getElementById('serviceTable');
-            const rows = table.getElementsByTagName('tr');
-
-            for (let i = 1; i < rows.length; i++) {
-              let row = rows[i];
-              let found = false;
-              
-              for (let j = 0; j < row.cells.length - 1; j++) {
-                let cell = row.cells[j];
-                if (cell) {
-                  let text = cell.textContent || cell.innerText;
-                  if (text.toLowerCase().indexOf(filter) > -1) {
-                    found = true;
-                    break;
-                  }
-                }
-              }
-              
-              row.style.display = found ? '' : 'none';
-            }
-          }
-        </script>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr style="background-color: #134013;">
+                <th style="color: white;">NAME</th>
+                <th style="color: white;">PRICE</th>
+                <th style="color: white;">TOTAL QUANTITY</th>
+                <th style="color: white;">TOTAL DISCOUNT</th>
+                <th style="color: white;">GIFT CARD ACCOUNT</th>
+                <th style="color: white;">TOTAL SALES</th>
+                <th style="color: white;">TYPE</th>
+                <th style="color: white;">ACTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hair Color Treatment</td>
+                <td>₱1,500</td>
+                <td>98</td>
+                <td>₱14,700</td>
+                <td>₱5,000</td>
+                <td>₱147,000</td>
+                <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
+                <td><button class="btn btn-sm btn-success">VIEW</button></td>
+              </tr>
+              <tr>
+                <td>Shampoo Premium</td>
+                <td>₱500</td>
+                <td>85</td>
+                <td>₱4,250</td>
+                <td>₱2,000</td>
+                <td>₱42,500</td>
+                <td><span class="badge" style="background-color: rgba(135, 206, 235, 0.2); color:rgb(79, 187, 250);">Product</span></td>
+                <td><button class="btn btn-sm btn-success">VIEW</button></td>
+              </tr>
+              <tr>
+                <td>Hair Treatment Oil</td>
+                <td>₱500</td>
+                <td>67</td>
+                <td>₱3,350</td>
+                <td>₱1,500</td>
+                <td>₱33,500</td>
+                <td><span class="badge" style="background-color: rgba(135, 206, 235, 0.2); color:rgb(79, 187, 250);">Product</span></td>
+                <td><button class="btn btn-sm btn-success">VIEW</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
+</div>
 
     <script>
       document
@@ -466,14 +407,114 @@ margin-top: 20px; /* Add margin to move the cards down */
         .addEventListener("click", function () {
           document.querySelector("#layout-menu").classList.toggle("show");
         });
+
+      // Search functionality
+      document.getElementById('searchInput').addEventListener('keyup', function() {
+        let searchValue = this.value.toLowerCase();
+        let tableRows = document.querySelectorAll('tbody tr');
+        
+        tableRows.forEach(row => {
+          let name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+          let email = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+          
+          if (name.includes(searchValue) || email.includes(searchValue)) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      });
+
+      // Update the script section - remove calendar input related code
+      document.addEventListener('DOMContentLoaded', function() {
+          // Custom range toggle
+          document.getElementById('customRangeBtn').addEventListener('click', function(e) {
+              e.stopPropagation();
+              document.querySelector('.custom-range-inputs').classList.toggle('d-none');
+          });
+
+          document.querySelectorAll('[data-filter]').forEach(button => {
+              button.addEventListener('click', function(e) {
+                  if (this.getAttribute('data-filter') === 'custom') return;
+                  
+                  const filterType = this.getAttribute('data-filter');
+                  const now = new Date();
+                  let startDate, endDate;
+                  
+                  switch(filterType) {
+                      case 'tomorrow':
+                          startDate = endDate = new Date(now.setDate(now.getDate() + 1));
+                          break;
+                      case 'today':
+                          startDate = endDate = now;
+                          break;
+                      case 'yesterday':
+                          startDate = endDate = new Date(now.setDate(now.getDate() - 1));
+                          break;
+                      case 'last7days':
+                          endDate = new Date();
+                          startDate = new Date(now.setDate(now.getDate() - 7));
+                          break;
+                      case 'last30days':
+                          endDate = new Date();
+                          startDate = new Date(now.setDate(now.getDate() - 30));
+                          break;
+                      case 'thisMonth':
+                          startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                          endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                          break;
+                      case 'lastMonth':
+                          startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                          endDate = new Date(now.getFullYear(), now.getMonth(), 0);
+                          break;
+                  }
+                  
+                  updateFilterText(startDate, endDate);
+              });
+          });
+
+          document.getElementById('applyCustomRange').addEventListener('click', function(e) {
+              e.stopPropagation();
+              const startDate = new Date(document.getElementById('dateFrom').value);
+              const endDate = new Date(document.getElementById('dateTo').value);
+              updateFilterText(startDate, endDate);
+          });
+
+          function updateFilterText(startDate, endDate) {
+              const formatDate = date => date.toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+              });
+              
+              const filterText = startDate.getTime() === endDate.getTime() ? 
+                  formatDate(startDate) : 
+                  `${formatDate(startDate)} - ${formatDate(endDate)}`;
+                  
+              document.getElementById('selectedDateText').textContent = `: ${filterText}`;
+              
+              // Hide dropdown after selection
+              document.querySelector('.dropdown-menu').classList.remove('show');
+              document.querySelector('.custom-range-inputs').classList.add('d-none');
+          }
+      });
     </script>
-    <div class="content-backdrop fade"></div>
-    <!-- Content wrapper -->
-    <!-- / Layout page -->
+  </body>
+        
+
+          <div class="content-backdrop fade"></div>
+        </div>
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
+
     <!-- Drag Target Area To SlideIn Menu On Small Screens -->
     <div class="drag-target"></div>
+    
   </div>
   <!-- / Layout wrapper -->
 
@@ -481,7 +522,7 @@ margin-top: 20px; /* Add margin to move the cards down */
   <!-- build:js assets/vendor/js/theme.js -->
 
   <!-- Footer -->
-
+ 
   <!-- / Footer -->
 
   <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
@@ -517,6 +558,8 @@ margin-top: 20px; /* Add margin to move the cards down */
   <script src="../../assets/vendor/libs/chartjs/chartjs.js"></script>
   <script src="../../assets/js/charts-chartjs-legend.js"></script>
   <script src="../../assets/js/charts-chartjs.js"></script>
+  
 </body>
+
 
 </html>

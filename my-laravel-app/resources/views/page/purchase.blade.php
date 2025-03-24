@@ -620,74 +620,24 @@ background-color: #d1ecf1; /* Light cyan */
 
     <div class="card">
       <div class="card-body">
-        <div class="d-flex mb-3 " style="width: 70%; "> <!-- Flex container for side-by-side layout -->
-          <div class="input-group me-9 width:100%;"> <!-- Search input group with increased margin -->
-              <span class="input-group-text" id="search-addon">
-                  <i class="icon-base ti tabler-search"></i>
-              </span>
-              <input type="text" id="searchInput" placeholder="Search for Vendor Name,Product Ordered, Received By" class="form-control" onkeyup="searchPurchases()">
-          </div>
-      
-          <div class="d-flex justify-content-end me-auto">
-         
-            <div class="d-flex justify-content-end align-items-center gap-2 me-9 ">
-              <!-- Filter Label -->
-            
-              <label for="dateInput" class="fw-bold" style="white-space: nowrap;">Filter by date:</label>
-  
-              
-              <!-- Date Filter Dropdown -->
-              <select id="dateFilter" class="form-select w-auto" onchange="filterByDatee()"> <!-- Added onchange event -->
-                <option value="Today">Today</option>
-                <option value="Yesterday">Yesterday</option>
-                <option value="Last 7 Days">Last 7 Days</option>
-                <option value="Last 30 Days">Last 30 Days</option>
-                <option value="This Month">This Month</option>
-                <option value="Last Month">Last Month</option>
-                <option value="Custom Range">Custom Range</option>
-            </select>
-            <button id="exportButton" class="btn btn-primary ms-2 " onclick="exportData()">Export  <i class="ti tabler-chevron-right "></i> </button>
-              <!-- Date Input Group -->
-            
-          </div>
-          
-          <!-- Custom Range Date Inputs (Initially Hidden) -->
-          <div id="customDateInputs" class="mt-2 d-none">
-              <input type="date" id="startDate" class="form-control mb-2">
-              <input type="date" id="endDate" class="form-control">
-          </div>
-          
-  
-  <!-- Date input for Custom Range (initially hidden) -->
-  <div id="customDateInputs" style="display: none; margin-top: 10px;">
-  <input type="date" id="startDate" class="form-control mb-2">
-  <input type="date" id="endDate" class="form-control">
-  </div>
-  
-        </div>
-        
-      </div>
-        <table class="purchase table" >
-          <thead>
-            <tr>
-              <th>Trans No.</th>
-              <th>Vendor Name</th>
-              <th>Product Ordered</th>
-              <th>Date Received</th>
-              <th>Received By</th>
-              <th>Quantity</th>
-              <th>Amount</th>
-              <th>Payment Terms</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="purchaseTable">
-            
-          </tbody>
+        <table class="table table-striped" id="purchaseTablee">
+            <thead class="table-light">
+                <tr>
+                    <th>Trans No.</th>
+                    <th>Vendor Name</th>
+                    <th>Product Ordered</th>
+                    <th>Date Received</th>
+                    <th>Received By</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th>Payment Terms</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
         </table>
       </div>
     </div>
-  </div>
+    </div>
 </div>
           <!-- / Content -->
 
@@ -752,7 +702,7 @@ background-color: #d1ecf1; /* Light cyan */
       
       <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
     
-
+      <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
     
       <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
       
@@ -778,61 +728,70 @@ background-color: #d1ecf1; /* Light cyan */
 
     <!-- Page JS -->
   <script src="../../assets/js/purchase.js"></script>
- 
-
-
+ <script src="../../assets/purchase.json"></script>
 
   <script>
-    // Fetch JSON data and populate the table
-    fetch('/assets/purchase.json') // Use relative path
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.getElementById('purchaseTable');
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                <td>${item.trans_no}</td>
-                <td>${item.vendor_name}</td>
-                <td>${item.product_ordered}</td>
-                <td>${item.date_recieved}</td>
-                <td>${item.received_by}</td>
-                <td>${item.qty}</td>
-                <td>${item.amount}</td>
-                <td>${item.payment_terms}</td>
-                    <td  class='d-flex gap-1'><button class="btn btn-primary">View</button> <button class="btn btn-danger"> Edit</button><button class="btn btn-danger"> Delete</button></td>
-                `;
-                tableBody.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error fetching the JSON data:', error));
+    $(document).ready(function() {
+        // Initialize DataTable
+        var table = $('#purchaseTablee').DataTable({
+            processing: true,
+            pageLength: 10,
+            language: {
+                search: "",
+                searchPlaceholder: "Search."
+            }
+        });
+
+        // Fetch and populate data
+        fetch('/assets/purchase.json')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    table.row.add([
+                        item.trans_no,
+                        item.vendor_name,
+                        item.product_ordered,
+                        item.date_recieved,
+                        item.received_by,
+                        item.qty,
+                        item.amount,
+                        item.payment_terms,
+                        `<div class='d-flex gap-2'>
+                                    <button class='btn btn-success'>View</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>`
+                    ]).draw(false);
+                });
+            })
+            .catch(error => console.error('Error fetching the JSON data:', error));
+    });
 </script>
 
 
 
-<script>
-  function searchPurchases() {
-    const input = document.getElementById('searchInput');
-    const filter = input.value.toLowerCase();
-    const table = document.getElementById('purchaseTable');
-    const tr = table.getElementsByTagName('tr');
 
-    for (let i = 1; i < tr.length; i++) {
-      const td = tr[i].getElementsByTagName('td');
-      let found = false;
-      for (let j = 0; j < td.length; j++) {
-        if (td[j]) {
-          const txtValue = td[j].textContent || td[j].innerText;
-          if (txtValue.toLowerCase().indexOf(filter) > -1) {
-            found = true;
-            break;
-          }
-        }
-      }
-      tr[i].style.display = found ? "" : "none";
-    }
-  }
-</script>
-
+<link
+      rel="stylesheet"
+      href="../../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../assets/vendor/libs/flatpickr/flatpickr.css"
+    />
+    <!-- Row Group CSS -->
+    <link
+      rel="stylesheet"
+      href="../../assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css"
+    />
 
 
 

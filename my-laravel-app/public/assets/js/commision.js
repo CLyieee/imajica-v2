@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(e) {
-    let t = document.querySelector(".purchaseTable"),
+    let t = document.querySelector(".commissionTable"),
         o = {
             1: { title: "Pending", class: "bg-label-warning" },
             2: { title: "Completed", class: "bg-label-success" },
@@ -10,16 +10,20 @@ document.addEventListener("DOMContentLoaded", function(e) {
    
 
     t && new DataTable(t, {
-        ajax: assetsPath +"/purchase.json", // Use the AJAX call to fetch data
+        ajax: assetsPath +"/comissions.json", // Use the AJAX call to fetch data
         columns: [
-            { data: "trans_no" }, 
-            { data: "vendor_name" },
-            { data: "product_ordered" }, 
-            { data: "date_recieved" },
-            { data: "received_by" },
-            { data: "qty" } ,
-            { data: "amount" },
-            { data: "payment_terms" }
+            { data: "employee_name" }, 
+            { data: "sales_service_no" }, 
+            { data: "product_sales_no" }, 
+            { data: "client_no" }, 
+            { data: "total_service_sale" }, 
+            { data: "total_product_sale" }, 
+            { data: "total_service_commission" }, 
+            { data: "total_session_commission" }, 
+            { data: "total_product_commission" },
+            { data: "total_commision" },
+            { data: "action" }
+           
         ],
         columnDefs: [
             {
@@ -89,34 +93,34 @@ document.addEventListener("DOMContentLoaded", function(e) {
     function createRow(item) {
         return `
             <tr>
-            <td>${item.trans_no}</td>
-            <td>${item.vendor_name}</td>
-            <td>${item.product_ordered}</td>
-            <td>${item.date_recieved}</td>
-            <td>${item.received_by}</td>
-            <td>${item.qty}</td>
-            <td>${item.amount}</td>
-            <td>${item.payment_terms}</td>
-
-                <td>
-                <div class='d-flex gap-2'>
-                            <button class='btn btn-success btn-sm'>View</button>
-                            <button class='btn btn-info btn-sm'>Edit</button>
-                            <button class='btn btn-danger btn-sm'>Delete</button>
-                        </div>
-                  </td>
-            </tr>
-        `;
+            <td>${item.employee_name}</td>
+            <td>${item.sales_service_no}</td>
+            <td>${item.product_sales_no}</td>
+             <td>${item.client_no}</td>
+            <td>${item.total_service_sale}</td>
+                <td>${item.total_product_sale}</td>
+            <td>${item.total_service_commission}</td>
+             <td>${item.total_session_commission}</td>
+            <td>${item.total_product_commission}</td>
+            <td>${item.total_commision}</td>
+            <td>
+                  <div class='d-flex gap-2'>
+                                    <button class='btn btn-success'>Vieww</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>
+                   <td>
+                    </tr>
+                `;
     }
 
     // Fetch JSON data and populate the table
-    fetch('/assets/purchase.json') // Use relative path
+    fetch('/assets/comissions.json') // Use relative path
         .then(response => response.json())
         .then(data => {
-            const tableBody = document.getElementById('purchaseTable');
-            const rows = data.map(createRow).join(''); // Create rows using the function
+            const tableBody = document.getElementById("commissionTableBody");
+            const rows = data.map(createRow).join(""); // Create rows using the function
             tableBody.innerHTML = rows; // Set the innerHTML of the table body
         })
         .catch(error => console.error('Error fetching the JSON data:', error));
 });
-
