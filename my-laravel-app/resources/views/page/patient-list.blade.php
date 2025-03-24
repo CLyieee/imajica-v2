@@ -382,124 +382,81 @@
                 <div class="col-md-6 col-lg-4">
                   <div class="card h-100">
                     <div class="card-body">
+                      <!-- Profile Header -->
                       <div class="d-flex align-items-start mb-3">
                         <div class="avatar avatar-lg me-3">
-                          <img
-                            src="../../assets/img/avatars/1.png"
-                            alt="Patient Avatar"
-                            class="rounded-circle"
-                          />
+                          <img src="../../assets/img/avatars/default-avatar.png" alt="Patient Avatar" class="rounded-circle" />
                         </div>
-                        <div>
-                          <h5 class="mb-1">Sophia Mendoza</h5>
-                          <span class="badge bg-label-success">Bronze</span>
-                        </div>
-                      </div>
-
-                      <div class="patient-info mb-3">
-                        <div class="d-flex align-items-center mb-2">
-                          <i class="ti tabler-phone text-muted me-2"></i>
-                          <span>+63 917 123 4567</span>
-                        </div>
-                        <div class="d-flex align-items-center mb-2">
-                          <i class="ti tabler-mail text-muted me-2"></i>
-                          <span>sophia.mendoza@email.com</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                          <i class="ti tabler-map-pin text-muted me-2"></i>
-                          <span>123 Makati Ave, Makati City</span>
+                        <div class="flex-grow-1">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-1">ABEGAIL MERCANO</h5>
+                            <span class="badge bg-label-success">Female</span>
+                          </div>
+                          <small class="text-muted">Patient ID: #12345</small>
                         </div>
                       </div>
 
-                      <!-- Replace the existing action buttons with text-only buttons -->
+                      <!-- Patient Info -->
+                      <div class="patient-info mb-4">
+                        <div class="info-item d-flex align-items-center mb-2">
+                          <div class="info-icon me-2">
+                            <i class="ti tabler-phone"></i>
+                          </div>
+                          <div class="info-content">
+                            <small class="text-muted d-block">Contact</small>
+                            <span class="fw-semibold">+639634193019</span>
+                          </div>
+                        </div>
+                        
+                        <div class="info-item d-flex align-items-center mb-2">
+                          <div class="info-icon me-2">
+                            <i class="ti tabler-mail"></i>
+                          </div>
+                          <div class="info-content">
+                            <small class="text-muted d-block">Email</small>
+                            <span class="fw-semibold">amercano@gmail.com</span>
+                          </div>
+                        </div>
+
+                        <div class="info-item d-flex align-items-center mb-2">
+                          <div class="info-icon me-2">
+                            <i class="ti tabler-clock"></i>
+                          </div>
+                          <div class="info-content">
+                            <small class="text-muted d-block">Sessions</small>
+                            <span class="fw-semibold">Remaining: 3</span>
+                          </div>
+                        </div>
+
+                        <div class="info-item d-flex align-items-center">
+                          <div class="info-icon me-2">
+                            <i class="ti tabler-cash"></i>
+                          </div>
+                          <div class="info-content">
+                            <small class="text-muted d-block">Balance</small>
+                            <span class="fw-semibold">₱4,499.00</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Action Buttons -->
                       <div class="d-flex gap-2">
-                        <button
-                          class="btn btn-success btn-sm flex-grow-1 view-patient"
-                          data-bs-toggle="modal"
-                          data-bs-target="#patientModal"
-                          data-name="Sophia Mendoza"
-                          data-contact="+63 917 123 4567"
-                          data-email="sophia.mendoza@email.com"
-                          data-address="123 Makati Ave, Makati City"
-                          data-membership="Bronze"
-                          data-points="150"
-                          data-joined="2023-05-15"
-                          data-birth-date="1990-03-15"
-                          data-gender="Female"
-                          data-occupation="Software Engineer"
-                        >
-                          View
-                        </button>
-                        <button class="btn btn-info btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                        <button class="btn btn-primary btn-sm flex-grow-1">View Details</button>
+                        <button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete</button>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- Repeat similar cards for other patients -->
-                <!-- Isabella Santos Card -->
-                <div class="col-md-6 col-lg-4">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <div class="d-flex align-items-start mb-3">
-                        <div class="avatar avatar-lg me-3">
-                          <img
-                            src="../../assets/img/avatars/2.png"
-                            alt="Patient Avatar"
-                            class="rounded-circle"
-                          />
-                        </div>
-                        <div>
-                          <h5 class="mb-1">Isabella Santos</h5>
-                          <span class="badge bg-label-warning">Silver</span>
-                        </div>
-                      </div>
-
-                      <div class="patient-info mb-3">
-                        <div class="d-flex align-items-center mb-2">
-                          <i class="ti tabler-phone text-muted me-2"></i>
-                          <span>+63 918 234 5678</span>
-                        </div>
-                        <div class="d-flex align-items-center mb-2">
-                          <i class="ti tabler-mail text-muted me-2"></i>
-                          <span>isabella.santos@email.com</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                          <i class="ti tabler-map-pin text-muted me-2"></i>
-                          <span>456 BGC, Taguig City</span>
-                        </div>
-                      </div>
-
-                      <div class="d-flex gap-2">
-                        <button
-                          class="btn btn-success btn-sm flex-grow-1 view-patient"
-                          data-bs-toggle="modal"
-                          data-bs-target="#patientModal"
-                          data-name="Isabella Santos"
-                          data-contact="+63 918 234 5678"
-                          data-email="isabella.santos@email.com"
-                          data-address="456 BGC, Taguig City"
-                          data-membership="Silver"
-                          data-points="350"
-                          data-joined="2023-03-20"
-                        >
-                          View
-                        </button>
-                        <button class="btn btn-info btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                >
 
             <!-- Add this CSS -->
             <style>
               .card {
                 transition: transform 0.2s ease-in-out,
                   box-shadow 0.2s ease-in-out;
+                border: none;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
               }
 
               .card:hover {
@@ -512,16 +469,38 @@
                 height: 48px;
               }
 
-              .patient-info {
+              .info-icon {
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(10, 54, 34, 0.1);
+                border-radius: 8px;
+                color: #0a3622;
+              }
+
+              .info-content {
+                flex: 1;
+              }
+
+              .badge {
+                padding: 0.35em 0.65em;
+                font-size: 0.75em;
+              }
+
+              .btn-sm {
+                padding: 0.4rem 0.8rem;
                 font-size: 0.875rem;
               }
 
-              .card .btn-sm {
-                padding: 0.25rem 0.5rem;
+              .btn-outline-danger {
+                border-width: 1px;
               }
 
-              .card .btn-sm i {
-                font-size: 1rem;
+              .patient-info {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                padding-bottom: 1rem;
               }
 
               .search-section {
@@ -541,10 +520,6 @@
               #searchPatient:focus {
                 box-shadow: none;
                 border-color: #dee2e6;
-              }
-
-              .badge {
-                font-size: 0.875rem;
               }
 
               #totalResults {
@@ -632,327 +607,65 @@
       });
     </script>
 
-    <!-- Replace the existing patient modal with this enhanced version -->
-    <div class="modal fade" id="patientModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-xl">
-        <!-- Changed to modal-xl -->
-        <div class="modal-content border-0">
-          <div class="modal-header bg-primary text-white border-0">
-            <h5 class="modal-title text-white fs-4">
-              <i class="ti tabler-user me-2"></i>
-              <span id="modalPatientName" class="text-white"></span>
-            </h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body p-4">
-            <div class="row g-3">
-              <!-- Profile and Personal Info Column -->
-              <div class="col-md-6">
-                <div class="patient-detail-card h-100">
-                  <!-- Profile Section -->
-                  <div class="text-center mb-3">
-                    <div class="patient-profile-wrapper mx-auto">
-                      <img
-                        src="../../assets/img/avatars/default-avatar.png"
-                        alt="Patient Profile"
-                        class="patient-profile-image"
-                        id="modalProfileImage"
-                      />
-                    </div>
-                    <h5 class="mt-3 mb-1" id="modalPatientNameProfile"></h5>
-                    <span
-                      class="badge bg-label-success"
-                      id="modalMembershipBadge"
-                    ></span>
-                  </div>
-                  <!-- Personal Info -->
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-phone"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Contact</small>
-                      <span id="modalContact" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-mail"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Email</small>
-                      <span id="modalEmail" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                  <div class="patient-info-item mb-0">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-map-pin"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Address</small>
-                      <span id="modalAddress" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Membership Details Column -->
-              <div class="col-md-6">
-                <div class="patient-detail-card h-100">
-                  <h6 class="text-primary mb-3">Membership Details</h6>
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-award"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Tier</small>
-                      <span id="modalMembership" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-points"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Points</small>
-                      <span id="modalPoints" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                  <div class="patient-info-item mb-0">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-calendar"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Member Since</small>
-                      <span id="modalJoined" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Medical Concerns Section -->
-              <div class="col-12 mt-3">
-                <div class="patient-detail-card">
-                  <h6 class="text-primary d-flex align-items-center mb-3">
-                    <i class="ti tabler-stethoscope me-2"></i>
-                    Medical Information
-                  </h6>
-                  <div class="medical-concerns-content">
-                    <div class="alert alert-info-custom mb-0">
-                      <div class="d-flex align-items-start">
-                        <i
-                          class="ti tabler-alert-circle fs-5 me-2 text-primary"
-                        ></i>
-                        <div class="w-100">
-                          <h6 class="alert-heading mb-2">
-                            Allergies & Medical Concerns
-                          </h6>
-                          <div
-                            id="medicalConcernsText"
-                            class="medical-concerns-list"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Add this CSS to your existing styles -->
-    <style>
-      .patient-profile-wrapper {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 4px solid #0a3622;
-        box-shadow: 0 4px 15px rgba(10, 54, 34, 0.2);
-        transition: transform 0.3s ease;
-      }
-
-      .patient-profile-wrapper:hover {
-        transform: scale(1.05);
-      }
-
-      .patient-profile-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-        background-color: #0a3622;
-      }
-
-      .patient-profile-image:hover {
-        transform: scale(1.1);
-      }
-
-      /* Update existing modal header styling */
-      .modal-header {
-        background: linear-gradient(
-          135deg,
-          #0a3622 0%,
-          #1a5c3c 100%
-        ) !important;
-        border-top-left-radius: 1rem;
-        border-top-right-radius: 1rem;
-        padding: 1.5rem;
-      }
-
-      .patient-profile-wrapper {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 3px solid #0a3622;
-        box-shadow: 0 4px 15px rgba(10, 54, 34, 0.2);
-        margin: 0 auto 1rem;
-      }
-
-      .medical-concerns-content {
-        background-color: #f8f9fa;
-        border-radius: 0.75rem;
-        padding: 1rem;
-      }
-
-      .medical-concern-item {
-        padding: 0.5rem 0;
-        border-bottom: 1px solid rgba(10, 54, 34, 0.1);
-      }
-
-      .medical-concern-item:last-child {
-        border-bottom: none;
-      }
-
-      .medical-concern-item i {
-        font-size: 0.75rem;
-      }
-
-      /* Add these styles to your existing CSS */
-      .alert-info-custom {
-        background-color: rgba(10, 54, 34, 0.05);
-        border: 1px solid rgba(10, 54, 34, 0.1);
-        border-radius: 0.75rem;
-      }
-
-      .medical-concerns-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .medical-concern-item {
-        display: flex;
-        align-items: start;
-        padding: 0.5rem;
-        background: white;
-        border-radius: 0.5rem;
-        border: 1px solid rgba(10, 54, 34, 0.1);
-      }
-
-      .medical-concern-item i {
-        color: #0a3622;
-        margin-top: 0.25rem;
-      }
-    </style>
-
     <!-- Update the JavaScript event handler -->
     <script>
       // Add this function to create initials avatar
       function createInitialsAvatar(name) {
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
         canvas.width = 120;
         canvas.height = 120;
 
-        // Draw circle background
-        context.fillStyle = "#0a3622";
+        // Draw circle with light blue background
+        context.fillStyle = '#E6EEFF';  // Light blue background
         context.beginPath();
         context.arc(60, 60, 60, 0, Math.PI * 2);
         context.fill();
 
-        // Get initials
-        const initials = name
-          .split(" ")
-          .map((word) => word[0])
-          .join("")
-          .toUpperCase();
+        // Draw silhouette
+        context.fillStyle = '#1B3F8F';  // Darker blue for silhouette
+        
+        // Draw head
+        context.beginPath();
+        context.arc(60, 50, 25, 0, Math.PI * 2);
+        context.fill();
 
-        // Draw text
-        context.font = "bold 48px Arial";
-        context.fillStyle = "#FFFFFF";
-        context.textAlign = "center";
-        context.textBaseline = "middle";
-        context.fillText(initials, 60, 60);
+        // Draw body
+        context.beginPath();
+        context.arc(60, 115, 40, Math.PI * 1.1, Math.PI * 1.9);
+        context.fill();
 
         return canvas.toDataURL();
       }
 
-      // Update the view patient click handler
-      document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".view-patient").forEach((button) => {
-          button.addEventListener("click", function () {
-            const name = this.dataset.name;
-            const profileImage = document.getElementById("modalProfileImage");
+      // Update the profile image display logic
+      function updateProfileImage(imageElement, patientName, profileImageUrl = null) {
+        if (profileImageUrl && profileImageUrl !== 'default-avatar.png') {
+          imageElement.src = profileImageUrl;
+        } else {
+          imageElement.src = createInitialsAvatar(patientName);
+        }
+      }
 
-            // Handle profile image
-            if (this.dataset.profileImage) {
-              profileImage.src = this.dataset.profileImage;
-            } else {
-              profileImage.src = createInitialsAvatar(name);
-            }
+      // Update where profile images are displayed
+      document.addEventListener('DOMContentLoaded', function() {
+        // For patient cards
+        const patientCards = document.querySelectorAll('.card');
+        patientCards.forEach(card => {
+          const nameElement = card.querySelector('h5');
+          const avatarImage = card.querySelector('.avatar img');
+          if (nameElement && avatarImage) {
+            updateProfileImage(avatarImage, nameElement.textContent);
+          }
+        });
 
-            // Update modal content
-            document.getElementById("modalPatientName").textContent = name;
-            document.getElementById("modalpatientNameProfile").textContent =
-              name;
-            document.getElementById("modalMembershipBadge").textContent =
-              this.dataset.membership;
-            document.getElementById("modalContact").textContent =
-              this.dataset.contact;
-            document.getElementById("modalEmail").textContent =
-              this.dataset.email;
-            document.getElementById("modalAddress").textContent =
-              this.dataset.address;
-            document.getElementById("modalMembership").textContent =
-              this.dataset.membership;
-            document.getElementById("modalPoints").textContent =
-              this.dataset.points;
-            document.getElementById("modalJoined").textContent =
-              this.dataset.joined;
-
-            // Handle medical concerns - single implementation
-            const medicalConcerns = this.dataset.medicalConcerns;
-            const modalMedicalConcerns = document.getElementById(
-              "modalMedicalConcerns"
-            );
-
-            if (medicalConcerns) {
-              const concernsList = medicalConcerns
-                .split(",")
-                .map(
-                  (concern) =>
-                    `<div class="medical-concern-item">
-                <i class="ti tabler-point text-primary me-2"></i>
-                ${concern.trim()}
-              </div>`
-                )
-                .join("");
-
-              modalMedicalConcerns.innerHTML = concernsList;
-            } else {
-              modalMedicalConcerns.innerHTML =
-                '<div class="text-muted">No allergies or medical concerns reported.</div>';
-            }
+        // For modal view
+        const viewButtons = document.querySelectorAll('.btn-primary');
+        viewButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const patientName = this.closest('.card').querySelector('h5').textContent;
+            const modalProfileImage = document.getElementById('modalProfileImage');
+            updateProfileImage(modalProfileImage, patientName);
           });
         });
       });
@@ -1033,306 +746,6 @@
     </style>
 
     <script>
-      // Add this script to both patient-list.html and new-patient.html
-      document.addEventListener("DOMContentLoaded", function () {
-        // Get current page filename
-        const currentPage = window.location.pathname.split("/").pop();
-
-        // Remove active class from all menu items
-        document.querySelectorAll(".menu-item").forEach((item) => {
-          item.classList.remove("active");
-        });
-
-        // Set active state based on current page
-        if (currentPage === "patient-list.html") {
-          document
-            .querySelector('a[href="patient-list.html"]')
-            .parentElement.classList.add("active");
-        } else if (currentPage === "new-patient.html") {
-          document
-            .querySelector('a[href="new-patient.html"]')
-            .parentElement.classList.add("active");
-        }
-      });
-    </script>
-
-    <script>
-      // Add this script to both files
-      document.addEventListener("DOMContentLoaded", function () {
-        // Get current page filename
-        const currentPage = window.location.pathname.split("/").pop();
-
-        // Remove active class from all menu items
-        document.querySelectorAll(".menu-item").forEach((item) => {
-          item.classList.remove("active");
-        });
-
-        // Add active class based on current page
-        if (currentPage === "new-patient.html") {
-          document.getElementById("newPatientMenuItem").classList.add("active");
-          document
-            .querySelector('a[href="new-patient.html"]')
-            .parentElement.parentElement.parentElement.classList.add(
-              "active",
-              "open"
-            );
-        } else if (currentPage === "patient-list.html") {
-          document
-            .getElementById("patientListMenuItem")
-            .classList.add("active");
-          document
-            .querySelector('a[href="patient-list.html"]')
-            .parentElement.parentElement.parentElement.classList.add(
-              "active",
-              "open"
-            );
-        }
-      });
-    </script>
-
-    <!-- Add this updated JavaScript after your existing modal HTML -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".view-patient").forEach((button) => {
-          button.addEventListener("click", function () {
-            const modalContent = `
-            <div class="row g-3">
-              <!-- Profile and Personal Info Column -->
-              <div class="col-md-6">
-                <div class="patient-detail-card h-100">
-                  <div class="text-center mb-3">
-                    <div class="patient-profile-wrapper mx-auto">
-                      <img 
-                        id="modalProfileImage"
-                        src="${
-                          this.dataset.profileImage ||
-                          createInitialsAvatar(this.dataset.name)
-                        }" 
-                        alt="Patient Profile" 
-                        class="patient-profile-image"
-                      >
-                    </div>
-                    <h5 class="mt-3 mb-1">${this.dataset.name}</h5>
-                    <span class="badge bg-label-${getMembershipColor(
-                      this.dataset.membership
-                    )}">${this.dataset.membership}</span>
-                  </div>
-                  
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-phone"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Contact</small>
-                      <span class="fw-semibold">${this.dataset.contact}</span>
-                    </div>
-                  </div>
-
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-mail"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Email</small>
-                      <span class="fw-semibold">${this.dataset.email}</span>
-                    </div>
-                  </div>
-
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-calendar"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Date of Birth</small>
-                      <span class="fw-semibold">${
-                        this.dataset.birthDate || "Not provided"
-                      }</span>
-                    </div>
-                  </div>
-
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-user"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Gender</small>
-                      <span class="fw-semibold">${
-                        this.dataset.gender || "Not specified"
-                      }</span>
-                    </div>
-                  </div>
-
-                  <div class="patient-info-item mb-0">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-map-pin"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Address</small>
-                      <span class="fw-semibold">${this.dataset.address}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Membership and Additional Details Column -->
-              <div class="col-md-6">
-                <div class="patient-detail-card h-100">
-                  <h6 class="text-primary mb-3">Membership & Additional Details</h6>
-                  
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-briefcase"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Occupation</small>
-                      <span class="fw-semibold">${
-                        this.dataset.occupation || "Not provided"
-                      }</span>
-                    </div>
-                  </div>
-
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-award"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Membership Tier</small>
-                      <span class="fw-semibold">${
-                        this.dataset.membership
-                      }</span>
-                    </div>
-                  </div>
-
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-points"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Points</small>
-                      <span class="fw-semibold">${this.dataset.points}</span>
-                    </div>
-                  </div>
-
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-calendar-check"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Member Since</small>
-                      <span class="fw-semibold">${this.dataset.joined}</span>
-                    </div>
-                  </div>
-
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-emergency"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Emergency Contact</small>
-                      <span class="fw-semibold">${
-                        this.dataset.emergencyContact || "Not provided"
-                      }</span>
-                      <br>
-                      <span class="text-muted">${
-                        this.dataset.emergencyPhone || "No phone provided"
-                      }</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Medical Information Section -->
-              <div class="col-12">
-                <div class="patient-detail-card">
-                  <h6 class="text-primary d-flex align-items-center mb-3">
-                    <i class="ti tabler-stethoscope me-2"></i>
-                    Medical Information
-                  </h6>
-                  
-                  <div class="medical-concerns-content">
-                    <div class="alert alert-info-custom mb-3">
-                      <div class="d-flex align-items-start">
-                        <i class="ti tabler-alert-circle fs-5 me-2 text-primary"></i>
-                        <div>
-                          <h6 class="alert-heading mb-1">Allergies & Medical Concerns</h6>
-                          <div class="medical-concerns-list" id="medicalConcernsList">
-                            ${formatMedicalConcerns(
-                              this.dataset.medicalConcerns
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="alert alert-info-custom mb-3">
-                      <div class="d-flex align-items-start">
-                        <i class="ti tabler-medicine fs-5 me-2 text-primary"></i>
-                        <div>
-                          <h6 class="alert-heading mb-1">Current Medications</h6>
-                          <p class="mb-0">${
-                            this.dataset.medications ||
-                            "No current medications listed"
-                          }</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="alert alert-info-custom mb-0">
-                      <div class="d-flex align-items-start">
-                        <i class="ti tabler-notes fs-5 me-2 text-primary"></i>
-                        <div>
-                          <h6 class="alert-heading mb-1">Administrative Notes</h6>
-                          <p class="mb-0">${
-                            this.dataset.adminNotes || "No administrative notes"
-                          }</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>`;
-
-            // Update modal content
-            document.querySelector("#patientModal .modal-body").innerHTML =
-              modalContent;
-            document.querySelector("#modalPatientName").textContent =
-              this.dataset.name;
-          });
-        });
-      });
-
-      // Helper function to determine membership badge color
-      function getMembershipColor(membership) {
-        const colors = {
-          Bronze: "success",
-          Silver: "warning",
-          Gold: "primary",
-          VIP: "danger",
-        };
-        return colors[membership] || "secondary";
-      }
-
-      // Helper function to format medical concerns
-      function formatMedicalConcerns(concerns) {
-        if (!concerns)
-          return '<p class="mb-0">No medical concerns reported</p>';
-
-        return concerns
-          .split(",")
-          .map(
-            (concern) => `
-        <div class="medical-concern-item">
-          <i class="ti tabler-point text-primary me-2"></i>
-          ${concern.trim()}
-        </div>
-      `
-          )
-          .join("");
-      }
-    </script>
-
-    <script>
       document.addEventListener("DOMContentLoaded", function () {
         const searchInput = document.getElementById("searchPatient");
         const patientCards = document.querySelectorAll(".col-md-6.col-lg-4");
@@ -1366,6 +779,16 @@
         // Initial count
         filterPatients();
       });
+    </script>
+
+    <!-- Add this script -->
+    <script>
+    function confirmDelete() {
+      if (confirm('Are you sure you want to delete this patient? This action cannot be undone.')) {
+        // Add your delete logic here
+        console.log('Patient deleted');
+      }
+    }
     </script>
   </body>
 </html>
