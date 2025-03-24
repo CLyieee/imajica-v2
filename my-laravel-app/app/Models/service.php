@@ -21,7 +21,7 @@ class service extends Model
         'service_cost',
         'loyalty_pts',
     ];
-
+    
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_code', 'branch_code');
