@@ -383,38 +383,66 @@
                 <div class="col-md-6 col-lg-4">
                   <div class="card h-100">
                     <div class="card-body">
+                      <!-- Profile Header -->
                       <div class="d-flex align-items-start mb-3">
                         <div class="avatar avatar-lg me-3">
-                          <img
-                            src="../../assets/img/avatars/1.png"
-                            alt="Staff Avatar"
-                            class="rounded-circle"
-                          />
+                          <img src="../../assets/img/avatars/default-avatar.png" alt="Staff Avatar" class="rounded-circle" />
                         </div>
-                        <div>
+                        <div class="flex-grow-1">
+                          <div class="d-flex justify-content-between align-items-center">
                           <h5 class="mb-1">John Smith</h5>
-                          <span class="badge bg-label-primary">Doctor</span>
+                            <span class="badge bg-label-success">Doctor</span>
+                          </div>
+                          <small class="text-muted">Staff ID: #12345</small>
                         </div>
                       </div>
 
-                      <div class="staff-info mb-3">
-                        <div class="d-flex align-items-center mb-2">
-                          <i class="ti tabler-phone text-muted me-2"></i>
-                          <span>+63 917 123 4567</span>
+                      <!-- Staff Info -->
+                      <div class="patient-info mb-4">
+                        <div class="info-item d-flex align-items-center mb-2">
+                          <div class="info-icon me-2">
+                            <i class="ti tabler-phone"></i>
                         </div>
-                        <div class="d-flex align-items-center mb-2">
-                          <i class="ti tabler-mail text-muted me-2"></i>
-                          <span>john.smith@email.com</span>
+                          <div class="info-content">
+                            <small class="text-muted d-block">Contact</small>
+                            <span class="fw-semibold">+63 917 123 4567</span>
                         </div>
-                        <div class="d-flex align-items-center">
-                          <i class="ti tabler-map-pin text-muted me-2"></i>
-                          <span>Pasig City Branch</span>
+                        </div>
+                        
+                        <div class="info-item d-flex align-items-center mb-2">
+                          <div class="info-icon me-2">
+                            <i class="ti tabler-mail"></i>
+                          </div>
+                          <div class="info-content">
+                            <small class="text-muted d-block">Email</small>
+                            <span class="fw-semibold">john.smith@email.com</span>
                         </div>
                       </div>
 
+                        <div class="info-item d-flex align-items-center mb-2">
+                          <div class="info-icon me-2">
+                            <i class="ti tabler-briefcase"></i>
+                          </div>
+                          <div class="info-content">
+                            <small class="text-muted d-block">Specialization</small>
+                            <span class="fw-semibold">General Medicine</span>
+                          </div>
+                        </div>
+
+                        <div class="info-item d-flex align-items-center">
+                          <div class="info-icon me-2">
+                            <i class="ti tabler-map-pin"></i>
+                          </div>
+                          <div class="info-content">
+                            <small class="text-muted d-block">Branch</small>
+                            <span class="fw-semibold">Pasig City Branch</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Action Buttons -->
                       <div class="d-flex gap-2">
-                        <button
-                          class="btn btn-success btn-sm flex-grow-1 view-staff"
+                        <button class="btn btn-primary btn-sm flex-grow-1 view-staff" 
                           data-bs-toggle="modal"
                           data-bs-target="#staffModal"
                           data-name="John Smith"
@@ -425,12 +453,10 @@
                           data-joined="2023-01-15"
                           data-specialization="General Medicine"
                           data-certifications="Board Certified in Internal Medicine, Advanced Cardiac Life Support"
-                          data-notes="Excellent team player with outstanding patient care records."
-                        >
-                          View
+                          data-notes="Excellent team player with outstanding patient care records.">
+                          View Details
                         </button>
-                        <button class="btn btn-info btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                        <button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete</button>
                       </div>
                     </div>
                   </div>
@@ -626,6 +652,8 @@
               .card {
                 transition: transform 0.2s ease-in-out,
                   box-shadow 0.2s ease-in-out;
+                border: none;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
               }
 
               .card:hover {
@@ -759,6 +787,36 @@
 
               .fw-semibold {
                 font-weight: 600;
+              }
+
+              .info-icon {
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(10, 54, 34, 0.1);
+                border-radius: 8px;
+                color: #0a3622;
+              }
+
+              .info-content {
+                flex: 1;
+              }
+
+              .patient-info {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                padding-bottom: 1rem;
+              }
+
+              .badge {
+                padding: 0.35em 0.65em;
+                font-size: 0.75em;
+              }
+
+              .btn-sm {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.875rem;
               }
             </style>
 
@@ -1065,6 +1123,14 @@
         // Initial count
         updateTotalEmployees();
       });
+    </script>
+    <script>
+      function confirmDelete() {
+        if (confirm('Are you sure you want to delete this staff member? This action cannot be undone.')) {
+          // Add your delete logic here
+          console.log('Staff deleted');
+        }
+      }
     </script>
   </body>
 </html>
