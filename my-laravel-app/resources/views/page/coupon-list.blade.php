@@ -499,13 +499,65 @@
     <script src="{{ asset('assets/vendor/libs/%40form-validation/auto-focus.js') }}"></script>
     <script>
       $(document).ready(function () {
-        var table = $("#servicesTable").DataTable();
+        // Initialize DataTable with proper options
+        if ($("#servicesTable").length) {
+          var table = $("#servicesTable").DataTable({
+            responsive: true,
+            ordering: true,
+            paging: true,
+            // Define the columns explicitly to avoid DataTables warning
+            columns: [
+              { data: "coupon_code" },
+              { data: "coupon_name" },
+              { data: "discount_value" },
+              { data: "actions", orderable: false }
+            ],
+            // For existing static data, use this approach
+            columnDefs: [
+              {
+                // Set default content for all cells to prevent "unknown parameter" warnings
+                targets: '_all',
+                defaultContent: ""
+              }
+            ],
+            language: {
+              search: "",
+              searchPlaceholder: "Search coupon...",
+              paginate: {
+                previous: '<i class="ti tabler-chevron-left"></i>',
+                next: '<i class="ti tabler-chevron-right"></i>'
+              }
+            }
+          });
 
-        // Filter by branch
-        $("#branchFilter").on("change", function () {
-          var selectedBranch = $(this).val();
-          table.column(0).search(selectedBranch).draw();
-        });
+          // Branch filter functionality
+          $("#branchFilter").on("change", function () {
+            var selectedBranch = $(this).val();
+            table.column(0).search(selectedBranch).draw();
+          });
+
+          // Since we're working with static data in the table, we need to process it
+          // This will extract the data from the DOM and reload DataTables with it
+          var extractedData = [];
+          $("#servicesTable tbody tr").each(function() {
+            var row = $(this);
+            var cells = row.find('td');
+            
+            if (cells.length >= 4) {
+              extractedData.push({
+                coupon_code: $(cells[0]).text(),
+                coupon_name: $(cells[1]).text(),
+                discount_value: $(cells[2]).text(),
+                actions: $(cells[3]).html()
+              });
+            }
+          });
+          
+          // Clear the table and add the extracted data
+          table.clear();
+          table.rows.add(extractedData);
+          table.draw();
+        }
       });
     </script>
   </body>
