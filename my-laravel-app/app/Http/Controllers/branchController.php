@@ -33,7 +33,7 @@ class branchController extends Controller
         // Find the branch by branch_code
         $branch = Branch::where('branch_code', $request->branch_code)->first();
         
-        if (!$branch) {
+         if (!$branch) {
             return redirect()->back()->with('error', 'Branch not found');
         }
 

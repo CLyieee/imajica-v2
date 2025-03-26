@@ -389,7 +389,7 @@
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
                           <!-- 1. Delivery Address -->
-
+                        
                           <div class="row g-6">
                             <div class="col-12 text-center mb-4">
                               <div class="profile-upload-container mx-auto">
@@ -553,13 +553,9 @@
                                 data-allow-clear="true"
                               >
                                 <option value="">Select Branch</option>
-                                <option value="pasig">Pasig City Branch</option>
-                                <option value="san_mateo">
-                                  San Mateo Rizal Branch
-                                </option>
-                                <option value="cainta">
-                                  Cainta Rizal Branch
-                                </option>
+                                @foreach ($branches as $branch)
+                                <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
+                                @endforeach
                               </select>
                             </div>
 

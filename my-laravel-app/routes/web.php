@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\patientController;
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -53,6 +55,7 @@ Route::get('/loyalty-list', [DashboardController::class, 'loyalty_list'])->name(
 Route::get('/new-patient', [DashboardController::class, 'new_patient'])->name('page.new-patient');
 
 Route::get('/patient-list', [DashboardController::class, 'patient_list'])->name('page.patient-list');
+Route::post('patient/create', [patientController::class, 'create'])->name('patient.create');
 
 Route::get('/new-supplier', [DashboardController::class, 'new_supplier'])->name('page.new-supplier');
 
@@ -83,8 +86,8 @@ Route::get('/customer-report', [DashboardController::class, 'customer_report'])-
 Route::post('/services/create', [App\Http\Controllers\serviceController::class, 'create'])->name('service.create');
 Route::get('/services/all', [App\Http\Controllers\serviceController::class, 'get_services'])->name('get.services');
 Route::get('/services/branch/{branch_code}', [App\Http\Controllers\serviceController::class, 'get_services_by_branch'])->name('get.services.by.branch');
-Route::get('/services/{id}', [App\Http\Controllers\serviceController::class, 'get_service'])->name('get.service');
-Route::put('/services/{id}', [App\Http\Controllers\serviceController::class, 'update_service'])->name('update.service');
+Route::put('/services/update', [App\Http\Controllers\serviceController::class, 'update'])->name('service.update');
+Route::delete('/services/delete', [App\Http\Controllers\serviceController::class, 'delete'])->name('service.delete');
 Route::delete('/services/{id}', [App\Http\Controllers\serviceController::class, 'delete_service'])->name('delete.service');
 
 // Branch Routes
@@ -102,6 +105,8 @@ Route::put('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'u
 Route::delete('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'delete_supplier'])->name('delete.supplier');
 
 
+// Patients Routes
+Route::put('/patient/update', [App\Http\Controllers\patientController::class, 'update'])->name('patient.update');
 
 Route::get('/service-product', [DashboardController::class, 'service_product'])->name('page.service-product');
 

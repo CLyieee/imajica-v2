@@ -246,11 +246,9 @@
                         <div class="mb-5">
                           <label class="form-label" for="eventLabel">Select Services</label>
                           <select class="select2 form-select">
-                            <option>Anti-Aging IV Drip</option>
-                            <option>Body Contouring & Sculpting</option>
-                            <option>Facial Rejuvenation Therapy</option>
-                            <option>Hydrating Skin Booster</option>
-                            <option>Laser Hair Removal (Underarm)</option>
+                            @foreach ($services as $service)
+                            <option value="{{$service->id}}">{{$service->service_name}}</option>
+                            @endforeach
                           </select>
                         </div>
                         <div class="mb-5">
@@ -284,9 +282,9 @@
                         <div class="mb-4">
                           <label for="selectpickerBasic" class="form-label">Select Branch</label>
                           <select id="selectpickerBasic" class="selectpicker w-100" data-style="btn-default">
-                            <option>Pasig City Branch</option>
-                            <option>San Mateo Rizal Branch</option>
-                            <option>Cainta Rizal Branch</option>
+                            @foreach ($branches as $branch)
+                            <option value="{{$branch->id}}">{{$branch->branch_name}}</option>
+                            @endforeach
                           </select>
                         </div>
                         <div class="mb-4">
