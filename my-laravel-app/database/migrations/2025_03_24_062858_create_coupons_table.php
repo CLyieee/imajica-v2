@@ -20,7 +20,7 @@ class CreateCouponsTable extends Migration
             $table->string('discount_type');
             $table->bigInteger('discount_value');
             $table->string('applicable_service');
-            $table->date('start_end_date');
+            $table->string('start_end_date');
             $table->string('new_customer');
             $table->string('branch_code');
         });
