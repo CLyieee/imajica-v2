@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\branch;
 use App\Models\service;
+
 use App\Models\coupon;
+
+use App\Models\tier;
+use App\Models\patient;
+
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -39,11 +44,17 @@ class DashboardController extends Controller
     }
     public function new_patient()
     {
-        return view('page.new-patient');
+        // Get all patient tiers for the dropdown
+        $tiers = tier::all();
+        
+        // Pass the tiers to the view
+        return view('page.new-patient', compact('tiers'));
     }
     public function patient_list()
     {
-        return view('page.patient-list');
+        $tiers = tier::all();
+        $patients = patient::all();
+        return view('page.patient-list', compact('patients', 'tiers'));
     }
     public function new_supplier()
     {
@@ -55,7 +66,8 @@ class DashboardController extends Controller
     }
     public function new_staff()
     {
-        return view('page.new-staff');
+        $branches = branch::all();
+        return view('page.new-staff', compact('branches'));
     }
     public function staff_list()
     {
@@ -145,7 +157,8 @@ class DashboardController extends Controller
     public function services_list()
     {
         $services = service::all();
-        return view('page.services-list', compact('services'));
+        $branches = branch::all();
+        return view('page.services-list', compact('services', 'branches'));
     }
     public function new_user()
     {
@@ -157,7 +170,10 @@ class DashboardController extends Controller
     }
     public function booking()
     {
-        return view('page.booking');
+        $services = service::all();
+        $branches = branch::all();
+        return view('page.booking', compact('services', 'branches'));
+        
     }
 
 
