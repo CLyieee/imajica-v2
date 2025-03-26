@@ -367,7 +367,7 @@
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table class="table table-striped">
+                  <table class="table table-striped" id= $coupons>
                     <thead class="table-light">
                       <tr>
                         <th>Coupon Code</th>
@@ -407,9 +407,7 @@
             </div>
           </div>
 
-          <!-- Content wrapper -->
 
-          <!-- Content wrapper -->
         </div>
         <!-- / Layout page -->
       </div>
@@ -468,15 +466,15 @@
     <script>
       $(document).ready(function () {
         // Initialize DataTable with proper options
-        if ($("#servicesTable").length) {
-          var table = $("#servicesTable").DataTable({
+        if ($("#coupons").length) {
+          var table = $("#coupons").DataTable({
             responsive: true,
             ordering: true,
             paging: true,
             // Define the columns explicitly to avoid DataTables warning
             columns: [
               { data: "coupon_code" },
-              { data: "coupon_name" },
+              { data: "discount_name" },
               { data: "discount_value" },
               { data: "actions", orderable: false }
             ],
@@ -514,7 +512,7 @@
             if (cells.length >= 4) {
               extractedData.push({
                 coupon_code: $(cells[0]).text(),
-                coupon_name: $(cells[1]).text(),
+                discount_name: $(cells[1]).text(),
                 discount_value: $(cells[2]).text(),
                 actions: $(cells[3]).html()
               });
@@ -531,4 +529,3 @@
   </body>
 </html>
 
-<!-- beautify ignore:end -->
