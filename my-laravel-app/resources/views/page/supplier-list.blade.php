@@ -447,12 +447,6 @@
     <!-- Supplier Management JS -->
     <script src="../../assets/js/supplier-management.js"></script>
    
-    <script>
-      $(document).ready(function() {
-       $('#supplierTablee').DataTable();
-
-        });
-    </script>
   </body>
 </html>
 

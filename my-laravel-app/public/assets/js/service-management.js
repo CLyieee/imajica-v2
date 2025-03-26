@@ -3,6 +3,10 @@
  * Handles CRUD operations for services
  */
 
+
+
+
+
 $(document).ready(function () {
     // Load all services for service listing page
     if ($("#serviceTable").length) {
@@ -13,6 +17,8 @@ $(document).ready(function () {
     if ($(".branch-select").length) {
         loadBranchOptions();
     }
+
+    
 
     // Form submission for adding a service
     $("#addServiceForm").on("submit", function (e) {
@@ -345,6 +351,27 @@ $(document).ready(function () {
                 `);
             });
         });
+
+
+
+
+        if ($.fn.DataTable.isDataTable("#serviceTable")) {
+            $("#serviceTable").DataTable().destroy();
+        }
+
+        $("#serviceTable").DataTable({
+            responsive: true,
+            ordering: true,
+            paging: true,
+            language: {
+                search: "",
+                searchPlaceholder: "Search...",
+                paginate: {
+                    previous: '<i class="ti tabler-chevron-left"></i>',
+                    next: '<i class="ti tabler-chevron-right"></i>',
+                },
+            },
+        });
     }
 
     // Function to show success/error message
@@ -380,4 +407,4 @@ $(document).ready(function () {
 
         showMessage("error", errorMessage);
     }
-});
+}); // End of document ready handler
