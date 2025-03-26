@@ -16,6 +16,9 @@ use App\Http\Controllers\patientController;
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('page.dashboard');
 
         Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
+        Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
+            
+    
 
         Route::get('/coupon-list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
 
@@ -91,6 +94,7 @@ Route::delete('/services/delete', [App\Http\Controllers\serviceController::class
 Route::delete('/services/{id}', [App\Http\Controllers\serviceController::class, 'delete_service'])->name('delete.service');
 
 // Branch Routes
+
 Route::post('/branch/create', [App\Http\Controllers\branchController::class, 'create'])->name('branch.create');
 // Fix the update route - remove the {branch} from within the URL and make it a parameter
 Route::put('/branch/update', [App\Http\Controllers\branchController::class, 'update'])->name('branch.update');

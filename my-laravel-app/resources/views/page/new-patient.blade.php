@@ -761,43 +761,33 @@
         const firstName = document.getElementById("firstName");
         const lastName = document.getElementById("lastName");
 
-        function getInitials(first, last) {
-          const firstInitial = first ? first[0] : '';
-          const lastInitial = last ? last[0] : '';
-          return (firstInitial + lastInitial).toUpperCase() || 'NA';
-        }
-
         function createInitialsAvatar(initials) {
           const canvas = document.createElement("canvas");
           const context = canvas.getContext("2d");
           canvas.width = 150;
           canvas.height = 150;
 
-          // Background circle
-          context.fillStyle = "#0a3622"; // Your theme color
+          // Draw circle with light blue background
+          context.fillStyle = "#E6EEFF";  // Light blue background
           context.beginPath();
           context.arc(75, 75, 75, 0, Math.PI * 2);
           context.fill();
 
-          // Text
-          context.font = "bold 60px Arial";
-          context.fillStyle = "#FFFFFF";
-          context.textAlign = "center";
-          context.textBaseline = "middle";
-          context.fillText(initials, 75, 75);
+          // Draw silhouette
+          context.fillStyle = "#1B3F8F";  // Darker blue for silhouette
+          
+          // Draw head
+          context.beginPath();
+          context.arc(75, 60, 30, 0, Math.PI * 2);
+          context.fill();
+
+          // Draw body
+          context.beginPath();
+          context.arc(75, 140, 45, Math.PI * 1.1, Math.PI * 1.9);
+          context.fill();
 
           return canvas.toDataURL();
         }
-
-        // Update avatar when name changes
-        [firstName, lastName].forEach(input => {
-          input.addEventListener("input", function() {
-            if (!imageUpload.files.length) {
-              const initials = getInitials(firstName.value, lastName.value);
-              imagePreview.src = createInitialsAvatar(initials);
-            }
-          });
-        });
 
         // Handle image upload
         imageUpload.addEventListener("change", function(e) {
@@ -809,13 +799,12 @@
             };
             reader.readAsDataURL(file);
           } else {
-            const initials = getInitials(firstName.value, lastName.value);
-            imagePreview.src = createInitialsAvatar(initials);
+            imagePreview.src = createInitialsAvatar();
           }
         });
 
         // Set default avatar on load
-        imagePreview.src = createInitialsAvatar('NA');
+        imagePreview.src = createInitialsAvatar();
       });
     </script>
     <button

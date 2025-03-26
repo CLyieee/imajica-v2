@@ -9,8 +9,6 @@
   data-bs-theme="light"
 >
   <head>
-    <title>Sales Report Summary - Imajica</title>
-    <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
@@ -205,7 +203,7 @@
         text-align: center;
         padding: 15px;
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(236, 239, 243, 0.9);
         min-width: 200px;
         max-width: 300px;
         flex: 1;
@@ -287,6 +285,7 @@
             <h1>Employee Report Summary</h1>
         </div>
 
+        <div class="card">
         <div class="metrics">
             <div class="metric-card">
                 <i class="ti tabler-cash mb-2" style="font-size: 24px; color: #28a745;"></i>
@@ -305,14 +304,14 @@
             </div>
         </div>
 
+      </div>
+
         <div class="card mt-4">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3 class="mb-0">Employee Sales</h3>
                     <div class="d-flex gap-2">
-                        <div class="input-group" style="width: 300px;">
-                            <input type="text" class="form-control" id="searchInput" placeholder="Search by name or position...">
-                        </div>
+                        
                         <div class="dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortByBtn" data-bs-toggle="dropdown">
                                 Sort By
@@ -356,18 +355,18 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr style="background-color: #1e4d2b;">
-                                <th style="color: white; font-weight: 500;">Rank</th>
-                                <th style="color: white; font-weight: 500;">Employee Name</th>
-                                <th style="color: white; font-weight: 500;">No. of Service Sales</th>
-                                <th style="color: white; font-weight: 500;">No. of Product Sales</th>
-                                <th style="color: white; font-weight: 500;">No. of Clients</th>
-                                <th style="color: white; font-weight: 500;">Total Service Sales</th>
-                                <th style="color: white; font-weight: 500;">Total Product Sales</th>
-                                <th style="color: white; font-weight: 500;">Total Sales</th>
-                                <th style="color: white; font-weight: 500;">Action</th>
+                    <table class="table table-striped table-bordered" id="employeeReport">
+                        <thead class="table-light">
+                            <tr>
+                                <th >Rank</th>
+                                <th >Employee Name</th>
+                                <th>No. of Service Sales</th>
+                                <th >No. of Product Sales</th>
+                                <th >No. of Clients</th>
+                                <th >Total Service Sales</th>
+                                <th >Total Product Sales</th>
+                                <th >Total Sales</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -381,7 +380,11 @@
                                 <td>₱200,000</td>
                                 <td>₱450,000</td>
                                 <td>
-                                    <button class="btn btn-sm btn-success">View</button>
+                                  <div class='d-flex gap-2'>
+                                    <button class='btn btn-success'>View</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>
                                 </td>
                             </tr>
                             <tr>
@@ -394,7 +397,11 @@
                                 <td>₱180,000</td>
                                 <td>₱400,000</td>
                                 <td>
-                                    <button class="btn btn-sm btn-success">View</button>
+                                  <div class='d-flex gap-2'>
+                                    <button class='btn btn-success'>View</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>
                                 </td>
                             </tr>
                             <tr>
@@ -407,7 +414,11 @@
                                 <td>₱150,000</td>
                                 <td>₱350,000</td>
                                 <td>
-                                    <button class="btn btn-sm btn-success">View</button>
+                                  <div class='d-flex gap-2'>
+                                    <button class='btn btn-success'>View</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>
                                 </td>
                             </tr>
                             <tr>
@@ -420,7 +431,11 @@
                                 <td>₱140,000</td>
                                 <td>₱320,000</td>
                                 <td>
-                                    <button class="btn btn-sm btn-success">View</button>
+                                  <div class='d-flex gap-2'>
+                                    <button class='btn btn-success'>View</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>
                                 </td>
                             </tr>
                             <tr>
@@ -433,7 +448,11 @@
                                 <td>₱130,000</td>
                                 <td>₱290,000</td>
                                 <td>
-                                    <button class="btn btn-sm btn-success">View</button>
+                                  <div class='d-flex gap-2'>
+                                    <button class='btn btn-success'>View</button>
+                                    <button class='btn btn-info'>Edit</button>
+                                    <button class='btn btn-danger'>Delete</button>
+                                </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -601,6 +620,15 @@
   <script src="../../assets/vendor/libs/chartjs/chartjs.js"></script>
   <script src="../../assets/js/charts-chartjs-legend.js"></script>
   <script src="../../assets/js/charts-chartjs.js"></script>
+
+
+  <script>
+  
+    $(document).ready(function() {
+      $('#employeeReport').DataTable();
+      
+    });
+  </script>
   
 </body>
 

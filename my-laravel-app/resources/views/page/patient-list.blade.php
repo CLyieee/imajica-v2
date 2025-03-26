@@ -360,6 +360,7 @@
                   </a>
                 </div>
 
+
                 <!-- Success/Error Messages -->
                 <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
 
@@ -467,6 +468,7 @@
             <!-- / Footer -->
 
             <div class="content-backdrop fade"></div>
+
           </div>
           <!-- Content wrapper -->
         </div>
@@ -530,6 +532,7 @@
         $("#servicesTable").DataTable();
       });
     </script>
+
 
     <!-- Patient Modal -->
     <div class="modal fade" id="patientModal" tabindex="-1" aria-hidden="true">
@@ -1015,9 +1018,11 @@
     </style>
 
     <!-- JavaScript for patient modals -->
+
     <script>
       // Create initials avatar when no image is available
       function createInitialsAvatar(name) {
+
         if (!name) return '';
         
         const canvas = document.createElement("canvas");
@@ -1026,9 +1031,11 @@
         canvas.height = 120;
 
         context.fillStyle = "#0a3622";
+
         context.beginPath();
         context.arc(60, 60, 60, 0, Math.PI * 2);
         context.fill();
+
 
         const initials = name
           .split(" ")
@@ -1042,8 +1049,10 @@
         context.textBaseline = "middle";
         context.fillText(initials, 60, 60);
 
+
         return canvas.toDataURL();
       }
+
 
       // Format list items for medical concerns and medications
       function formatListItems(items) {
@@ -1192,7 +1201,18 @@
             deleteModal.show();
           });
         });
+
       });
+    </script>
+
+    <!-- Add this script -->
+    <script>
+    function confirmDelete() {
+      if (confirm('Are you sure you want to delete this patient? This action cannot be undone.')) {
+        // Add your delete logic here
+        console.log('Patient deleted');
+      }
+    }
     </script>
   </body>
 </html>
