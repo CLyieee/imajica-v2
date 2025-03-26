@@ -60,9 +60,9 @@ t&&new DataTable(t,{ajax:assetsPath+"/product-list.json"
         <span class="d-none">${n}</span>
       </span>`:n}},{targets:5,render:function(e,t,n,a){return"<span>"+n.sku+"</span>"}},{targets:6,render:function(e,t,n,a){return"<span>"+n.price+"</span>"}},{targets:7,responsivePriority:4,render:function(e,t,n,a){return"<span>"+n.qty+"</span>"}},{targets:-2,render:function(e,t,n,a){n=n.status;return'<span class="badge '+o[n].class+'" text-capitalized>'+o[n].title+"</span>"}},{targets:-1,title:"Actions",searchable:!1,orderable:!1,render:function(e,t,n,a){return`
      <div class='d-flex gap-1'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
+                                    <button class='btn btn-success'> <i class='ti tabler-eye me-1'></i>View</button>
+                                    <button class='btn btn-info'><i class='ti tabler-edit me-1'></i>Edit</button>
+                                    <button class='btn btn-danger'><i class='ti tabler-trash me-1'></i>Delete</button>
                                 </div>
   `}}],
   select:{

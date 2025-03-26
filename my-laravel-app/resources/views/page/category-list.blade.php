@@ -576,12 +576,18 @@
         
 
 <div class="container">
-  <h3>Category List</h3>
-  <div class="mb-3">
+  <div class="d-flex justify-content-between align-items-center">
+    <h3>Category List</h3>
   </div>
-  
+  <button 
+  class="btn btn-primary mt-9 mb-4"
+  data-bs-toggle="offcanvas" 
+  data-bs-target="#offcanvasEcommerceCategoryList"
+>
+  <i class="ti tabler-plus me-1"></i> Add Category
+</button>
   <!-- Table for Category List -->
-  <table class="table table-striped  datatables-category-list" >
+  <table class="table table-striped datatables-category-list">
     <thead class="table-light">
       <tr>
         <th>ID</th>
@@ -823,9 +829,9 @@
           render: function (data, type, row) {
             return `
               <div class="d-flex gap-2">
-                <button class="btn btn-success btn-sm">View</button>
-                <button class="btn btn-info btn-sm">Edit</button>
-                <button class="btn btn-danger btn-sm">Delete</button>
+                <button class="btn btn-success btn-sm"><i class="ti tabler-eye me-1"></i> View</button>
+                <button class="btn btn-info btn-sm"><i class="ti tabler-edit me-1"></i> Edit</button>
+                <button class="btn btn-danger btn-sm"><i  class="ti tabler-trash me-1"></i> Delete</button>
               </div>
             `;
           }
@@ -889,4 +895,3 @@
   <!-- beautify ignore:end -->
 
 
-  
