@@ -6,7 +6,7 @@ use App\Models\branch;
 use App\Models\service;
 
 use App\Models\coupon;
-
+use App\Models\supplier;
 use App\Models\tier;
 use App\Models\patient;
 
@@ -30,7 +30,8 @@ class DashboardController extends Controller
     public function coupon_list()
     {
         $coupons = coupon::all();
-        return view('page.coupon-list', compact('coupons'));
+        $branches = branch::all();
+        return view('page.coupon-list', compact('coupons' , 'branches'));
     }
 
     public function new_loyalty()
@@ -61,8 +62,10 @@ class DashboardController extends Controller
         return view('page.new-supplier');
     }
     public function supplier_list()
+
     {
-        return view('page.supplier-list');
+        $suppliers = supplier::all();
+        return view('page.supplier-list', compact('suppliers'));
     }
     public function new_staff()
     {
