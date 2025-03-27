@@ -756,13 +756,13 @@
                     render: function (data, type, row) {
                         return `<div class='d-flex gap-2'>
                             <button onclick='showViewModalll(${JSON.stringify(row)})' class='btn btn-success btn-sm'>
-                          View
+                           <i class='ti tabler-eye me-1'></i>View
                             </button>
                             <button class='btn btn-info btn-sm'>
-                              Edit
+                             <i class='ti tabler-edit me-1'></i> Edit
                             </button>
                             <button class='btn btn-danger btn-sm'>
-                              Delete
+                             <i class='ti tabler-trash me-1'></i> Delete
                             </button>
                         </div>`;
                     }

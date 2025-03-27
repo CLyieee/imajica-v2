@@ -345,7 +345,14 @@
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="card">
-                <!-- Branch Filter -->
+               
+                <div class="d-flex justify-content-between align-items-center p-3">
+                  <h5 class="card-title mb-0">Coupon List</h5>
+                  <a href="{{ route('page.new-coupon') }}" class="btn btn-primary mt-2">
+                    <i class="ti tabler-plus me-1"></i> Add New Coupon
+                  </a>
+                </div>
+
                 <div class="px-4 py-3">
                   <label for="branchFilter" class="fw-bold me-2">Select Branch:</label>
                   <select id="branchFilter" class="form-select w-auto d-inline-block">

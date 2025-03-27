@@ -636,9 +636,9 @@
     
 
     <div class="card datatable-card ">
-      <div class="card-body datatable-container ">
+      <div class="card-body datatable-container table-responsive">
      
-        <table class="table table-striped" id = "commissionsTable">
+        <table class="table table-striped table-bordered" id = "commissionsTable">
           <thead class="table-light">
             <tr>
               <th>Employee Name</th>
@@ -778,11 +778,17 @@
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return `<div class='d-flex gap-2'>
-                                    <button class='btn btn-success btn-icon'><i class="ti tabler-eye"></i></button>
-                    <button class='btn btn-info btn-icon'><i class="ti tabler-edit"></i></button>
-                    <button class='btn btn-danger btn-icon'><i class="ti tabler-trash"></i></button>
-                                </div>`;
+                        return ` <div class="d-flex gap-1">
+                            <button class="btn btn-sm btn-success view-supplier" data-id="${row.id}">
+                              <i class="ti tabler-eye me-1"></i> View
+                            </button>
+                            <button class="btn btn-sm btn-info edit-supplier" data-id="${row.id}">
+                              <i class="ti tabler-edit me-1"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-supplier" data-id="${row.id}" data-name="${row.supplier_name}">
+                              <i class="ti tabler-trash me-1"></i> Delete
+                            </button>
+                          </div>`;
                     }
                 }
             ]

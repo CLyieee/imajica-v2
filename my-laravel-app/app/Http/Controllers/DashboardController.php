@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\branch;
 use App\Models\service;
-
+use App\Models\category;
 use App\Models\coupon;
 use App\Models\supplier;
 use App\Models\tier;
@@ -139,11 +139,14 @@ class DashboardController extends Controller
     }
     public function add_product()
     {
-        return view('page.add-product');
+        $categories = category::all();
+        return view('page.add-product', compact('categories'));
     }
     public function category_list()
     {
-        return view('page.category-list');
+        $categories = category::all();
+        return view('page.category-list', compact('categories'));
+
     }
     public function system_settings()
     {

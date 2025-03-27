@@ -942,20 +942,27 @@
             </div>
             <!-- Category -->
             <div class="d-flex justify-content-between align-items-center">
+              
               <div class="mb-6 col ecommerce-select2-dropdown">
                 <label class="form-label mb-1" for="category-org">
                   <span>Category</span>
                 </label>
                 <select id="category-org" class="select2 form-select" data-placeholder="Select Category">
                   <option value="">Select Category</option>
-                  <option value="Household">Household</option>
-                  <option value="Management">Management</option>
-                  <option value="Electronics">Electronics</option>
-                  <option value="Office">Office</option>
-                  <option value="Automotive">Automotive</option>
+                  @foreach($categories as $category)
+                  <option value="{{$category->category_id}}">{{$category->categoryTitle}}</option>
+                  @endforeach
                 </select>
               </div>
-              <a href="javascript:void(0);" class="fw-medium btn btn-icon btn-label-primary ms-4"><i class="icon-base ti tabler-plus icon-md"></i></a>
+              
+              <button 
+              class="fw-medium btn btn-icon btn-label-primary ms-4"
+              data-bs-toggle="offcanvas" 
+              data-bs-target="#offcanvasEcommerceCategoryList"
+              >
+              <i class="icon-base ti tabler-plus icon-md"></i>
+              </button>
+              
             </div>
             <!-- Collection -->
             <div class="mb-6 col ecommerce-select2-dropdown">
@@ -988,10 +995,42 @@
       </div>
       <!-- /Second column -->
     </div>
-  </div></div>
+  </div>
+</div>
           <!-- / Content -->
-
-          
+<!-- Offcanvas for Adding New Category -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Add New Category</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form id="eCommerceCategoryListForm">
+      <div class="mb-3">
+        <label for="categoryTitle" class="form-label">Category Title</label>
+        <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" required>
+      </div>
+      <div class="mb-3">
+        <label for="slug" class="form-label">Slug</label>
+        <input type="text" class="form-control" id="slug" name="slug" required>
+        <small class="text-muted">The slug will be automatically generated from the title. Example: "Home & Garden" → "home-garden"</small>
+      </div>
+      <button type="submit" class="btn btn-primary">Save Category</button>
+    </form>
+  </div>
+</div>
+     
+<script>
+  document.getElementById('categoryTitle').addEventListener('input', function(e) {
+      const title = e.target.value;
+      const slug = title.toLowerCase()
+          .replace(/[^\w\s-]/g, '') // Remove special characters
+          .replace(/\s+/g, '-')     // Replace spaces with hyphens
+          .replace(/-+/g, '-');     // Replace multiple hyphens with single hyphen
+      
+      document.getElementById('slug').value = slug;
+  });
+  </script>
             
 
 <!-- Footer -->

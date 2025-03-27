@@ -578,17 +578,11 @@
 <div class="container">
   <div class="d-flex justify-content-between align-items-center">
     <h3>Category List</h3>
-  </div>
-  <button 
-  class="btn btn-primary mt-9 mb-4"
-  data-bs-toggle="offcanvas" 
-  data-bs-target="#offcanvasEcommerceCategoryList"
->
-  <i class="ti tabler-plus me-1"></i> Add Category
-</button>
+
+</div>
   <!-- Table for Category List -->
-  <table class="table table-striped datatables-category-list">
-    <thead class="table-light">
+  <table class="table table-striped dataTable datatables-category-list" id="categoryListTable" style="width: 100%">   
+     <thead class="table-light">
       <tr>
         <th>ID</th>
         <th>Select</th>
@@ -598,6 +592,7 @@
         <th>Action</th>
       </tr>
     </thead>
+
   </table>
 </div>
 
@@ -605,10 +600,11 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title">Add New Category</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" id="offcanvasEcommerceCategoryListClose"></button>
   </div>
   <div class="offcanvas-body">
-    <form id="eCommerceCategoryListForm">
+    <form id="eCommerceCategoryListForm" method="POST" action="{{ route('category.create') }}" enctype="multipart/form-data">
+      @csrf
       <div class="mb-3">
         <label for="categoryTitle" class="form-label">Category Title</label>
         <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" required>
@@ -616,11 +612,171 @@
       <div class="mb-3">
         <label for="slug" class="form-label">Slug</label>
         <input type="text" class="form-control" id="slug" name="slug" required>
+        <small class="text-muted">The slug will be automatically generated from the title.</small>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="categoryImage" class="form-label">Category Image</label>
+        <input type="file" class="form-control" id="categoryImage" name="categoryImage" accept="image/*">
+        <div id="imagePreview" class="mt-2" style="max-width: 200px;">
+          <img src="" alt="Preview" style="width: 100%; display: none;">
+        </div>
       </div>
       <button type="submit" class="btn btn-primary">Save Category</button>
     </form>
   </div>
 </div>
+
+<script>
+// Image preview functionality
+document.getElementById('categoryImage').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const preview = document.querySelector('#imagePreview img');
+    
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+// Slug generation from title
+document.getElementById('categoryTitle').addEventListener('input', function(e) {
+    const title = e.target.value;
+    const slug = title.toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+    
+    document.getElementById('slug').value = slug;
+});
+
+// Handle form submission
+$('#eCommerceCategoryListForm').on('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+
+    $.ajax({
+        url: $(this).attr('action'),
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                // Reload DataTable
+                dt_category_table.DataTable().ajax.reload();
+
+                // Close offcanvas
+                const offcanvasElement = document.querySelector('#offcanvasEcommerceCategoryList');
+                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                offcanvas.hide();
+
+                // Reset form and image preview
+                $('#eCommerceCategoryListForm')[0].reset();
+                $('#imagePreview img').hide();
+                
+                // Show success message
+                alert('Category added successfully!');
+            } else {
+                alert('Error: ' + response.message);
+            }
+        },
+        error: function(xhr) {
+            const errors = xhr.responseJSON.errors;
+            let errorMessage = '';
+            for (const field in errors) {
+                errorMessage += errors[field].join('\n') + '\n';
+            }
+            alert('Error: ' + (errorMessage || xhr.responseJSON.message));
+        }
+    });
+});
+
+// Modify DataTable initialization
+$(function () {
+  'use strict';
+
+  // Destroy existing DataTable if it exists
+  if ($.fn.DataTable.isDataTable('.datatables-category-list')) {
+    $('.datatables-category-list').DataTable().destroy();
+  }
+
+  let dt_category_table = $('.datatables-category-list');
+
+  if (dt_category_table.length) {
+    const dt_category = dt_category_table.DataTable({
+      ajax: {
+        url: '/api/categories', // Update this URL to your categories API endpoint
+        dataSrc: ''
+      },
+      columns: [
+        { data: 'category_id' },
+        { 
+          data: null,
+          render: function () {
+            return '<input type="checkbox" class="form-check-input select-category">';
+          }
+        },
+        { 
+          data: 'categoryTitle',
+          render: function(data, type, row) {
+            const imageUrl = row.categoryImage 
+              ? '/' + row.categoryImage 
+              : '../../assets/img/products/default.jpg';
+            
+            return `<div class="d-flex justify-content-start align-items-center">
+              <div class="avatar-wrapper me-3">
+                <div class="avatar rounded-2 bg-label-secondary">
+                  <img src="${imageUrl}" class="rounded-2">
+                </div>
+              </div>
+              <div class="d-flex flex-column">
+                <h6 class="mb-0">${data}</h6>
+                <small class="text-muted">${row.description || ''}</small>
+              </div>
+            </div>`;
+          }
+        },
+        { 
+          data: null,
+          render: function() { return '0'; }
+        },
+        { 
+          data: null,
+          render: function() { return '$0'; }
+        },
+        {
+          data: null,
+          render: function (data, type, row) {
+            return `
+              <div class="d-flex gap-2">
+                <button class="btn btn-success btn-sm view-category" data-id="${row.category_id}">
+                  <i class="ti tabler-eye me-1"></i>
+                </button>
+                <button class="btn btn-info btn-sm edit-category" data-id="${row.category_id}">
+                  <i class="ti tabler-edit me-1"></i>
+                </button>
+                <button class="btn btn-danger btn-sm delete-category" data-id="${row.category_id}">
+                  <i class="ti tabler-trash me-1"></i>
+                </button>
+              </div>
+            `;
+          }
+        }
+      ],
+      // ... rest of the DataTable configuration
+    });
+  }
+});
+</script>
           
             
 
@@ -710,78 +866,16 @@
     <!-- Main JS -->
     
       <script src="../../assets/js/main.js"></script>
+      <script src="../../assets/js/category-list.js"></script>
     
 
     <!-- Page JS -->
-    <script src="../../assets/category-list.json"></script>
+   
 
 
 
- <!-- <script>
-  $(function () {
-  'use strict';
 
-  // Destroy existing DataTable if it exists
-  if ($.fn.DataTable.isDataTable('.datatables-category-list')) {
-    $('.datatables-category-list').DataTable().destroy();
-  }
-
-  let dt_category_table = $('.datatables-category-list');
-
-  if (dt_category_table.length) {
-    const dt_category = dt_category_table.DataTable({
-      ajax: {
-        url: '../../assets/category-list.json',
-        dataSrc: ''
-      },
-      columns: [
-        { data: 'id' },
-        { 
-          data: null,
-          render: function () {
-            return '<input type="checkbox" class="form-check-input select-category">';
-          }
-        },
-        { 
-          data: 'categories',
-          render: function(data, type, row) {
-            return `<div class="d-flex justify-content-start align-items-center">
-              <div class="avatar-wrapper me-3">
-                <div class="avatar rounded-2 bg-label-secondary">
-                  <img src="../../assets/img/products/${row.cat_image}"class="rounded-2">
-                </div>
-              </div>
-              <div class="d-flex flex-column">
-                <h6 class="mb-0">${data}</h6>
-                <small class="text-muted">${row.category_detail}</small>
-              </div>
-            </div>`;
-          }
-        },
-        { data: 'total_products' },
-        { data: 'total_earnings' },
-        {
-          data: null,
-          render: function (data, type, row) {
-            return `
-             <div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
-                                </div>
-            `;
-          }
-        }
-      ],  
-      responsive: true,
-      pageLength: 10
-    });
-  }
-});
-  </script> -->
-
-
-<script>
+{{-- <script>
   $(function () {
   'use strict';
 
@@ -885,7 +979,7 @@
     this.reset();
   });
 });
-</script>
+</script> --}}
 
   </body>
 

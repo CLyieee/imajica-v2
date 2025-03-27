@@ -753,9 +753,9 @@ background-color: #d1ecf1; /* Light cyan */
                         item.amount,
                         item.payment_terms,
                         `<div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
+                                    <button class='btn btn-success'><i class="ti tabler-eye me-1"></i>View</button>
+                                    <button class='btn btn-info'><i class="ti tabler-edit me-1"></i>Edit</button>
+                                    <button class='btn btn-danger'><i class="ti tabler-trash me-1"></i>Delete</button>
                                 </div>`
                     ]).draw(false);
                 });

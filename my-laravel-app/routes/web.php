@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 
 use App\Http\Controllers\CouponController;
-
+use App\Http\Controllers\CategoryListController;
 use App\Http\Controllers\patientController;
 
 
@@ -22,7 +22,6 @@ use App\Http\Controllers\patientController;
         Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
         Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
             
-    
 
         Route::get('/coupon-list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
 
@@ -121,3 +120,9 @@ Route::get('/service-product', [DashboardController::class, 'service_product'])-
 Route::get('/employee-report', [DashboardController::class, 'employee_report'])->name('page.employee-report');
 
 Route::get('/expenses-report', [DashboardController::class, 'expenses_report'])->name('page.expenses-report');
+
+
+Route::get('/category/all', [CategoryListController::class, 'getAll'])->name('category.all');
+Route::get('/api/categories', [CategoryListController::class, 'getAll'])->name('api.categories');
+Route::post('/category/create', [CategoryListController::class, 'create'])->name('category.create');
+Route::get('/category-list', [DashboardController::class, 'category_list'])->name('page.category-list');
