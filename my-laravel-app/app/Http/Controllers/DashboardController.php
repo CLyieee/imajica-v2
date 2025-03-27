@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\branch;
 use App\Models\service;
+
+use App\Models\coupon;
+
 use App\Models\tier;
 use App\Models\patient;
+
 use App\Models\staff;
+
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -18,15 +23,16 @@ class DashboardController extends Controller
 
     public function new_coupon()
     {
-$branch = Branch::all();
+        $branches = branch::all();
 
-        return view('page.new-coupon');
+        return view('page.new-coupon', compact('branches')); 
 
     }
 
     public function coupon_list()
     {
-        return view('page.coupon-list');
+        $coupons = coupon::all();
+        return view('page.coupon-list', compact('coupons'));
     }
 
     public function new_loyalty()
@@ -150,7 +156,7 @@ $branch = Branch::all();
         $branches = branch::all();
         $services = service::all();
         
-        return view('page.new-services', compact('branches'));
+        return view('page.new-services', compact('branches')); 
     }
     public function services_list()
     {

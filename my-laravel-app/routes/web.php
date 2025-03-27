@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+
+use App\Http\Controllers\CouponController;
+
 use App\Http\Controllers\patientController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\staffController;
@@ -11,6 +14,7 @@ use App\Http\Controllers\supplierController;
 use App\Http\Controllers\serviceController;
 use App\Http\Controllers\tierController;
 use App\Http\Controllers\bookingController;
+
 
 // Route::get('/', function () {
 //     return view('welcome');
