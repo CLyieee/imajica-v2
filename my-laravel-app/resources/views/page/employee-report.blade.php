@@ -311,7 +311,20 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3 class="mb-0">Employee Sales</h3>
                     <div class="d-flex gap-2">
-                        
+
+              <div class="input-group" style="width: 300px;">
+                <span class="input-group-text">
+                  <i class="ti tabler-search"></i>
+                </span>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="searchInput" 
+                  placeholder="Search by name or position..."
+                  style="border-radius: 0 4px 4px 0;"
+                >
+              </div>
+
                         <div class="dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortByBtn" data-bs-toggle="dropdown">
                                 Sort By
@@ -380,11 +393,9 @@
                                 <td>₱200,000</td>
                                 <td>₱450,000</td>
                                 <td>
-                                  <div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
-                                </div>
+
+                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#mariaDetails">View</button>
+
                                 </td>
                             </tr>
                             <tr>
@@ -397,11 +408,9 @@
                                 <td>₱180,000</td>
                                 <td>₱400,000</td>
                                 <td>
-                                  <div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
-                                </div>
+
+                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#johnDavisDetails">View</button>
+
                                 </td>
                             </tr>
                             <tr>
@@ -414,45 +423,9 @@
                                 <td>₱150,000</td>
                                 <td>₱350,000</td>
                                 <td>
-                                  <div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
-                                </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Michael Chen</td>
-                                <td>35</td>
-                                <td>52</td>
-                                <td>85</td>
-                                <td>₱180,000</td>
-                                <td>₱140,000</td>
-                                <td>₱320,000</td>
-                                <td>
-                                  <div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
-                                </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>Emily Brown</td>
-                                <td>32</td>
-                                <td>48</td>
-                                <td>75</td>
-                                <td>₱160,000</td>
-                                <td>₱130,000</td>
-                                <td>₱290,000</td>
-                                <td>
-                                  <div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
-                                </div>
+
+                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#sarah wilsonDetails">View</button>
+
                                 </td>
                             </tr>
                         </tbody>
@@ -463,104 +436,647 @@
     </div>
 </div>
 
-    <script>
-      document
-        .querySelector(".menu-mobile-toggler")
-        .addEventListener("click", function () {
-          document.querySelector("#layout-menu").classList.toggle("show");
+<!-- Employee Details Modal -->
+<div class="modal fade" id="mariaDetails" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1e4d2b;">
+                <h5 class="modal-title text-white">Employee Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <!-- Employee Info Card -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <h5 class="card-title mb-0">Employee Information</h5>
+                                <small class="text-muted">ID: #EMP001</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="text-center mb-3">
+                                        <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" width="100" height="100" alt="Employee Photo">
+                                        <h5 class="mb-1">Maria Garcia</h5>
+                                        <span class="badge bg-label-primary">Senior Hairstylist</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Email:</label>
+                                        <p class="mb-0">maria.garcia@imajica.com</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Phone:</label>
+                                        <p class="mb-0">+63 912 345 6789</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Joined Date:</label>
+                                        <p class="mb-0">January 15, 2022</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Performance Rating:</label>
+                                        <div class="d-flex align-items-center gap-1">
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star-half text-warning"></i>
+                                            <span class="ms-1">(4.5)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="col-md-6 col-lg-8">
+                        <div class="card h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">Recent Transactions</h5>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-primary btn-sm">
+                                        <i class="ti ti-filter me-1"></i>Filter
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm">
+                                        <i class="ti ti-download me-1"></i>Export
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Transaction ID</th>
+                                                <th>Date</th>
+                                                <th>Service Type</th>
+                                                <th>Client</th>
+                                                <th>Status</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>#TRX001</td>
+                                                <td>2023-11-15</td>
+                                                <td>Hair Coloring</td>
+                                                <td>Sarah Johnson</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱5,500</td>
+                                            </tr>
+                                            <!-- Add more transaction rows as needed -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sales Performance Chart -->
+                    <div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Monthly Sales Performance</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="employeeChart" height="300"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById("employeeChart").getContext("2d");
+        var employeeChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                datasets: [{
+                    label: "Sales ($)",
+                    data: [1200, 1500, 1100, 1800, 1700, 1900],
+                    backgroundColor: "rgba(54, 162, 235, 0.6)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         });
+    });
+</script>
 
-      // Search functionality
-      document.getElementById('searchInput').addEventListener('keyup', function() {
-        let searchValue = this.value.toLowerCase();
-        let tableRows = document.querySelectorAll('tbody tr');
-        
-        tableRows.forEach(row => {
-          let name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-          let email = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
-          
-          if (name.includes(searchValue) || email.includes(searchValue)) {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
-          }
+
+                    <!-- Service Distribution -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Service Distribution</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="service-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold">Hair Styling</span>
+                                            <span class="badge bg-primary">45%</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 45%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="service-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold">Hair Treatment</span>
+                                            <span class="badge bg-info">30%</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="service-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold">Hair Coloring</span>
+                                            <span class="badge bg-success">25%</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">View Full Report</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Employee Details Modal for John Davis -->
+<div class="modal fade" id="johnDavisDetails" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1e4d2b;">
+                <h5 class="modal-title text-white">Employee Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <!-- Employee Info Card -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <h5 class="card-title mb-0">Employee Information</h5>
+                                <small class="text-muted">ID: #EMP002</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="text-center mb-3">
+                                        <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" width="100" height="100" alt="Employee Photo">
+                                        <h5 class="mb-1">John Davis</h5>
+                                        <span class="badge bg-label-primary">Senior Colorist</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Email:</label>
+                                        <p class="mb-0">john.davis@imajica.com</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Phone:</label>
+                                        <p class="mb-0">+63 923 456 7890</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Joined Date:</label>
+                                        <p class="mb-0">February 1, 2022</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Performance Rating:</label>
+                                        <div class="d-flex align-items-center gap-1">
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star text-warning"></i>
+                                            <span class="ms-1">(4.0)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="col-md-6 col-lg-8">
+                        <div class="card h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">Recent Transactions</h5>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-primary btn-sm">
+                                        <i class="ti ti-filter me-1"></i>Filter
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm">
+                                        <i class="ti ti-download me-1"></i>Export
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Transaction ID</th>
+                                                <th>Date</th>
+                                                <th>Service Type</th>
+                                                <th>Client</th>
+                                                <th>Status</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>#TRX002</td>
+                                                <td>2023-11-16</td>
+                                                <td>Hair Treatment</td>
+                                                <td>Michael Brown</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱4,800</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sales Performance Chart -->
+                    <div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Monthly Sales Performance</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="employeeChart" height="300"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById("employeeChart").getContext("2d");
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                datasets: [{
+                    label: "Sales ($)",
+                    data: [12000, 15000, 13000, 17000, 16000, 18000],
+                    backgroundColor: "rgba(54, 162, 235, 0.6)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         });
-      });
+    });
+</script>
 
-      // Update the script section - remove calendar input related code
-      document.addEventListener('DOMContentLoaded', function() {
-          // Custom range toggle
-          document.getElementById('customRangeBtn').addEventListener('click', function(e) {
-              e.stopPropagation();
-              document.querySelector('.custom-range-inputs').classList.toggle('d-none');
-          });
+                    <!-- Service Distribution -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Service Distribution</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="service-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold">Hair Styling</span>
+                                            <span class="badge bg-primary">45%</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 45%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="service-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold">Hair Treatment</span>
+                                            <span class="badge bg-info">30%</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="service-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold">Hair Coloring</span>
+                                            <span class="badge bg-success">25%</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">View Full Report</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-          document.querySelectorAll('[data-filter]').forEach(button => {
-              button.addEventListener('click', function(e) {
-                  if (this.getAttribute('data-filter') === 'custom') return;
-                  
-                  const filterType = this.getAttribute('data-filter');
-                  const now = new Date();
-                  let startDate, endDate;
-                  
-                  switch(filterType) {
-                      case 'tomorrow':
-                          startDate = endDate = new Date(now.setDate(now.getDate() + 1));
-                          break;
-                      case 'today':
-                          startDate = endDate = now;
-                          break;
-                      case 'yesterday':
-                          startDate = endDate = new Date(now.setDate(now.getDate() - 1));
-                          break;
-                      case 'last7days':
-                          endDate = new Date();
-                          startDate = new Date(now.setDate(now.getDate() - 7));
-                          break;
-                      case 'last30days':
-                          endDate = new Date();
-                          startDate = new Date(now.setDate(now.getDate() - 30));
-                          break;
-                      case 'thisMonth':
-                          startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                          endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-                          break;
-                      case 'lastMonth':
-                          startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                          endDate = new Date(now.getFullYear(), now.getMonth(), 0);
-                          break;
-                  }
-                  
-                  updateFilterText(startDate, endDate);
-              });
-          });
+<!-- Employee Details Modal for Sarah Wilson -->
+<div class="modal fade" id="sarah wilsonDetails" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1e4d2b;">
+                <h5 class="modal-title text-white">Employee Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <!-- Employee Info Card -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <h5 class="card-title mb-0">Employee Information</h5>
+                                <small class="text-muted">ID: #EMP003</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="text-center mb-3">
+                                        <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" width="100" height="100" alt="Employee Photo">
+                                        <h5 class="mb-1">Sarah Wilson</h5>
+                                        <span class="badge bg-label-primary">Hair Treatment Specialist</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Email:</label>
+                                        <p class="mb-0">sarah.wilson@imajica.com</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Phone:</label>
+                                        <p class="mb-0">+63 934 567 8901</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Joined Date:</label>
+                                        <p class="mb-0">March 1, 2022</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label class="fw-semibold">Performance Rating:</label>
+                                        <div class="d-flex align-items-center gap-1">
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star-filled text-warning"></i>
+                                            <i class="ti ti-star text-warning"></i>
+                                            <span class="ms-1">(4.0)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-          document.getElementById('applyCustomRange').addEventListener('click', function(e) {
-              e.stopPropagation();
-              const startDate = new Date(document.getElementById('dateFrom').value);
-              const endDate = new Date(document.getElementById('dateTo').value);
-              updateFilterText(startDate, endDate);
-          });
+                    <!-- Recent Transactions -->
+                    <div class="col-md-6 col-lg-8">
+                        <div class="card h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">Recent Transactions</h5>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-primary btn-sm">
+                                        <i class="ti ti-filter me-1"></i>Filter
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm">
+                                        <i class="ti ti-download me-1"></i>Export
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Transaction ID</th>
+                                                <th>Date</th>
+                                                <th>Service Type</th>
+                                                <th>Client</th>
+                                                <th>Status</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>#TRX003</td>
+                                                <td>2023-11-14</td>
+                                                <td>Hair Treatment</td>
+                                                <td>Emily Parker</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱4,800</td>
+                                            </tr>
+                                            <!-- Add more transaction rows as needed -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-          function updateFilterText(startDate, endDate) {
-              const formatDate = date => date.toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric'
-              });
-              
-              const filterText = startDate.getTime() === endDate.getTime() ? 
-                  formatDate(startDate) : 
-                  `${formatDate(startDate)} - ${formatDate(endDate)}`;
-                  
-              document.getElementById('selectedDateText').textContent = `: ${filterText}`;
-              
-              // Hide dropdown after selection
-              document.querySelector('.dropdown-menu').classList.remove('show');
-              document.querySelector('.custom-range-inputs').classList.add('d-none');
-          }
-      });
-    </script>
+                    <!-- Sales Performance Chart -->
+                    <div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Monthly Sales Performance</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="employeeChart3" height="300"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById("employeeChart3").getContext("2d");
+        var employeeChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Sales (in USD)",
+                    data: [5000, 7000, 8000, 6500, 9000, 10000, 11000, 9500, 10500, 11500, 12000, 13000],
+                    backgroundColor: "rgba(54, 162, 235, 0.5)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+
+                    <!-- Service Distribution -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Service Distribution</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="service-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold">Hair Treatment</span>
+                                            <span class="badge bg-primary">50%</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 50%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="service-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold">Hair Styling</span>
+                                            <span class="badge bg-info">30%</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="service-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold">Hair Coloring</span>
+                                            <span class="badge bg-success">20%</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 20%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">View Full Report</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="employeeViewModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content shadow-lg rounded-3">
+      <div class="modal-header" style="background-color: #1e4d2b;">
+        <h5 class="modal-title fw-bold">Employee Details</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-4">
+          <!-- Employee Info Card -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0 rounded-lg">
+              <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 fw-semibold">Employee Information</h6>
+                <span class="badge bg-secondary">ID: #EMP12345</span>
+              </div>
+              <div class="card-body p-3">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><strong>Full Name:</strong> <span class="text-muted" id="employeeName">Maria Garcia</span></li>
+                  <li class="list-group-item"><strong>Position:</strong> <span class="text-muted" id="employeePosition">Senior Hairstylist</span></li>
+                  <li class="list-group-item"><strong>Email:</strong> <span class="text-muted" id="employeeEmail">maria.garcia@imajica.com</span></li>
+                  <li class="list-group-item"><strong>Phone:</strong> <span class="text-muted" id="employeePhone">+63 912 345 6789</span></li>
+                  <li class="list-group-item"><strong>Employed Since:</strong> <span class="text-muted">January 15, 2022</span></li>
+                  <li class="list-group-item"><strong>Total Sales:</strong> <span class="text-muted">₱450,000</span></li>
+                  <li class="list-group-item d-flex align-items-center">
+                    <strong>Rating:</strong>
+                    <div class="ms-2 text-warning">
+                      <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                      <span class="text-muted ms-1">(4.5)</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Transactions -->
+          <div class="col-md-6 col-lg-8">
+            <div class="card shadow-sm border-0 rounded-lg">
+              <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 fw-semibold">Recent Sales</h6>
+                <div class="btn-group">
+                  <button class="btn btn-sm btn-outline-primary"><i class="fas fa-filter"></i> Filter</button>
+                  <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i> Export</button>
+                </div>
+              </div>
+              <div class="card-body p-3">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Transaction ID</th>
+                        <th>Date</th>
+                        <th>Service Type</th>
+                        <th>Client</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>#TRX001</td>
+                        <td>2023-11-15</td>
+                        <td>Hair Coloring</td>
+                        <td>Sarah Johnson</td>
+                        <td><span class="badge bg-success">Completed</span></td>
+                        <td>₱5,500</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">View Full Report</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</script>
   </body>
         
 

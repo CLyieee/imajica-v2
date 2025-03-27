@@ -263,6 +263,20 @@
           display: block;
         }
       }
+
+      .mini-chart {
+        position: relative;
+        width: 100%;
+        min-width: 100px;
+      }
+
+      .booking-trend {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
     </style>
   </head>
 
@@ -304,7 +318,20 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h3 class="mb-0">Customer Sales</h3>
               <div class="d-flex gap-2">
-               
+
+              <div class="input-group" style="width: 300px;">
+                <span class="input-group-text">
+                  <i class="ti tabler-search"></i>
+                </span>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="searchInput" 
+                  placeholder="Search by name or email..."
+                  style="border-radius: 0 4px 4px 0;"
+                >
+              </div>
+
                 <div class="dropdown">
                   <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" aria-expanded="false">
                     Filter By Date
@@ -354,11 +381,13 @@
                     <td>john.smith@email.com</td>
                     <td>₱12,345</td>
                     <td>
-                      <div class='d-flex gap-2'>
-                        <button class='btn btn-success'>View</button>
-                        <button class='btn btn-info'>Edit</button>
-                        <button class='btn btn-danger'>Delete</button>
-                    </div>
+
+                      <button class="btn btn-sm btn-success view-customer" 
+                        data-name="John Smith"
+                        data-phone="+1 234-567-8900"
+                        data-email="john.smith@email.com"
+                        data-total="₱12,345">View</button>
+
                     </td>
                   </tr>
                   <tr>
@@ -368,11 +397,13 @@
                     <td>sarah.j@email.com</td>
                     <td>₱10,234</td>
                     <td>
-                      <div class='d-flex gap-2'>
-                        <button class='btn btn-success'>View</button>
-                        <button class='btn btn-info'>Edit</button>
-                        <button class='btn btn-danger'>Delete</button>
-                    </div>
+
+                      <button class="btn btn-sm btn-success view-customer" 
+                        data-name="Sarah Johnson"
+                        data-phone="+1 234-567-8901"
+                        data-email="sarah.j@email.com"
+                        data-total="₱10,234">View</button>
+
                     </td>
                   </tr>
                   <tr>
@@ -382,11 +413,13 @@
                     <td>mike.w@email.com</td>
                     <td>₱8,765</td>
                     <td>
-                      <div class='d-flex gap-2'>
-                        <button class='btn btn-success'>View</button>
-                        <button class='btn btn-info'>Edit</button>
-                        <button class='btn btn-danger'>Delete</button>
-                    </div>
+
+                      <button class="btn btn-sm btn-success view-customer" 
+                        data-name="Mike Wilson"
+                        data-phone="+1 234-567-8902"
+                        data-email="mike.w@email.com"
+                        data-total="₱8,765">View</button>
+
                     </td>
                   </tr>
                   <tr>
@@ -396,11 +429,13 @@
                     <td>emily.b@email.com</td>
                     <td>₱7,654</td>
                     <td>
-                      <div class='d-flex gap-2'>
-                        <button class='btn btn-success'>View</button>
-                        <button class='btn btn-info'>Edit</button>
-                        <button class='btn btn-danger'>Delete</button>
-                    </div>
+
+                      <button class="btn btn-sm btn-success view-customer" 
+                        data-name="Emily Brown"
+                        data-phone="+1 234-567-8903"
+                        data-email="emily.b@email.com"
+                        data-total="₱7,654">View</button>
+
                     </td>
                   </tr>
                   <tr>
@@ -410,11 +445,83 @@
                     <td>david.l@email.com</td>
                     <td>₱6,543</td>
                     <td>
-                      <div class='d-flex gap-2'>
-                        <button class='btn btn-success'>View</button>
-                        <button class='btn btn-info'>Edit</button>
-                        <button class='btn btn-danger'>Delete</button>
-                    </div>
+
+                      <button class="btn btn-sm btn-success view-customer" 
+                        data-name="David Lee"
+                        data-phone="+1 234-567-8904"
+                        data-email="david.l@email.com"
+                        data-total="₱6,543">View</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>Lisa Anderson</td>
+                    <td>+1 234-567-8905</td>
+                    <td>lisa.a@email.com</td>
+                    <td>₱5,987</td>
+                    <td>
+                      <button class="btn btn-sm btn-success view-customer" 
+                        data-name="Lisa Anderson"
+                        data-phone="+1 234-567-8905"
+                        data-email="lisa.a@email.com"
+                        data-total="₱5,987">View</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>James Wilson</td>
+                    <td>+1 234-567-8906</td>
+                    <td>james.w@email.com</td>
+                    <td>₱5,432</td>
+                    <td>
+                      <button class="btn btn-sm btn-success view-customer" 
+                        data-name="James Wilson"
+                        data-phone="+1 234-567-8906"
+                        data-email="james.w@email.com"
+                        data-total="₱5,432">View</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>8</td>
+                    <td>Maria Garcia</td>
+                    <td>+1 234-567-8907</td>
+                    <td>maria.g@email.com</td>
+                    <td>₱4,876</td>
+                    <td>
+                      <button class="btn btn-sm btn-success view-customer" 
+                        data-name="Maria Garcia"
+                        data-phone="+1 234-567-8907"
+                        data-email="maria.g@email.com"
+                        data-total="₱4,876">View</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>9</td>
+                    <td>Robert Taylor</td>
+                    <td>+1 234-567-8908</td>
+                    <td>robert.t@email.com</td>
+                    <td>₱4,321</td>
+                    <td>
+                      <button class="btn btn-sm btn-success view-customer" 
+                        data-name="Robert Taylor"
+                        data-phone="+1 234-567-8908"
+                        data-email="robert.t@email.com"
+                        data-total="₱4,321">View</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>10</td>
+                    <td>Patricia Martinez</td>
+                    <td>+1 234-567-8909</td>
+                    <td>patricia.m@email.com</td>
+                    <td>₱3,765</td>
+                    <td>
+                      <button class="btn btn-sm btn-success view-customer" 
+                        data-name="Patricia Martinez"
+                        data-phone="+1 234-567-8909"
+                        data-email="patricia.m@email.com"
+                        data-total="₱3,765">View</button>
+
                     </td>
                   </tr>
                 </tbody>
@@ -526,9 +633,393 @@
               document.querySelector('.custom-range-inputs').classList.add('d-none');
           }
       });
-    </script>
-  </body>
+
+      // Customer modal functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const customerModal = new bootstrap.Modal(document.getElementById('customerModal'));
         
+        // Sample customer data with specific details
+        const customerDetails = {
+          'John Smith': {
+            purchases: [
+              { date: '2024-01-15', item: 'Garden Wedding Package (150 guests)', amount: 150000 },
+              { date: '2023-12-20', item: 'Anniversary Celebration Package', amount: 75000 },
+              { date: '2023-11-30', item: 'Premium Photo & Video Coverage', amount: 45000 },
+              { date: '2023-10-15', item: 'Corporate Year-End Event', amount: 120000 }
+            ],
+            monthlyData: {
+              labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+              values: [85000, 95000, 120000, 45000, 75000, 150000]
+            }
+          },
+          'Sarah Johnson': {
+            purchases: [
+              { date: '2024-01-12', item: 'Luxe Debut Package (200 guests)', amount: 180000 },
+              { date: '2023-12-15', item: 'Christmas Party Setup & Catering', amount: 85000 },
+              { date: '2023-11-25', item: 'Family Reunion Package', amount: 65000 },
+              { date: '2023-10-08', item: 'Product Launch Event', amount: 95000 }
+            ],
+            monthlyData: {
+              labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+              values: [45000, 75000, 95000, 65000, 85000, 180000]
+            }
+          },
+          'Mike Wilson': {
+            purchases: [
+              { date: '2024-01-10', item: 'Corporate Conference Full Package', amount: 250000 },
+              { date: '2023-12-18', item: 'Business Summit & Catering', amount: 175000 },
+              { date: '2023-11-28', item: 'Team Building Event Package', amount: 85000 },
+              { date: '2023-10-20', item: 'Award Ceremony Setup', amount: 120000 }
+            ],
+            monthlyData: {
+              labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+              values: [95000, 110000, 120000, 85000, 175000, 250000]
+            }
+          },
+          'Emily Brown': {
+            purchases: [
+              { date: '2024-01-08', item: 'Sweet 16 Celebration Package', amount: 95000 },
+              { date: '2023-12-12', item: 'New Year Party All-In Package', amount: 150000 },
+              { date: '2023-11-20', item: 'Baby Shower Premium Setup', amount: 45000 },
+              { date: '2023-10-05', item: 'Halloween Party Package', amount: 75000 }
+            ],
+            monthlyData: {
+              labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+              values: [55000, 65000, 75000, 45000, 150000, 95000]
+            }
+          },
+          'David Lee': {
+            purchases: [
+              { date: '2024-01-05', item: 'Silver Wedding Anniversary Package', amount: 200000 },
+              { date: '2023-12-22', item: 'Holiday Corporate Dinner', amount: 145000 },
+              { date: '2023-11-15', item: 'Engagement Party Package', amount: 85000 },
+              { date: '2023-10-28', item: 'Birthday Milestone Celebration', amount: 95000 }
+            ],
+            monthlyData: {
+              labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+              values: [65000, 75000, 95000, 85000, 145000, 200000]
+            }
+          }
+        };
+
+        // View button click handler
+        document.querySelectorAll('.view-customer').forEach(button => {
+          button.addEventListener('click', function() {
+            const customerName = this.dataset.name;
+            const data = {
+              name: customerName,
+              email: this.dataset.email,
+              phone: this.dataset.phone,
+              total: this.dataset.total,
+              purchases: customerDetails[customerName]?.purchases || [],
+              monthlyData: customerDetails[customerName]?.monthlyData || {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                values: [0, 0, 0, 0, 0, 0]
+              }
+            };
+
+            // Update modal content
+            updateModalContent(data);
+            customerModal.show();
+            setTimeout(initializeSparklines, 100);
+          });
+        });
+
+        // Helper function to update modal content
+        function updateModalContent(data) {
+          document.getElementById('customerName').textContent = data.name;
+          document.getElementById('customerEmail').textContent = data.email;
+          document.getElementById('customerPhone').textContent = data.phone;
+          document.getElementById('customerTotal').textContent = data.total;
+
+          // Update purchase history table
+          const tbody = document.querySelector('#customerModal .table tbody');
+          tbody.innerHTML = data.purchases.map(purchase => `
+            <tr>
+              <td>${purchase.date}</td>
+              <td>${purchase.item}</td>
+              <td>₱${purchase.amount.toLocaleString()}</td>
+            </tr>
+          `).join('');
+
+          // Update chart
+          updateChart(data);
+        }
+
+        // Helper function to update chart
+        function updateChart(data) {
+          const ctx = document.getElementById('customerChart').getContext('2d');
+          if (window.customerChart) {
+            window.customerChart.destroy();
+          }
+          
+          window.customerChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: data.monthlyData.labels,
+              datasets: [{
+                label: 'Monthly Bookings',
+                data: data.monthlyData.values,
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                tension: 0.3,
+                fill: true
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: { position: 'top' },
+                title: {
+                  display: true,
+                  text: `Booking History - ${data.name}`
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: value => '₱' + value.toLocaleString()
+                  }
+                }
+              },
+              animation: {
+                duration: 1000,
+                easing: 'easeInOutQuart'
+              }
+            }
+          });
+        }
+      });
+
+    </script>
+
+    <script>
+// Customer modal functionality
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.view-customer').forEach(button => {
+    button.addEventListener('click', function() {
+      const data = this.dataset;
+      const modal = new bootstrap.Modal(document.getElementById('customerModal'));
+      
+      if (data.name === "John Smith") {
+        // Special data for John Smith
+        const johnSmithData = {
+          customerId: "CS12345",
+          memberSince: "January 15, 2023",
+          totalBookings: "15 events",
+          loyaltyStatus: "Premium Member",
+          bookings: [
+            {
+              id: "BK00123",
+              date: "2024-01-15",
+              eventType: "Wedding",
+              package: "Garden Wedding Package (150 guests)",
+              status: "Completed",
+              amount: 150000
+            },
+            {
+              id: "BK00122",
+              date: "2023-12-20",
+              eventType: "Corporate",
+              package: "Year-End Party Package",
+              status: "Completed",
+              amount: 85000
+            },
+            {
+              id: "BK00121",
+              date: "2023-11-30",
+              eventType: "Wedding",
+              package: "Premium Photo & Video Coverage",
+              status: "Completed",
+              amount: 45000
+            },
+            {
+              id: "BK00120",
+              date: "2023-10-15",
+              eventType: "Corporate",
+              package: "Corporate Conference Package",
+              status: "Completed",
+              amount: 120000
+            }
+          ],
+          packagePreferences: [
+            { name: "Wedding Packages", percentage: 45, color: "primary" },
+            { name: "Corporate Events", percentage: 30, color: "info" },
+            { name: "Birthday Celebrations", percentage: 25, color: "success" }
+          ]
+        };
+
+        // Update customer info
+        document.getElementById('customerName').textContent = data.name;
+        document.getElementById('customerEmail').textContent = data.email;
+        document.getElementById('customerPhone').textContent = data.phone;
+        document.querySelector('.card-header small').textContent = `ID: #${johnSmithData.customerId}`;
+        document.querySelector('.info-item:nth-child(4) p').textContent = johnSmithData.memberSince;
+        document.querySelector('.info-item:nth-child(5) p').textContent = johnSmithData.totalBookings;
+
+        // Update booking history table
+        const tbody = document.querySelector('#bookingHistory');
+        tbody.innerHTML = johnSmithData.bookings.map(booking => `
+          <tr>
+            <td>${booking.id}</td>
+            <td>${booking.date}</td>
+            <td>${booking.eventType}</td>
+            <td>${booking.package}</td>
+            <td><span class="badge bg-success">${booking.status}</span></td>
+            <td>₱${booking.amount.toLocaleString()}</td>
+            <td>
+              <canvas class="booking-sparkline" 
+                      width="100" 
+                      height="30" 
+                      data-values="${generateSparklineData()}"
+              ></canvas>
+            </td>
+          </tr>
+        `).join('');
+
+        // Update package preferences
+        const preferencesContainer = document.querySelector('.package-item').parentElement;
+        preferencesContainer.innerHTML = johnSmithData.packagePreferences.map(pref => `
+          <div class="package-item">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-semibold">${pref.name}</span>
+              <span class="badge bg-${pref.color}">${pref.percentage}%</span>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-${pref.color}" role="progressbar" style="width: ${pref.percentage}%"></div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      modal.show();
+      setTimeout(initializeSparklines, 100);
+      setTimeout(() => {
+        initializeMiniCharts();
+      }, 100);
+    });
+  });
+});
+
+function generateSparklineData() {
+  // Generate random trend data for demonstration
+  return JSON.stringify(Array.from({length: 7}, () => Math.floor(Math.random() * 100)));
+}
+
+// Initialize sparklines after table population
+function initializeSparklines() {
+  document.querySelectorAll('.booking-sparkline').forEach(canvas => {
+    const ctx = canvas.getContext('2d');
+    const values = JSON.parse(canvas.dataset.values);
+    
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: Array(values.length).fill(''),
+        datasets: [{
+          data: values,
+          borderColor: '#28a745',
+          borderWidth: 1,
+          fill: true,
+          backgroundColor: 'rgba(30, 89, 44, 0.1)',
+          pointRadius: 0,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: false
+          }
+        },
+        scales: {
+          x: {
+            display: false
+          },
+          y: {
+            display: false
+          }
+        },
+        animation: {
+          duration: 1000,
+          easing: 'easeOutQuart'
+        }
+      }
+    });
+  });
+}
+
+function generateTrendData(baseAmount) {
+  // Generate 6 months of trend data based on the booking amount
+  const values = [];
+  for (let i = 0; i < 6; i++) {
+    // Create some variation around the base amount
+    const variation = baseAmount * (0.5 + Math.random() * 0.5);
+    values.push(Math.round(variation));
+  }
+  return JSON.stringify(values);
+}
+
+function initializeMiniCharts() {
+  document.querySelectorAll('.booking-trend').forEach(canvas => {
+    const ctx = canvas.getContext('2d');
+    const values = JSON.parse(canvas.dataset.values);
+    
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: Array(values.length).fill(''),
+        datasets: [{
+          data: values,
+          borderColor: '#1e4d2b',
+          borderWidth: 1.5,
+          fill: true,
+          backgroundColor: 'rgba(30, 77, 43, 0.1)',
+          pointRadius: 0,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: true,
+            callbacks: {
+              label: function(context) {
+                return '₱' + context.raw.toLocaleString();
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            display: false
+          },
+          y: {
+            display: false,
+            min: 0
+          }
+        },
+        animation: {
+          duration: 800,
+          easing: 'easeOutQuart'
+        }
+      }
+    });
+  });
+}
+
+</script>
 
           <div class="content-backdrop fade"></div>
         </div>
@@ -586,14 +1077,169 @@
   <script src="../../assets/vendor/libs/chartjs/chartjs.js"></script>
   <script src="../../assets/js/charts-chartjs-legend.js"></script>
   <script src="../../assets/js/charts-chartjs.js"></script>
-  
-  <script>
-    // DataTable
-    $(document).ready(function() {
-      $('#customerSalesTable').DataTable();
-      
+
+
+    <!-- Customer Details Modal -->
+    <div class="modal fade" id="customerModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content shadow-lg rounded-4">
+      <div class="modal-header" style="background-color: #134013;">
+        <h5 class="modal-title" style="color: white;">Customer Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body px-4 py-3">
+        <div class="row g-4">
+          <!-- Customer Info -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-3">
+              <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #f0f0f0;">
+                <h5 class="mb-0" style="color: black;">Customer Info</h5>
+                <small style="color: black;">ID: #CS12345</small>
+              </div>
+              <div class="card-body d-flex flex-column gap-3" style="background-color: white;">
+                <p class="fw-semibold" style="color: black;">Full Name: <span class="text-dark" id="customerName">John Smith</span></p>
+                <p class="fw-semibold" style="color: black;">Email: <span class="text-dark" id="customerEmail">john.smith@email.com</span></p>
+                <p class="fw-semibold" style="color: black;">Phone: <span class="text-dark" id="customerPhone">+1 234-567-8900</span></p>
+                <p class="fw-semibold" style="color: black;">Member Since: <span class="text-dark">January 15, 2023</span></p>
+                <p class="fw-semibold" style="color: black;">Total Bookings: <span class="text-dark">15 events</span></p>
+                <p class="fw-semibold" style="color: black;">Loyalty Status: <span class="badge bg-success">Premium Member</span></p>
+              </div>
+            </div>
+          </div>
+          <!-- Recent Transactions -->
+          <div class="col-md-6 col-lg-8">
+            <div class="card border-0 shadow-sm rounded-3">
+              <div class="card-header d-flex justify-content-between" style="background-color: #f0f0f0;">
+                <h5 class="mb-0" style="color: black;">Recent Bookings</h5>
+                <div>
+                  <button class="btn btn-sm btn-outline-secondary">Filter</button>
+                  <button class="btn btn-sm btn-outline-secondary">Export</button>
+                </div>
+              </div>
+              <div class="card-body p-3">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead>
+                      <tr style="background-color: #f0f0f0;">
+                        <th style="color: black; font-weight: 500;">Booking ID</th>
+                        <th style="color: black; font-weight: 500;">Date</th>
+                        <th style="color: black; font-weight: 500;">Event Type</th>
+                        <th style="color: black; font-weight: 500;">Package</th>
+                        <th style="color: black; font-weight: 500;">Status</th>
+                        <th style="color: black; font-weight: 500;">Amount</th>
+                        <th style="color: black; font-weight: 500;">Monthly Trend</th>
+                      </tr>
+                    </thead>
+                    <tbody id="bookingHistory">
+                      <tr>
+                        <td>#12345</td>
+                        <td>2025-03-27</td>
+                        <td>Wedding</td>
+                        <td>Gold Package</td>
+                        <td><span class="badge bg-success">Confirmed</span></td>
+                        <td>$1,500</td>
+                        <td>
+                          <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-primary" style="width: 70%;"></div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts -->
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm rounded-3">
+              <div class="card-header" style="background-color: #f0f0f0;">
+                <h5 class="mb-0" style="color: black;">Booking History</h5>
+              </div>
+              <div class="card-body">
+                <canvas id="customerChart" height="300"></canvas>
+              </div>
+            </div>
+          </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var ctx = document.getElementById("customerChart").getContext("2d");
+    var customerChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        datasets: [{
+          label: "Bookings",
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
     });
-  </script>
+  });
+</script>
+
+          <!-- Package Preferences -->
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm rounded-3">
+              <div class="card-header" style="background-color: #f0f0f0;">
+                <h5 class="mb-0" style="color: black;">Package Preferences</h5>
+              </div>
+              <div class="card-body d-flex flex-column gap-3">
+                <div class="progress-item">
+                  <div class="d-flex justify-content-between mb-1">
+                    <span class="fw-semibold">Wedding Packages</span>
+                    <span class="badge bg-primary">45%</span>
+                  </div>
+                  <div class="progress" style="height: 10px;">
+                    <div class="progress-bar bg-primary" style="width: 45%"></div>
+                  </div>
+                </div>
+                <div class="progress-item">
+                  <div class="d-flex justify-content-between mb-1">
+                    <span class="fw-semibold">Corporate Events</span>
+                    <span class="badge bg-info">30%</span>
+                  </div>
+                  <div class="progress" style="height: 10px;">
+                    <div class="progress-bar bg-info" style="width: 30%"></div>
+                  </div>
+                </div>
+                <div class="progress-item">
+                  <div class="d-flex justify-content-between mb-1">
+                    <span class="fw-semibold">Birthday Celebrations</span>
+                    <span class="badge bg-success">25%</span>
+                  </div>
+                  <div class="progress" style="height: 10px;">
+                    <div class="progress-bar bg-success" style="width: 25%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Edit Customer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 </body>
 
 

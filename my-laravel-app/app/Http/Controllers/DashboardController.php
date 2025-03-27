@@ -353,7 +353,14 @@ class DashboardController extends Controller
         return view('page.booking', compact('services', 'staffs', 'branches', 'patients'));
         
     }
-
+    public function new_expenses()
+    {
+        return view('page.new-expenses');
+    }
+    public function expenses_list()
+    {
+        return view('page.expenses-list');
+    }
 
 }
 
