@@ -25,4 +25,14 @@ class branch extends Model
     {
         return $this->hasMany(Service::class, 'branch_code', 'branch_code');
     }
+
+    public function staff() 
+    {
+        return $this->hasMany(Staff::class, 'branch_code', 'branch_code');
+    }
+
+    public function booking()
+    {
+        return $this->hasMany(Booking::class, 'branch_code', 'branch_code');
+    }
 }

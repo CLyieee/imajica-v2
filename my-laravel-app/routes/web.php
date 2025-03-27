@@ -7,6 +7,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CategoryListController;
 use App\Http\Controllers\patientController;
+use App\Http\Controllers\staffController;
+use App\Http\Controllers\branchController;
+use App\Http\Controllers\supplierController;
+use App\Http\Controllers\serviceController;
+use App\Http\Controllers\tierController;
+use App\Http\Controllers\bookingController;
 
 
 // Route::get('/', function () {
@@ -61,7 +67,7 @@ Route::get('/loyalty-list', [DashboardController::class, 'loyalty_list'])->name(
 Route::get('/new-patient', [DashboardController::class, 'new_patient'])->name('page.new-patient');
 
 Route::get('/patient-list', [DashboardController::class, 'patient_list'])->name('page.patient-list');
-Route::post('patient/create', [patientController::class, 'create'])->name('patient.create');
+Route::post('patient/create', [App\Http\Controllers\patientController::class, 'create'])->name('patient.create');
 
 Route::get('/new-supplier', [DashboardController::class, 'new_supplier'])->name('page.new-supplier');
 
@@ -122,7 +128,31 @@ Route::get('/employee-report', [DashboardController::class, 'employee_report'])-
 Route::get('/expenses-report', [DashboardController::class, 'expenses_report'])->name('page.expenses-report');
 
 
+
 Route::get('/category/all', [CategoryListController::class, 'getAll'])->name('category.all');
 Route::get('/api/categories', [CategoryListController::class, 'getAll'])->name('api.categories');
 Route::post('/category/create', [CategoryListController::class, 'create'])->name('category.create');
 Route::get('/category-list', [DashboardController::class, 'category_list'])->name('page.category-list');
+
+
+//Staff Route
+Route::post('/staff/create', [App\Http\Controllers\staffController::class, 'create'])->name('staff.create');
+Route::get('/staff/all', [App\Http\Controllers\staffController::class, 'get_staff'])->name('get.staff');
+Route::put('/staff/update', [staffController::class, 'update'])->name('staff.update');
+Route::delete('/staff/{id}', [App\Http\Controllers\staffController::class, 'delete'])->name('staff.delete');
+
+
+
+//Loyalty Route
+Route::post('/tier/create', [App\Http\Controllers\tierController::class, 'create'])->name('tier.create');
+Route::get('/tier/all', [App\Http\Controllers\tierController::class, 'list'])->name('tier.list');
+Route::put('/tier/update', [App\Http\Controllers\tierController::class, 'update'])->name('tier.update');
+Route::delete('/tier/{id}', [App\Http\Controllers\tierController::class, 'delete'])->name('tier.delete');
+
+
+//Booking Route
+Route::post('/booking/create', [App\Http\Controllers\bookingController::class, 'create'])->name('booking.create');
+Route::get('/booking/all', [App\Http\Controllers\bookingController::class, 'get_bookings'])->name('get.bookings');
+Route::put('/booking/update', [App\Http\Controllers\bookingController::class, 'update'])->name('booking.update');
+Route::delete('/booking/delete', [App\Http\Controllers\bookingController::class, 'delete'])->name('booking.delete');
+

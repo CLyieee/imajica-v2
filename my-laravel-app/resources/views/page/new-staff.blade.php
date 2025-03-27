@@ -390,6 +390,10 @@
                         <div class="col-lg-8 mx-auto">
                           <!-- 1. Delivery Address -->
                         
+                          <!-- Add form tag with proper enctype for file uploads -->
+                          <form method="post" action="{{ route('staff.create') }}" enctype="multipart/form-data">
+                            @csrf
+                            @method('POST')
                           <div class="row g-6">
                             <div class="col-12 text-center mb-4">
                               <div class="profile-upload-container mx-auto">
@@ -411,6 +415,7 @@
                                     <input
                                       type="file"
                                       id="imageUpload"
+                                      name="image_path"
                                       accept=".png, .jpg, .jpeg"
                                       class="d-none"
                                     />
@@ -433,8 +438,10 @@
                               <input
                                 type="text"
                                 id="firstName"
+                                name="firstname"
                                 class="form-control"
                                 placeholder="First Name"
+                                required
                               />
                             </div>
                             <div class="col-md-6">
@@ -444,8 +451,10 @@
                               <input
                                 type="text"
                                 id="lastName"
+                                name="lastname"
                                 class="form-control"
                                 placeholder="Last Name"
+                                required
                               />
                             </div>
 
@@ -457,8 +466,10 @@
                               <input
                                 type="email"
                                 id="email"
+                                name="email"
                                 class="form-control"
                                 placeholder="Email Address"
+                                required
                               />
                             </div>
                             <div class="col-md-6">
@@ -468,8 +479,10 @@
                               <input
                                 type="tel"
                                 id="phone"
+                                name="contact_number"
                                 class="form-control"
                                 placeholder="Contact Number"
+                                required
                               />
                             </div>
 
@@ -481,7 +494,9 @@
                               <select
                                 class="select2 form-select"
                                 id="position"
+                                name="position"
                                 data-allow-clear="true"
+                                required
                               >
                                 <option value="">Select Position</option>
                                 <option value="aesthetician">
@@ -506,7 +521,9 @@
                               <select
                                 class="select2 form-select"
                                 id="department"
+                                name="department"
                                 data-allow-clear="true"
+                                required
                               >
                                 <option value="">Select Department</option>
                                 <option value="management">Management</option>
@@ -524,7 +541,9 @@
                               <input
                                 type="date"
                                 id="joinDate"
+                                name="join_date"
                                 class="form-control flatpickr-basic"
+                                required
                               />
                             </div>
                             <div class="col-md-6">
@@ -534,7 +553,9 @@
                               <select
                                 class="select2 form-select"
                                 id="employmentType"
+                                name="employment_type"
                                 data-allow-clear="true"
+                                required
                               >
                                 <option value="">Select Type</option>
                                 <option value="full_time">Full Time</option>
@@ -550,7 +571,9 @@
                               <select
                                 class="select2 form-select"
                                 id="branch"
+                                name="branch_code"
                                 data-allow-clear="true"
+                                required
                               >
                                 <option value="">Select Branch</option>
                                 @foreach ($branches as $branch)
@@ -569,6 +592,7 @@
                                 id="address"
                                 rows="4"
                                 placeholder="Complete Address"
+                                required
                               ></textarea>
                             </div>
 
@@ -580,6 +604,7 @@
                               <input
                                 type="text"
                                 id="emergencyContact"
+                                name="emergency_contact_name"
                                 class="form-control"
                                 placeholder="Emergency Contact Person"
                               />
@@ -591,6 +616,7 @@
                               <input
                                 type="tel"
                                 id="emergencyPhone"
+                                name="emergency_contact_number"
                                 class="form-control"
                                 placeholder="Emergency Contact Number"
                               />
@@ -612,7 +638,7 @@
                               </button>
                             </div>
                           </div>
-
+                          </form>
                           <!-- 2. Delivery Type -->
 
                           <br />
@@ -770,6 +796,49 @@
 
         // Set default avatar on page load
         imagePreview.src = createInitialsAvatar("NA");
+      });
+    </script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Display success message using SweetAlert2
+        @if(session('success'))
+          Swal.fire({
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
+        @endif
+
+        // Display error message using SweetAlert2
+        @if(session('error'))
+          Swal.fire({
+            title: 'Error!',
+            text: '{{ session('error') }}',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        @endif
+
+        // Display validation errors if any
+        @if($errors->any())
+          let errorMessage = '<ul>';
+          @foreach($errors->all() as $error)
+            errorMessage += '<li>{{ $error }}</li>';
+          @endforeach
+          errorMessage += '</ul>';
+          
+          Swal.fire({
+            title: 'Validation Error',
+            html: errorMessage,
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        @endif
       });
     </script>
   </body>

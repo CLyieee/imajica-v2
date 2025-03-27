@@ -343,39 +343,43 @@
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
                           <!-- 1. Delivery Address -->
-
+                        <form action="{{ route('tier.create') }}" method="POST">
+                          @csrf
                           <div class="row g-6">
                             <div class="col-md-6">
-                              <label class="form-label" for="fullname"
+                              <label class="form-label" for="tier_name"
                                 >Membership Tier Name</label
                               >
                               <input
                                 type="text"
-                                id="fullname"
+                                id="tier_name"
+                                name="tier_name"
                                 class="form-control"
                                 placeholder="Membership Tier Name"
                               />
                             </div>
 
                             <div class="col-md-6">
-                              <label class="form-label" for="fullname"
+                              <label class="form-label" for="points_required"
                                 >Points Required to Acheive Tier</label
                               >
                               <input
                                 type="number"
-                                id="fullname"
+                                id="points_required"
+                                name="points_required"
                                 class="form-control"
                                 placeholder="Points Required to Acheive Tier"
                               />
                             </div>
 
                             <div class="col-md-6">
-                              <label class="form-label" for="fullname"
+                              <label class="form-label" for="points_to_redeem"
                                 >Points Required to Redeem</label
                               >
                               <input
                                 type="number"
-                                id="fullname"
+                                id="points_to_redeem"
+                                name="points_to_redeem"
                                 class="form-control"
                                 placeholder="Points Required to Redeem"
                               />
@@ -387,27 +391,28 @@
                               >
                               <select
                                 class="select2 form-select"
+                                name="tier_lenght"
                                 data-allow-clear="true"
                               >
                                 <option value="">
                                   Select Tier Expirty / Downgrade Rule
                                 </option>
-                                <option value="AL">Never Expires</option>
-                                <option value="AK">
+                                <option value="Never Expires">Never Expires</option>
+                                <option value="6 Month Inactivity">
                                   Downgrade if No Activity for 6 Months
                                 </option>
-                                <option value="AK">Reset Every Year</option>
+                                <option value="Yearly Reset">Reset Every Year</option>
                               </select>
                             </div>
 
                             <div class="col-12">
-                              <label class="form-label" for="address"
+                              <label class="form-label" for="remarks"
                                 >Remarks</label
                               >
                               <textarea
-                                name="address"
+                                name="remarks"
                                 class="form-control"
-                                id="address"
+                                id="remarks"
                                 rows="4"
                                 placeholder="Remarks"
                               ></textarea>
@@ -423,7 +428,7 @@
                             </button>
                           </div>
                           <br />
-
+                          </form>
                           <!-- 4. Payment Method -->
                         </div>
                       </div>

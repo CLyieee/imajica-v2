@@ -39,4 +39,9 @@ class patient extends Model
     {
         return $this->belongsTo(Tier::class, 'patient_tier_id', 'patient_tier_id');
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'patient_id', 'patient_id');
+    }
 }
