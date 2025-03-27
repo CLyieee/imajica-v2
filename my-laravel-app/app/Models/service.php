@@ -10,7 +10,7 @@ class service extends Model
     use HasFactory;
 
     protected $table = 'services';
-    public $timestamps = false; // Disable timestamps
+
     
     protected $fillable = [
         'service_name',

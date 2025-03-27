@@ -2,23 +2,189 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
+use Carbon\Carbon;
 use App\Models\branch;
 use App\Models\service;
 use App\Models\category;
 use App\Models\coupon;
 use App\Models\supplier;
-use App\Models\tier;
-use App\Models\patient;
 
+use App\Models\tier;
+use App\Models\service;
 use App\Models\staff;
+use App\Models\booking;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    // Add this method to fix the "Method does not exist" error
     public function dashboard()
     {
-        return view('page.dashboard');
+        // Simply call the index method to avoid duplicating code
+        return $this->index();
+    }
+    
+    public function index()
+    {
+        // Get all patients for count
+        $patients = Patient::all();
+        $bookings = booking::all();
+        $services = service::all();
+        
+        // Calculate patient growth (example calculation - modify as needed)
+        $patientGrowth = $this->calculatePatientGrowth();
+        
+        // Get today's birthdays
+        $todayBirthdays = $this->getTodayBirthdays();
+        
+        // Get upcoming birthdays (next 30 days)
+        $upcomingBirthdays = $this->getUpcomingBirthdays();
+        
+        // Get all birthdays for the modal
+        $allBirthdays = $this->getAllBirthdays();
+        
+        return view('page.dashboard', compact('patients', 'bookings', 'patientGrowth', 'todayBirthdays', 'upcomingBirthdays', 'allBirthdays'));
+    }
+    
+    private function calculatePatientGrowth()
+    {
+        // Get current month's new patients
+        $thisMonth = Patient::whereMonth('created_at', Carbon::now()->month)
+                          ->whereYear('created_at', Carbon::now()->year)
+                          ->count();
+        
+        // Get last month's new patients
+        $lastMonth = Patient::whereMonth('created_at', Carbon::now()->subMonth()->month)
+                          ->whereYear('created_at', Carbon::now()->subMonth()->year)
+                          ->count();
+        
+        // Calculate growth percentage
+        if ($lastMonth > 0) {
+            return (($thisMonth - $lastMonth) / $lastMonth) * 100;
+        }
+        
+        return $thisMonth > 0 ? 100 : 0; // If last month was 0, return 100% growth or 0 if no new patients
+    }
+    
+    private function getTodayBirthdays()
+    {
+        $today = Carbon::today();
+        
+        return Patient::whereMonth('birthdate', $today->month)
+                    ->whereDay('birthdate', $today->day)
+                    ->get()
+                    ->map(function($patient) {
+                        $patient->age = Carbon::parse($patient->birthdate)->age;
+                        $patient->birthdayLabel = 'Today';
+                        // Generate initials from first and last name
+                        $patient->initials = mb_substr($patient->firstname, 0, 1) . mb_substr($patient->lastname, 0, 1);
+                        return $patient;
+                    });
+    }
+    
+    private function getUpcomingBirthdays($days = 30)
+    {
+        $today = Carbon::today();
+        $endDate = Carbon::today()->addDays($days);
+        
+        // This query gets birthdays in the upcoming days, excluding today
+        return Patient::whereRaw("
+            (MONTH(birthdate) > ? OR 
+            (MONTH(birthdate) = ? AND DAY(birthdate) > ?)) AND
+            (MONTH(birthdate) < ? OR 
+            (MONTH(birthdate) = ? AND DAY(birthdate) <= ?))
+            ", [
+                $today->month,
+                $today->month, $today->day,
+                $endDate->month,
+                $endDate->month, $endDate->day
+            ])
+            ->orWhereRaw("
+                MONTH(birthdate) = ? AND 
+                DAY(birthdate) > ? AND
+                DAY(birthdate) <= ?
+            ", [
+                $today->month, $today->day, $endDate->day
+            ])
+            ->orderByRaw('MONTH(birthdate), DAY(birthdate)')
+            ->get()
+            ->map(function($patient) use ($today) {
+                $patient->age = Carbon::parse($patient->birthdate)->age;
+                
+                // Calculate how many days until birthday
+                $nextBirthday = Carbon::parse($patient->birthdate)->setYear($today->year);
+                if ($nextBirthday->isPast()) {
+                    $nextBirthday->addYear();
+                }
+                $daysUntil = $today->diffInDays($nextBirthday, false);
+                
+                $patient->daysUntil = $daysUntil;
+                $patient->birthdayLabel = "In {$daysUntil} days";
+                
+                // Generate initials from first and last name
+                $patient->initials = mb_substr($patient->firstname, 0, 1) . mb_substr($patient->lastname, 0, 1);
+                
+                return $patient;
+            });
+    }
+    
+    private function getAllBirthdays()
+    {
+        // Group patients by birth month for the birthday modal
+        $patients = Patient::all();
+        $birthdays = [];
+        
+        foreach ($patients as $patient) {
+            $birthMonth = Carbon::parse($patient->birthdate)->format('F');
+            $birthDay = Carbon::parse($patient->birthdate)->format('j');
+            $patient->birthDay = $birthDay;
+            $patient->age = Carbon::parse($patient->birthdate)->age;
+            $patient->initials = mb_substr($patient->firstname, 0, 1) . mb_substr($patient->lastname, 0, 1);
+            
+            // Calculate days until birthday
+            $today = Carbon::today();
+            $nextBirthday = Carbon::parse($patient->birthdate)->setYear($today->year);
+            if ($nextBirthday->isPast()) {
+                $nextBirthday->addYear();
+            }
+            $patient->daysUntil = $today->diffInDays($nextBirthday, false);
+            
+            if (!isset($birthdays[$birthMonth])) {
+                $birthdays[$birthMonth] = [];
+            }
+            
+            $birthdays[$birthMonth][] = $patient;
+        }
+        
+        // Sort months chronologically starting from current month
+        $currentMonth = Carbon::now()->format('F');
+        $months = array_keys($birthdays);
+        usort($months, function($a, $b) use ($currentMonth) {
+            $aMonth = Carbon::parse("1 $a")->month;
+            $bMonth = Carbon::parse("1 $b")->month;
+            $currentMonthNum = Carbon::parse("1 $currentMonth")->month;
+            
+            // Adjust month values relative to current month
+            $aAdjusted = $aMonth < $currentMonthNum ? $aMonth + 12 : $aMonth;
+            $bAdjusted = $bMonth < $currentMonthNum ? $bMonth + 12 : $bMonth;
+            
+            return $aAdjusted - $bAdjusted;
+        });
+        
+        $sortedBirthdays = [];
+        foreach ($months as $month) {
+            $sortedBirthdays[$month] = $birthdays[$month];
+            
+            // Sort patients within each month by day of month
+            usort($sortedBirthdays[$month], function($a, $b) {
+                return $a->birthDay - $b->birthDay;
+            });
+        }
+        
+        return $sortedBirthdays;
     }
 
     public function new_coupon()

@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 
+
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CategoryListController;
+
 use App\Http\Controllers\patientController;
 use App\Http\Controllers\staffController;
 use App\Http\Controllers\branchController;
@@ -23,7 +25,7 @@ use App\Http\Controllers\bookingController;
 
         Route::get('/', [LoginController::class, 'index'])->name('page.index');
 
-        Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('page.dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
         Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
