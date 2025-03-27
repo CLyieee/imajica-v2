@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 
 use App\Http\Controllers\CouponController;
-
+use App\Http\Controllers\CategoryListController;
 use App\Http\Controllers\patientController;
 use App\Http\Controllers\staffController;
 use App\Http\Controllers\branchController;
@@ -28,7 +28,6 @@ use App\Http\Controllers\bookingController;
         Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
         Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
             
-    
 
         Route::get('/coupon-list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
 
@@ -130,6 +129,12 @@ Route::get('/expenses-report', [DashboardController::class, 'expenses_report'])-
 
 
 
+Route::get('/category/all', [CategoryListController::class, 'getAll'])->name('category.all');
+Route::get('/api/categories', [CategoryListController::class, 'getAll'])->name('api.categories');
+Route::post('/category/create', [CategoryListController::class, 'create'])->name('category.create');
+Route::get('/category-list', [DashboardController::class, 'category_list'])->name('page.category-list');
+
+
 //Staff Route
 Route::post('/staff/create', [App\Http\Controllers\staffController::class, 'create'])->name('staff.create');
 Route::get('/staff/all', [App\Http\Controllers\staffController::class, 'get_staff'])->name('get.staff');
@@ -150,3 +155,4 @@ Route::post('/booking/create', [App\Http\Controllers\bookingController::class, '
 Route::get('/booking/all', [App\Http\Controllers\bookingController::class, 'get_bookings'])->name('get.bookings');
 Route::put('/booking/update', [App\Http\Controllers\bookingController::class, 'update'])->name('booking.update');
 Route::delete('/booking/delete', [App\Http\Controllers\bookingController::class, 'delete'])->name('booking.delete');
+

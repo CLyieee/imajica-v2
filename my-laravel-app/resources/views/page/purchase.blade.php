@@ -98,11 +98,7 @@
 
     <!-- Helpers -->
     <script src="../../assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    
-      <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-      <script src="../../assets/vendor/js/template-customizer.js"></script>
-    
+
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     
       <script src="../../assets/js/config.js"></script>
@@ -757,9 +753,9 @@ background-color: #d1ecf1; /* Light cyan */
                         item.amount,
                         item.payment_terms,
                         `<div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
+                                    <button class='btn btn-success'><i class="ti tabler-eye me-1"></i>View</button>
+                                    <button class='btn btn-info'><i class="ti tabler-edit me-1"></i>Edit</button>
+                                    <button class='btn btn-danger'><i class="ti tabler-trash me-1"></i>Delete</button>
                                 </div>`
                     ]).draw(false);
                 });

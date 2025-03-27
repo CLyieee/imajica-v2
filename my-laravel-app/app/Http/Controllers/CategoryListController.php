@@ -3,10 +3,51 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\category;
 
 class CategoryListController extends Controller
 {
     public function index(){
-        return view('page.category-list');
+        $categories = category::all();
+        return view('page.category-list', compact('categories'));
+    }
+
+    public function create(Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'categoryTitle' => 'required|string|max:255',
+                'slug' => 'required|string|max:255|unique:categories',
+                'description' => 'nullable|string',
+                'categoryImage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            ]);
+
+            if ($request->hasFile('categoryImage')) {
+                $image = $request->file('categoryImage');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/categories'), $imageName);
+                $data['categoryImage'] = 'uploads/categories/' . $imageName;
+            }
+
+            $category = category::create($data);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Category created successfully',
+                'data' => $category
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+        return redirect(route('page.category-list'));
+    }
+
+    public function getAll()
+    {
+        $categories = category::all();
+        return response()->json($categories);
     }
 }

@@ -74,13 +74,12 @@
 
   <!-- Helpers -->
   <script src="../../assets/vendor/js/helpers.js"></script>
-  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-
-  <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-
-  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-
+  
   <script src="../../assets/js/config.js"></script>
+
+
+  </script>
+  
   <style>
     /* Add to your existing styles */
     .client-detail-card {
@@ -149,7 +148,7 @@
 <body>
   <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
-      <!-- Replace hardcoded sidebar with component -->
+
       @include('components.sidebar')
 
       <!-- Keep rest of existing content -->
@@ -294,9 +293,10 @@
               </div>
 
               <!-- Table -->
-              <div class="table-responsive text-nowrap px-3">
-                <table id="servicesTable" class="table table-striped">
-                  <thead class="table-light">
+              <div class="table-responsive">
+
+                <table class="table table-striped" id="tableService">
+                    <thead class="table-light">
                     <tr>
                       <th>Service ID</th>
                       <th>Services Name</th>
@@ -304,7 +304,6 @@
                       <th>Description</th>
                       <th>Duration</th>
                       <th>Service Category</th>
-
                       <th>Service Cost</th>
                       <th>Loyalty Points</th>
                       <th>Actions</th>
@@ -323,7 +322,7 @@
                       <td>{{ $service -> service_cost }}</td>
                       <td>{{ $service -> loyalty_pts }}</td>
                       <td>
-                        <button type="button" class="btn btn-success btn-sm edit-service"
+                        <button type="button" class="btn btn-info btn-sm edit-service"
                           data-service-name="{{ $service->service_name }}"
                           data-service-branch="{{ $service->branch_code }}"
                           data-service-description="{{ $service->description }}"
@@ -331,11 +330,11 @@
                           data-service-category="{{ $service->service_category }}"
                           data-service-cost="{{ $service->service_cost }}"
                           data-service-points="{{ $service->loyalty_pts }}" data-service-id="{{ $service->id }}">
-                          Edit
+                          <i class="ti tabler-edit me-1"></i>Edit
                         </button>
                         <button type="button" class="btn btn-danger btn-sm delete-service"
                           data-service-id="{{ $service->id }}">
-                          Delete
+                          <i class="ti tabler-trash me-1"></i> Delete
                         </button>
                       </td>
                     </tr>
@@ -523,13 +522,16 @@
   <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
   <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
   
+
+  <script src="../../assets/js/service-management.js"></script>
+  <script src="{{ asset('assets/js/service-management.js') }}" defer></script>
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
   <script>
     $(document).ready(function () {
-        var table = $("#servicesTable").DataTable();
-
+      $('#servicesTable').DataTable();
+  
         // Filter by branch
         $("#branchFilter").on("change", function () {
           var selectedBranch = $(this).val();
@@ -635,6 +637,16 @@
         });
       @endif
   </script>
+<script>
+  $(document).ready(function () {
+    $('#tableService').DataTable({
+       dom: 'Bfrtip',
+       searching: true,
+        paging: true,
+        searchPlaceholder: 'Search...',
+    });
+});
+</script>
 </body>
 
 </html>

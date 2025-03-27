@@ -100,9 +100,9 @@ document.addEventListener("DOMContentLoaded", function(e) {
 
                 <td>
                 <div class='d-flex gap-2'>
-                            <button class='btn btn-success btn-sm'>View</button>
+                            <button class='btn btn-success btn-sm'></i>View</button>
                             <button class='btn btn-info btn-sm'>Edit</button>
-                            <button class='btn btn-danger btn-sm'>Delete</button>
+                            <button class='btn btn-danger btn-sm'></i>Delete</button>
                         </div>
                   </td>
             </tr>
