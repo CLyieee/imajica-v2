@@ -2,23 +2,204 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
+use Carbon\Carbon;
+use App\Models\branch;
+use App\Models\service;
+use App\Models\category;
+use App\Models\coupon;
+use App\Models\supplier;
+
+use App\Models\tier;
+use App\Models\service;
+use App\Models\staff;
+use App\Models\booking;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    // Add this method to fix the "Method does not exist" error
     public function dashboard()
     {
-        return view('page.dashboard');
+        // Simply call the index method to avoid duplicating code
+        return $this->index();
+    }
+    
+    public function index()
+    {
+        // Get all patients for count
+        $patients = Patient::all();
+        $bookings = booking::all();
+        $services = service::all();
+        
+        // Calculate patient growth (example calculation - modify as needed)
+        $patientGrowth = $this->calculatePatientGrowth();
+        
+        // Get today's birthdays
+        $todayBirthdays = $this->getTodayBirthdays();
+        
+        // Get upcoming birthdays (next 30 days)
+        $upcomingBirthdays = $this->getUpcomingBirthdays();
+        
+        // Get all birthdays for the modal
+        $allBirthdays = $this->getAllBirthdays();
+        
+        return view('page.dashboard', compact('patients', 'bookings', 'patientGrowth', 'todayBirthdays', 'upcomingBirthdays', 'allBirthdays'));
+    }
+    
+    private function calculatePatientGrowth()
+    {
+        // Get current month's new patients
+        $thisMonth = Patient::whereMonth('created_at', Carbon::now()->month)
+                          ->whereYear('created_at', Carbon::now()->year)
+                          ->count();
+        
+        // Get last month's new patients
+        $lastMonth = Patient::whereMonth('created_at', Carbon::now()->subMonth()->month)
+                          ->whereYear('created_at', Carbon::now()->subMonth()->year)
+                          ->count();
+        
+        // Calculate growth percentage
+        if ($lastMonth > 0) {
+            return (($thisMonth - $lastMonth) / $lastMonth) * 100;
+        }
+        
+        return $thisMonth > 0 ? 100 : 0; // If last month was 0, return 100% growth or 0 if no new patients
+    }
+    
+    private function getTodayBirthdays()
+    {
+        $today = Carbon::today();
+        
+        return Patient::whereMonth('birthdate', $today->month)
+                    ->whereDay('birthdate', $today->day)
+                    ->get()
+                    ->map(function($patient) {
+                        $patient->age = Carbon::parse($patient->birthdate)->age;
+                        $patient->birthdayLabel = 'Today';
+                        // Generate initials from first and last name
+                        $patient->initials = mb_substr($patient->firstname, 0, 1) . mb_substr($patient->lastname, 0, 1);
+                        return $patient;
+                    });
+    }
+    
+    private function getUpcomingBirthdays($days = 30)
+    {
+        $today = Carbon::today();
+        $endDate = Carbon::today()->addDays($days);
+        
+        // This query gets birthdays in the upcoming days, excluding today
+        return Patient::whereRaw("
+            (MONTH(birthdate) > ? OR 
+            (MONTH(birthdate) = ? AND DAY(birthdate) > ?)) AND
+            (MONTH(birthdate) < ? OR 
+            (MONTH(birthdate) = ? AND DAY(birthdate) <= ?))
+            ", [
+                $today->month,
+                $today->month, $today->day,
+                $endDate->month,
+                $endDate->month, $endDate->day
+            ])
+            ->orWhereRaw("
+                MONTH(birthdate) = ? AND 
+                DAY(birthdate) > ? AND
+                DAY(birthdate) <= ?
+            ", [
+                $today->month, $today->day, $endDate->day
+            ])
+            ->orderByRaw('MONTH(birthdate), DAY(birthdate)')
+            ->get()
+            ->map(function($patient) use ($today) {
+                $patient->age = Carbon::parse($patient->birthdate)->age;
+                
+                // Calculate how many days until birthday
+                $nextBirthday = Carbon::parse($patient->birthdate)->setYear($today->year);
+                if ($nextBirthday->isPast()) {
+                    $nextBirthday->addYear();
+                }
+                $daysUntil = $today->diffInDays($nextBirthday, false);
+                
+                $patient->daysUntil = $daysUntil;
+                $patient->birthdayLabel = "In {$daysUntil} days";
+                
+                // Generate initials from first and last name
+                $patient->initials = mb_substr($patient->firstname, 0, 1) . mb_substr($patient->lastname, 0, 1);
+                
+                return $patient;
+            });
+    }
+    
+    private function getAllBirthdays()
+    {
+        // Group patients by birth month for the birthday modal
+        $patients = Patient::all();
+        $birthdays = [];
+        
+        foreach ($patients as $patient) {
+            $birthMonth = Carbon::parse($patient->birthdate)->format('F');
+            $birthDay = Carbon::parse($patient->birthdate)->format('j');
+            $patient->birthDay = $birthDay;
+            $patient->age = Carbon::parse($patient->birthdate)->age;
+            $patient->initials = mb_substr($patient->firstname, 0, 1) . mb_substr($patient->lastname, 0, 1);
+            
+            // Calculate days until birthday
+            $today = Carbon::today();
+            $nextBirthday = Carbon::parse($patient->birthdate)->setYear($today->year);
+            if ($nextBirthday->isPast()) {
+                $nextBirthday->addYear();
+            }
+            $patient->daysUntil = $today->diffInDays($nextBirthday, false);
+            
+            if (!isset($birthdays[$birthMonth])) {
+                $birthdays[$birthMonth] = [];
+            }
+            
+            $birthdays[$birthMonth][] = $patient;
+        }
+        
+        // Sort months chronologically starting from current month
+        $currentMonth = Carbon::now()->format('F');
+        $months = array_keys($birthdays);
+        usort($months, function($a, $b) use ($currentMonth) {
+            $aMonth = Carbon::parse("1 $a")->month;
+            $bMonth = Carbon::parse("1 $b")->month;
+            $currentMonthNum = Carbon::parse("1 $currentMonth")->month;
+            
+            // Adjust month values relative to current month
+            $aAdjusted = $aMonth < $currentMonthNum ? $aMonth + 12 : $aMonth;
+            $bAdjusted = $bMonth < $currentMonthNum ? $bMonth + 12 : $bMonth;
+            
+            return $aAdjusted - $bAdjusted;
+        });
+        
+        $sortedBirthdays = [];
+        foreach ($months as $month) {
+            $sortedBirthdays[$month] = $birthdays[$month];
+            
+            // Sort patients within each month by day of month
+            usort($sortedBirthdays[$month], function($a, $b) {
+                return $a->birthDay - $b->birthDay;
+            });
+        }
+        
+        return $sortedBirthdays;
     }
 
     public function new_coupon()
     {
-        return view('page.new-coupon');
+        $branches = branch::all();
+
+        return view('page.new-coupon', compact('branches')); 
+
     }
 
     public function coupon_list()
     {
-        return view('page.coupon-list');
+        $coupons = coupon::all();
+        $branches = branch::all();
+        return view('page.coupon-list', compact('coupons' , 'branches'));
     }
 
     public function new_loyalty()
@@ -32,27 +213,38 @@ class DashboardController extends Controller
     }
     public function new_patient()
     {
-        return view('page.new-patient');
+        // Get all patient tiers for the dropdown
+        $tiers = tier::all();
+        
+        // Pass the tiers to the view
+        return view('page.new-patient', compact('tiers'));
     }
     public function patient_list()
     {
-        return view('page.patient-list');
+        $tiers = tier::all();
+        $patients = patient::all();
+        return view('page.patient-list', compact('patients', 'tiers'));
     }
     public function new_supplier()
     {
         return view('page.new-supplier');
     }
     public function supplier_list()
+
     {
-        return view('page.supplier-list');
+        $suppliers = supplier::all();
+        return view('page.supplier-list', compact('suppliers'));
     }
     public function new_staff()
     {
-        return view('page.new-staff');
+        $branches = branch::all();
+        return view('page.new-staff', compact('branches'));
     }
     public function staff_list()
     {
-        return view('page.staff-list');
+        $staffs = staff::all();
+        $branches = branch::all();
+        return view('page.staff-list', compact('branches', 'staffs'));
     } 
     public function new_branch()
     {
@@ -60,7 +252,9 @@ class DashboardController extends Controller
     }  
     public function branch_list()
     {
-        return view('page.branch-list');
+        $branchs = branch::all();
+        
+        return view('page.branch-list', ['branchs'=> $branchs]);
     }
     public function customer_report()
     {
@@ -115,11 +309,14 @@ class DashboardController extends Controller
     }
     public function add_product()
     {
-        return view('page.add-product');
+        $categories = category::all();
+        return view('page.add-product', compact('categories'));
     }
     public function category_list()
     {
-        return view('page.category-list');
+        $categories = category::all();
+        return view('page.category-list', compact('categories'));
+
     }
     public function system_settings()
     {
@@ -127,11 +324,17 @@ class DashboardController extends Controller
     }
     public function new_services()
     {
-        return view('page.new-services');
+        // Get all branches to display in the form
+        $branches = branch::all();
+        $services = service::all();
+        
+        return view('page.new-services', compact('branches')); 
     }
     public function services_list()
     {
-        return view('page.services-list');
+        $services = service::all();
+        $branches = branch::all();
+        return view('page.services-list', compact('services', 'branches'));
     }
     public function new_user()
     {
@@ -143,7 +346,12 @@ class DashboardController extends Controller
     }
     public function booking()
     {
-        return view('page.booking');
+        $services = service::all();
+        $branches = branch::all();
+        $patients = patient::all();
+        $staffs =   staff::all();
+        return view('page.booking', compact('services', 'staffs', 'branches', 'patients'));
+        
     }
     public function new_expenses()
     {

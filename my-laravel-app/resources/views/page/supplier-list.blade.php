@@ -185,10 +185,10 @@
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table id="supplierTable" class="table table-striped">
+                  <table class="table table-striped" id="supplierTable">
                     <thead class="table-light">
                       <tr>
-                        <th>#</th>
+                        <th>#</th>  
                         <th>Supplier Name</th>
                         <th>Email</th>
                         <th>Contact</th>
@@ -197,10 +197,28 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- Supplier data will be loaded dynamically -->
-                      <tr>
-                        <td colspan="6" class="text-center">Loading suppliers...</td>
-                      </tr>
+                      @foreach ($suppliers as $supplier)
+                        <tr>
+                          <td>{{ $supplier->id }}</td>
+                          <td>{{ $supplier->supplier_name }}</td>
+                          <td>{{ $supplier->email }}</td>
+                          <td>{{ $supplier->contactNumber }}</td>
+                          <td>{{ $supplier->supplier_type }}</td>
+                          <td>
+                            <div class="d-flex gap-2">
+                              <button class="btn btn-sm btn-success view-supplier" data-id="${row.id}">
+                                <i class="ti tabler-eye me-1"></i> View
+                              </button>
+                              <button class="btn btn-sm btn-info edit-supplier" data-id="${row.id}">
+                                <i class="ti tabler-edit me-1"></i> Edit
+                              </button>
+                              <button class="btn btn-sm btn-danger delete-supplier" data-id="${row.id}" data-name="${row.supplier_name}">
+                                <i class="ti tabler-trash me-1"></i> Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      @endforeach
                     </tbody>
                   </table>
                   <br />
@@ -425,133 +443,19 @@
     <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
     
     <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
-    <script>
-      $(document).ready(function () {
-        var table = $("#servicesTable").DataTable({
-          searching: true,
-          responsive: true,
-          dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-          language: {
-            search: "Search:",
-            searchPlaceholder: "Search company name...",
-            lengthMenu: "Show _MENU_ entries",
-            info: "Showing _START_ to _END_ of _TOTAL_ entries",
-            infoEmpty: "Showing 0 to 0 of 0 entries",
-            infoFiltered: "(filtered from _MAX_ total entries)",
-          },
-          columnDefs: [
-            {
-              targets: [0], // Only company name column is searchable
-              searchable: true,
-            },
-            {
-              targets: [1, 2, 3], // Make other columns non-searchable
-              searchable: false,
-            },
-          ],
-          order: [[0, "asc"]], // Sort by company name by default
-        });
-      });
-    </script>
-
-  </body>
-</html>
-
-  </div>
-</div>
-
-
-    <!-- Core JS -->
-    <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../../assets/vendor/js/bootstrap.js"></script>
-    <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
-    <script src="../../assets/vendor/libs/%40algolia/autocomplete-js.js"></script>
-    <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
-    <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="../../assets/vendor/libs/hammer/hammer.js"></script>
-    <script src="../../assets/vendor/libs/i18n/i18n.js"></script>
-    <script src="../../assets/vendor/js/menu.js"></script>
-
-    <!-- Vendors JS -->
-    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
-    <script src="../../assets/vendor/libs/moment/moment.js"></script>
-    <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
-    <script src="../../assets/vendor/libs/%40form-validation/popular.js"></script>
-    <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
-    <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
-
-    <!-- Main JS -->
-    <script src="../../assets/js/main.js"></script>
 
     <!-- Supplier Management JS -->
     <script src="../../assets/js/supplier-management.js"></script>
-    <script>
-      $(document).ready(function () {
-        // Initialize DataTable with proper options
-        if ($("#supplierTable").length) {
-          var supplierTable = $("#supplierTable").DataTable({
-            responsive: true,
-            ordering: true,
-            paging: true,
-            columns: [
-              { data: null, defaultContent: "" }, // # column for row numbering
-              { data: "supplier_name" },
-              { data: "email" },
-              { data: "contactNumber" },
-              { data: "supplier_type" },
-              { data: null, defaultContent: "" } // Actions column
-            ],
-            columnDefs: [
-              {
-                targets: 0,
-                orderable: false,
-                render: function (data, type, row, meta) {
-                  return meta.row + 1; // Add row number
-                }
-              },
-              {
-                targets: -1,
-                orderable: false,
-                render: function (data, type, row) {
-                  return `
-                    <div class="dropdown">
-                      <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0" data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item view-supplier" href="javascript:void(0);" data-id="${row.id}">
-                          <i class="ti tabler-eye me-1"></i> View
-                        </a>
-                        <a class="dropdown-item edit-supplier" href="javascript:void(0);" data-id="${row.id}">
-                          <i class="ti tabler-edit me-1"></i> Edit
-                        </a>
-                        <a class="dropdown-item delete-supplier" href="javascript:void(0);" data-id="${row.id}">
-                          <i class="ti tabler-trash me-1"></i> Delete
-                        </a>
-                      </div>
-                    </div>
-                  `;
-                }
-              }
-            ],
-            language: {
-              search: "",
-              searchPlaceholder: "Search supplier...",
-              paginate: {
-                previous: '<i class="ti tabler-chevron-left"></i>',
-                next: '<i class="ti tabler-chevron-right"></i>'
-              }
-            },
-            // Remove initial data loading to prevent duplicate content
-            initComplete: function () {
-              // Add any custom initializations here
-            }
-          });
-        }
-      });
 
+
+    <script>
+      $(document).ready(function() {
+        $('#supplierTable').DataTable({
+            responsive: true,
+        });
+      });
     </script>
+   
   </body>
 </html>
 

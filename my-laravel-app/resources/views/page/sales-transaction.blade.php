@@ -98,11 +98,7 @@
 
     <!-- Helpers -->
     <script src="../../assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    
-      <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-      <script src="../../assets/vendor/js/template-customizer.js"></script>
-    
+  
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     
       <script src="../../assets/js/config.js"></script>
@@ -740,11 +736,11 @@
 
 
   <script>
-      $(document).ready(function () {
+    $(document).ready(function () {
         var table = $("#servicesTable").DataTable({
             ajax: {
-                url: '/assets/sales-transaction.json', // Adjusted relative path to your JSON
-                dataSrc: '' // Assuming the JSON is an array of objects
+                url: '/assets/sales-transaction.json',
+                dataSrc: ''
             },
             columns: [
                 { data: 'transaction_id' },
@@ -759,17 +755,29 @@
                     data: null,
                     render: function (data, type, row) {
                         return `<div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
-                                </div>`;
+                            <button onclick='showViewModalll(${JSON.stringify(row)})' class='btn btn-success btn-sm'>
+                           <i class='ti tabler-eye me-1'></i>View
+                            </button>
+                            <button class='btn btn-info btn-sm'>
+                             <i class='ti tabler-edit me-1'></i> Edit
+                            </button>
+                            <button class='btn btn-danger btn-sm'>
+                             <i class='ti tabler-trash me-1'></i> Delete
+                            </button>
+                        </div>`;
                     }
                 }
-            ]
+            ],
+            responsive: true,
+        });
+    
+        // Handle view button click through event delegation
+        $('#servicesTable tbody').on('click', 'button.btn-success', function() {
+            var data = table.row($(this).closest('tr')).data();
+            showViewModal(data);
         });
     });
-</script>
- 
+    </script>
 
 
 <link

@@ -98,11 +98,7 @@
 
     <!-- Helpers -->
     <script src="../../assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    
-      <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-      <script src="../../assets/vendor/js/template-customizer.js"></script>
-    
+  
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     
       <script src="../../assets/js/config.js"></script>
@@ -753,9 +749,9 @@ background-color: #d1ecf1; /* Light cyan */
                     data: null,
                     render: function (data, type, row) {
                         return `<div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
+                                    <button class='btn btn-success'><i class="ti tabler-eye me-1"></i>View</button>
+                                    <button class='btn btn-info'><i class="ti tabler-edit me-1"></i>Edit</button>
+                                    <button class='btn btn-danger'><i class="ti tabler-trash me-1"></i>Delete</button>
                                 </div>`;
                     }
                 }
@@ -764,47 +760,7 @@ background-color: #d1ecf1; /* Light cyan */
     });
 </script>
 
-<script>
-    $(document).ready(function() {
-        // Initialize DataTable
-        var table = $('#voidTableee').DataTable({
-            processing: true,
-            pageLength: 10,
-            dom: '<"row"<"col-md-6"l><"col-md-6"f>>' +
-                 '<"row"<"col-sm-12"tr>>' +
-                 '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-            language: {
-                search: "",
-                searchPlaceholder: "Search..."
-            }
-        });
 
-        // Fetch and populate data
-        fetch('/assets/void-logs.json')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(item => {
-                    table.row.add([
-                        item.id,
-                        item.receipt_no,
-                        item.item,
-                        item.customer,
-                        item.cashier,
-                        item.amount_voided,
-                        item.voided_by,
-                        item.date_voided,
-                        `<div class='d-flex gap-2'>
-                                    <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
-                                </div>`
-                
-                    ]).draw(false);
-                });
-            })
-            .catch(error => console.error('Error fetching the JSON data:', error));
-    });
-</script>
 
 <link
       rel="stylesheet"

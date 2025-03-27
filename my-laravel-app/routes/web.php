@@ -3,6 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+
+
+use App\Http\Controllers\CouponController;
+use App\Http\Controllers\CategoryListController;
+
+use App\Http\Controllers\patientController;
+use App\Http\Controllers\staffController;
+use App\Http\Controllers\branchController;
+use App\Http\Controllers\supplierController;
+use App\Http\Controllers\serviceController;
+use App\Http\Controllers\tierController;
+use App\Http\Controllers\bookingController;
+
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -11,9 +25,11 @@ use App\Http\Controllers\DashboardController;
 
         Route::get('/', [LoginController::class, 'index'])->name('page.index');
 
-        Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('page.dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
+        Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
+            
 
         Route::get('/coupon-list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
 
@@ -53,6 +69,7 @@ Route::get('/loyalty-list', [DashboardController::class, 'loyalty_list'])->name(
 Route::get('/new-patient', [DashboardController::class, 'new_patient'])->name('page.new-patient');
 
 Route::get('/patient-list', [DashboardController::class, 'patient_list'])->name('page.patient-list');
+Route::post('patient/create', [App\Http\Controllers\patientController::class, 'create'])->name('patient.create');
 
 Route::get('/new-supplier', [DashboardController::class, 'new_supplier'])->name('page.new-supplier');
 
@@ -80,19 +97,20 @@ Route::get('/booking', [DashboardController::class, 'booking'])->name('page.book
 Route::get('/customer-report', [DashboardController::class, 'customer_report'])->name('page.customer-report');
 
 // Service Routes
-Route::post('/services/add', [App\Http\Controllers\serviceController::class, 'add_service'])->name('add.service');
+Route::post('/services/create', [App\Http\Controllers\serviceController::class, 'create'])->name('service.create');
 Route::get('/services/all', [App\Http\Controllers\serviceController::class, 'get_services'])->name('get.services');
 Route::get('/services/branch/{branch_code}', [App\Http\Controllers\serviceController::class, 'get_services_by_branch'])->name('get.services.by.branch');
-Route::get('/services/{id}', [App\Http\Controllers\serviceController::class, 'get_service'])->name('get.service');
-Route::put('/services/{id}', [App\Http\Controllers\serviceController::class, 'update_service'])->name('update.service');
+Route::put('/services/update', [App\Http\Controllers\serviceController::class, 'update'])->name('service.update');
+Route::delete('/services/delete', [App\Http\Controllers\serviceController::class, 'delete'])->name('service.delete');
 Route::delete('/services/{id}', [App\Http\Controllers\serviceController::class, 'delete_service'])->name('delete.service');
 
 // Branch Routes
-Route::post('/branch/add', [App\Http\Controllers\branchController::class, 'add_branch'])->name('add.branch');
-Route::get('/branch/all', [App\Http\Controllers\branchController::class, 'get_branches'])->name('get.branches');
-Route::get('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'get_branch'])->name('get.branch');
-Route::put('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'update_branch'])->name('update.branch');
-Route::delete('/branch/{branch_code}', [App\Http\Controllers\branchController::class, 'delete_branch'])->name('delete.branch');
+
+Route::post('/branch/create', [App\Http\Controllers\branchController::class, 'create'])->name('branch.create');
+// Fix the update route - remove the {branch} from within the URL and make it a parameter
+Route::put('/branch/update', [App\Http\Controllers\branchController::class, 'update'])->name('branch.update');
+Route::delete('/branch/delete', [App\Http\Controllers\branchController::class, 'delete'])->name('branch.delete');
+Route::get('/branches/all', [App\Http\Controllers\branchController::class, 'getAllBranches'])->name('branch.getAllBranches');
 
 // Supplier Routes
 Route::post('/supplier/add', [App\Http\Controllers\supplierController::class, 'add_supplier'])->name('add.supplier');
@@ -102,6 +120,8 @@ Route::put('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'u
 Route::delete('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'delete_supplier'])->name('delete.supplier');
 
 
+// Patients Routes
+Route::put('/patient/update', [App\Http\Controllers\patientController::class, 'update'])->name('patient.update');
 
 Route::get('/service-product', [DashboardController::class, 'service_product'])->name('page.service-product');
 
@@ -114,3 +134,33 @@ Route::get('/new-expenses', [DashboardController::class, 'new_expenses'])->name(
 Route::get('/expenses-list', [DashboardController::class, 'expenses_list'])->name('page.expenses-list');
 
 Route::get('/expenses/view/{id}', [ExpensesController::class, 'view'])->name('expenses.view');
+
+
+
+Route::get('/category/all', [CategoryListController::class, 'getAll'])->name('category.all');
+Route::get('/api/categories', [CategoryListController::class, 'getAll'])->name('api.categories');
+Route::post('/category/create', [CategoryListController::class, 'create'])->name('category.create');
+Route::get('/category-list', [DashboardController::class, 'category_list'])->name('page.category-list');
+
+
+//Staff Route
+Route::post('/staff/create', [App\Http\Controllers\staffController::class, 'create'])->name('staff.create');
+Route::get('/staff/all', [App\Http\Controllers\staffController::class, 'get_staff'])->name('get.staff');
+Route::put('/staff/update', [staffController::class, 'update'])->name('staff.update');
+Route::delete('/staff/{id}', [App\Http\Controllers\staffController::class, 'delete'])->name('staff.delete');
+
+
+
+//Loyalty Route
+Route::post('/tier/create', [App\Http\Controllers\tierController::class, 'create'])->name('tier.create');
+Route::get('/tier/all', [App\Http\Controllers\tierController::class, 'list'])->name('tier.list');
+Route::put('/tier/update', [App\Http\Controllers\tierController::class, 'update'])->name('tier.update');
+Route::delete('/tier/{id}', [App\Http\Controllers\tierController::class, 'delete'])->name('tier.delete');
+
+
+//Booking Route
+Route::post('/booking/create', [App\Http\Controllers\bookingController::class, 'create'])->name('booking.create');
+Route::get('/booking/all', [App\Http\Controllers\bookingController::class, 'get_bookings'])->name('get.bookings');
+Route::put('/booking/update', [App\Http\Controllers\bookingController::class, 'update'])->name('booking.update');
+Route::delete('/booking/delete', [App\Http\Controllers\bookingController::class, 'delete'])->name('booking.delete');
+

@@ -96,20 +96,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
-    <script>
-      const serviceRoutes = {
-          add: "{{ route('add.service') }}",
-          getAll: "{{ route('get.services') }}",
-          getByBranch: "{{ route('get.services.by.branch', ['branch_code' => '__BRANCH_CODE__']) }}",
-          get: "{{ route('get.service', ['id' => '__ID__']) }}",
-          update: "{{ route('update.service', ['id' => '__ID__']) }}",
-          delete: "{{ route('delete.service', ['id' => '__ID__']) }}"
-      };
-      
-      const branchRoutes = {
-          getAll: "{{ route('get.branches') }}"
-      };
-    </script>
+    
   </head>
 
   <body>
@@ -355,8 +342,9 @@
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
                           <!-- 1. Delivery Address -->
-                          <form id="addServiceForm">
+                            <form method="post" action="{{ route('service.create') }}">
                             @csrf
+                            @method('POST')
                             <div class="row g-6">
                               <div class="col-md-6">
                                 <label class="form-label" for="service_name">Services Name</label>
@@ -369,7 +357,6 @@
                                   required
                                 />
                               </div>
-
                               <div class="col-md-6">
                                 <label class="form-label">Branch</label>
                                 <select
@@ -380,7 +367,9 @@
                                   required
                                 >
                                   <option value="">Select Branch</option>
-                                  <!-- Branch options will be loaded dynamically -->
+                                  @foreach($branches as $branch)
+                                    <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
+                                  @endforeach
                                 </select>
                               </div>
 
@@ -541,114 +530,18 @@
     <script src="../../assets/js/main.js"></script>
 
     <!-- Page JS -->
-    <script src="../../assets/js/form-layouts.js"></script>
-    
-    <!-- AJAX Form Submission Script -->
+    <script src="../../assets/js/form-layouts.js"></script>    <script>
+    ment).ready(function() {
+ded
     <script>
-      $(document).ready(function() {
-        // Load branches for select dropdown
+      $(document).ready(function() {2();
+        // Define routes object for API endpoints
+        const branchRoutes = {
+          getAll: "{{ route('branch.getAllBranches') }}"
+        };
+        
+        // Load branches for select dropdownirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->
         loadBranchOptions();
-        
-        $('#addServiceForm').on('submit', function(e) {
-          e.preventDefault();
-          
-          // Disable submit button during form submission
-          $('#addServiceBtn').prop('disabled', true).html('Processing...');
-          
-          // Get form data
-          const formData = $(this).serialize();
-          
-          // Make AJAX request
-          $.ajax({
-            url: "{{ route('add.service') }}",
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            success: function(response) {
-              if(response.status) {
-                $('#responseMessage')
-                  .removeClass('alert-danger')
-                  .addClass('alert-success')
-                  .html(response.message)
-                  .show();
-                
-                // Reset form
-                $('#addServiceForm')[0].reset();
-                $('.select2').val('').trigger('change');
-              } else {
-                $('#responseMessage')
-                  .removeClass('alert-success')
-                  .addClass('alert-danger')
-                  .html(response.message)
-                  .show();
-              }
-            },
-            error: function(xhr) {
-              let errorMessage = 'An error occurred while processing your request.';
-              
-              if(xhr.responseJSON && xhr.responseJSON.errors) {
-                errorMessage = '<ul>';
-                for(let field in xhr.responseJSON.errors) {
-                  errorMessage += `<li>${xhr.responseJSON.errors[field][0]}</li>`;
-                }
-                errorMessage += '</ul>';
-              } else if(xhr.responseJSON && xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
-              }
-              
-              $('#responseMessage')
-                .removeClass('alert-success')
-                .addClass('alert-danger')
-                .html(errorMessage)
-                .show();
-            },
-            complete: function() {
-              // Re-enable submit button
-              $('#addServiceBtn').prop('disabled', false).html('Add Services');
-            }
-          });
-        });
-        
-        // Function to load branch options for select dropdown
-        function loadBranchOptions() {
-          $.ajax({
-            url: branchRoutes.getAll,
-            type: "GET",
-            dataType: 'json',
-            success: function(response) {
-              if(response.status) {
-                populateBranchOptions(response.data);
-              } else {
-                console.error('Failed to load branches:', response.message);
-              }
-            },
-            error: function(xhr) {
-              console.error('AJAX error when loading branches:', xhr);
-            }
-          });
-        }
-        
-        // Function to populate branch select options
-        function populateBranchOptions(branches) {
-          const select = $('#branch_code');
-          
-          // Clear existing options except the default one
-          const defaultOption = select.find('option:first');
-          select.empty().append(defaultOption);
-          
-          // Add branch options
-          branches.forEach(branch => {
-            select.append(`<option value="${branch.branch_code}">${branch.branch_name}</option>`);
-          });
-          
-          // Refresh Select2 if it's used
-          if ($.fn.select2) {
-            select.trigger('change');
-          }
-        }
-      });
-    </script>
-  </body>
-
-  <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->
+      </script>
+        // Function to load branch options for select dropdown        function loadBranchOptions() {          $.ajax({            url: branchRoutes.getAll,            type: "GET",            dataType: 'json',            success: function(response) {              if(response.status) {                populateBranchOptions(response.data);              } else {                console.error('Failed to load branches:', response.message);                $('#responseMessage')                  .removeClass()                  .addClass('alert alert-danger')                  .text('Failed to load branches: ' + response.message)                  .show();              }            },            error: function(xhr) {              console.error('AJAX error when loading branches:', xhr);              $('#responseMessage')                .removeClass()                .addClass('alert alert-danger')                .text('Error loading branches. Please try again later.')                .show();            }          });        }                // Function to populate branch select options        function populateBranchOptions(branches) {          const select = $('#branch_code');                    // Clear existing options except the default one          const defaultOption = select.find('option:first');          select.empty().append(defaultOption);                    // Add branch options          branches.forEach(branch => {            select.append(`<option value="${branch.branch_code}">${branch.branch_name}</option>`);          });                    // Refresh Select2 if it's used          if ($.fn.select2) {            select.trigger('change');          }        }      });    </script>  </body>  <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->
 </html>

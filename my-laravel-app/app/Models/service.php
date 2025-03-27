@@ -10,7 +10,7 @@ class service extends Model
     use HasFactory;
 
     protected $table = 'services';
-    public $timestamps = false; // Disable timestamps
+
     
     protected $fillable = [
         'service_name',
@@ -21,9 +21,14 @@ class service extends Model
         'service_cost',
         'loyalty_pts',
     ];
-
+    
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_code', 'branch_code');
+    }
+
+    public function booking()
+    {
+        return $this->hasMany(Booking::class, 'service_id', 'service_id');
     }
 }

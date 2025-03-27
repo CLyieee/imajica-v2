@@ -48,19 +48,14 @@
     <link rel="stylesheet" href="../../assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
     <link rel="stylesheet" href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
 
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     <!-- Helpers -->
     <script src="../../assets/vendor/js/helpers.js"></script>
     <script src="../../assets/js/config.js"></script>
 
-    <script>
-      const branchRoutes = {
-          add: "{{ route('add.branch') }}",
-          getAll: "{{ route('get.branches') }}",
-          get: "{{ route('get.branch', ['branch_code' => '__CODE__']) }}",
-          update: "{{ route('update.branch', ['branch_code' => '__CODE__']) }}",
-          delete: "{{ route('delete.branch', ['branch_code' => '__CODE__']) }}"
-      };
-    </script>
+   
   </head>
 
   <body>
@@ -144,10 +139,9 @@
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table id="branchTable" class="table table-striped">
+                  <table class="table table-striped" id="branchTable">
                     <thead class="table-light">
                       <tr>
-                        <th>#</th>
                         <th>Branch Code</th>
                         <th>Branch Name</th>
                         <th>Address</th>
@@ -155,10 +149,31 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- Branch data will be loaded dynamically -->
+                      @foreach ($branchs as $branch)
                       <tr>
-                        <td colspan="5" class="text-center">Loading branches...</td>
+                        <td>{{ $branch->branch_code }}</td>
+                        <td>{{ $branch->branch_name }}</td>
+                        <td>{{ $branch->address }}</td>
+                        <td>
+                          <button type="button" class="btn btn-info btn-sm edit-branch" 
+                            data-branch-code="{{ $branch->branch_code }}"
+                            data-branch-name="{{ $branch->branch_name }}"
+                            data-address="{{ $branch->address }}">
+                            <i class="ti tabler-edit me-1"></i> Edit
+                          </button>
+                          <button type="button" class="btn btn-danger btn-sm delete-branch" 
+                            data-branch-code="{{ $branch->branch_code }}"
+                            data-branch-name="{{ $branch->branch_name }}">
+                            <i class="ti tabler-trash me-1"></i>Delete
+                          </button>
+                        </td>
                       </tr>
+                      @endforeach
+                      @if(count($branchs) == 0)
+                      <tr>
+                        <td colspan="4" class="text-center">No branches found</td>
+                      </tr>
+                      @endif
                     </tbody>
                   </table>
                   <br />
@@ -204,26 +219,36 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="updateBranchForm">
+            <form id="editBranchForm" method="POST" action="{{ route('branch.update') }}">
               @csrf
+              @method('PUT')
               <input type="hidden" id="edit_branch_code" name="branch_code">
               <div class="mb-3">
                 <label class="form-label" for="edit_branch_name">Branch Name</label>
                 <input type="text" id="edit_branch_name" name="branch_name" class="form-control" required>
+                <div class="invalid-feedback" id="edit_branch_name_error"></div>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="edit_address">Address</label>
                 <textarea id="edit_address" name="address" class="form-control" rows="3" required></textarea>
+                <div class="invalid-feedback" id="edit_address_error"></div>
               </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" id="updateBranchBtn" class="btn btn-primary">Update Branch</button>
+            <button type="submit" class="btn btn-primary">Update Branch</button>
             </form>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Delete Branch Form (Hidden) -->
+    <form id="deleteBranchForm" method="POST" action="{{ route('branch.delete') }}" style="display: none;">
+      @csrf
+      @method('DELETE')
+      <input type="hidden" id="delete_branch_code" name="branch_code">
+    </form>
 
     <!-- Core JS -->
     <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
@@ -248,68 +273,153 @@
     <!-- Main JS -->
     <script src="../../assets/js/main.js"></script>
 
-    <!-- Branch Management JS -->
-    <script src="../../assets/js/branch-management.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Custom Script for Branch Management -->
     <script>
-      $(document).ready(function () {
-        // Initialize DataTable with proper options
-        if ($("#branchTable").length) {
-          var branchTable = $("#branchTable").DataTable({
-            responsive: true,
-            ordering: true,
-            paging: true,
-            columns: [
-              { data: null, defaultContent: "" }, // # column for row numbering
-              { data: "branch_code" },
-              { data: "branch_name" },
-              { data: "address" },
-              { data: null, defaultContent: "" } // Actions column
-            ],
-            columnDefs: [
-              {
-                targets: 0,
-                orderable: false,
-                render: function (data, type, row, meta) {
-                  return meta.row + 1; // Add row number
-                }
-              },
-              {
-                targets: -1,
-                orderable: false,
-                render: function (data, type, row) {
-                  return `
-                    <div class="dropdown">
-                      <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0" data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item edit-branch" href="javascript:void(0);" data-branch-code="${row.branch_code}">
-                          <i class="ti tabler-edit me-1"></i> Edit
-                        </a>
-                        <a class="dropdown-item delete-branch" href="javascript:void(0);" data-branch-code="${row.branch_code}">
-                          <i class="ti tabler-trash me-1"></i> Delete
-                        </a>
-                      </div>
-                    </div>
-                  `;
-                }
+      $(document).ready(function() {
+        // SweetAlert default configuration to appear above the modal
+        const swalConfig = {
+          customClass: {
+            container: 'swal-container-class',
+            popup: 'swal-popup-class'
+          },
+          backdrop: true,
+          allowOutsideClick: false
+        };
+        
+        // Add custom CSS to ensure SweetAlert appears above modal
+        $('<style>')
+          .prop('type', 'text/css')
+          .html(`
+            .swal-container-class {
+              z-index: 2000 !important;
+            }
+            .swal-popup-class {
+              z-index: 2001 !important;
+            }
+            .swal2-backdrop-show {
+              z-index: 1999 !important;
+            }
+          `)
+          .appendTo('head');
+
+        // Display success/error messages
+        @if(session('success'))
+          Swal.fire({
+            ...swalConfig,
+            icon: 'success',
+            title: 'Success',
+            text: "{{ session('success') }}",
+            timer: 3000,
+            showConfirmButton: false
+          });
+        @endif
+
+        @if(session('error'))
+          Swal.fire({
+            ...swalConfig,
+            icon: 'error',
+            title: 'Error',
+            text: "{{ session('error') }}",
+            timer: 3000,
+            showConfirmButton: false
+          });
+        @endif
+
+        // Display validation errors if any
+        @if($errors->any())
+          Swal.fire({
+            ...swalConfig,
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'Please check the form for errors',
+            timer: 3000,
+            showConfirmButton: false
+          });
+        @endif
+
+        // Handle edit branch button clicks
+        $('.edit-branch').on('click', function() {
+          const branchCode = $(this).data('branch-code');
+          const branchName = $(this).data('branch-name');
+          const address = $(this).data('address');
+          
+          // Populate the form fields
+          $('#edit_branch_code').val(branchCode);
+          $('#edit_branch_name').val(branchName);
+          $('#edit_address').val(address);
+          
+          // Show the modal
+          $('#editBranchModal').modal('show');
+        });
+
+        // Handle form submission with confirmation
+        $('#editBranchForm').on('submit', function(e) {
+          e.preventDefault();
+          
+          // Hide the modal before showing SweetAlert
+          $('#editBranchModal').modal('hide');
+          
+          setTimeout(() => {
+            Swal.fire({
+              ...swalConfig,
+              title: 'Confirm Update',
+              text: 'Are you sure you want to update this branch?',
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonText: 'Yes, update it!',
+              cancelButtonText: 'Cancel',
+              confirmButtonColor: '#0a3622',
+              cancelButtonColor: '#d33'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // Submit the form normally
+                this.submit();
+              } else {
+                // If canceled, show the modal again
+                $('#editBranchModal').modal('show');
               }
-            ],
-            language: {
-              search: "",
-              searchPlaceholder: "Search...",
-              paginate: {
-                previous: '<i class="ti tabler-chevron-left"></i>',
-                next: '<i class="ti tabler-chevron-right"></i>'
-              }
-            },
-            // Remove initial data loading to prevent duplicate content
-            initComplete: function () {
-            
+            });
+          }, 200); // Small delay to ensure modal is fully hidden
+        });
+
+        // Handle delete branch button clicks
+        $('.delete-branch').on('click', function() {
+          const branchCode = $(this).data('branch-code');
+          const branchName = $(this).data('branch-name');
+          
+          // Set the branch code in the hidden delete form
+          $('#delete_branch_code').val(branchCode);
+          
+          // Show delete confirmation
+          Swal.fire({
+            ...swalConfig,
+            title: 'Confirm Delete',
+            html: `Are you sure you want to delete branch <strong>${branchName}</strong>?<br>This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Submit the delete form
+              $('#deleteBranchForm').submit();
             }
           });
-        }
+        });
       });
     </script>
+
+
+<script>
+  $(document).ready(function() {
+    $('#branchTable').DataTable();
+  });
+</script>
+
   </body>
 </html>

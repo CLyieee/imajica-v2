@@ -8,191 +8,82 @@ use Illuminate\Support\Facades\Validator;
 
 class serviceController extends Controller
 {
-    public function add_service(Request $request)
-    {
-        // Validate the request data
-        $validator = Validator::make($request->all(), [
-            'service_name' => 'required|string|max:255',
-            'branch_code' => 'required|exists:branches,branch_code',
-            'description' => 'nullable|string',
-            'duration' => 'required|integer',
-            'service_category' => 'required|string|max:100',
-            'service_cost' => 'required|numeric',
-            'loyalty_pts' => 'nullable|integer',
+   public function create(Request $request) {
+        $data = $request->validate([
+            'service_name' => 'required',
+            'branch_code' => 'required',
+            'description' => 'required',
+            'duration' => 'required',
+            'service_category' => 'required',
+            'service_cost' => 'required',
+            'loyalty_pts' => 'required',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validation Error',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        try {
-            // Create new service
-            $service = service::create([
-                'service_name' => $request->service_name,
-                'branch_code' => $request->branch_code,
-                'description' => $request->description,
-                'duration' => $request->duration,
-                'service_category' => $request->service_category,
-                'service_cost' => $request->service_cost,
-                'loyalty_pts' => $request->loyalty_pts ?? 0,
-            ]);
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Service created successfully',
-                'data' => $service
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to create service',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        $newService = service::create($data);
+        
+        return redirect(route('page.new-services'));
     }
 
-    public function get_services()
-    {
-        try {
-            $services = service::all();
-            return response()->json([
-                'status' => true,
-                'data' => $services
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to retrieve services',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+public function update(Request $request) {
+    // For debugging - log the incoming data
+    // Log::info('Update service request data:', $request->all());
+    
+    $data = $request->validate([
+        'id' => 'required|exists:services,id',
+        'service_name' => 'required',
+        'branch_code' => 'required',
+        'description' => 'required',
+        'duration' => 'required',
+        'service_category' => 'required',
+        'service_cost' => 'required',
+        'loyalty_pts' => 'required',
+    ]);
+
+    $service = service::find($request->id);
+    if (!$service) {
+        return redirect()->back()->with('error', 'Service not found');
     }
 
-    public function get_services_by_branch($branch_code)
-    {
-        try {
-            $services = service::where('branch_code', $branch_code)->get();
-            return response()->json([
-                'status' => true,
-                'data' => $services
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to retrieve services',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
+    $service->service_name = $request->service_name;
+    $service->branch_code = $request->branch_code;
+    $service->description = $request->description;
+    $service->duration = $request->duration;
+    $service->service_category = $request->service_category;
+    $service->service_cost = $request->service_cost;
+    $service->loyalty_pts = $request->loyalty_pts;
+    $service->save();
 
-    public function get_service($id)
-    {
-        try {
-            $service = service::find($id);
-            
-            if (!$service) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Service not found'
-                ], 404);
-            }
+    return redirect()->back()->with('success', 'Service updated successfully');
+}
 
-            return response()->json([
-                'status' => true,
-                'data' => $service
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to retrieve service',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
 
-    public function update_service(Request $request, $id)
+public function delete(Request $request)
     {
-        // Validate the request data
-        $validator = Validator::make($request->all(), [
-            'service_name' => 'required|string|max:255',
-            'branch_code' => 'required|exists:branches,branch_code',
-            'description' => 'nullable|string',
-            'duration' => 'required|integer',
-            'service_category' => 'required|string|max:100',
-            'service_cost' => 'required|numeric',
-            'loyalty_pts' => 'nullable|integer',
+        // Validate the request
+        $request->validate([
+            'id' => 'required',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validation Error',
-                'errors' => $validator->errors()
-            ], 422);
+        // Find the branch by branch_code
+        $service = service::where('id', $request->id)->first();
+        
+        if (!$service) {
+            return redirect()->back()->with('error', 'Branch not found');
         }
 
-        try {
-            $service = service::find($id);
-            
-            if (!$service) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Service not found'
-                ], 404);
-            }
+        // Delete the branch
+        $service->delete();
 
-            $service->update([
-                'service_name' => $request->service_name,
-                'branch_code' => $request->branch_code,
-                'description' => $request->description,
-                'duration' => $request->duration,
-                'service_category' => $request->service_category,
-                'service_cost' => $request->service_cost,
-                'loyalty_pts' => $request->loyalty_pts ?? 0,
-            ]);
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Service updated successfully',
-                'data' => $service
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to update service',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return redirect()->back()->with('success', 'Service deleted successfully');
     }
 
-    public function delete_service($id)
+
+
+    public function getServices()
     {
-        try {
-            $service = service::find($id);
-            
-            if (!$service) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Service not found'
-                ], 404);
-            }
-
-            $service->delete();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Service deleted successfully'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to delete service',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        $services = service::with('branch')->get();
+        return view('page.services-list', compact('services'));
     }
+
+
 }

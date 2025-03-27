@@ -360,31 +360,30 @@
             </ul>
         </li>
 
-        <li class="menu-item ">
-
+        <li class="menu-item {{  request()->is('customer-report') || request()->is('service-product') || request()->is('employee-report') || request()->is('expenses-report') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-chart-pie "></i>
-                <div data-i18n="Report">Report</div>
+                <div data-i18n="Reports">Reports</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item ">
+                <li class="menu-item {{ request()->is('customer-report') ? 'active' : '' }}">
                     <a href="/customer-report" class="menu-link">
                         <div data-i18n="Customer Report">Customer Report</div>
                     </a>
                 </li>
 
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('service-product') ? 'active' : '' }}">
                     <a href="/service-product" class="menu-link">
                         <div data-i18n="Service/Product Report">Service/Product Report</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('employee-report') ? 'active' : '' }}">
                     <a href="/employee-report" class="menu-link">
                         <div data-i18n="Employee Report">Employee Report</div>
                     </a>
                 </li>
 
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('expenses-report') ? 'active' : '' }}">
                     <a href="/expenses-report" class="menu-link">
                         <div data-i18n="Expenses Report">Expenses Report</div>
                     </a>

@@ -345,91 +345,60 @@
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="card">
-                <!-- Branch Filter -->
+               
+                <div class="d-flex justify-content-between align-items-center p-3">
+                  <h5 class="card-title mb-0">Coupon List</h5>
+                  <a href="{{ route('page.new-coupon') }}" class="btn btn-primary mt-2">
+                    <i class="ti tabler-plus me-1"></i> Add New Coupon
+                  </a>
+                </div>
+
                 <div class="px-4 py-3">
-                  <label for="branchFilter" class="fw-bold me-2"
-                    >Select Branch:</label
-                  >
-                  <select
-                    id="branchFilter"
-                    class="form-select w-auto d-inline-block"
-                  >
-                    <option value="">All Branches</option>
-                    <option value="Pasig City Branch">Pasig City Branch</option>
-                    <option value="San Mateo Rizal Branch">
-                      San Mateo Rizal Branch
-                    </option>
-                    <option value="Cainta Rizal Branch">
-                      Cainta Rizal Branch
-                    </option>
+                  <label for="branchFilter" class="fw-bold me-2">Select Branch:</label>
+                  <select id="branchFilter" class="form-select w-auto d-inline-block">
+                    <option value=" ">All Branches</option>
+                    @foreach($branches as $branch)
+                      <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
+                    @endforeach
                   </select>
                 </div>
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table id="servicesTable" class="table table-striped">
+                  <table id="couponTable" class="table table-striped">
                     <thead class="table-light">
                       <tr>
                         <th>Coupon Code</th>
-
                         <th>Coupon Name</th>
                         <th>Discount Value</th>
+                        <th>Discount Type</th>
+                        <th>Applicable Service</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
+                      @foreach ($coupons as $coupon)
                       <tr>
-                        <td>GLOW20</td>
-
-                        <td>Glow & Go Discount</td>
-                        <td><span class="badge bg-label-success">20%</span></td>
+                        <td>{{ $coupon->coupon_code }}</td>
+                        <td>{{ $coupon->discount_name }}</td>
+                        <td>{{ $coupon->discount_value }}</td>
+                        <td>{{ $coupon->discount_type }}</td>
+                        <td>{{ $coupon->applicable_service }}</td>
                         <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
+                          <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-success view-supplier" data-id="${row.id}">
+                              <i class="ti tabler-eye me-1"></i> View
+                            </button>
+                            <button class="btn btn-sm btn-info edit-supplier" data-id="${row.id}">
+                              <i class="ti tabler-edit me-1"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-supplier" data-id="${row.id}" data-name="${row.supplier_name}">
+                              <i class="ti tabler-trash me-1"></i> Delete
+                            </button>
+                          </div>
                         </td>
                       </tr>
-                      <tr>
-                        <td>FRESHLOOK15</td>
-
-                        <td>Fresh Start Promo</td>
-                        <td><span class="badge bg-label-success">150</span></td>
-                        <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>BEAUTYVIP50</td>
-
-                        <td>VIP Beauty Perk</td>
-                        <td><span class="badge bg-label-success">50%</span></td>
-                        <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>SKINCARE100</td>
-
-                        <td>Radiance Rewards</td>
-                        <td>
-                          <span class="badge bg-label-success">100 </span>
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>SUMMERGLOW25</td>
-
-                        <td>Summer Skin Saver</td>
-                        <td><span class="badge bg-label-success">25%</span></td>
-                        <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
+                      @endforeach
                     </tbody>
                   </table>
 
@@ -439,9 +408,7 @@
             </div>
           </div>
 
-          <!-- Content wrapper -->
 
-          <!-- Content wrapper -->
         </div>
         <!-- / Layout page -->
       </div>
@@ -497,70 +464,26 @@
     <script src="{{ asset('assets/vendor/libs/%40form-validation/popular.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/%40form-validation/bootstrap5.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/%40form-validation/auto-focus.js') }}"></script>
+    
+    
+    
     <script>
-      $(document).ready(function () {
-        // Initialize DataTable with proper options
-        if ($("#servicesTable").length) {
-          var table = $("#servicesTable").DataTable({
-            responsive: true,
-            ordering: true,
-            paging: true,
-            // Define the columns explicitly to avoid DataTables warning
-            columns: [
-              { data: "coupon_code" },
-              { data: "coupon_name" },
-              { data: "discount_value" },
-              { data: "actions", orderable: false }
-            ],
-            // For existing static data, use this approach
-            columnDefs: [
-              {
-                // Set default content for all cells to prevent "unknown parameter" warnings
-                targets: '_all',
-                defaultContent: ""
-              }
-            ],
-            language: {
-              search: "",
-              searchPlaceholder: "Search coupon...",
-              paginate: {
-                previous: '<i class="ti tabler-chevron-left"></i>',
-                next: '<i class="ti tabler-chevron-right"></i>'
-              }
-            }
-          });
-
-          // Branch filter functionality
-          $("#branchFilter").on("change", function () {
-            var selectedBranch = $(this).val();
-            table.column(0).search(selectedBranch).draw();
-          });
-
-          // Since we're working with static data in the table, we need to process it
-          // This will extract the data from the DOM and reload DataTables with it
-          var extractedData = [];
-          $("#servicesTable tbody tr").each(function() {
-            var row = $(this);
-            var cells = row.find('td');
-            
-            if (cells.length >= 4) {
-              extractedData.push({
-                coupon_code: $(cells[0]).text(),
-                coupon_name: $(cells[1]).text(),
-                discount_value: $(cells[2]).text(),
-                actions: $(cells[3]).html()
-              });
-            }
-          });
-          
-          // Clear the table and add the extracted data
-          table.clear();
-          table.rows.add(extractedData);
-          table.draw();
-        }
+      $(document).ready(function() {
+        
+        $('#branchFilter').change(function() {
+          var branchCode = $(this).val();
+          window.location.href = '/coupon-list?branch=' + branchCode;
+        });
       });
     </script>
+    <script>
+      $(document).ready(function() {
+        $('#couponTable').DataTable({
+            responsive: true,
+        });
+      });
+    </script>
+   
   </body>
 </html>
 
-<!-- beautify ignore:end -->

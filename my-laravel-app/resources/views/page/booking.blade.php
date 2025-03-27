@@ -55,6 +55,8 @@
   <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script src="../../assets/js/config.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -236,26 +238,28 @@
                   </div>
                   <div class="app-overlay"></div>
                   <!-- FullCalendar Offcanvas -->
+
+                  <form method='post' action="{{ route('booking.create')}}">
+                  @csrf
+                  @method('POST')
                   <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="addEventSidebar" aria-labelledby="addEventSidebarLabel">
                     <div class="offcanvas-header border-bottom">
                       <h5 class="offcanvas-title" id="addEventSidebarLabel">Add Booking</h5>
                       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                      <form class="event-form pt-0" id="eventForm" onsubmit="return false">
+                      <div class="event-form pt-0">
                         <div class="mb-5">
-                          <label class="form-label" for="eventLabel">Select Services</label>
-                          <select class="select2 form-select">
-                            <option>Anti-Aging IV Drip</option>
-                            <option>Body Contouring & Sculpting</option>
-                            <option>Facial Rejuvenation Therapy</option>
-                            <option>Hydrating Skin Booster</option>
-                            <option>Laser Hair Removal (Underarm)</option>
+                          <label class="form-label" for="service_id">Select Services</label>
+                          <select class="select2 form-select" name="service_id" id="service_id">
+                            @foreach ($services as $service)
+                            <option value="{{$service->id}}">{{$service->service_name}}</option>
+                            @endforeach
                           </select>
                         </div>
                         <div class="mb-5">
-                          <label class="form-label" for="eventLabel">Status</label>
-                          <select class="select2 form-select">
+                          <label class="form-label" for="status">Status</label>
+                          <select class="select2 form-select" name="status" id="status">
                             <option selected>Pending</option>
                             <option>Paid</option>
                             <option>Cancelled</option>
@@ -264,39 +268,47 @@
                           </select>
                         </div>
                         <div class="mb-5 form-control-validation">
-                          <label class="form-label" for="eventStartDate">Start Date and Time</label>
-                          <input type="text" class="form-control" id="eventStartDate" name="eventStartDate" placeholder="Start Date" />
+                          <label class="form-label" for="start_date">Start Date and Time</label>
+                          <input type="text" class="form-control flatpickr-input" id="start_date" name="start_date" placeholder="YYYY-MM-DD HH:MM" />
                         </div>
                         <div class="mb-5 form-control-validation">
-                          <label class="form-label" for="eventEndDate">End Date Date and Time</label>
-                          <input type="text" class="form-control" id="eventEndDate" name="eventEndDate" placeholder="End Date" />
+                          <label class="form-label" for="end_date">End Date and Time</label>
+                          <input type="text" class="form-control flatpickr-input" id="end_date" name="end_date" placeholder="YYYY-MM-DD HH:MM" />
                         </div>
                         <div class="mb-4">
-                          <label for="selectpickerMultiple" class="form-label">Assigned Staff</label>
-                          <select id="selectpickerMultiple" class="selectpicker w-100" data-style="btn-default" multiple data-icon-base="icon-base ti" data-tick-icon="tabler-check text-white">
-                            <option>Staff 1</option>
-                            <option>Staff 2</option>
-                            <option>Staff 3</option>
-                            <option>Staff 4</option>
-                            <option>Staff 5</option>
+                          <label for="id" class="form-label">Assigned Staff</label>
+                          <select id="id" name="id" class="form-select select2">
+                            <option value="">Select a staff member</option>
+                            @foreach ($staffs as $staff)
+                            <option value="{{ $staff->id }}">{{ $staff->firstname }} {{ $staff->lastname }}</option>
+                            @endforeach
                           </select>
                         </div>
                         <div class="mb-4">
-                          <label for="selectpickerBasic" class="form-label">Select Branch</label>
-                          <select id="selectpickerBasic" class="selectpicker w-100" data-style="btn-default">
-                            <option>Pasig City Branch</option>
-                            <option>San Mateo Rizal Branch</option>
-                            <option>Cainta Rizal Branch</option>
+                          <label for="branch_code" class="form-label">Select Branch</label>
+                          <select id="branch_code" name="branch_code" class="form-select">
+                            @foreach ($branches as $branch)
+                            <option value="{{$branch->branch_code}}">{{$branch->branch_name}}</option>
+                            @endforeach
                           </select>
                         </div>
+                        <!-- Display validation errors with SweetAlert -->
+                        @if ($errors->any())
+                        <div class="alert alert-danger d-none" id="error-list">
+                          <ul>
+                            @foreach ($errors->all() as $error)
+                              <li>{{ $error }}</li>
+                            @endforeach
+                          </ul>
+                        </div>
+                        @endif
                         <div class="mb-4">
-                          <label for="selectpickerBasic" class="form-label">Select Patient</label>
-                          <select id="selectpickerBasic" class="selectpicker w-100" data-style="btn-default">
-                            <option>Patient 1</option>
-                            <option>Patient 2</option>
-                            <option>Patient 3</option>
-                            <option>Patient 4</option>
-                            <option>Patient 5</option>
+                          <label for="patient_id" class="form-label">Select Patient</label>
+                          <select id="patient_id" name="patient_id" class="form-select select2">
+                            <option value="">Select a patient</option>
+                            @foreach($patients as $patient)
+                              <option value="{{ $patient->patient_id }}">{{ $patient->firstname }} {{ $patient->lastname }}</option>
+                            @endforeach
                           </select>
                         </div>
                         <div class="col-xl-12">
@@ -304,8 +316,8 @@
                           <div class="row">
                             <div class="col-md mb-md-0 mb-5">
                               <div class="form-check custom-option custom-option-basic">
-                                <label class="form-check-label custom-option-content" for="customRadioTemp1">
-                                  <input name="customRadioTemp" class="form-check-input" type="radio" value="" id="customRadioTemp1" checked />
+                                <label class="form-check-label custom-option-content" for="useRewardYes">
+                                  <input name="useReward" class="form-check-input" type="radio" value="1" id="useRewardYes" checked />
                                   <span class="custom-option-header">
                                     <span class="h6 mb-0">Yes</span>
                                   </span>
@@ -314,8 +326,8 @@
                             </div>
                             <div class="col-md">
                               <div class="form-check custom-option custom-option-basic">
-                                <label class="form-check-label custom-option-content" for="customRadioTemp2">
-                                  <input name="customRadioTemp" class="form-check-input" type="radio" value="" id="customRadioTemp2" />
+                                <label class="form-check-label custom-option-content" for="useRewardNo">
+                                  <input name="useReward" class="form-check-input" type="radio" value="0" id="useRewardNo" />
                                   <span class="custom-option-header">
                                     <span class="h6 mb-0">No</span>
                                   </span>
@@ -325,19 +337,20 @@
                           </div>
                         </div>
                         <div class="mb-5">
-                          <label class="form-label" for="eventDescription">Remarks</label>
-                          <textarea class="form-control" name="eventDescription" id="eventDescription"></textarea>
+                          <label class="form-label" for="remarks">Remarks</label>
+                          <textarea class="form-control" name="remarks" id="remarks"></textarea>
                         </div>
                         <div class="d-flex justify-content-sm-between justify-content-start mt-6 gap-2">
                           <div class="d-flex">
-                            <button type="submit" id="addEventBtn" class="btn btn-primary btn-add-event me-4">Save</button>
+                            <button type="submit" class="btn btn-primary btn-add-event me-4">Save</button>
                             <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1" data-bs-dismiss="offcanvas">Cancel</button>
                           </div>
                           <button class="btn btn-label-danger btn-delete-event d-none">Delete</button>
                         </div>
-                      </form>
+                      </div>
                     </div>
                   </div>
+                </form>
                 </div>
                 <!-- /Calendar & Modal -->
               </div>
@@ -399,6 +412,199 @@
   <!-- Page JS -->
   <script src="../../assets/js/app-calendar-events.js"></script>
   <script src="../../assets/js/app-calendar.js"></script>
+  
+  <!-- Custom initialization script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check for validation errors on page load and display with SweetAlert
+      const errorList = document.getElementById('error-list');
+      if (errorList && errorList.textContent.trim()) {
+        const errorMessages = Array.from(errorList.querySelectorAll('li')).map(li => li.textContent);
+        Swal.fire({
+          icon: 'error',
+          title: 'Form Validation Error',
+          html: errorMessages.join('<br>'),
+          confirmButtonText: 'OK'
+        });
+      }
+      
+      // Form submission handling with SweetAlert
+      const bookingForm = document.querySelector('form[action="{{ route("booking.create") }}"]');
+      if (bookingForm) {
+        bookingForm.addEventListener('submit', function(e) {
+          // You can add form validation here before submission
+          const startDate = document.getElementById('start_date').value;
+          const endDate = document.getElementById('end_date').value;
+          const staffId = document.getElementById('id').value;
+          const patientId = document.getElementById('patient_id').value;
+          
+          let errors = [];
+          
+          if (!startDate) errors.push('Start date is required');
+          if (!endDate) errors.push('End date is required');
+          if (!staffId) errors.push('Please select a staff member');
+          if (!patientId) errors.push('Please select a patient');
+          
+          if (errors.length > 0) {
+            e.preventDefault();
+            Swal.fire({
+              icon: 'error',
+              title: 'Form Validation Error',
+              html: errors.join('<br>'),
+              confirmButtonText: 'OK'
+            });
+          } else {
+            // Optional: Show loading state
+            Swal.fire({
+              title: 'Saving booking...',
+              text: 'Please wait',
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              willOpen: () => {
+                Swal.showLoading();
+              }
+            });
+          }
+        });
+      }
+
+      // Simple function to initialize flatpickr
+      function initDatepickr() {
+        console.log('Initializing date pickers...');
+        
+        // Basic flatpickr initialization with minimal options
+        const startPicker = flatpickr("#start_date", {
+          enableTime: true,
+          dateFormat: "Y-m-d H:i",
+          minuteIncrement: 15,
+          time_24hr: false,
+          allowInput: true
+        });
+        
+        const endPicker = flatpickr("#end_date", {
+          enableTime: true,
+          dateFormat: "Y-m-d H:i",
+          minuteIncrement: 15,
+          time_24hr: false,
+          allowInput: true
+        });
+        
+        // Initialize inline calendar
+        flatpickr('.inline-calendar', {
+          inline: true,
+          dateFormat: 'Y-m-d'
+        });
+        
+        console.log('Date pickers initialized:', startPicker, endPicker);
+        
+        // Make global for debugging
+        window.startPicker = startPicker;
+        window.endPicker = endPicker;
+      }
+      
+      // Initialize select2
+      function initSelects() {
+        if (typeof $.fn.select2 !== 'undefined') {
+          $('.select2').select2({
+            dropdownParent: $('#addEventSidebar .offcanvas-body')
+          });
+        }
+      }
+      
+      // Add a manual init button for troubleshooting
+      function addDebugButton() {
+        const debugBtn = document.createElement('button');
+        debugBtn.textContent = 'Debug Init Pickers';
+        debugBtn.className = 'btn btn-sm btn-warning mt-2';
+        debugBtn.style.position = 'fixed';
+        debugBtn.style.bottom = '10px';
+        debugBtn.style.right = '10px';
+        debugBtn.style.zIndex = '9999';
+        debugBtn.onclick = function() {
+          initDatepickr();
+          console.log('Manual initialization triggered');
+        };
+        document.body.appendChild(debugBtn);
+      }
+      
+      // Setup initialization triggers
+      function setupTriggers() {
+        // Initialize on modal show
+        $('#addEventSidebar').on('shown.bs.offcanvas', function() {
+          setTimeout(function() {
+            initDatepickr();
+            initSelects();
+          }, 100);
+        });
+        
+        // Add manual trigger
+        addDebugButton();
+      }
+      
+      // Initial setup
+      setupTriggers();
+      
+      // Always expose reinit function for console debugging
+      window.reinitPickers = initDatepickr;
+    });
+  </script>
+  
+  <!-- Ajax error handler for server responses -->
+  <script>
+    // Display server errors using SweetAlert
+    function showServerError(xhr) {
+      let errorMessage = 'An error occurred while processing your request.';
+      
+      try {
+        const response = JSON.parse(xhr.responseText);
+        if (response.errors) {
+          // Format validation errors
+          const errors = Object.values(response.errors).flat();
+          errorMessage = errors.join('<br>');
+        } else if (response.message) {
+          errorMessage = response.message;
+        }
+      } catch (e) {
+        console.error('Error parsing server response', e);
+      }
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        html: errorMessage,
+        confirmButtonText: 'OK'
+      });
+    }
+    
+    // Flash messages from session
+    @if(session('success'))
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: "{{ session('success') }}",
+        confirmButtonText: 'OK'
+      });
+    @endif
+    
+    @if(session('error'))
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: "{{ session('error') }}",
+        confirmButtonText: 'OK'
+      });
+    @endif
+  </script>
+
+  <!-- Additional CSS for flatpickr visibility -->
+  <style>
+    .flatpickr-calendar {
+      z-index: 9999 !important;
+    }
+    .flatpickr-input {
+      background-color: #fff !important;
+    }
+  </style>
 </body>
 
 </html>
