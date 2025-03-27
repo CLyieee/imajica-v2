@@ -30,6 +30,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Imajica Booking System</title>
 
@@ -578,10 +579,11 @@
 <div class="container">
   <div class="d-flex justify-content-between align-items-center">
     <h3>Category List</h3>
-
+    <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEcommerceCategoryList" id="eCommerceCategoryListForm">
+      <i class="ti tabler-plus me-1"></i> Add New Category
 </div>
   <!-- Table for Category List -->
-  <table class="table table-striped dataTable datatables-category-list" id="categoryListTable" style="width: 100%">   
+  <table class="table table-striped category_list" id="categoryListTable" style="width: 100%">   
      <thead class="table-light">
       <tr>
         <th>ID</th>
@@ -592,7 +594,46 @@
         <th>Action</th>
       </tr>
     </thead>
+<tbody>
+  @foreach ($categories as $category)
+  <tr>
+    <td>{{ $category->category_id }}</td>
+    <td><input type="checkbox" class="form-check-input select-category"></td>
+    <td>
+      <div class="d-flex justify-content-start align-items-center">
+        <div class="avatar-wrapper me-3">
+          <div class="avatar rounded-2 bg-label-secondary">
+            <img src="{{ $category->categoryImage ? asset($category->categoryImage) : asset('assets/img/products/default.jpg') }}" 
+                 class="rounded-2" alt="{{ $category->categoryTitle }}">
+          </div>
+        </div>
+        <div class="d-flex flex-column">
+          <h6 class="mb-0">{{ $category->categoryTitle }}</h6>
+          <small class="text-muted">{{ $category->description ?? 'No description available' }}</small>
+        </div>
+      </div>
+    </td>
+    <td>{{ $category->totalProducts }}</td>
+    <td>{{ $category->totalEarnings }}</td>
 
+    <td>
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-success view-category" data-id="{{ $category->category_id }}">
+          <i class="ti tabler-eye me-1"></i> View
+        </button>
+        <button class="btn btn-sm btn-info edit-category" data-id="{{ $category->category_id }}">
+          <i class="ti tabler-edit me-1"></i> Edit
+        </button>
+        <button class="btn btn-sm btn-danger delete-category" 
+                data-id="{{ $category->category_id }}"
+                data-name="{{ $category->categoryTitle }}">
+          <i class="ti tabler-trash me-1"></i> Delete
+        </button>
+      </div>
+    </td>
+  </tr>
+  @endforeach
+</tbody>
   </table>
 </div>
 
@@ -630,8 +671,14 @@
   </div>
 </div>
 
+<!-- Delete Category Form (Hidden) -->
+<form id="deleteCategoryForm" method="POST" style="display: none;">
+  @csrf
+  @method('DELETE')
+</form>
+
 <script>
-// Image preview functionality
+
 document.getElementById('categoryImage').addEventListener('change', function(e) {
     const file = e.target.files[0];
     const preview = document.querySelector('#imagePreview img');
@@ -705,11 +752,11 @@ $(function () {
   'use strict';
 
   // Destroy existing DataTable if it exists
-  if ($.fn.DataTable.isDataTable('.datatables-category-list')) {
-    $('.datatables-category-list').DataTable().destroy();
+  if ($.fn.DataTable.isDataTable('.category_list')) {
+    $('.category_list').DataTable().destroy();
   }
 
-  let dt_category_table = $('.datatables-category-list');
+  let dt_category_table = $('.category_list');
 
   if (dt_category_table.length) {
     const dt_category = dt_category_table.DataTable({
@@ -776,6 +823,89 @@ $(function () {
     });
   }
 });
+
+$(document).ready(function() {
+    $(document).on('click', '.delete-category', function() {
+        const categoryId = $(this).data('id');
+        const categoryName = $(this).data('name');
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `Are you sure you want to delete "${categoryName}"?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Set the form action with the category ID
+                const form = $('#deleteCategoryForm');
+                form.attr('action', `/categories/${categoryId}/delete`);
+                
+                // Submit the form
+                form.submit();
+            }
+        });
+    });
+});
+</script>
+
+<script>
+  $(document).ready(function() {
+
+    $(document).on('click', '.delete-category', function() {
+    const categoryId = $(this).data('id');
+    const categoryName = $(this).data('name');
+    
+    Swal.fire({
+        title: 'Are you sure?',
+        text: `Are you sure you want to delete "${categoryName}"?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/categories/${categoryId}/delete`,
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    category_id: categoryId
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire(
+                            'Deleted!',
+                            'Category has been deleted.',
+                            'success'
+                        );
+                        // Reload the datatable
+                        $('.category_list').DataTable().ajax.reload();
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            response.message,
+                            'error'
+                        );
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire(
+                        'Error!',
+                        'Something went wrong!',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+});
+  });
+
+
 </script>
           
             
@@ -873,7 +1003,57 @@ $(function () {
    
 
 
-
+    <script>
+      document.getElementById('categoryTitle').addEventListener('input', function(e) {
+          const title = e.target.value;
+          const slug = title.toLowerCase()
+              .replace(/[^\w\s-]/g, '') // Remove special characters
+              .replace(/\s+/g, '-')     // Replace spaces with hyphens
+              .replace(/-+/g, '-');     // Replace multiple hyphens with single hyphen
+          
+          document.getElementById('slug').value = slug;
+      });
+      
+      // Handle form submission
+      $('#eCommerceCategoryListForm').on('submit', function(e) {
+          e.preventDefault();
+          const form = $(this);
+          const categoryTitle = $('#categoryTitle').val();
+          const slug = $('#slug').val();
+      
+          $.ajax({
+              url: form.attr('action'),
+              method: 'POST',
+              data: {
+                  _token: $('input[name="_token"]').val(),
+                  categoryTitle: categoryTitle,
+                  slug: slug
+              },
+              success: function(response) {
+                  if (response.success) {
+                      // Add new row to DataTable
+                      dt_category_table.DataTable().ajax.reload();
+      
+                      // Close offcanvas
+                      var offcanvasElement = document.querySelector('#offcanvasEcommerceCategoryList');
+                      var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                      offcanvas.hide();
+      
+                      // Reset form
+                      form[0].reset();
+                      
+                      // Show success message
+                      alert('Category added successfully!');
+                  } else {
+                      alert('Error: ' + response.message);
+                  }
+              },
+              error: function(xhr) {
+                  alert('Error: ' + xhr.responseJSON.message);
+              }
+          });
+      });
+      </script>
 
 {{-- <script>
   $(function () {
