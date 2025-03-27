@@ -7,7 +7,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CouponController;
 
 use App\Http\Controllers\patientController;
-use App\Http\Controllers\CouponController;
 use App\Http\Controllers\staffController;
 use App\Http\Controllers\branchController;
 use App\Http\Controllers\supplierController;
