@@ -28,6 +28,8 @@ class patient extends Model
         'medical_concerns',
         'current_medications',
         'note_from_admin',
+        'created_at',
+        'updated_at',
     ];
 
     public function contact()

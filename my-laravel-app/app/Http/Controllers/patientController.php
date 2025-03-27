@@ -35,6 +35,7 @@ class patientController extends Controller
                 'medical_concerns' => 'nullable|string',
                 'current_medications' => 'nullable|string',
                 'note_from_admin' => 'nullable|string',
+
             ]);
 
             // Initialize data array without the image_path
@@ -43,6 +44,8 @@ class patientController extends Controller
             // Handle image upload if present
             if ($request->hasFile('image_path')) {
                 $patientData['image_path'] = $request->file('image_path')->store('patients', 'public');
+                $patientData['created_at'] = now();
+$patientData['updated_at'] = now();
             }
             
             // Create the patient record
@@ -137,6 +140,8 @@ class patientController extends Controller
             return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
         }
     }
+
+    
     
     public function index()
     {
