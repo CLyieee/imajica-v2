@@ -9,8 +9,13 @@ class tier extends Model
 {
     use HasFactory;
     protected $primaryKey = 'patient_tier_id';
+    public $timestamps = false;
     protected $fillable = [
         'tier_name',
+        'points_required',
+        'points_to_redeem',
+        'tier_lenght',
+        'remarks',
     ];
 
     public function patient()

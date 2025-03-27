@@ -300,7 +300,7 @@
                     <tr>
                       <th>Service ID</th>
                       <th>Services Name</th>
-                      <th>Branch Code</th>
+                      <th>Branch Name</th>
                       <th>Description</th>
                       <th>Duration</th>
                       <th>Service Category</th>

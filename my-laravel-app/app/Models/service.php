@@ -26,4 +26,9 @@ class service extends Model
     {
         return $this->belongsTo(Branch::class, 'branch_code', 'branch_code');
     }
+
+    public function booking()
+    {
+        return $this->hasMany(Booking::class, 'service_id', 'service_id');
+    }
 }

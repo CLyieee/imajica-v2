@@ -17,13 +17,14 @@ class CreateBookingsTable extends Migration
             $table->id('booking_id');
             $table->string('service_id');
             $table->string('status');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string(column: 'assigned_staff');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
+            $table->string(column: 'id');
             $table->string(column: 'branch_code');
             $table->string(column: 'patient_id');
             $table->string(column: 'useReward');
-            $table->string(column: 'remarks');
+            
+            $table->text(column: 'remarks');
         });
     }
 

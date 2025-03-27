@@ -16,7 +16,11 @@ class CreateTiersTable extends Migration
         Schema::create('tiers', function (Blueprint $table) {
             $table->id('patient_tier_id');
             $table->string('tier_name');
-
+            $table->bigInteger('points_required');
+            $table->bigInteger('points_to_redeem');
+            $table->string('tier_lenght');
+            
+            $table->text('remarks');
         });
     }
 

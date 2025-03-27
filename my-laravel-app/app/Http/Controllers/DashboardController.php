@@ -6,6 +6,7 @@ use App\Models\branch;
 use App\Models\service;
 use App\Models\tier;
 use App\Models\patient;
+use App\Models\staff;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -66,7 +67,9 @@ $branch = Branch::all();
     }
     public function staff_list()
     {
-        return view('page.staff-list');
+        $staffs = staff::all();
+        $branches = branch::all();
+        return view('page.staff-list', compact('branches', 'staffs'));
     } 
     public function new_branch()
     {
@@ -167,7 +170,9 @@ $branch = Branch::all();
     {
         $services = service::all();
         $branches = branch::all();
-        return view('page.booking', compact('services', 'branches'));
+        $patients = patient::all();
+        $staffs =   staff::all();
+        return view('page.booking', compact('services', 'staffs', 'branches', 'patients'));
         
     }
 
