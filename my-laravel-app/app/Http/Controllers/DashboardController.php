@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use Carbon\Carbon;
 use App\Models\branch;
+use App\Models\service;
+use App\Models\category;
 use App\Models\coupon;
+use App\Models\supplier;
+
 use App\Models\tier;
 use App\Models\service;
 use App\Models\staff;
@@ -194,7 +198,8 @@ class DashboardController extends Controller
     public function coupon_list()
     {
         $coupons = coupon::all();
-        return view('page.coupon-list', compact('coupons'));
+        $branches = branch::all();
+        return view('page.coupon-list', compact('coupons' , 'branches'));
     }
 
     public function new_loyalty()
@@ -225,8 +230,10 @@ class DashboardController extends Controller
         return view('page.new-supplier');
     }
     public function supplier_list()
+
     {
-        return view('page.supplier-list');
+        $suppliers = supplier::all();
+        return view('page.supplier-list', compact('suppliers'));
     }
     public function new_staff()
     {
@@ -302,11 +309,14 @@ class DashboardController extends Controller
     }
     public function add_product()
     {
-        return view('page.add-product');
+        $categories = category::all();
+        return view('page.add-product', compact('categories'));
     }
     public function category_list()
     {
-        return view('page.category-list');
+        $categories = category::all();
+        return view('page.category-list', compact('categories'));
+
     }
     public function system_settings()
     {

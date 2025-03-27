@@ -139,7 +139,7 @@
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table class="table table-striped">
+                  <table class="table table-striped" id="branchTable">
                     <thead class="table-light">
                       <tr>
                         <th>Branch Code</th>
@@ -155,16 +155,16 @@
                         <td>{{ $branch->branch_name }}</td>
                         <td>{{ $branch->address }}</td>
                         <td>
-                          <button type="button" class="btn btn-success btn-sm edit-branch" 
+                          <button type="button" class="btn btn-info btn-sm edit-branch" 
                             data-branch-code="{{ $branch->branch_code }}"
                             data-branch-name="{{ $branch->branch_name }}"
                             data-address="{{ $branch->address }}">
-                            Edit
+                            <i class="ti tabler-edit me-1"></i> Edit
                           </button>
                           <button type="button" class="btn btn-danger btn-sm delete-branch" 
                             data-branch-code="{{ $branch->branch_code }}"
                             data-branch-name="{{ $branch->branch_name }}">
-                            Delete
+                            <i class="ti tabler-trash me-1"></i>Delete
                           </button>
                         </td>
                       </tr>
@@ -413,5 +413,13 @@
         });
       });
     </script>
+
+
+<script>
+  $(document).ready(function() {
+    $('#branchTable').DataTable();
+  });
+</script>
+
   </body>
 </html>

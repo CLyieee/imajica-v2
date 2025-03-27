@@ -431,7 +431,7 @@
                               Edit
                             </button>
                             <button class="btn btn-sm btn-danger">
-                              Delete
+                               Delete
                             </button>
                           </div>
                         </td>
