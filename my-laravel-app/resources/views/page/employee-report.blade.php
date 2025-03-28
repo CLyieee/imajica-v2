@@ -1138,13 +1138,6 @@
   <script src="../../assets/js/charts-chartjs.js"></script>
 
 
-  <script>
-  
-    $(document).ready(function() {
-      $('#employeeReport').DataTable();
-      
-    });
-  </script>
   
 </body>
 
