@@ -583,7 +583,7 @@
       <i class="ti tabler-plus me-1"></i> Add New Category
 </div>
   <!-- Table for Category List -->
-  <table class="table table-striped category_list" id="categoryListTable" style="width: 100%">   
+  <table class="table table-striped" id="categoryTable" style="width: 100%">   
      <thead class="table-light">
       <tr>
         <th>ID</th>
@@ -625,8 +625,10 @@
           <i class="ti tabler-edit me-1"></i> Edit
         </button>
         <button class="btn btn-sm btn-danger delete-category" 
-                data-id="{{ $category->category_id }}"
-                data-name="{{ $category->categoryTitle }}">
+        onclick="document.getElementById('deleteCategoryId').value = {{ $category->category_id }}"
+                data-category-id="{{ $category->category_id }}"
+                data-category-name="{{ $category->categoryTitle }}">
+                
           <i class="ti tabler-trash me-1"></i> Delete
         </button>
       </div>
@@ -636,6 +638,12 @@
 </tbody>
   </table>
 </div>
+
+<form id="deleteCategoryForm" method="POST" action="{{ route('category.delete') }}" style="display: none;">
+  @csrf
+  @method('DELETE')
+  <input type="hidden" id="deleteCategoryId" name="category_id">
+</form>
 
 <!-- Offcanvas for Adding New Category -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList">
@@ -671,242 +679,197 @@
   </div>
 </div>
 
-<!-- Delete Category Form (Hidden) -->
-<form id="deleteCategoryForm" method="POST" style="display: none;">
-  @csrf
-  @method('DELETE')
-</form>
-
 <script>
+$(document).ready(function() {
+  // SweetAlert default configuration
+  const swalConfig = {
+    customClass: {
+      container: 'swal-container-class',
+      popup: 'swal-popup-class',
+      confirmButton: 'btn btn-primary me-3',
+      cancelButton: 'btn btn-label-secondary'
+    },
+    buttonsStyling: false,
+    backdrop: true,
+    allowOutsideClick: false
+  };
 
-document.getElementById('categoryImage').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    const preview = document.querySelector('#imagePreview img');
-    
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-    }
-});
+  // Add custom CSS to ensure SweetAlert appears above modal
+  $('<style>')
+    .prop('type', 'text/css')
+    .html(`
+      .swal-container-class {
+        z-index: 2000 !important;
+      }
+      .swal-popup-class {
+        z-index: 2001 !important;
+      }
+      .swal2-backdrop-show {
+        z-index: 1999 !important;
+      }
+    `)
+    .appendTo('head');
 
-// Slug generation from title
-document.getElementById('categoryTitle').addEventListener('input', function(e) {
-    const title = e.target.value;
-    const slug = title.toLowerCase()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-');
-    
-    document.getElementById('slug').value = slug;
-});
-
-// Handle form submission
-$('#eCommerceCategoryListForm').on('submit', function(e) {
+  // Handle form submission
+  $('#eCommerceCategoryListForm').on('submit', function(e) {
     e.preventDefault();
-    
+    const form = $(this);
     const formData = new FormData(this);
 
     $.ajax({
-        url: $(this).attr('action'),
-        method: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            if (response.success) {
-                // Reload DataTable
-                dt_category_table.DataTable().ajax.reload();
+      url: form.attr('action'),
+      method: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        if (response.success) {
+          // Close offcanvas
+          const offcanvasElement = document.querySelector('#offcanvasEcommerceCategoryList');
+          const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+          offcanvas.hide();
 
-                // Close offcanvas
-                const offcanvasElement = document.querySelector('#offcanvasEcommerceCategoryList');
-                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
-                offcanvas.hide();
+          // Reset form
+          form[0].reset();
+          $('#imagePreview img').hide();
 
-                // Reset form and image preview
-                $('#eCommerceCategoryListForm')[0].reset();
-                $('#imagePreview img').hide();
-                
-                // Show success message
-                alert('Category added successfully!');
-            } else {
-                alert('Error: ' + response.message);
-            }
-        },
-        error: function(xhr) {
-            const errors = xhr.responseJSON.errors;
-            let errorMessage = '';
-            for (const field in errors) {
-                errorMessage += errors[field].join('\n') + '\n';
-            }
-            alert('Error: ' + (errorMessage || xhr.responseJSON.message));
+          // Show success message
+          Swal.fire({
+            ...swalConfig,
+            icon: 'success',
+            title: 'Success!',
+            text: 'Category added successfully',
+            timer: 3000,
+            showConfirmButton: false
+          }).then(() => {
+            location.reload();
+          });
         }
-    });
-});
-
-// Modify DataTable initialization
-$(function () {
-  'use strict';
-
-  // Destroy existing DataTable if it exists
-  if ($.fn.DataTable.isDataTable('.category_list')) {
-    $('.category_list').DataTable().destroy();
-  }
-
-  let dt_category_table = $('.category_list');
-
-  if (dt_category_table.length) {
-    const dt_category = dt_category_table.DataTable({
-      ajax: {
-        url: '/api/categories', // Update this URL to your categories API endpoint
-        dataSrc: ''
       },
-      columns: [
-        { data: 'category_id' },
-        { 
-          data: null,
-          render: function () {
-            return '<input type="checkbox" class="form-check-input select-category">';
-          }
-        },
-        { 
-          data: 'categoryTitle',
-          render: function(data, type, row) {
-            const imageUrl = row.categoryImage 
-              ? '/' + row.categoryImage 
-              : '../../assets/img/products/default.jpg';
-            
-            return `<div class="d-flex justify-content-start align-items-center">
-              <div class="avatar-wrapper me-3">
-                <div class="avatar rounded-2 bg-label-secondary">
-                  <img src="${imageUrl}" class="rounded-2">
-                </div>
-              </div>
-              <div class="d-flex flex-column">
-                <h6 class="mb-0">${data}</h6>
-                <small class="text-muted">${row.description || ''}</small>
-              </div>
-            </div>`;
-          }
-        },
-        { 
-          data: null,
-          render: function() { return '0'; }
-        },
-        { 
-          data: null,
-          render: function() { return '$0'; }
-        },
-        {
-          data: null,
-          render: function (data, type, row) {
-            return `
-              <div class="d-flex gap-2">
-                <button class="btn btn-success btn-sm view-category" data-id="${row.category_id}">
-                  <i class="ti tabler-eye me-1"></i>
-                </button>
-                <button class="btn btn-info btn-sm edit-category" data-id="${row.category_id}">
-                  <i class="ti tabler-edit me-1"></i>
-                </button>
-                <button class="btn btn-danger btn-sm delete-category" data-id="${row.category_id}">
-                  <i class="ti tabler-trash me-1"></i>
-                </button>
-              </div>
-            `;
-          }
-        }
-      ],
-      // ... rest of the DataTable configuration
-    });
-  }
-});
-
-$(document).ready(function() {
-    $(document).on('click', '.delete-category', function() {
-        const categoryId = $(this).data('id');
-        const categoryName = $(this).data('name');
+      error: function(xhr) {
+        let errorMessage = 'An error occurred while adding the category.';
         
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          errorMessage = xhr.responseJSON.message;
+        }
+
         Swal.fire({
-            title: 'Are you sure?',
-            text: `Are you sure you want to delete "${categoryName}"?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Set the form action with the category ID
-                const form = $('#deleteCategoryForm');
-                form.attr('action', `/categories/${categoryId}/delete`);
-                
-                // Submit the form
-                form.submit();
-            }
+          ...swalConfig,
+          icon: 'error',
+          title: 'Error!',
+          text: errorMessage,
+          timer: 3000,
+          showConfirmButton: false
         });
+      }
     });
+  });
+
+  // Handle delete category
+  $('.delete-category').on('click', function() {
+    const categoryId = $(this).data('category-id');
+    const categoryName = $(this).data('category-name');
+
+    Swal.fire({
+      ...swalConfig,
+      title: 'Confirm Delete',
+      html: `Are you sure you want to delete category <strong>${categoryName}</strong>?<br>This action cannot be undone.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6c757d'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '{{ route("category.delete") }}',
+          type: 'POST',
+          data: {
+            _token: '{{ csrf_token() }}',
+            _method: 'DELETE',
+            category_id: categoryId
+          },
+          success: function(response) {
+            if (response.success) {
+              Swal.fire({
+                ...swalConfig,
+                icon: 'success',
+                title: 'Deleted!',
+                text: 'Category has been deleted successfully.',
+                timer: 3000,
+                showConfirmButton: false
+              }).then(() => {
+                location.reload();
+              });
+            }
+          },
+          error: function(xhr) {
+            let errorMessage = 'An error occurred while deleting the category.';
+            
+            if (xhr.status === 404) errorMessage = 'Category not found.';
+            else if (xhr.status === 403) errorMessage = 'You do not have permission to delete this category.';
+            else if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMessage = xhr.responseJSON.message;
+            }
+
+            Swal.fire({
+              ...swalConfig,
+              icon: 'error', 
+              title: 'Error!',
+              text: errorMessage,
+              timer: 3000,
+              showConfirmButton: false
+            });
+          }
+        });
+      }
+    });
+  });
+
+  // Display success/error messages from session
+  @if(session('success'))
+    Swal.fire({
+      ...swalConfig,
+      icon: 'success',
+      title: 'Success',
+      text: "{{ session('success') }}",
+      timer: 3000,
+      showConfirmButton: false
+    });
+  @endif
+
+  @if(session('error'))
+    Swal.fire({
+      ...swalConfig,
+      icon: 'error',
+      title: 'Error',
+      text: "{{ session('error') }}",
+      timer: 3000,
+      showConfirmButton: false
+    });
+  @endif
+
+  // Handle validation errors
+  @if($errors->any())
+    Swal.fire({
+      ...swalConfig,
+      icon: 'error',
+      title: 'Validation Error',
+      text: 'Please check the form for errors',
+      timer: 3000,
+      showConfirmButton: false
+    });
+  @endif
 });
 </script>
 
 <script>
   $(document).ready(function() {
-
-    $(document).on('click', '.delete-category', function() {
-    const categoryId = $(this).data('id');
-    const categoryName = $(this).data('name');
-    
-    Swal.fire({
-        title: 'Are you sure?',
-        text: `Are you sure you want to delete "${categoryName}"?`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: `/categories/${categoryId}/delete`,
-                type: 'POST',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    category_id: categoryId
-                },
-                success: function(response) {
-                    if (response.success) {
-                        Swal.fire(
-                            'Deleted!',
-                            'Category has been deleted.',
-                            'success'
-                        );
-                        // Reload the datatable
-                        $('.category_list').DataTable().ajax.reload();
-                    } else {
-                        Swal.fire(
-                            'Error!',
-                            response.message,
-                            'error'
-                        );
-                    }
-                },
-                error: function(xhr) {
-                    Swal.fire(
-                        'Error!',
-                        'Something went wrong!',
-                        'error'
-                    );
-                }
-            });
-        }
-    });
-});
+    $('#categoryTable').DataTable();
   });
-
-
 </script>
+
           
             
 
@@ -1160,6 +1123,12 @@ $(document).ready(function() {
   });
 });
 </script> --}}
+
+<script>
+  $(document).ready(function() {
+    $('#categoryTable').DataTable();
+  });
+</script>
 
   </body>
 

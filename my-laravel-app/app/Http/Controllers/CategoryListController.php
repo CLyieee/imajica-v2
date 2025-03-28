@@ -56,28 +56,23 @@ class CategoryListController extends Controller
         return response()->json($categories);
     }
 
-    public function delete($id)
+    public function delete(Request $request)
     {
-        try {
-            $category = category::findOrFail($id);
-            
-            // Delete the image file if it exists
-            if ($category->categoryImage && file_exists(public_path($category->categoryImage))) {
-                unlink(public_path($category->categoryImage));
-            }
-            
-            $category->delete();
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Category deleted successfully'
-            ]);
-            
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error deleting category: ' . $e->getMessage()
-            ], 500);
+        // Validate the request
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+        ]);
+    
+        // Find the category by ID
+        $category = Category::where('category_id', $request->category_id)->first();
+        if (!$category) {
+            return redirect()->back()->with('error', 'Category not found');
         }
+    
+        // Delete the category
+        $category->delete();
+    
+        return redirect()->back()->with('success', 'Category deleted successfully');
     }
+    
 }

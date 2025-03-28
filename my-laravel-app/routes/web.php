@@ -131,7 +131,8 @@ Route::get('/category/all', [CategoryListController::class, 'getAll'])->name('ca
 Route::get('/api/categories', [CategoryListController::class, 'getAll'])->name('api.categories');
 Route::post('/category/create', [CategoryListController::class, 'create'])->name('category.create');
 Route::get('/category-list', [DashboardController::class, 'category_list'])->name('page.category-list');
-Route::post('/categories/{id}/delete', [CategoryListController::class, 'delete'])->name('category.delete');
+Route::delete('/category/delete', [App\Http\Controllers\CategoryListController::class, 'delete'])->name('category.delete');
+
 
 //Staff Route
 Route::post('/staff/create', [App\Http\Controllers\staffController::class, 'create'])->name('staff.create');
