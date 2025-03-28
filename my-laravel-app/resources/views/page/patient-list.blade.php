@@ -417,7 +417,7 @@
                               data-emergency-contact="{{ $patient->emergency_contact_name ?? '' }}"
                               data-emergency-number="{{ $patient->emergency_contact_number ?? '' }}"
                               data-patient-tier="{{ $patient->patient_tier_id ?? '' }}"
-                              data-joined="{{ $patient->created_at ? $patient->created_at->format('Y-m-d') : '' }}"
+                              data-joined="{{ $patient->created_at ? \Carbon\Carbon::parse($patient->created_at)->format('Y-m-d') : '' }}"
                               @if($patient->image_path) 
                                 data-profile-image="{{ asset('storage/'.$patient->image_path) }}" 
                               @endif
