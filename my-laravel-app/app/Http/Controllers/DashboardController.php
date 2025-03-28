@@ -10,7 +10,7 @@ use App\Models\tier;
 use App\Models\service;
 use App\Models\staff;
 use App\Models\booking;
-
+use App\Models\category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -303,11 +303,14 @@ class DashboardController extends Controller
     }
     public function add_product()
     {
-        return view('page.add-product');
+        $categories = category::all();
+        return view('page.add-product', compact('categories'));
     }
     public function category_list()
     {
-        return view('page.category-list');
+        $categories = category::all();
+        return view('page.category-list', compact('categories'));
+
     }
     public function system_settings()
     {

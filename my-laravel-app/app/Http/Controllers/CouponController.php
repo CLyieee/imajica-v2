@@ -147,6 +147,7 @@ class CouponController extends Controller
             
             if (!$coupon) {
                 return response()->json(['error' => 'Coupon not found'], 404);
+              
             }
             
             return response()->json($coupon);
