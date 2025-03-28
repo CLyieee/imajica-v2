@@ -254,19 +254,19 @@
             </ul>
         </li>
 
-        <li class="menu-item {{ request()->is('new-coupon') || request()->is('coupon-list') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->is('new-coupon') || request()->is('expenses-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-layout-board"></i>
                 <div data-i18n="Expenses">Expenses</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('new-coupon') ? 'active' : '' }}">
+                <li class="menu-item {{ request()->is('new-expenses') ? 'active' : '' }}">
                     <a href="/new-expenses" class="menu-link">
                         <div data-i18n="New Expenses">New Expenses</div>
                     </a>
                 </li>
 
-                <li class="menu-item {{ request()->is('coupon-list') ? 'active' : '' }}">
+                <li class="menu-item {{ request()->is('expenses-list') ? 'active' : '' }}">
                     <a href="/expenses-list" class="menu-link">
                         <div data-i18n="Expenses List">Expenses List</div>
                     </a>
