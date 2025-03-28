@@ -11,6 +11,7 @@ use App\Models\staff;
 use App\Models\booking;
 use App\Models\category;
 use Illuminate\Http\Request;
+use App\Models\service;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
