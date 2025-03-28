@@ -45,9 +45,39 @@ class CategoryListController extends Controller
         return redirect(route('page.category-list'));
     }
 
+    /**
+     * Returns all categories
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getAll()
     {
         $categories = category::all();
         return response()->json($categories);
+    }
+
+    public function delete($id)
+    {
+        try {
+            $category = category::findOrFail($id);
+            
+            // Delete the image file if it exists
+            if ($category->categoryImage && file_exists(public_path($category->categoryImage))) {
+                unlink(public_path($category->categoryImage));
+            }
+            
+            $category->delete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Category deleted successfully'
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting category: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
