@@ -252,7 +252,6 @@
                     <p class="mb-1">Total Completed Bookings</p>
                     <div class="d-flex align-items-center">
                       <div class="ms-auto">
-                        <span class="text-success">↑ 152</span>
                       </div>
                     </div>
                   </div>
@@ -276,7 +275,6 @@
                     <p class="mb-1">Total Revenue</p>
                     <div class="d-flex align-items-center">
                       <div class="ms-auto">
-                        <span class="text-success">↑ ₱84,000</span>
                       </div>
                     </div>
                   </div>
@@ -300,7 +298,6 @@
                     <p class="mb-1">Total Patients</p>
                     <div class="d-flex align-items-center">
                       <div class="ms-auto">
-                        <span class="text-success">↑ 26</span>
                       </div>
                     </div>
                   </div>
@@ -326,7 +323,6 @@
                     <p class="mb-1">Total Expenses</p>
                     <div class="d-flex align-items-center">
                       <div class="ms-auto">
-                        <span class="text-warning">↑ ₱26,000</span>
                       </div>
                     </div>
                   </div>
