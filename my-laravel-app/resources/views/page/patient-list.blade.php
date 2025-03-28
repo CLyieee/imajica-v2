@@ -403,7 +403,7 @@
                         <td></td>
                         <td>
                           <div class="d-inline-block">
-                            <button type="button" class="btn btn-sm btn-icon btn-primary view-patient"
+                            <button type="button" class="btn btn-sm btn-success view-patient"
                               data-bs-toggle="modal"
                               data-bs-target="#patientModal"
                               data-id="{{ $patient->patient_id }}"
@@ -424,18 +424,18 @@
                               data-medical-concerns="{{ $patient->medical_concerns ?? '' }}"
                               data-medications="{{ $patient->current_medications ?? '' }}"
                               data-admin-notes="{{ $patient->note_from_admin ?? '' }}">
-                              <i class="ti tabler-eye"></i>
+                              View
                             </button>
-                            <button type="button" class="btn btn-sm btn-icon btn-info edit-patient"
+                            <button type="button" class="btn btn-sm btn-info edit-patient"
                               data-bs-toggle="modal"
                               data-bs-target="#editPatientModal"
                               data-id="{{ $patient->patient_id }}">
-                              <i class="ti tabler-edit"></i>
+                              Edit
                             </button>
-                            <button type="button" class="btn btn-sm btn-icon btn-danger delete-patient" 
+                            <button type="button" class="btn btn-sm btn-danger delete-patient" 
                               data-id="{{ $patient->patient_id }}"
                               data-name="{{ $patient->firstname }} {{ $patient->lastname }}">
-                              <i class="ti tabler-trash"></i>
+                              Delete
                             </button>
                           </div>
                         </td>
@@ -536,7 +536,7 @@
 
     <!-- Patient Modal -->
     <div class="modal fade" id="patientModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content border-0">
           <div class="modal-header bg-primary text-white border-0">
             <h5 class="modal-title text-white fs-4">
@@ -1070,6 +1070,22 @@
           .join("");
       }
 
+      // Format joined date to "Month Day, Year" format
+      function formatJoinedDate(dateString) {
+        if (!dateString) return 'Not available';
+        
+        try {
+          const date = new Date(dateString);
+          if (isNaN(date)) return dateString;
+          
+          const options = { year: 'numeric', month: 'long', day: 'numeric' };
+          return date.toLocaleDateString('en-US', options);
+        } catch (error) {
+          console.error('Error formatting date:', error);
+          return dateString;
+        }
+      }
+
       // Handle patient actions
       document.addEventListener("DOMContentLoaded", function() {
         // Image preview for edit form
@@ -1085,47 +1101,50 @@
 
         // View patient details
         const viewButtons = document.querySelectorAll(".view-patient");
-        viewButtons.forEach(button => {
-          button.addEventListener("click", function() {
-            const data = this.dataset;
-            
-            // Store patient ID for edit button
-            document.getElementById("editPatientLink").setAttribute('data-id', data.id);
-            
-            // Set profile image
-            const profileImage = document.getElementById("modalProfileImage");
-            profileImage.src = data.profileImage || createInitialsAvatar(data.name);
-            
-            // Basic information
-            document.getElementById("modalPatientName").textContent = data.name || '';
-            document.getElementById("modalPatientNameProfile").textContent = data.name || '';
-            document.getElementById("modalContact").textContent = data.contact || 'Not provided';
-            document.getElementById("modalEmail").textContent = data.email || 'Not provided';
-            document.getElementById("modalBirthdate").textContent = data.birthdate || 'Not provided';
-            document.getElementById("modalGender").textContent = data.gender || 'Not specified';
-            document.getElementById("modalAddress").textContent = data.address || 'Not provided';
-            
-            // Additional information
-            document.getElementById("modalOccupation").textContent = data.occupation || 'Not provided';
-            document.getElementById("modalEmergencyContact").textContent = data.emergencyContact || 'Not provided';
-            document.getElementById("modalEmergencyNumber").textContent = data.emergencyNumber || '';
-            document.getElementById("modalJoined").textContent = data.joined || 'Not available';
-            
-            // Medical information
-            document.getElementById("modalMedicalConcerns").innerHTML = formatListItems(data.medicalConcerns);
-            document.getElementById("modalMedications").innerHTML = formatListItems(data.medications);
-            
-            // Admin notes
-            const adminNotes = document.getElementById("modalAdminNotes");
-            if (data.adminNotes && data.adminNotes.trim()) {
-              adminNotes.textContent = data.adminNotes;
-              adminNotes.classList.remove('text-muted');
-            } else {
-              adminNotes.textContent = 'No administrative notes available';
-              adminNotes.classList.add('text-muted');
-            }
-          });
-        });
+viewButtons.forEach(button => {
+  button.addEventListener("click", function() {
+    const data = this.dataset;
+    
+    // Store patient ID for edit button
+    document.getElementById("editPatientLink").setAttribute('data-id', data.id);
+    
+    // Set profile image
+    const profileImage = document.getElementById("modalProfileImage");
+    profileImage.src = data.profileImage || createInitialsAvatar(data.name);
+    
+    // Basic information
+    document.getElementById("modalPatientName").textContent = data.name || '';
+    document.getElementById("modalPatientNameProfile").textContent = data.name || '';
+    document.getElementById("modalContact").textContent = data.contact || 'Not provided';
+    document.getElementById("modalEmail").textContent = data.email || 'Not provided';
+    document.getElementById("modalBirthdate").textContent = data.birthdate || 'Not provided';
+    document.getElementById("modalGender").textContent = data.gender || 'Not specified';
+    document.getElementById("modalAddress").textContent = data.address || 'Not provided';
+    
+    // Additional information
+    document.getElementById("modalOccupation").textContent = data.occupation || 'Not provided';
+    document.getElementById("modalEmergencyContact").textContent = data.emergencyContact || 'Not provided';
+    document.getElementById("modalEmergencyNumber").textContent = data.emergencyNumber || '';
+    
+    // Format joined date to "Month Day, Year"
+    const joinedDate = data.joined ? formatJoinedDate(data.joined) : 'Not available';
+    document.getElementById("modalJoined").textContent = joinedDate;
+    
+    // Medical information
+    document.getElementById("modalMedicalConcerns").innerHTML = formatListItems(data.medicalConcerns);
+    document.getElementById("modalMedications").innerHTML = formatListItems(data.medications);
+    
+    // Admin notes
+    const adminNotes = document.getElementById("modalAdminNotes");
+    if (data.adminNotes && data.adminNotes.trim()) {
+      adminNotes.textContent = data.adminNotes;
+      adminNotes.classList.remove('text-muted');
+    } else {
+      adminNotes.textContent = 'No administrative notes available';
+      adminNotes.classList.add('text-muted');
+    }
+  });
+});
         
         // Edit patient button click
         document.getElementById('editPatientLink').addEventListener('click', function() {
