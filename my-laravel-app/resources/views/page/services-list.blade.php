@@ -277,75 +277,89 @@
 
         <!-- / Navbar -->
 
-        <div class="content-wrapper">
-          <!-- Content -->
-          <div class="container-xxl flex-grow-1 container-p-y">
-            <div class="card">
-              <!-- Branch Filter -->
-              <div class="px-4 py-3">
-                <label for="branchFilter" class="fw-bold me-2">Select Branch:</label>
-                <select id="branchFilter" class="form-select w-auto d-inline-block">
-                  <option value="">All Branches</option>
-                  @foreach($branches as $branch)
-                    <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
-                  @endforeach
-                </select>
-              </div>
+        <!-- Replace the existing table section with this -->
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <div class="card">
+            <!-- Table Header with Search -->
+            <div class="d-flex justify-content-between align-items-center p-3">
+              <h5 class="card-title mb-0">Services List</h5>
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addServiceModal">
+                <i class="ti tabler-plus me-1"></i> Add New Service
+              </button>
+            </div>
 
-              <!-- Table -->
-              <div class="table-responsive">
+            <!-- Success/Error Messages -->
+            <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
 
-                <table class="table table-striped" id="tableService">
-                    <thead class="table-light">
-                    <tr>
-                      <th>Service ID</th>
-                      <th>Services Name</th>
-                      <th>Branch Name</th>
-                      <th>Description</th>
-                      <th>Duration</th>
-                      <th>Service Category</th>
-                      <th>Service Cost</th>
-                      <th>Loyalty Points</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+            <!-- Branch Filter -->
+            <div class="px-3 py-2">
+              <label for="branchFilter" class="form-label">Select Branch:</label>
+              <select id="branchFilter" class="form-select w-auto d-inline-block">
+                <option value="">All Branches</option>
+                @foreach($branches as $branch)
+                  <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
+                @endforeach
+              </select>
+            </div>
 
-                    @foreach ($services as $service)
-                    <tr>
-                      <td>{{ $service -> id }}</td>
-                      <td>{{ $service -> service_name }}</td>
-                      <td>{{ $service->branch ? $service->branch->branch_name : $service->branch_code }}</td>
-                      <td>{{ $service -> description }}</td>
-                      <td>{{ $service -> duration }}</td>
-                      <td>{{ $service -> service_category }}</td>
-                      <td>{{ $service -> service_cost }}</td>
-                      <td>{{ $service -> loyalty_pts }}</td>
-                      <td>
-                        <button type="button" class="btn btn-info btn-sm edit-service"
+            <!-- Table -->
+            <div class="table-responsive text-nowrap px-3">
+              <table class="table table-striped" id="tableService">
+                <thead class="table-light">
+                  <tr>
+                    <th>Services Name</th>
+                    <th>Branch Name</th>
+                    <th>Description</th>
+                    <th>Duration</th>
+                    <th>Service Category</th>
+                    <th>Service Cost</th>
+                    <th>Loyalty Points</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach ($services as $service)
+                  <tr>
+                    <td>{{ $service->service_name }}</td>
+                    <td>{{ $service->branch ? $service->branch->branch_name : $service->branch_code }}</td>
+                    <td>{{ $service->description }}</td>
+                    <td>{{ $service->duration }}</td>
+                    <td>{{ $service->service_category }}</td>
+                    <td>{{ $service->service_cost }}</td>
+                    <td>{{ $service->loyalty_pts }}</td>
+                    <td>
+                      <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-success view-service" 
+                          data-service-id="{{ $service->id }}"
+                          data-service-name="{{ $service->service_name }}"
+                          data-service-description="{{ $service->description }}"
+                          data-service-cost="{{ $service->service_cost }}"
+                          data-service-points="{{ $service->loyalty_pts }}">
+                          <i class="ti tabler-eye me-1"></i> View
+                        </button>
+                        <button class="btn btn-sm btn-info edit-service"
+                          data-service-id="{{ $service->id }}"
                           data-service-name="{{ $service->service_name }}"
                           data-service-branch="{{ $service->branch_code }}"
                           data-service-description="{{ $service->description }}"
                           data-service-duration="{{ $service->duration }}"
                           data-service-category="{{ $service->service_category }}"
                           data-service-cost="{{ $service->service_cost }}"
-                          data-service-points="{{ $service->loyalty_pts }}" data-service-id="{{ $service->id }}">
-                          Edit
+                          data-service-points="{{ $service->loyalty_pts }}">
+                          <i class="ti tabler-edit me-1"></i> Edit
                         </button>
-                        <button type="button" class="btn btn-danger btn-sm delete-service"
-                          data-service-id="{{ $service->id }}">
-                          Delete
+                        <button class="btn btn-sm btn-danger delete-service" 
+                          data-service-id="{{ $service->id }}"
+                          data-service-name="{{ $service->service_name }}">
+                          <i class="ti tabler-trash me-1"></i> Delete
                         </button>
-                      </td>
-                    </tr>
-
-                    @endforeach
-
-                    <!-- Repeat the same pattern for other rows -->
-                  </tbody>
-
-                  <br />
-              </div>
+                      </div>
+                    </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+              <br />
             </div>
           </div>
         </div>
