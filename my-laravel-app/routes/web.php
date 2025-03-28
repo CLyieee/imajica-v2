@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 
+
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CategoryListController;
+use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\patientController;
 use App\Http\Controllers\staffController;
 use App\Http\Controllers\branchController;
@@ -23,10 +25,16 @@ use App\Http\Controllers\bookingController;
 
 Route::get('/', [LoginController::class, 'index'])->name('page.index');
 
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('page.dashboard');
 
-Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
-Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
+        Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
+        Route::get('/coupon-list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
+        Route::put('/coupon/update', [CouponController::class, 'update'])->name('coupon.update');
+        Route::delete('/coupon/delete', [CouponController::class, 'delete'])->name('coupon.delete');
+
+        Route::get('/coupon/get', [CouponController::class, 'get'])->name('coupon.get');
 
 
 Route::get('/coupon-list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
@@ -126,6 +134,12 @@ Route::get('/service-product', [DashboardController::class, 'service_product'])-
 Route::get('/employee-report', [DashboardController::class, 'employee_report'])->name('page.employee-report');
 
 Route::get('/expenses-report', [DashboardController::class, 'expenses_report'])->name('page.expenses-report');
+
+Route::get('/new-expenses', [DashboardController::class, 'new_expenses'])->name('page.new-expenses');
+
+Route::get('/expenses-list', [DashboardController::class, 'expenses_list'])->name('page.expenses-list');
+
+Route::get('/expenses/view/{id}', [ExpensesController::class, 'view'])->name('expenses.view');
 
 Route::get('/category/all', [CategoryListController::class, 'getAll'])->name('category.all');
 Route::get('/api/categories', [CategoryListController::class, 'getAll'])->name('api.categories');

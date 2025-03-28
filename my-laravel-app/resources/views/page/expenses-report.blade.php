@@ -303,15 +303,18 @@
       <div class="card mt-4">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="mb-0">Expense Transactions</h3>
+            <h3 class="m-0">Expense Transactions</h3>
             <div class="d-flex gap-2">
               <div class="input-group" style="width: 300px;">
+                <span class="input-group-text">
+                  <i class="ti tabler-search"></i>
+                </span>
                 <input 
                   type="text" 
                   class="form-control" 
                   id="searchInput" 
                   placeholder="Search by category or description..."
-                  style="border-radius: 4px;"
+                  style="border-radius: 0 4px 4px 0;"
                 >
               </div>
               <div class="dropdown">
@@ -332,9 +335,9 @@
                 </div>
               </div>
               <div class="dropdown">
-              <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #0066ff;">
-                                Export
-                            </button>
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #0066ff;">
+                  Export
+                </button>
                 <ul class="dropdown-menu" style="min-width: 120px;">
                   <li><a class="dropdown-item" href="#" data-export="pdf">PDF</a></li>
                   <li><a class="dropdown-item" href="#" data-export="excel">Excel</a></li>
@@ -348,63 +351,93 @@
               <thead>
                 <tr style="background-color: #1e4d2b;">
                   <th style="color: white; font-weight: 500;">Date</th>
-                  <th style="color: white; font-weight: 500;">Category</th>
-                  <th style="color: white; font-weight: 500;">Description</th>
-                  <th style="color: white; font-weight: 500;">Amount</th>
-                  <th style="color: white; font-weight: 500;">Payment Method</th>
+                  <th style="color: white; font-weight: 500;">Receipt/Invoice No.</th>
+                  <th style="color: white; font-weight: 500;">Expense Name</th>
+                  <th style="color: white; font-weight: 500;">Expense Category</th>
+                  <th style="color: white; font-weight: 500;">Payment Status</th>
                   <th style="color: white; font-weight: 500;">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>2024-01-15</td>
+                  <td>INV-2024-001</td>
+                  <td>Electricity Bill Payment</td>
                   <td>Utilities</td>
-                  <td>Electricity Bill</td>
-                  <td>₱15,678</td>
-                  <td>Bank Transfer</td>
-                  <td>
-                    <button class="btn btn-sm btn-success">View</button>
-                  </td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
                 </tr>
                 <tr>
                   <td>2024-01-14</td>
+                  <td>INV-2024-002</td>
+                  <td>Office Supplies Purchase</td>
                   <td>Supplies</td>
-                  <td>Office Supplies</td>
-                  <td>₱8,432</td>
-                  <td>Cash</td>
-                  <td>
-                    <button class="btn btn-sm btn-success">View</button>
-                  </td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
                 </tr>
                 <tr>
                   <td>2024-01-13</td>
+                  <td>INV-2024-003</td>
+                  <td>Equipment Maintenance</td>
                   <td>Maintenance</td>
-                  <td>Equipment Repair</td>
-                  <td>₱12,550</td>
-                  <td>Credit Card</td>
-                  <td>
-                    <button class="btn btn-sm btn-success">View</button>
-                  </td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
                 </tr>
                 <tr>
                   <td>2024-01-12</td>
+                  <td>INV-2024-004</td>
+                  <td>Marketing Campaign</td>
                   <td>Marketing</td>
-                  <td>Social Media Ads</td>
-                  <td>₱5,000</td>
-                  <td>Online Payment</td>
-                  <td>
-                    <button class="btn btn-sm btn-success">View</button>
-                  </td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
                 </tr>
                 <tr>
                   <td>2024-01-11</td>
+                  <td>INV-2024-005</td>
+                  <td>Monthly Payroll</td>
                   <td>Payroll</td>
-                  <td>Staff Salaries</td>
-                  <td>₱43,770</td>
-                  <td>Bank Transfer</td>
-                  <td>
-                    <button class="btn btn-sm btn-success">View</button>
-                  </td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-10</td>
+                  <td>INV-2024-006</td>
+                  <td>Internet Service</td>
+                  <td>Utilities</td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-09</td>
+                  <td>INV-2024-007</td>
+                  <td>Office Rent</td>
+                  <td>Rent</td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-08</td>
+                  <td>INV-2024-008</td>
+                  <td>Software Licenses</td>
+                  <td>IT Services</td>
+                  <td><span class="badge bg-label-warning">Pending</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-07</td>
+                  <td>INV-2024-009</td>
+                  <td>Water Bill</td>
+                  <td>Utilities</td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-06</td>
+                  <td>INV-2024-010</td>
+                  <td>Equipment Purchase</td>
+                  <td>Assets</td>
+                  <td><span class="badge bg-label-danger">Unpaid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
                 </tr>
               </tbody>
             </table>
@@ -414,7 +447,106 @@
     </div>      
 </div>
 
-    <script>
+<!-- Expense Details Modal -->
+<div class="modal fade" id="expenseModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content shadow-lg rounded-3">
+      <div class="modal-header text-white" style="background-color: #1e4d2b;">
+        <h5 class="modal-title text-white">Expense Details</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="row g-4">
+          <!-- Expense Info Card -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-header bg-light d-flex align-items-center justify-content-between">
+                <h6 class="card-title mb-0">Basic Information</h6>
+                <small class="text-muted">Invoice: #INV-2024-001</small>
+              </div>
+              <div class="card-body d-flex flex-column gap-3">
+                <div><strong>Expense Name:</strong> Electricity Bill Payment</div>
+                <div><strong>Category:</strong> Utilities</div>
+                <div><strong>Amount:</strong> <span class="text-success">₱12,450.00</span></div>
+                <div><strong>Date:</strong> January 15, 2024</div>
+                <div><strong>Payment Status:</strong> <span class="badge bg-success">Paid</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Details -->
+          <div class="col-md-6 col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-header bg-light">
+                <h6 class="card-title mb-0">Payment Details</h6>
+              </div>
+              <div class="card-body">
+                <table class="table table-striped">
+                  <tbody>
+                    <tr><td><strong>Payment Method:</strong></td><td>Bank Transfer</td></tr>
+                    <tr><td><strong>Transaction ID:</strong></td><td>TXN-987654321</td></tr>
+                    <tr><td><strong>Payment Date:</strong></td><td>January 15, 2024</td></tr>
+                    <tr><td><strong>Processed By:</strong></td><td>John Smith</td></tr>
+                    <tr><td><strong>Notes:</strong></td><td>Monthly electricity consumption for main office</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Monthly Comparison -->
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-light">
+                <h6 class="card-title mb-0">Monthly Comparison</h6>
+              </div>
+              <div class="card-body">
+                <canvas id="expenseChart" height="300"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Attached Documents -->
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-light">
+                <h6 class="card-title mb-0">Attached Documents</h6>
+              </div>
+              <div class="card-body d-flex flex-column gap-3">
+                <div class="d-flex align-items-center p-2 border rounded bg-light">
+                  <i class="ti ti-file-invoice text-primary" style="font-size: 24px;"></i>
+                  <div class="ms-2">
+                    <h6 class="mb-0">Invoice_2024001.pdf</h6>
+                    <small class="text-muted">PDF, 2.3 MB</small>
+                  </div>
+                  <button class="btn btn-sm btn-outline-primary ms-auto">
+                    <i class="ti ti-download"></i>
+                  </button>
+                </div>
+                <div class="d-flex align-items-center p-2 border rounded bg-light">
+                  <i class="ti ti-file-text text-success" style="font-size: 24px;"></i>
+                  <div class="ms-2">
+                    <h6 class="mb-0">Receipt_2024001.pdf</h6>
+                    <small class="text-muted">PDF, 1.1 MB</small>
+                  </div>
+                  <button class="btn btn-sm btn-outline-primary ms-auto">
+                    <i class="ti ti-download"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Edit Expense</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
       document
         .querySelector(".menu-mobile-toggler")
         .addEventListener("click", function () {
@@ -511,9 +643,35 @@
               document.querySelector('.custom-range-inputs').classList.add('d-none');
           }
       });
-    </script>
-  </body>
-        
+
+// Add event listeners to view buttons
+document.querySelectorAll('.btn-success').forEach(button => {
+  button.addEventListener('click', () => {
+    const modal = new bootstrap.Modal(document.getElementById('expenseModal'));
+    modal.show();
+  });
+});
+
+// Initialize chart when modal is shown
+document.getElementById('expenseModal').addEventListener('shown.bs.modal', function () {
+  const ctx = document.getElementById('expenseChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+      datasets: [{
+        label: 'Monthly Expenses (₱)',
+        data: [11200, 10800, 11500, 12100, 11900, 12450],
+        backgroundColor: '#0066ff',
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    }
+  });
+});
+</script>
 
           <div class="content-backdrop fade"></div>
         </div>
@@ -541,6 +699,7 @@
   <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
 
   <script src="../../assets/vendor/libs/popper/popper.js"></script>
+
   <script src="../../assets/vendor/js/bootstrap.js"></script>
   <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
 

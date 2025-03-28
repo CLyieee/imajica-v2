@@ -295,17 +295,15 @@
                         </span>
                       </div>
                       <div>
-                        <h4 class="mb-0">500</h4>
-                        <span class="badge bg-label-success">+5.2%</span>
+                        <h4 class="mb-0">
+                          {{ count($patients) }}
+                        </h4>
+                      <span class="badge bg-label-{{ $patientGrowth > 0 ? 'success' : 'danger' }}">
+            {{ $patientGrowth > 0 ? '+' : '' }}{{ number_format($patientGrowth, 1) }}%
+          </span>
                       </div>
                     </div>
                     <p class="mb-1">Total Patients</p>
-                    <div class="d-flex align-items-center">
-                      <small class="text-body-secondary">vs last month</small>
-                      <div class="ms-auto">
-                        <span class="text-success">↑ 26</span>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -365,35 +363,41 @@
                       Today's Birthdays
                     </h6>
                     <div class="birthday-today">
-                      <li class="d-flex mb-2 pb-1 birthday-item position-relative">
-                        <div class="avatar flex-shrink-0 me-3">
-                          <span
-                            class="avatar-initial rounded-circle bg-label-danger d-flex align-items-center justify-content-center"
-                            style="width: 45px; height: 45px">
-                            <i class="icon-base ti tabler-confetti icon-md"></i>
-                          </span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                          <div class="me-2">
-                            <h6 class="mb-0 fw-semibold">Emily Thompson</h6>
-                            <div class="d-flex align-items-center mt-1">
-                              <i class="ti tabler-calendar-event text-muted me-1"></i>
-                              <small class="text-body-secondary">March 22, 1988</small>
-                              <span class="badge bg-label-danger ms-2 px-2 py-1">
-                                <i class="ti tabler-party-popper me-1"></i>Today
-                              </span>
+                      @if(count($todayBirthdays) > 0)
+                        @foreach($todayBirthdays as $patient)
+                        <li class="d-flex mb-2 pb-1 birthday-item position-relative">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span
+                              class="avatar-initial rounded-circle bg-label-danger d-flex align-items-center justify-content-center"
+                              style="width: 45px; height: 45px">
+                              <i class="icon-base ti tabler-confetti icon-md"></i>
+                            </span>
+                          </div>
+                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                              <h6 class="mb-0 fw-semibold">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
+                              <div class="d-flex align-items-center mt-1">
+                                <i class="ti tabler-calendar-event text-muted me-1"></i>
+                                <small class="text-body-secondary">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d, Y') }} ({{ $patient->age }} years)</small>
+                                <span class="badge bg-label-danger ms-2 px-2 py-1">
+                                  <i class="ti tabler-party-popper me-1"></i>Today
+                                </span>
+                              </div>
+                            </div>
+                            <div class="action-buttons d-flex gap-2">
+                              <button class="btn btn-sm btn-primary" data-action="send-wishes" data-patient="{{ $patient->patient_id }}">
+                                <i class="ti tabler-mail me-1"></i>Send Wishes
+                              </button>
+                              <button class="btn btn-sm btn-outline-primary" data-action="send-offers" data-patient="{{ $patient->patient_id }}">
+                                <i class="ti tabler-gift me-1"></i>Send Offer
+                              </button>
                             </div>
                           </div>
-                          <div class="action-buttons d-flex gap-2">
-                            <button class="btn btn-sm btn-primary" data-action="send-wishes">
-                              <i class="ti tabler-mail me-1"></i>Send Wishes
-                            </button>
-                            <button class="btn btn-sm btn-outline-primary" data-action="send-offers">
-                              <i class="ti tabler-gift me-1"></i>Send Offer
-                            </button>
-                          </div>
-                        </div>
-                      </li>
+                        </li>
+                        @endforeach
+                      @else
+                        <p class="text-center text-muted my-3">No birthdays today</p>
+                      @endif
                     </div>
                   </div>
 
@@ -404,101 +408,56 @@
                       Upcoming Birthdays
                     </h6>
                     <ul class="p-0 m-0">
-                      <!-- Birthday List Items -->
-                      <li class="d-flex mb-4 pb-1 birthday-item position-relative">
-                        <div class="avatar flex-shrink-0 me-3">
-                          <span
-                            class="avatar-initial rounded-circle bg-label-primary d-flex align-items-center justify-content-center"
-                            style="width: 45px; height: 45px">
-                            <i class="icon-base ti tabler-cake icon-md"></i>
-                          </span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                          <div class="me-2">
-                            <h6 class="mb-0 fw-semibold">Maria Garcia</h6>
-                            <div class="d-flex align-items-center mt-1">
-                              <i class="ti tabler-calendar-event text-muted me-1"></i>
-                              <small class="text-body-secondary">March 25, 1990</small>
-                              <span class="badge bg-label-primary ms-2 px-2 py-1">
-                                <i class="ti tabler-clock me-1"></i>In 3 days
-                              </span>
+                      @if(count($upcomingBirthdays) > 0)
+                        @foreach($upcomingBirthdays->take(5) as $patient)
+                        <li class="d-flex mb-4 pb-1 birthday-item position-relative">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span
+                              class="avatar-initial rounded-circle bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} d-flex align-items-center justify-content-center"
+                              style="width: 45px; height: 45px">
+                              <i class="icon-base ti tabler-cake icon-md"></i>
+                            </span>
+                          </div>
+                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                              <h6 class="mb-0 fw-semibold">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
+                              <div class="d-flex align-items-center mt-1">
+                                <i class="ti tabler-calendar-event text-muted me-1"></i>
+                                <small class="text-body-secondary">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d, Y') }}</small>
+                                <span class="badge bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} ms-2 px-2 py-1">
+                                  <i class="ti tabler-clock me-1"></i>In {{ $patient->daysUntil }} days
+                                </span>
+                              </div>
+                            </div>
+                            <div class="dropdown">
+                              <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="ti tabler-dots-vertical"></i>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-end show-on-hover">
+                                <li>
+                                  <a class="dropdown-item" href="#" data-action="send-wishes" data-patient="{{ $patient->patient_id }}">
+                                    <i class="ti tabler-mail me-2"></i>Send Wishes
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="#" data-action="send-offers" data-patient="{{ $patient->patient_id }}">
+                                    <i class="ti tabler-gift me-2"></i>Send Offer
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="#">
+                                    <i class="ti tabler-calendar-plus me-2"></i>Schedule Service
+                                  </a>
+                                </li>
+                              </ul>
                             </div>
                           </div>
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle"
-                              data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="ti tabler-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end show-on-hover">
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="send-wishes">
-                                  <i class="ti tabler-mail me-2"></i>Send Wishes
-                                </a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="send-offers">
-                                  <i class="ti tabler-gift me-2"></i>Send Offer
-                                </a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#">
-                                  <i class="ti tabler-calendar-plus me-2"></i>Schedule Service
-                                  <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                                    Service</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-
-                      <li class="d-flex mb-4 pb-1 birthday-item position-relative">
-                        <div class="avatar flex-shrink-0 me-3">
-                          <span
-                            class="avatar-initial rounded-circle bg-label-success d-flex align-items-center justify-content-center"
-                            style="width: 45px; height: 45px">
-                            <i class="icon-base ti tabler-cake icon-md"></i>
-                          </span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                          <div class="me-2">
-                            <h6 class="mb-0 fw-semibold">John Smith</h6>
-                            <div class="d-flex align-items-center mt-1">
-                              <i class="ti tabler-calendar-event text-muted me-1"></i>
-                              <small class="text-body-secondary">March 27, 1985</small>
-                              <span class="badge bg-label-success ms-2 px-2 py-1">
-                                <i class="ti tabler-clock me-1"></i>In 5 days
-                              </span>
-                            </div>
-                          </div>
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                              data-bs-toggle="dropdown">
-                              <i class="ti tabler-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="send-wishes">
-                                  <i class="ti tabler-mail me-2"></i>Send
-                                  Wishes
-                                </a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="send-offers">
-                                  <i class="ti tabler-gift me-2"></i>Send
-                                  Offer
-                                </a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                                  Service</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-
-                      <!-- Add similar structure for Sarah Johnson and James Wilson -->
-                      <!-- ... existing entries with updated styling ... -->
+                        </li>
+                        @endforeach
+                      @else
+                        <p class="text-center text-muted my-3">No upcoming birthdays in the next 30 days</p>
+                      @endif
                     </ul>
                   </div>
                 </div>
@@ -519,11 +478,6 @@
                     <!-- Text Content -->
                     <div>
                       <h3 class="text-white fw-bold">🎉 Happy Birthday to Our Valued Clients! 🎂</h3>
-                      <p class="mb-3">Celebrate your special day with us and enjoy exclusive offers!</p>
-                      <a href="#" class="btn btn-light text-primary fw-bold birthday-btn">
-                        Claim Your Birthday Offer 🎁
-                      </a>
-
                       <style>
                         .birthday-btn {
                           border-radius: 30px;
@@ -677,6 +631,10 @@
                             <a class="dropdown-item" href="#">This Month</a>
                           </li>
                           <li>
+                          <li>
+                            <a class="dropdown-item" href="#">This Month</a>
+                          </li>
+                          <li>
                             <a class="dropdown-item" href="#">Last Month</a>
                           </li>
                           <li>
@@ -747,74 +705,19 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr class="booking-row">
+                        @foreach($bookings as $booking)
+                        <tr>
+                          <td># {{ $booking->booking_id }}</td>
+                          <td>{{ $booking->patient->firstname }} {{ $booking->patient->lastname }}</td>
+                          <td>{{ $booking->service->service_name }}</td>
+                          <td>{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} at {{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</td>
+                          <td>₱{{ number_format($booking->service->service_cost, 2) }}</td>
                           <td>
-                            <span class="fw-semibold">#BK001</span>
+                            <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed'  ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger')  }}">
+                              {{ ucfirst($booking->status) }}
+                            </span>
                           </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <div class="avatar avatar-sm me-2">
-                                <span class="avatar-initial rounded-circle bg-label-primary">JS</span>
-                              </div>
-                              <div>
-                                <h6 class="mb-0 fw-semibold">John Smith</h6>
-                                <small class="text-muted">Regular Client</small>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <div>
-                              <h6 class="mb-0">Hair Cut & Style</h6>
-                              <small class="text-muted">45 mins</small>
-                            </div>
-                          </td>
-                          <td>
-                            <div>
-                              <h6 class="mb-0">Mar 15, 2024</h6>
-                              <small class="text-muted">10:30 AM</small>
-                            </div>
-                          </td>
-                          <td>
-                            <h6 class="mb-0">₱1,500</h6>
-                          </td>
-                          <td>
-                            <span class="badge bg-label-success rounded-pill">Completed</span>
-                          </td>
-                        </tr>
-                        <tr class="booking-row">
-                          <td>
-                            <span class="fw-semibold">#BK002</span>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <div class="avatar avatar-sm me-2">
-                                <span class="avatar-initial rounded-circle bg-label-info">MG</span>
-                              </div>
-                              <div>
-                                <h6 class="mb-0 fw-semibold">Maria Garcia</h6>
-                                <small class="text-muted">VIP Client</small>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <div>
-                              <h6 class="mb-0">Full Body Massage</h6>
-                              <small class="text-muted">90 mins</small>
-                            </div>
-                          </td>
-                          <td>
-                            <div>
-                              <h6 class="mb-0">Mar 15, 2024</h6>
-                              <small class="text-muted">2:00 PM</small>
-                            </div>
-                          </td>
-                          <td>
-                            <h6 class="mb-0">₱2,500</h6>
-                          </td>
-                          <td>
-                            <span class="badge bg-label-warning rounded-pill">Pending</span>
-                          </td>
-                        </tr>
+                          @endforeach
                       </tbody>
                     </table>
                   </div>
@@ -1668,7 +1571,7 @@ The Imajica Team</textarea>
         <div class="modal-body">
           <!-- Filter Section -->
           <div class="row mb-4">
-            <div class="col-md-12">
+            <div class="col-md-8">
               <select class="form-select" id="birthdayFilter">
                 <option value="all">All Months</option>
                 <option value="current">Current Month</option>
@@ -1676,162 +1579,63 @@ The Imajica Team</textarea>
                 <option value="past">Past Birthdays</option>
               </select>
             </div>
+            <div class="col-md-4">
+              <input type="text" id="birthdaySearch" class="form-control" placeholder="Search patients...">
+            </div>
           </div>
 
           <!-- Birthday Calendar View -->
           <div class="birthday-calendar mb-4">
             <div class="month-grid">
-              <!-- March -->
-              <div class="month-card current-month">
-                <h6 class="month-title">March 2024</h6>
-                <div class="birthday-list">
-                  <div class="birthday-item d-flex align-items-center p-3 border-bottom">
-                    <div class="avatar avatar-md me-3">
-                      <span class="avatar-initial rounded-circle bg-label-danger">ET</span>
-                    </div>
-                    <div class="flex-grow-1">
-                      <h6 class="mb-0">Emily Thompson</h6>
-                      <div class="d-flex align-items-center">
-                        <i class="ti tabler-calendar-event text-muted me-1"></i>
-                        <small class="text-muted">March 22</small>
-                        <span class="badge bg-label-danger ms-2">Today</span>
+              @foreach($allBirthdays as $month => $patients)
+                <div class="month-card {{ $month == Carbon\Carbon::now()->format('F') ? 'current-month' : '' }}">
+                  <h6 class="month-title">{{ $month }}</h6>
+                  <div class="birthday-list">
+                    @foreach($patients as $patient)
+                      <div class="birthday-item d-flex align-items-center p-3 border-bottom">
+                        <div class="avatar avatar-md me-3">
+                          <span class="avatar-initial rounded-circle bg-label-{{ $patient->daysUntil == 0 ? 'danger' : ($patient->daysUntil <= 7 ? 'primary' : 'success') }}">{{ $patient->initials }}</span>
+                        </div>
+                        <div class="flex-grow-1">
+                          <h6 class="mb-0">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
+                          <div class="d-flex align-items-center">
+                            <i class="ti tabler-calendar-event text-muted me-1"></i>
+                            <small class="text-muted">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d') }} ({{ $patient->age }} years)</small>
+                            @if($patient->daysUntil == 0)
+                              <span class="badge bg-label-danger ms-2">Today</span>
+                            @elseif($patient->daysUntil > 0 && $patient->daysUntil <= 30)
+                              <span class="badge bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} ms-2">In {{ $patient->daysUntil }} days</span>
+                            @endif
+                          </div>
+                        </div>
+                        <div class="dropdown">
+                          <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
+                            data-bs-toggle="dropdown">
+                            <i class="ti tabler-dots-vertical"></i>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li>
+                              <a class="dropdown-item" href="#" data-action="send-wishes" data-patient="{{ $patient->patient_id }}">
+                                <i class="ti tabler-mail me-2"></i>Send Wishes
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#" data-action="send-offers" data-patient="{{ $patient->patient_id }}">
+                                <i class="ti tabler-gift me-2"></i>Send Offer
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <i class="ti tabler-calendar-plus me-2"></i>Schedule Service
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
-                    </div>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-wishes"><i
-                              class="ti tabler-mail me-2"></i>Send Wishes</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-offers"><i
-                              class="ti tabler-gift me-2"></i>Send Offer</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                            Service</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div class="birthday-item d-flex align-items-center p-3 border-bottom">
-                    <div class="avatar avatar-md me-3">
-                      <span class="avatar-initial rounded-circle bg-label-primary">MG</span>
-                    </div>
-                    <div class="flex-grow-1">
-                      <h6 class="mb-0">Maria Garcia</h6>
-                      <div class="d-flex align-items-center">
-                        <i class="ti tabler-calendar-event text-muted me-1"></i>
-                        <small class="text-muted">March 25</small>
-                        <span class="badge bg-label-primary ms-2">In 3 days</span>
-                      </div>
-                    </div>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-wishes"><i
-                              class="ti tabler-mail me-2"></i>Send Wishes</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-offers"><i
-                              class="ti tabler-gift me-2"></i>Send Offer</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                            Service</a>
-                        </li>
-                      </ul>
-                    </div>
+                    @endforeach
                   </div>
                 </div>
-              </div>
-
-              <!-- April -->
-              <div class="month-card">
-                <h6 class="month-title">April 2024</h6>
-                <div class="birthday-list">
-                  <div class="birthday-item d-flex align-items-center p-3 border-bottom">
-                    <div class="avatar avatar-md me-3">
-                      <span class="avatar-initial rounded-circle bg-label-info">RJ</span>
-                    </div>
-                    <div class="flex-grow-1">
-                      <h6 class="mb-0">Robert Johnson</h6>
-                      <div class="d-flex align-items-center">
-                        <i class="ti tabler-calendar-event text-muted me-1"></i>
-                        <small class="text-muted">April 5</small>
-                      </div>
-                    </div>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-wishes"><i
-                              class="ti tabler-mail me-2"></i>Send Wishes</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-offers"><i
-                              class="ti tabler-gift me-2"></i>Send Offer</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                            Service</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- May -->
-              <div class="month-card">
-                <h6 class="month-title">May 2024</h6>
-                <div class="birthday-list">
-                  <div class="birthday-item d-flex align-items-center p-3 border-bottom">
-                    <div class="avatar avatar-md me-3">
-                      <span class="avatar-initial rounded-circle bg-label-success">SL</span>
-                    </div>
-                    <div class="flex-grow-1">
-                      <h6 class="mb-0">Sarah Lee</h6>
-                      <div class="d-flex align-items-center">
-                        <i class="ti tabler-calendar-event text-muted me-1"></i>
-                        <small class="text-muted">May 15</small>
-                      </div>
-                    </div>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-wishes"><i
-                              class="ti tabler-mail me-2"></i>Send Wishes</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-offers"><i
-                              class="ti tabler-gift me-2"></i>Send Offer</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                            Service</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              @endforeach
             </div>
           </div>
         </div>
@@ -1846,7 +1650,7 @@ The Imajica Team</textarea>
 
   <script>
     // Add this to your existing JavaScript
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       // Update the View All button click handler
       const viewAllButton = document.querySelector(
         "button[onclick=\"window.location.href='all-birthdays.html'\"]"
@@ -1961,40 +1765,20 @@ The Imajica Team</textarea>
                 </tr>
               </thead>
               <tbody>
-                <!-- First Row -->
-                <tr class="booking-row">
-                  <td><span class="fw-semibold">#BK001</span></td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <div class="avatar avatar-sm me-2">
-                        <span class="avatar-initial rounded-circle bg-label-primary">JS</span>
-                      </div>
-                      <div>
-                        <h6 class="mb-0 fw-semibold">John Smith</h6>
-                        <small class="text-muted">Regular Client</small>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <h6 class="mb-0">Hair Cut & Style</h6>
-                      <small class="text-muted">45 mins</small>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <h6 class="mb-0">Mar 15, 2024</h6>
-                      <small class="text-muted">10:30 AM</small>
-                    </div>
-                  </td>
-                  <td>
-                    <h6 class="mb-0">₱1,500</h6>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-success rounded-pill">Completed</span>
-                  </td>
-                  <td>
-                    <div class="dropdown">
+                @foreach($bookings as $booking)
+                        <tr>
+                          <td># {{ $booking->booking_id }}</td>
+                          <td>{{ $booking->patient->firstname }} {{ $booking->patient->lastname }}</td>
+                          <td>{{ $booking->service->service_name }}</td>
+                          <td>{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} at {{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</td>
+                          <td>₱{{ number_format($booking->service->service_cost, 2) }}</td>
+                          <td>
+                            <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed'  ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger')  }}">
+                              {{ ucfirst($booking->status) }}
+                            </span>
+                          </td>
+                          <td>
+                            <div class="dropdown">
                       <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
                         data-bs-toggle="dropdown">
                         <i class="ti tabler-dots-vertical"></i>
@@ -2011,61 +1795,13 @@ The Imajica Team</textarea>
                         </li>
                       </ul>
                     </div>
+                          </td>
+                          @endforeach
+                    
                   </td>
                 </tr>
 
-                <!-- Second Row -->
-                <tr class="booking-row">
-                  <td><span class="fw-semibold">#BK002</span></td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <div class="avatar avatar-sm me-2">
-                        <span class="avatar-initial rounded-circle bg-label-info">MG</span>
-                      </div>
-                      <div>
-                        <h6 class="mb-0 fw-semibold">Maria Garcia</h6>
-                        <small class="text-muted">VIP Client</small>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <h6 class="mb-0">Full Body Massage</h6>
-                      <small class="text-muted">90 mins</small>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <h6 class="mb-0">Mar 15, 2024</h6>
-                      <small class="text-muted">2:00 PM</small>
-                    </div>
-                  </td>
-                  <td>
-                    <h6 class="mb-0">₱2,500</h6>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-warning rounded-pill">Pending</span>
-                  </td>
-                  <td>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-edit me-1"></i>Edit</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar me-1"></i>Reschedule</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-trash me-1"></i>Cancel</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
+                
               </tbody>
             </table>
           </div>

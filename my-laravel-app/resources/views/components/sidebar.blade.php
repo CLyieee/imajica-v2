@@ -254,6 +254,27 @@
             </ul>
         </li>
 
+        <li class="menu-item {{ request()->is('new-coupon') || request()->is('coupon-list') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base ti tabler-layout-board"></i>
+                <div data-i18n="Expenses">Expenses</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->is('new-coupon') ? 'active' : '' }}">
+                    <a href="/new-expenses" class="menu-link">
+                        <div data-i18n="New Expenses">New Expenses</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('coupon-list') ? 'active' : '' }}">
+                    <a href="/expenses-list" class="menu-link">
+                        <div data-i18n="Expenses List">Expenses List</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
 
         <li class="menu-item {{ request()->is('new-patient') || request()->is('patient-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
