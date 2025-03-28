@@ -5,11 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use Carbon\Carbon;
 use App\Models\branch;
-use App\Models\service;
-use App\Models\category;
 use App\Models\coupon;
-use App\Models\supplier;
-
 use App\Models\tier;
 use App\Models\service;
 use App\Models\staff;
@@ -199,7 +195,7 @@ class DashboardController extends Controller
     {
         $coupons = coupon::all();
         $branches = branch::all();
-        return view('page.coupon-list', compact('coupons' , 'branches'));
+        return view('page.coupon-list', compact('coupons', 'branches'));
     }
 
     public function new_loyalty()
@@ -230,10 +226,8 @@ class DashboardController extends Controller
         return view('page.new-supplier');
     }
     public function supplier_list()
-
     {
-        $suppliers = supplier::all();
-        return view('page.supplier-list', compact('suppliers'));
+        return view('page.supplier-list');
     }
     public function new_staff()
     {
@@ -309,14 +303,11 @@ class DashboardController extends Controller
     }
     public function add_product()
     {
-        $categories = category::all();
-        return view('page.add-product', compact('categories'));
+        return view('page.add-product');
     }
     public function category_list()
     {
-        $categories = category::all();
-        return view('page.category-list', compact('categories'));
-
+        return view('page.category-list');
     }
     public function system_settings()
     {
@@ -353,14 +344,7 @@ class DashboardController extends Controller
         return view('page.booking', compact('services', 'staffs', 'branches', 'patients'));
         
     }
-    public function new_expenses()
-    {
-        return view('page.new-expenses');
-    }
-    public function expenses_list()
-    {
-        return view('page.expenses-list');
-    }
+
 
 }
 

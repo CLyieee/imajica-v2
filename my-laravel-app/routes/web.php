@@ -7,7 +7,7 @@ use App\Http\Controllers\DashboardController;
 
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CategoryListController;
-
+use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\patientController;
 use App\Http\Controllers\staffController;
 use App\Http\Controllers\branchController;
@@ -29,9 +29,11 @@ use App\Http\Controllers\bookingController;
 
         Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
         Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
-            
-
         Route::get('/coupon-list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
+        Route::put('/coupon/update', [CouponController::class, 'update'])->name('coupon.update');
+        Route::delete('/coupon/delete', [CouponController::class, 'delete'])->name('coupon.delete');
+
+        Route::get('/coupon/get', [CouponController::class, 'get'])->name('coupon.get');
 
         Route::get('/new-loyalty', [DashboardController::class, 'new_loyalty'])->name('page.new-loyalty');
 
