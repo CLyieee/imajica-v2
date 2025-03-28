@@ -13,6 +13,7 @@ use App\Models\category;
 use Illuminate\Http\Request;
 use App\Models\service;
 use Illuminate\Support\Facades\DB;
+use App\Models\supplier;
 
 class DashboardController extends Controller
 {
@@ -227,7 +228,8 @@ class DashboardController extends Controller
     }
     public function supplier_list()
     {
-        return view('page.supplier-list');
+        $suppliers = supplier::all();   
+        return view('page.supplier-list',compact('suppliers'));
     }
     public function new_staff()
     {
