@@ -46,7 +46,7 @@ class CouponController extends Controller
             
             $newCoupon = coupon::create($data);
             
-            return redirect()->route('coupon-list')
+            return redirect()->route('page.coupon-list')
                 ->with('success', 'Coupon created successfully!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -60,7 +60,6 @@ class CouponController extends Controller
                 ->withInput();
         }
     }
-
 
     public function update(Request $request) 
     {
@@ -112,8 +111,7 @@ class CouponController extends Controller
             $coupon->branch_code = $request->branch_code;
             $coupon->save();
 
-
-            return redirect()->route('coupon-list')
+            return redirect()->route('page.coupon-list')
                 ->with('success', 'Coupon updated successfully!');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Log validation errors
@@ -124,18 +122,13 @@ class CouponController extends Controller
             return back()
                 ->withErrors(['error' => 'An error occurred while updating the coupon: ' . $e->getMessage()])
                 ->withInput();
-
-
         }
-
     }
-
-
     
     public function getBranch()
     {
         $branches = branch::all();
-        return view('page.coupon-list', compact('coupons'));
+        return view('page.coupon_list', compact('branches'));
     }
     
     // Add the missing get method to fetch a coupon's details
@@ -147,7 +140,6 @@ class CouponController extends Controller
             
             if (!$coupon) {
                 return response()->json(['error' => 'Coupon not found'], 404);
-              
             }
             
             return response()->json($coupon);
@@ -169,7 +161,8 @@ class CouponController extends Controller
             }
             
             $coupon->delete();
-            return redirect()->route('coupon-list')->with('success', 'Coupon deleted successfully!');
+            return redirect()->route('page.coupon-list')
+                ->with('success', 'Coupon deleted successfully!');
         } catch (\Exception $e) {
             Log::error('Error deleting coupon:', ['message' => $e->getMessage()]);
             return redirect()->back()->with('error', 'An error occurred while deleting the coupon: ' . $e->getMessage());
