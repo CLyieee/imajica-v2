@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\supplier;
 use App\Models\Patient;
 use Carbon\Carbon;
 use App\Models\branch;
@@ -12,7 +12,7 @@ use App\Models\booking;
 use App\Models\category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\service;
 class DashboardController extends Controller
 {
     // Add this method to fix the "Method does not exist" error
@@ -226,7 +226,8 @@ class DashboardController extends Controller
     }
     public function supplier_list()
     {
-        return view('page.supplier-list');
+        $suppliers = supplier::all();
+        return view('page.supplier-list', compact('suppliers'));
     }
     public function new_staff()
     {
@@ -305,7 +306,12 @@ class DashboardController extends Controller
         $categories = category::all();
         return view('page.add-product', compact('categories'));
     }
-    public function category_list()
+    public function add_order()
+    {
+        return view('page.add-order');
+    }
+
+/******  2db3ac5a-8cdc-4742-ac17-452b916d85d5  *******/    public function category_list()
     {
         $categories = category::all();
         return view('page.category-list', compact('categories'));
