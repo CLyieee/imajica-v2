@@ -310,11 +310,11 @@
                     <th>Services Name</th>
                     <th>Branch Name</th>
                     <th>Description</th>
-                    <th>Duration</th>
+                    <th class="text-center">Duration</th>
                     <th>Service Category</th>
                     <th>Service Cost</th>
-                    <th>Loyalty Points</th>
-                    <th>Actions</th>
+                    <th class="text-center">Loyalty Points</th>
+                    <th class="text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -323,12 +323,27 @@
                     <td>{{ $service->service_name }}</td>
                     <td>{{ $service->branch ? $service->branch->branch_name : $service->branch_code }}</td>
                     <td>{{ $service->description }}</td>
-                    <td>{{ $service->duration }}</td>
+                    <td class="text-center">
+                      @php
+                        $hours = floor($service->duration / 60);
+                        $minutes = $service->duration % 60;
+                        $durationText = "";
+                        if($hours > 0) {
+                            $durationText .= $hours . "h ";
+                        }
+                        if($minutes > 0) {
+                            $durationText .= $minutes . "m";
+                        }
+                      @endphp
+                      <span class="badge bg-label-info">{{ $durationText }}</span>
+                    </td>
                     <td>{{ $service->service_category }}</td>
-                    <td>{{ $service->service_cost }}</td>
-                    <td>{{ $service->loyalty_pts }}</td>
-                    <td>
-                      <div class="d-flex gap-2">
+                    <td>₱{{ number_format($service->service_cost, 2) }}</td>
+                    <td class="text-center">
+                      <span class="badge bg-label-success">{{ number_format($service->loyalty_pts) }} pts</span>
+                    </td>
+                    <td class="text-center">
+                      <div class="d-flex gap-2 justify-content-center">
                         <button class="btn btn-sm btn-success view-service" 
                           data-service-id="{{ $service->id }}"
                           data-service-name="{{ $service->service_name }}"
