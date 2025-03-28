@@ -478,11 +478,6 @@
                     <!-- Text Content -->
                     <div>
                       <h3 class="text-white fw-bold">🎉 Happy Birthday to Our Valued Clients! 🎂</h3>
-                      <p class="mb-3">Celebrate your special day with us and enjoy exclusive offers!</p>
-                      <a href="#" class="btn btn-light text-primary fw-bold birthday-btn">
-                        Claim Your Birthday Offer 🎁
-                      </a>
-
                       <style>
                         .birthday-btn {
                           border-radius: 30px;
