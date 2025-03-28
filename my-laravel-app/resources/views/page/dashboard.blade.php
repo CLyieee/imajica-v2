@@ -710,20 +710,39 @@
                         </tr>
                       </thead>
                       <tbody>
-                        @foreach($bookings as $booking)
-                        <tr>
-                          <td># {{ $booking->booking_id }}</td>
-                          <td>{{ $booking->patient->firstname }} {{ $booking->patient->lastname }}</td>
-                          <td>{{ $booking->service->service_name }}</td>
-                          <td>{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} at {{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</td>
-                          <td>₱{{ number_format($booking->service->service_cost, 2) }}</td>
-                          <td>
-                            <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed'  ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger')  }}">
-                              {{ ucfirst($booking->status) }}
-                            </span>
-                          </td>
-                          @endforeach
-                      </tbody>
+    @foreach($bookings as $booking)
+    <tr>
+        <td># {{ $booking->booking_id }}</td>
+        <td>
+            @if($booking->patient)
+                {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
+            @else
+                <span class="text-muted">No patient data</span>
+            @endif
+        </td>
+        <td>
+            @if($booking->service)
+                {{ $booking->service->service_name }}
+            @else
+                <span class="text-muted">No service data</span>
+            @endif
+        </td>
+        <td>{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} at {{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</td>
+        <td>
+            @if($booking->service)
+                ₱{{ number_format($booking->service->service_cost, 2) }}
+            @else
+                <span class="text-muted">N/A</span>
+            @endif
+        </td>
+        <td>
+            <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed'  ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger')  }}">
+                {{ ucfirst($booking->status) }}
+            </span>
+        </td>
+    </tr>
+    @endforeach
+</tbody>
                     </table>
                   </div>
                 </div>
@@ -1770,44 +1789,57 @@ The Imajica Team</textarea>
                 </tr>
               </thead>
               <tbody>
-                @foreach($bookings as $booking)
-                        <tr>
-                          <td># {{ $booking->booking_id }}</td>
-                          <td>{{ $booking->patient->firstname }} {{ $booking->patient->lastname }}</td>
-                          <td>{{ $booking->service->service_name }}</td>
-                          <td>{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} at {{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</td>
-                          <td>₱{{ number_format($booking->service->service_cost, 2) }}</td>
-                          <td>
-                            <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed'  ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger')  }}">
-                              {{ ucfirst($booking->status) }}
-                            </span>
-                          </td>
-                          <td>
-                            <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-edit me-1"></i>Edit</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar me-1"></i>Reschedule</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-trash me-1"></i>Cancel</a>
-                        </li>
-                      </ul>
-                    </div>
-                          </td>
-                          @endforeach
-                    
-                  </td>
-                </tr>
-
-                
-              </tbody>
+    @foreach($bookings as $booking)
+    <tr>
+        <td># {{ $booking->booking_id }}</td>
+        <td>
+            @if($booking->patient)
+                {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
+            @else
+                <span class="text-muted">No patient data</span>
+            @endif
+        </td>
+        <td>
+            @if($booking->service)
+                {{ $booking->service->service_name }}
+            @else
+                <span class="text-muted">No service data</span>
+            @endif
+        </td>
+        <td>{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} at {{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</td>
+        <td>
+            @if($booking->service)
+                ₱{{ number_format($booking->service->service_cost, 2) }}
+            @else
+                <span class="text-muted">N/A</span>
+            @endif
+        </td>
+        <td>
+            <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed'  ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger')  }}">
+                {{ ucfirst($booking->status) }}
+            </span>
+        </td>
+        <td>
+            <div class="dropdown">
+                <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="ti tabler-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" href="#"><i class="ti tabler-edit me-1"></i>Edit</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#"><i class="ti tabler-calendar me-1"></i>Reschedule</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#"><i class="ti tabler-trash me-1"></i>Cancel</a>
+                    </li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+    @endforeach
+</tbody>
             </table>
           </div>
 
