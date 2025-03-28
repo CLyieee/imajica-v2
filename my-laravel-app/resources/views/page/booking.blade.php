@@ -253,7 +253,7 @@
                           <label class="form-label" for="service_id">Select Services</label>
                           <select class="select2 form-select" name="service_id" id="service_id">
                             @foreach ($services as $service)
-                            <option value="{{$service->id}}">{{$service->service_name}}</option>
+                            <option value="{{$service->service_id}}">{{$service->service_name}}</option>
                             @endforeach
                           </select>
                         </div>

@@ -141,7 +141,33 @@ $patientData['updated_at'] = now();
         }
     }
 
-    
+    public function destroy($id)
+    {
+        try {
+            $patient = Patient::where('patient_id', $id)->first();
+            
+            if (!$patient) {
+                return redirect()->route('page.patient-list')
+                    ->with('error', 'Patient not found');
+            }
+
+            // Delete the patient
+            $patient->delete();
+
+            return redirect()->route('page.patient-list')
+                ->with('success', 'Patient deleted successfully');
+                
+        } catch (\Exception $e) {
+            Log::error('Error deleting patient', [
+                'patient_id' => $id,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return redirect()->route('page.patient-list')
+                ->with('error', 'Failed to delete patient: ' . $e->getMessage());
+        }
+    }
     
     public function index()
     {

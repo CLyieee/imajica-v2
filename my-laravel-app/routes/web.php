@@ -122,6 +122,7 @@ Route::delete('/supplier/{id}', [App\Http\Controllers\supplierController::class,
 
 // Patients Routes
 Route::put('/patient/update', [App\Http\Controllers\patientController::class, 'update'])->name('patient.update');
+Route::delete('/patient/{id}', [App\Http\Controllers\patientController::class, 'destroy'])->name('patient.destroy');
 
 Route::get('/service-product', [DashboardController::class, 'service_product'])->name('page.service-product');
 

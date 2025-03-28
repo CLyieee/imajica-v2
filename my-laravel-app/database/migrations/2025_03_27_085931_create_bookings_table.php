@@ -21,7 +21,7 @@ class CreateBookingsTable extends Migration
             $table->dateTime('end_date');
             $table->string(column: 'id');
             $table->string(column: 'branch_code');
-            $table->string(column: 'patient_id');
+            $table->int(column: 'patient_id');
             $table->string(column: 'useReward');
             
             $table->text(column: 'remarks');

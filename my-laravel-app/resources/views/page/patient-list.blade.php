@@ -1215,7 +1215,7 @@ viewButtons.forEach(button => {
             const patientName = this.dataset.name;
             
             document.getElementById("deletePatientName").textContent = patientName;
-            document.getElementById("deletePatientForm").action = `/patient/${patientId}`;
+            document.getElementById("deletePatientForm").action = `{{ route('patient.destroy', '') }}/${patientId}`;
             
             deleteModal.show();
           });
