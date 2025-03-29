@@ -55,4 +55,21 @@ class OrderController extends Controller
             ], 500);
         }
     }
+
+    public function index()
+    {
+        $orders = Order::with('items')->get();
+        return view('page.order-list', compact('orders'));
+    }
+
+    public function show($id)
+    {
+        // Find the order and handle if not found
+        $order = Order::findOrFail($id);
+        
+        // Load the order items relationship if needed
+        $order->load('orderItems');
+        
+        return view('page.order-details', compact('order'));
+    }
 }

@@ -270,9 +270,9 @@
                                                     <label class="form-label">Payment Method</label>
                                                     <select class="form-select" name="payment_method" id="payment_method">
                                                         <option value="">Select Method</option>
-                                                        <option value="cash">Cash</option>
-                                                        <option value="paypal">PayPal</option>
-                                                        <option value="gcash">Gcash</option>
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Paypal">PayPal</option>
+                                                        <option value="Gcash">Gcash</option>
                             
                                                     </select>
                                                 </div>
