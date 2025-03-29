@@ -11,8 +11,13 @@ use App\Models\staff;
 use App\Models\booking;
 use App\Models\category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Models\service;
+use Illuminate\Support\Facades\DB;
+
+use App\Models\service;
+
+use App\Models\supplier;
+
 class DashboardController extends Controller
 {
     // Add this method to fix the "Method does not exist" error
@@ -226,8 +231,10 @@ class DashboardController extends Controller
     }
     public function supplier_list()
     {
-        $suppliers = supplier::all();
-        return view('page.supplier-list', compact('suppliers'));
+
+        $suppliers = supplier::all();   
+        return view('page.supplier-list',compact('suppliers'));
+
     }
     public function new_staff()
     {

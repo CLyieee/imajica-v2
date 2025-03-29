@@ -30,7 +30,7 @@ Route::get('/', [LoginController::class, 'index'])->name('page.index');
 
         Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
         Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
-        Route::get('/coupon-list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
+        Route::get('/coupon/list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
         Route::put('/coupon/update', [CouponController::class, 'update'])->name('coupon.update');
         Route::delete('/coupon/delete', [CouponController::class, 'delete'])->name('coupon.delete');
 
