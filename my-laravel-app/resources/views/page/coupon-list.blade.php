@@ -348,18 +348,22 @@
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="card">
-               
+                <!-- Table Header with Search -->
                 <div class="d-flex justify-content-between align-items-center p-3">
                   <h5 class="card-title mb-0">Coupon List</h5>
-                  <a href="{{ route('page.new-coupon') }}" class="btn btn-primary mt-2">
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCouponModal">
                     <i class="ti tabler-plus me-1"></i> Add New Coupon
-                  </a>
+                  </button>
                 </div>
 
-                <div class="px-4 py-3">
-                  <label for="branchFilter" class="fw-bold me-2">Select Branch:</label>
+                <!-- Success/Error Messages -->
+                <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
+
+                <!-- Branch Filter -->
+                <div class="px-3 py-2">
+                  <label for="branchFilter" class="form-label">Select Branch:</label>
                   <select id="branchFilter" class="form-select w-auto d-inline-block">
-                    <option value=" ">All Branches</option>
+                    <option value="">All Branches</option>
                     @foreach($branches as $branch)
                       <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
                     @endforeach
@@ -368,15 +372,18 @@
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table id="couponTable" class="table table-striped">
+                  <table class="table table-striped" id="couponTable">
                     <thead class="table-light">
                       <tr>
                         <th>Coupon Code</th>
                         <th>Coupon Name</th>
+                        <th>Branch Name</th>
                         <th>Discount Value</th>
                         <th>Discount Type</th>
-                        <th>Applicable Service</th>
-                        <th>Actions</th>
+                        <th>Validity Period</th>
+                        <th>Applicable Service</th> <!-- Add this column -->
+                        <th>Status</th>            <!-- Moved to second-to-last -->
+                        <th class="text-center">Actions</th>  <!-- Moved to last -->
                       </tr>
                     </thead>
                     <tbody>
@@ -384,29 +391,56 @@
                       <tr>
                         <td>{{ $coupon->coupon_code }}</td>
                         <td>{{ $coupon->discount_name }}</td>
-                        <td>{{ $coupon->discount_value }}</td>
-                        <td>{{ $coupon->discount_type }}</td>
-                        <td>{{ $coupon->applicable_service }}</td>
+                        <td>{{ $coupon->branch ? $coupon->branch->branch_name : $coupon->branch_code }}</td>
                         <td>
-                          <button type="button" class="btn btn-info btn-sm edit-coupon" 
-                            data-coupon-code="{{ $coupon->coupon_code }}"
-                            data-discount-name="{{ $coupon->discount_name }}"
-                            data-discount-value="{{ $coupon->discount_value }}"
-                            data-discount-type="{{ $coupon->discount_type }}"
-                            data-applicable-service="{{ $coupon->applicable_service }}">
-                            <i class="ti tabler-edit me-1"></i> Edit
-                          </button>
-                          <button type="button" class="btn btn-danger btn-sm delete-coupon" 
-                            data-coupon-code="{{ $coupon->coupon_code }}"
-                            data-discount-name="{{ $coupon->discount_name }}">
-                            <i class="ti tabler-trash me-1"></i>Delete
-                          </button>
+                          @if($coupon->discount_type == 'percentage')
+                            {{ $coupon->discount_value }}%
+                          @else
+                            ₱{{ number_format($coupon->discount_value, 2) }}
+                          @endif
+                        </td>
+                        <td><span class="badge bg-label-info">{{ ucfirst($coupon->discount_type) }}</span></td>
+                        <td>{{ $coupon->start_date }} - {{ $coupon->end_date }}</td>
+                        <td>{{ $coupon->applicable_service }}</td> <!-- Add this column -->
+                        <td>  <!-- Moved to second-to-last -->
+                          @php
+                            $now = \Carbon\Carbon::now();
+                            $startDate = \Carbon\Carbon::parse($coupon->start_date);
+                            $endDate = \Carbon\Carbon::parse($coupon->end_date);
+                          @endphp
+                          @if($now->between($startDate, $endDate))
+                            <span class="badge bg-label-success">Active</span>
+                          @else
+                            <span class="badge bg-label-danger">Expired</span>
+                          @endif
+                        </td>
+                        <td class="text-center"> <!-- Moved to last -->
+                          <div class="d-flex gap-2 justify-content-center">
+                            <button class="btn btn-sm btn-success view-coupon" 
+                              data-coupon-code="{{ $coupon->coupon_code }}"
+                              data-discount-name="{{ $coupon->discount_name }}"
+                              data-description="{{ $coupon->description }}">
+                              <i class="ti tabler-eye me-1"></i> View
+                            </button>
+                            <button class="btn btn-sm btn-info edit-coupon"
+                              data-coupon-code="{{ $coupon->coupon_code }}"
+                              data-discount-name="{{ $coupon->discount_name }}"
+                              data-description="{{ $coupon->description }}"
+                              data-discount-value="{{ $coupon->discount_value }}"
+                              data-discount-type="{{ $coupon->discount_type }}">
+                              <i class="ti tabler-edit me-1"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-coupon" 
+                              data-coupon-code="{{ $coupon->coupon_code }}"
+                              data-discount-name="{{ $coupon->discount_name }}">
+                              <i class="ti tabler-trash me-1"></i> Delete
+                            </button>
+                          </div>
                         </td>
                       </tr>
                       @endforeach
                     </tbody>
                   </table>
-
                   <br />
                 </div>
               </div>
