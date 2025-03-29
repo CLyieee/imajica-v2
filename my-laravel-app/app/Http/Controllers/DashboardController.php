@@ -14,10 +14,6 @@ use Illuminate\Http\Request;
 use App\Models\service;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\service;
-
-use App\Models\supplier;
-
 class DashboardController extends Controller
 {
     // Add this method to fix the "Method does not exist" error

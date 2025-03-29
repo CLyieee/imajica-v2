@@ -378,27 +378,46 @@
             console.log('Current items before finalization:', items.length);
             
             if (items.length === 0 || (items.length === 1 && !items[0].querySelector('[name="items[]"]').value)) {
-                alert('Please add at least one item before finalizing.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No Items',
+                    text: 'Please add at least one item before finalizing.',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+            // Validate all items have prices
+            const invalidItems = Array.from(items).filter(item => {
+                const price = parseFloat(item.querySelector('[name="prices[]"]').value);
+                return isNaN(price) || price <= 0;
+            });
+
+            if (invalidItems.length > 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Items',
+                    text: 'All items must have valid prices before finalizing',
+                    confirmButtonText: 'OK'
+                });
                 return;
             }
 
             if (confirm('Do you want to finalize these items?')) {
-                // Log items being finalized
                 const itemsData = Array.from(items).map(item => ({
                     name: item.querySelector('[name="items[]"]').value,
-                    quantity: item.querySelector('[name="quantities[]"]').value,
-                    price: item.querySelector('[name="prices[]"]').value,
-                    total: item.querySelector('[name="totals[]"]').value
+                    quantity: parseInt(item.querySelector('[name="quantities[]"]').value) || 1,
+                    price: parseFloat(item.querySelector('[name="prices[]"]').value) || 0,
+                    total: parseFloat(item.querySelector('[name="totals[]"]').value) || 0
                 }));
+
                 console.log('Items being finalized:', itemsData);
 
-                // Store current order
                 const currentOrder = {
                     id: orderCount,
                     items: itemsData
                 };
                 finalizedOrders.push(currentOrder);
-              
 
                 // Clear input values but keep structure
                 document.querySelectorAll('.order-item').forEach(item => {
@@ -410,11 +429,36 @@
 
                 updateTotals();
                 
-                // Show success message with current order number
-                alert(`Order #${currentOrder.id} has been finalized. You can start order #${orderCount}.`);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Items Finalized',
+                    text: `Order #${currentOrder.id} has been finalized. You can start order #${orderCount}.`,
+                    confirmButtonText: 'OK'
+                });
                 orderCount--;
             }
         }
+
+        // Add this function to set prices when items are selected
+        document.addEventListener('change', function(e) {
+            if (e.target.matches('[name="items[]"]')) {
+                const item = e.target.closest('.order-item');
+                const priceInput = item.querySelector('[name="prices[]"]');
+                
+                // Set a default price based on selected item
+                const itemPrices = {
+                    'Shampooo': 150,
+                    'Soap': 50,
+                    'Water': 25
+                    // Add more items and prices as needed
+                };
+                
+                const price = itemPrices[e.target.value] || 0;
+                priceInput.value = price;
+                
+                updateTotals();
+            }
+        });
 
         function updateTotals() {
             let subtotal = 0;
@@ -461,22 +505,24 @@
             // Check finalized orders
             console.log('Finalized orders:', finalizedOrders);
 
-            // Prepare form data with proper structure
-            const formData = new FormData();
-            formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
-            formData.append('order_date', document.getElementById('order_date').value);
-            formData.append('order_time', document.getElementById('order_time').value);
-            formData.append('customer_name', document.getElementById('customer_name').value);
-            formData.append('customer_email', document.getElementById('customer_email').value);
-            formData.append('payment_method', document.getElementById('payment_method').value);
-            formData.append('payment_status', document.getElementById('payment_status').value);
-            formData.append('order_status', document.getElementById('order_status').value);
-            formData.append('items', JSON.stringify(finalizedOrders[finalizedOrders.length - 1].items));
-            formData.append('subtotal', document.querySelectorAll('[placeholder="0.00"]')[0].value);
-            formData.append('tax', document.querySelectorAll('[placeholder="0.00"]')[1].value);
-            formData.append('total', document.querySelectorAll('[placeholder="0.00"]')[2].value);
+            // Create object instead of FormData to have better control of data structure
+            const orderData = {
+                _token: document.querySelector('meta[name="csrf-token"]').content,
+                order_date: document.getElementById('order_date').value,
+                order_time: document.getElementById('order_time').value,
+                customer_name: document.getElementById('customer_name').value,
+                customer_email: document.getElementById('customer_email').value,
+                payment_method: document.getElementById('payment_method').value,
+                payment_status: document.getElementById('payment_status').value,
+                order_status: document.getElementById('order_status').value,
+                // Send the items array directly without JSON.stringify
+                items: finalizedOrders[finalizedOrders.length - 1].items,
+                subtotal: document.querySelectorAll('[placeholder="0.00"]')[0].value,
+                tax: document.querySelectorAll('[placeholder="0.00"]')[1].value,
+                total: document.querySelectorAll('[placeholder="0.00"]')[2].value
+            };
 
-            console.log('Submitting form data:', Object.fromEntries(formData));
+            console.log('Submitting order data:', orderData);
 
             // Validate all required fields
             for (const [field, label] of Object.entries(requiredFields)) {
@@ -513,14 +559,15 @@
                 }
             });
 
-            // Make API call with modified headers
+            // Make API call with JSON data instead of FormData
             fetch('/order/create', {
                 method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 },
-                body: formData
+                body: JSON.stringify(orderData)
             })
             .then(response => {
                 console.log('Response status:', response.status);
