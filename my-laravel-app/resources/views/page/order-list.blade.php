@@ -653,7 +653,9 @@
         </tr>
         <tbody>
          @foreach ($orders as $order)
-          <tr>
+          <tr 
+            data-id="{{ $order->order_id }}"
+            data-items='@json($order->orderItems)'>
             <td></td>
             <td>
               <a href="javascript:void(0)" class="text-heading fw-bold">#{{ $order->order_number }}</a>
@@ -675,9 +677,7 @@
             <td>
               <div class="d-flex gap-2">
                 <a href="{{ route('page.order-details', $order->order_id) }}" 
-                   class="btn btn-sm btn-success view-order"
-                   data-order-id="{{ $order->order_id }}"
-                   data-order='@json($order->orderItems)'>
+                   class="btn btn-sm btn-success view-order">
                   <i class="ti tabler-eye me-1"></i> View
                 </a>
                 <button class="btn btn-sm btn-info edit-category">
@@ -819,25 +819,31 @@
 
         // Enhanced click handler for view buttons
         $('.view-order').on('click', function(e) {
-          const orderId = $(this).data('order-id');
-          const orderItems = $(this).data('order');
+          e.preventDefault();
+          const row = $(this).closest('tr');
+          const orderId = row.data('id');
+          const orderItems = row.data('items');
           
-          console.log('Order ID:', orderId);
-          console.log('Order Items:', orderItems);
+          // Store all order details in session storage
+          const orderDetails = {
+            id: orderId,
+            items: orderItems,
+            number: row.find('td:eq(1)').text().trim(),
+            date: row.find('td:eq(2)').text().trim(),
+            customer: {
+              name: row.find('td:eq(3) h6').text().trim(),
+              email: row.find('td:eq(3) small').text().trim()
+            },
+            total: row.find('td:eq(4)').text().trim(),
+            status: row.find('td:eq(5)').text().trim(),
+            payment: row.find('td:eq(6)').text().trim()
+          };
           
-          // Log individual item details
-          if (orderItems && orderItems.length > 0) {
-            orderItems.forEach((item, index) => {
-              console.log(`Item ${index + 1}:`, {
-                name: item.item_name,
-                quantity: item.quantity,
-                price: item.unit_price,
-                total: item.total
-              });
-            });
-          } else {
-            console.log('No items found for this order');
-          }
+          sessionStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+          sessionStorage.setItem('currentOrderItems', JSON.stringify(orderItems));
+          console.log("Order details from order list:", orderDetails);
+          // Redirect to order details page
+          window.location.href = $(this).attr('href');
         });
       });
     </script>

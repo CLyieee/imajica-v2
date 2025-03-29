@@ -588,11 +588,10 @@
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
     <div class="d-flex flex-column justify-content-center">
       <div class="mb-1">
-        <span class="h5">Order #{{ $order->order_number ?? 'N/A' }} </span>
-        <span class="badge bg-label-{{ $order->payment_status == 'Paid' ? 'success' : 'warning' }} me-1 ms-2">{{ $order->payment_status ?? 'Pending' }}</span>
-        <span class="badge bg-label-info">{{ $order->order_status ?? 'Processing' }}</span>
+        <span class="h5">Order <span id="orderNumber"></span></span>
+        <span id="orderStatus" class="badge bg-label ms-2"></span>
       </div>
-      <p class="mb-0">{{ $order->order_date ? date('M d, Y', strtotime($order->order_date)) : 'N/A' }}, {{ $order->order_time ? date('H:i', strtotime($order->order_time)) : 'N/A' }} (ET)</p>
+      <p class="mb-0" id="orderDate"></p>
     </div>
   </div>
 
@@ -601,8 +600,8 @@
     <div class="col-12 col-lg-8">
       <div class="card mb-6">
         <div class="card-datatable">
-          <table class="datatables-order-details table">
-            <thead>
+          <table class="table table-striped table-bordered" id="datatables-order-details" style="width: 100%">
+            <thead >
               <tr>
                 <th></th>
                 <th>Product/Item</th>
@@ -612,17 +611,58 @@
               </tr>
             </thead>
             <tbody>
-              @foreach($order->orderItems as $item)
-              <tr>
-                <td></td>
-                <td>{{ $item->item_name }}</td>
-                <td>${{ number_format($item->unit_price, 2) }}</td>
-                <td>{{ $item->quantity }}</td>  
-                <td>${{ number_format($item->total, 2) }}</td>
-              </tr>
-              @endforeach
+            
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- Shipping Activity Timeline -->
+      <div class="card mb-4">
+        <h5 class="card-header">Order Activity</h5>
+        <div class="card-body">
+          <ul class="timeline">
+            <li class="timeline-item timeline-item-transparent">
+              <span class="timeline-point timeline-point-success"></span>
+              <div class="timeline-event">
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Order Delivered</h6>
+                  <small class="text-muted">Today</small>
+                </div>
+                <p class="mb-2">Order has been delivered to the customer</p>
+              </div>
+            </li>
+            <li class="timeline-item timeline-item-transparent">
+              <span class="timeline-point timeline-point-warning"></span>
+              <div class="timeline-event">
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Out for Delivery</h6>
+                  <small class="text-muted">Yesterday</small>
+                </div>
+                <p class="mb-2">Package has left the warehouse</p>
+              </div>
+            </li>
+            <li class="timeline-item timeline-item-transparent">
+              <span class="timeline-point timeline-point-info"></span>
+              <div class="timeline-event">
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Order Processing</h6>
+                  <small class="text-muted">2 days ago</small>
+                </div>
+                <p class="mb-0">Order is being prepared for shipment</p>
+              </div>
+            </li>
+            <li class="timeline-item timeline-item-transparent">
+              <span class="timeline-point timeline-point-primary"></span>
+              <div class="timeline-event">
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Order Placed</h6>
+                  <small class="text-muted">3 days ago</small>
+                </div>
+                <p class="mb-0">Customer placed order #{{ $order['order_number'] ?? 'N/A' }}</p>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -634,15 +674,15 @@
         <div class="card-body">
           <div class="d-flex justify-content-start align-items-center mb-6">
             <div class="d-flex flex-column">
-              <h6 class="mb-0">{{ $order->customer_name }}</h6>
-              <span>Customer ID: #{{ $order->customer_id }}</span>
+              <h6 class="mb-0">{{ $order['customer_name'] ?? 'N/A' }}</h6>
+              <span>Customer ID: #{{ $order['customer_id'] ?? 'N/A' }}</span>
             </div>
           </div>
           <div class="d-flex justify-content-between">
             <h6 class="mb-1">Contact info</h6>
           </div>
-          <p class="mb-1">Email: {{ $order->customer_email }}</p>
-          <p class="mb-0">Payment Method: {{ $order->payment_method }}</p>
+          <p class="mb-1">Email: {{ $order['customer_email'] ?? 'N/A' }}</p>
+          <p class="mb-0">Payment Method: <span id="orderPayment"></span></p>
         </div>
       </div>
       <div class="card mb-6">
@@ -651,7 +691,7 @@
           <h6 class="m-0"><a href=" javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addNewAddress">Edit</a></h6>
         </div>
         <div class="card-body">
-          <p class="mb-0">{{ $order->shipping_address }}</p>
+          <p class="mb-0">{{ $order['shipping_address'] ?? 'N/A' }}</p>
         </div>
       </div>
       <div class="card mb-6">
@@ -660,9 +700,9 @@
           <h6 class="m-0"><a href=" javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addNewAddress">Edit</a></h6>
         </div>
         <div class="card-body">
-          <p class="mb-6">{{ $order->billing_address }}</p>
-          <h5 class="mb-1">{{ $order->payment_method }}</h5>
-          <p class="mb-0">Card Number: ******{{ $order->card_last_digits }}</p>
+          <p class="mb-6">{{ $order['billing_address'] ?? 'N/A' }}</p>
+          <h5 class="mb-1">{{ $order['payment_method'] ?? 'N/A' }}</h5>
+          <p class="mb-0">Card Number: ******{{ $order['card_last_digits'] ?? 'XXXX' }}</p>
         </div>
       </div>
     </div>
@@ -1005,7 +1045,44 @@
 
     <script>
       $(document).ready(function() {
-        $('.datatables-order-details').DataTable({
+        // Get order details from session storage
+        const orderDetails = JSON.parse(sessionStorage.getItem('orderDetails') || '{}');
+        console.log('Order Details:', orderDetails);
+        
+        // Update order header information
+        $('#orderNumber').text(orderDetails.number || 'N/A');
+        $('#orderDate').text(orderDetails.date || 'N/A');
+        $('#orderStatus').text(orderDetails.status || 'N/A')
+        $('#orderPayment').text(orderDetails.payment || 'N/A')
+          .addClass(getStatusClass(orderDetails.status));
+
+        // Update customer details
+        if (orderDetails.customer) {
+          $('.card-body h6.mb-0').text(orderDetails.customer.name || 'N/A');
+          $('p.mb-1').eq(0).text(`Email: ${orderDetails.customer.email || 'N/A'}`);
+          $('p.mb-0').eq(0).text(`Payment Method: ${orderDetails.payment || 'N/A'}`);
+        }
+        
+        // Initialize DataTable with order items
+        const table = $('.table').DataTable({
+          data: orderDetails.items || [],
+          columns: [
+            { data: null, defaultContent: '' },
+            { data: 'item_name' },
+            { 
+              data: 'unit_price',
+              render: function(data) {
+                return `$${parseFloat(data).toFixed(2)}`;
+              }
+            },
+            { data: 'quantity' },
+            { 
+              data: 'total',
+              render: function(data) {
+                return `$${parseFloat(data).toFixed(2)}`;
+              }
+            }
+          ],
           pageLength: 7,
           dom: '<"row mx-2"<"col-md-2"<"me-3"l>><"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"fB>>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
           language: {
@@ -1050,9 +1127,23 @@
           responsive: true,
           order: [[1, 'desc']]
         });
+
+        // Helper function to get status badge class
+        function getStatusClass(status) {
+          switch(status?.toLowerCase()) {
+            case 'completed': return 'bg-label-success';
+            case 'pending': return 'bg-label-warning';
+            case 'cancelled': return 'bg-label-danger';
+            default: return 'bg-label-secondary';
+          }
+        }
+
+        // Clear session storage after loading
+        sessionStorage.removeItem('orderDetails');
       });
-    </script>
     
+    </script>
+     
   </body>
 
 <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/app-ecommerce-order-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:26:20 GMT -->
