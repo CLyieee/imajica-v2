@@ -10,8 +10,8 @@ class service extends Model
     use HasFactory;
 
     protected $table = 'services';
+    public $timestamps = true; // Add this line
 
-    
     protected $fillable = [
         'service_name',
         'branch_code',

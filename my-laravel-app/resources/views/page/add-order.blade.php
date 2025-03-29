@@ -223,7 +223,9 @@
                                                             <label class="form-label">Item Name</label>
                                                             <select class="form-select" name="items[]">
                                                                 <option value="">Select Item</option>
-                                                                <!-- Add your items here -->
+                                                                <option value="Shampooo">Shampoo</option>
+                                                                <option value="Soap">Soap</option>
+                                                                <option value="Water">Water</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-12 col-md-2">
@@ -268,9 +270,10 @@
                                                     <label class="form-label">Payment Method</label>
                                                     <select class="form-select" name="payment_method" id="payment_method">
                                                         <option value="">Select Method</option>
+                                                        <option value="cash">Cash</option>
                                                         <option value="paypal">PayPal</option>
-                                                        <option value="credit">Credit Card</option>
-                                                        <option value="debit">Debit Card</option>
+                                                        <option value="gcash">Gcash</option>
+                            
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6">
@@ -528,11 +531,11 @@
             })
             .then(data => {
                 console.log('Response data:', data);
-                if (data.success) {
+                if (data.status === 'success') {
                     Swal.fire({
                         icon: 'success',
                         title: 'Order Created!',
-                        text: `Order #${data.order_number || 'N/A'} has been created successfully`,
+                        text: `Order #${data.data.order_number} has been created successfully`,
                         showConfirmButton: true,
                         confirmButtonText: 'View Orders',
                         allowOutsideClick: false
@@ -578,15 +581,6 @@
         });
     </script>
 
-
-<script>
-    $(document).ready(function() {
-        $('#addOrderForm').submit(function(e) {
-            e.preventDefault();
-            submitOrder();
-        });
-    })
-</script>
 
 </body>
 </html>

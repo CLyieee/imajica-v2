@@ -30,7 +30,7 @@ class CreatePatientsTable extends Migration
             $table->text('medical_concerns');
             $table->text('current_medications');
             $table->text('note_from_admin');
-
+            $table->timestamps();
         });
     }
 
