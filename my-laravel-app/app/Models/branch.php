@@ -31,7 +31,7 @@ class branch extends Model
         return $this->hasMany(Staff::class, 'branch_code', 'branch_code');
     }
 
-    public function booking()
+    public function bookings()
     {
         return $this->hasMany(Booking::class, 'branch_code', 'branch_code');
     }

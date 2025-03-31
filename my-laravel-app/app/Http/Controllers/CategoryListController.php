@@ -143,4 +143,22 @@ class CategoryListController extends Controller
                 ->withInput();
         }
     }
+
+    public function countOrders()
+    {
+        $categories = category::with('products.orderItems')
+            ->get()
+            ->map(function ($category) {
+                return [
+                    'category_id' => $category->category_id,
+                    'categoryTitle' => $category->categoryTitle,
+                    'categoryImage' => $category->categoryImage,
+                    'description' => $category->description,
+                    'products_count' => $category->products_count,
+                    'total_earnings' => $category->total_earnings
+                ];
+            });
+
+        return view('page.category-list', compact('categories'));
+    }
 }

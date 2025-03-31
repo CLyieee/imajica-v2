@@ -594,47 +594,51 @@
         <th>Action</th>
       </tr>
     </thead>
-<tbody>
-  @foreach ($categories as $category)
-  <tr>
-    <td>{{ $category->category_id }}</td>
-    <td><input type="checkbox" class="form-check-input select-category"></td>
-    <td>
-      <div class="d-flex justify-content-start align-items-center">
-        <div class="avatar-wrapper me-3">
-          <div class="avatar rounded-2 bg-label-secondary">
-            <img src="{{ $category->categoryImage ? asset($category->categoryImage) : asset('assets/img/products/default.jpg') }}" 
-                 class="rounded-2" alt="{{ $category->categoryTitle }}">
+    <tbody>
+      @foreach ($categories as $category)
+      <tr>
+        <td>{{ $category->category_id }}</td>
+        <td><input type="checkbox" class="form-check-input select-category"></td>
+        <td>
+          <div class="d-flex justify-content-start align-items-center">
+            <div class="avatar-wrapper me-3">
+              <div class="avatar rounded-2 bg-label-secondary">
+                <img src="{{ $category->categoryImage ? asset($category->categoryImage) : asset('assets/img/products/default.jpg') }}" 
+                     class="rounded-2" alt="{{ $category->categoryTitle }}">
+              </div>
+            </div>
+            <div class="d-flex flex-column">
+              <h6 class="mb-0">{{ $category->categoryTitle }}</h6>
+              <small class="text-muted">{{ $category->description ?? 'No description available' }}</small>
+            </div>
           </div>
-        </div>
-        <div class="d-flex flex-column">
-          <h6 class="mb-0">{{ $category->categoryTitle }}</h6>
-          <small class="text-muted">{{ $category->description ?? 'No description available' }}</small>
-        </div>
-      </div>
-    </td>
-    <td>{{ $category->totalProducts }}</td>
-    <td>{{ $category->totalEarnings }}</td>
-
-    <td>
-      <div class="d-flex gap-2">
-        <button class="btn btn-sm btn-success view-category" data-id="{{ $category->category_id }}">
-          <i class="ti tabler-eye me-1"></i> View
-        </button>
-        <button class="btn btn-sm btn-info edit-category" data-id="{{ $category->category_id }}">
-          <i class="ti tabler-edit me-1"></i> Edit
-        </button>
-        <button class="btn btn-sm btn-danger delete-category" 
-                data-category-id="{{ $category->category_id }}"
-                data-category-name="{{ $category->categoryTitle }}">
-                
-          <i class="ti tabler-trash me-1"></i> Delete
-        </button>
-      </div>
-    </td>
-  </tr>
-  @endforeach
-</tbody>
+        </td>
+        <td>
+          <span class="fw-semibold">{{ $category->products_count }}</span>
+          <small class="text-muted d-block">Products</small>
+        </td>
+        <td>
+          <span class="fw-semibold">₱{{ number_format($category->total_earnings, 2) }}</span>
+          <small class="text-muted d-block">Total Sales</small>
+        </td>
+        <td>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-success view-category" data-id="{{ $category->category_id }}">
+              <i class="ti tabler-eye me-1"></i> View
+            </button>
+            <button class="btn btn-sm btn-info edit-category" data-id="{{ $category->category_id }}">
+              <i class="ti tabler-edit me-1"></i> Edit
+            </button>
+            <button class="btn btn-sm btn-danger delete-category" 
+                    data-category-id="{{ $category->category_id }}"
+                    data-category-name="{{ $category->categoryTitle }}">
+              <i class="ti tabler-trash me-1"></i> Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+      @endforeach
+    </tbody>
   </table>
 </div>
 
@@ -806,7 +810,7 @@
     <!-- Main JS -->
     
       <script src="../../assets/js/main.js"></script>
-      <script src="../../assets/js/category-list.js"></script>
+
     
 
     <!-- Page JS -->

@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded",function(e){
         // .then(data => alert(`Invoice ID: ${data.invoiceId}`));
     }
     
-    let s,a,r,n=(s=config.colors.borderColor,a=config.colors.bodyBg,r=config.colors.headingColor,document.querySelector(".datatables-order")),o={1:{title:"Ordered",class:"bg-label-warning"},2:{title:"Delivered",class:"bg-label-success"},3:{title:"Out for Delivery",class:"bg-label-primary"},4:{title:"Ready to Pickup",class:"bg-label-info"}},l={1:{title:"Paid",class:"text-success"},2:{title:"Pending",class:"text-warning"},3:{title:"Failed",class:"text-danger"},4:{title:"Cancelled",class:"text-secondary"}};if(n){let t=new DataTable(n,{ajax:assetsPath+"/order-list.json",columns:[{data:"id"},{data:"id",orderable:!1,render:DataTable.render.select()},{data:"order"},{data:"date"},{data:"customer"},{data:"payment"},{data:"status"},{data:"method"},{data:"id"}],columnDefs:[{className:"control",searchable:!1,orderable:!1,responsivePriority:2,targets:0,render:function(e,t,s,a){return""}},{targets:1,orderable:!1,searchable:!1,responsivePriority:3,checkboxes:!0,checkboxes:{selectAllRender:'<input type="checkbox" class="form-check-input">'},render:function(){return'<input type="checkbox" class="dt-checkboxes form-check-input">'}},{targets:2,render:function(e,t,s,a){return'<a href="/order-details"><span>#'+s.order+"</span></a>"}},{targets:3,render:function(e,t,s,a){var r=new Date(s.date),s=s.time.substring(0,5);return`<span class="text-nowrap">${r.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}, ${s}</span>`}},{targets:4,responsivePriority:1,render:function(e,t,s,a){var r=s.customer,n=s.email,s=s.avatar;let o;return`
+    let s,a,r,n=(s=config.colors.borderColor,a=config.colors.bodyBg,r=config.colors.headingColor,document.querySelector(".datatables-order")),o={1:{title:"Ordered",class:"bg-label-warning"},2:{title:"Delivered",class:"bg-label-success"},3:{title:"Out for Delivery",class:"bg-label-primary"},4:{title:"Ready to Pickup",class:"bg-label-info"}},l={1:{title:"Paid",class:"text-success"},2:{title:"Pending",class:"text-warning"},3:{title:"Failed",class:"text-danger"},4:{title:"Cancelled",class:"text-secondary"}};if(n){let t=new DataTable(n,{ajax:assetsPath+"/",columns:[{data:"id"},{data:"id",orderable:!1,render:DataTable.render.select()},{data:"order"},{data:"date"},{data:"customer"},{data:"payment"},{data:"status"},{data:"method"},{data:"id"}],columnDefs:[{className:"control",searchable:!1,orderable:!1,responsivePriority:2,targets:0,render:function(e,t,s,a){return""}},{targets:1,orderable:!1,searchable:!1,responsivePriority:3,checkboxes:!0,checkboxes:{selectAllRender:'<input type="checkbox" class="form-check-input">'},render:function(){return'<input type="checkbox" class="dt-checkboxes form-check-input">'}},{targets:2,render:function(e,t,s,a){return'<a href="/order-details"><span>#'+s.order+"</span></a>"}},{targets:3,render:function(e,t,s,a){var r=new Date(s.date),s=s.time.substring(0,5);return`<span class="text-nowrap">${r.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}, ${s}</span>`}},{targets:4,responsivePriority:1,render:function(e,t,s,a){var r=s.customer,n=s.email,s=s.avatar;let o;return`
               <div class="d-flex justify-content-start align-items-center order-name text-nowrap">
                 <div class="avatar-wrapper">
                   <div class="avatar avatar-sm me-3">
@@ -102,10 +102,8 @@ document.addEventListener("DOMContentLoaded",function(e){
               </div>`}}],
               
                   layout:{
-                      bottomStart:{rowClass:"row mx-3 justify-content-between",features:["info"]},
-                      bottomEnd:"paging",
                       topStart: {
-                          rowClass: "card-header d-flex border-top rounded-0 flex-wrap py-0 flex-column flex-md-row align-items-start",
+                          rowClass: "card-header d-flex border-top rounded-0 flex-wrap py-0 flex-column flex-md-row align-items-center",
                           features: [{
                             pageLength: { menu: [7, 10, 25, 50, 100] },
                             
@@ -122,7 +120,7 @@ document.addEventListener("DOMContentLoaded",function(e){
                                   
                                  
                                {
-                                  text: '<i class="icon-base ti tabler-plus me-0 me-sm-1 icon-16px"></i><span class="d-none d-sm-inline-block">Add Order</span>',
+                                  text: '<span class="d-flex align-items-center gap-1"><i class="ti tabler-plus me-1"></i>Add Order</span>',
                                   className: "btn btn-primary",
                                   action: function() {
                                       window.location.href = "/add-order";

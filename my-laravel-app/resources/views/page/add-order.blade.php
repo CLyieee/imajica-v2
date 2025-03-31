@@ -223,9 +223,9 @@
                                                             <label class="form-label">Item Name</label>
                                                             <select class="form-select" name="items[]">
                                                                 <option value="">Select Item</option>
-                                                                <option value="Shampooo">Shampoo</option>
-                                                                <option value="Soap">Soap</option>
-                                                                <option value="Water">Water</option>
+                                                                @foreach($products as $product)
+                                                                <option value="{{ $product->bar_code }}" data-price="{{ $product->base_price }}">{{ $product->name }}</option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="col-12 col-md-2">
@@ -270,9 +270,9 @@
                                                     <label class="form-label">Payment Method</label>
                                                     <select class="form-select" name="payment_method" id="payment_method">
                                                         <option value="">Select Method</option>
-                                                        <option value="cash">Cash</option>
-                                                        <option value="paypal">PayPal</option>
-                                                        <option value="gcash">Gcash</option>
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Paypal">PayPal</option>
+                                                        <option value="Gcash">Gcash</option>
                             
                                                     </select>
                                                 </div>
@@ -315,15 +315,15 @@
                                         <div class="card-body">
                                             <div class="mb-3">
                                                 <label class="form-label">Subtotal</label>
-                                                <input type="number" class="form-control" placeholder="0.00">
+                                                <input type="number" class="form-control" name="subtotal" id="subtotal" readonly>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Tax</label>
-                                                <input type="number" class="form-control" placeholder="0.00">
+                                                <input type="number" class="form-control" name="tax" id="tax" readonly>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Total</label>
-                                                <input type="number" class="form-control" placeholder="0.00" readonly>
+                                                <input type="number" class="form-control" name="total" id="total" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -378,27 +378,51 @@
             console.log('Current items before finalization:', items.length);
             
             if (items.length === 0 || (items.length === 1 && !items[0].querySelector('[name="items[]"]').value)) {
-                alert('Please add at least one item before finalizing.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No Items',
+                    text: 'Please add at least one item before finalizing.',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+            // Validate all items have prices
+            const invalidItems = Array.from(items).filter(item => {
+                const price = parseFloat(item.querySelector('[name="prices[]"]').value);
+                return isNaN(price) || price <= 0;
+            });
+
+            if (invalidItems.length > 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Items',
+                    text: 'All items must have valid prices before finalizing',
+                    confirmButtonText: 'OK'
+                });
                 return;
             }
 
             if (confirm('Do you want to finalize these items?')) {
-                // Log items being finalized
-                const itemsData = Array.from(items).map(item => ({
-                    name: item.querySelector('[name="items[]"]').value,
-                    quantity: item.querySelector('[name="quantities[]"]').value,
-                    price: item.querySelector('[name="prices[]"]').value,
-                    total: item.querySelector('[name="totals[]"]').value
-                }));
+                const itemsData = Array.from(items).map(item => {
+                    const selectElement = item.querySelector('[name="items[]"]');
+                    const selectedOption = selectElement.options[selectElement.selectedIndex];
+                    return {
+                        bar_code: selectElement.value,
+                        name: selectedOption.text,
+                        quantity: parseInt(item.querySelector('[name="quantities[]"]').value) || 1,
+                        price: parseFloat(item.querySelector('[name="prices[]"]').value) || 0,
+                        total: parseFloat(item.querySelector('[name="totals[]"]').value) || 0
+                    };
+                });
+
                 console.log('Items being finalized:', itemsData);
 
-                // Store current order
                 const currentOrder = {
                     id: orderCount,
                     items: itemsData
                 };
                 finalizedOrders.push(currentOrder);
-              
 
                 // Clear input values but keep structure
                 document.querySelectorAll('.order-item').forEach(item => {
@@ -410,11 +434,30 @@
 
                 updateTotals();
                 
-                // Show success message with current order number
-                alert(`Order #${currentOrder.id} has been finalized. You can start order #${orderCount}.`);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Items Finalized',
+                    text: `Order #${currentOrder.id} has been finalized. You can start order #${orderCount}.`,
+                    confirmButtonText: 'OK'
+                });
                 orderCount--;
             }
         }
+
+        // Add this function to set prices when items are selected
+        document.addEventListener('change', function(e) {
+            if (e.target.matches('[name="items[]"]')) {
+                const item = e.target.closest('.order-item');
+                const priceInput = item.querySelector('[name="prices[]"]');
+                const selectedOption = e.target.options[e.target.selectedIndex];
+                
+                // Get price from the data attribute
+                const price = selectedOption.dataset.price || 0;
+                priceInput.value = price;
+                
+                updateTotals();
+            }
+        });
 
         function updateTotals() {
             let subtotal = 0;
@@ -430,154 +473,125 @@
             const tax = subtotal * taxRate;
             const total = subtotal + tax;
 
-            document.querySelector('[placeholder="0.00"]').value = subtotal.toFixed(2);
-            document.querySelectorAll('[placeholder="0.00"]')[1].value = tax.toFixed(2);
-            document.querySelectorAll('[placeholder="0.00"]')[2].value = total.toFixed(2);
+            // Update summary fields
+            document.getElementById('subtotal').value = subtotal.toFixed(2);
+            document.getElementById('tax').value = tax.toFixed(2);
+            document.getElementById('total').value = total.toFixed(2);
         }
 
-        // Add event listeners to update totals when quantities or prices change
-        document.addEventListener('input', function(e) {
-            if (e.target.matches('[name="quantities[]"], [name="prices[]"]')) {
-                updateTotals();
-            }
-        });
-
         function submitOrder() {
-            // Debug logging for required fields
-            console.log('Checking required fields...');
-            const requiredFields = {
-                'order_date': 'Order date',
-                'customer_name': 'Customer name', 
-                'payment_method': 'Payment method',
-                'order_status': 'Order status'
-            };
+            const form = document.getElementById('addOrderForm');
+            const formData = new FormData(form);
 
-            // Log each field's value
-            for (const [field, label] of Object.entries(requiredFields)) {
-                const value = document.getElementById(field)?.value;
-                console.log(`${label}: ${value}`);
-            }
-
-            // Check finalized orders
-            console.log('Finalized orders:', finalizedOrders);
-
-            // Prepare form data with proper structure
-            const formData = new FormData();
-            formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
-            formData.append('order_date', document.getElementById('order_date').value);
-            formData.append('order_time', document.getElementById('order_time').value);
-            formData.append('customer_name', document.getElementById('customer_name').value);
-            formData.append('customer_email', document.getElementById('customer_email').value);
-            formData.append('payment_method', document.getElementById('payment_method').value);
-            formData.append('payment_status', document.getElementById('payment_status').value);
-            formData.append('order_status', document.getElementById('order_status').value);
-            formData.append('items', JSON.stringify(finalizedOrders[finalizedOrders.length - 1].items));
-            formData.append('subtotal', document.querySelectorAll('[placeholder="0.00"]')[0].value);
-            formData.append('tax', document.querySelectorAll('[placeholder="0.00"]')[1].value);
-            formData.append('total', document.querySelectorAll('[placeholder="0.00"]')[2].value);
-
-            console.log('Submitting form data:', Object.fromEntries(formData));
-
-            // Validate all required fields
-            for (const [field, label] of Object.entries(requiredFields)) {
-                const value = document.getElementById(field)?.value;
-                if (!value) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Required Field Missing',
-                        text: `${label} is required`,
-                        confirmButtonText: 'OK'
-                    });
-                    return;
-                }
-            }
-
+            // Add finalized items to form data
             if (finalizedOrders.length === 0) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'No Items Added',
-                    text: 'Please add and finalize at least one order item',
-                    confirmButtonText: 'OK'
+                    title: 'No Items',
+                    text: 'Please add and finalize at least one item'
                 });
+                return;
+            }
+
+            // Get the last finalized order items
+            const orderItems = finalizedOrders[finalizedOrders.length - 1].items;
+            formData.append('items', JSON.stringify(orderItems));
+
+            // Validate form
+            if (!validateForm()) {
                 return;
             }
 
             // Show loading state
             Swal.fire({
                 title: 'Processing Order',
-                html: 'Please wait while we create your order...',
+                html: 'Please wait...',
                 allowOutsideClick: false,
-                showConfirmButton: false,
-                willOpen: () => {
+                didOpen: () => {
                     Swal.showLoading();
                 }
             });
 
-            // Make API call with modified headers
+            // Submit form
             fetch('/order/create', {
-                method: 'POST',
+                method: 'POST',  
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
                 },
                 body: formData
             })
-            .then(response => {
-                console.log('Response status:', response.status);
-                return response.json().catch(error => {
-                    console.error('JSON parsing error:', error);
-                    throw new Error('Invalid JSON response');
-                });
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log('Response data:', data);
                 if (data.status === 'success') {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Order Created!',
-                        text: `Order #${data.data.order_number} has been created successfully`,
-                        showConfirmButton: true,
-                        confirmButtonText: 'View Orders',
-                        allowOutsideClick: false
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '/order-list';
-                        }
+                        title: 'Success!',
+                        text: `Order #${data.data.order_number} created successfully`,
+                        confirmButtonText: 'View Orders'
+                    }).then(() => {
+                        window.location.href = '/order-list';
                     });
                 } else {
-                    throw new Error(data.message || 'Order creation failed');
+                    throw new Error(data.message || 'Failed to create order');
                 }
             })
             .catch(error => {
-                console.error('Error details:', error);
+                console.error('Error:', error);
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Order Creation Failed',
-                    text: error.message || 'Something went wrong while creating the order',
-                    confirmButtonText: 'Try Again'
+                    icon: 'error', 
+                    title: 'Error',
+                    text: error.message || 'Something went wrong'
                 });
             });
         }
 
-        // Update the order status values to match database enum
-        document.querySelector('select[name="order_status"]').innerHTML = `
-            <option value="Ordered">Ordered</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Out for Delivery">Out for Delivery</option>
-            <option value="Ready to Pickup">Ready to Pickup</option>
-        `;
+        function validateForm() {
+            const requiredFields = {
+                customer_name: 'Customer Name',
+                order_date: 'Order Date',
+                order_time: 'Order Time',
+                payment_method: 'Payment Method'
+            };
 
-        // Update payment status values to match database enum
-        document.querySelector('select[name="payment_status"]').innerHTML = `
-            <option value="Paid">Paid</option>
-            <option value="Pending">Pending</option>
-            <option value="Failed">Failed</option>
-            <option value="Cancelled">Cancelled</option>
-        `;
+            for (const [field, label] of Object.entries(requiredFields)) {
+                const value = document.getElementById(field)?.value;
+                if (!value) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Required Field Missing',
+                        text: `Please enter ${label}`
+                    });
+                    return false;
+                }
+            }
 
-        document.querySelector('button[type="submit"]').addEventListener('click', function(e) {
-            e.preventDefault();
-            submitOrder();
+            if (finalizedOrders.length === 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No Items',
+                    text: 'Please add and finalize at least one item'
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        // Update event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle form submission
+            document.getElementById('addOrderForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitOrder();
+            });
+
+            // Handle real-time total updates
+            document.addEventListener('input', function(e) {
+                if (e.target.matches('[name="quantities[]"], [name="prices[]"]')) {
+                    updateTotals();
+                }
+            });
         });
     </script>
 

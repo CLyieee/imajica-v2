@@ -245,15 +245,13 @@
                         </span>
                       </div>
                       <div>
-                        <h4 class="mb-0">10,000</h4>
-                        <span class="badge bg-label-success">+12.5%</span>
+                        <h4 class="mb-0">{{ count($bookings) }}</h4>
+                        <span class="badge bg-label-{{ $bookingGrowth >= 0 ? 'success' : 'danger' }}">{{ $bookingGrowth >= 0 ? '+' : '' }}{{ $bookingGrowth }}%</span>
                       </div>
                     </div>
                     <p class="mb-1">Total Completed Bookings</p>
                     <div class="d-flex align-items-center">
-                      <small class="text-body-secondary">vs last month</small>
                       <div class="ms-auto">
-                        <span class="text-success">↑ 152</span>
                       </div>
                     </div>
                   </div>
@@ -270,15 +268,13 @@
                         </span>
                       </div>
                       <div>
-                        <h4 class="mb-0">₱1,000,000</h4>
+                        <h4 class="mb-0">₱100,000</h4>
                         <span class="badge bg-label-success">+8.4%</span>
                       </div>
                     </div>
                     <p class="mb-1">Total Revenue</p>
                     <div class="d-flex align-items-center">
-                      <small class="text-body-secondary">vs last month</small>
                       <div class="ms-auto">
-                        <span class="text-success">↑ ₱84,000</span>
                       </div>
                     </div>
                   </div>
@@ -320,15 +316,13 @@
                         </span>
                       </div>
                       <div>
-                        <h4 class="mb-0">₱850,000</h4>
+                        <h4 class="mb-0">₱50,000</h4>
                         <span class="badge bg-label-warning">+3.2%</span>
                       </div>
                     </div>
                     <p class="mb-1">Total Expenses</p>
                     <div class="d-flex align-items-center">
-                      <small class="text-body-secondary">vs last month</small>
                       <div class="ms-auto">
-                        <span class="text-warning">↑ ₱26,000</span>
                       </div>
                     </div>
                   </div>
@@ -465,52 +459,59 @@
             </div>
 
 
-            <!-- Merchant Banner -->
+            <!-- Dynamic Banner Section -->
             <div class="row mb-4">
               <div class="col-lg-12">
-                <div class="card text-white border-0 shadow-lg"
-                  style="background: linear-gradient(135deg, #7367f0, #a49cf6); border-radius: 15px;">
-                  <div
-                    class="card-body p-4 d-flex justify-content-between align-items-center position-relative overflow-hidden">
-                    <!-- Confetti Animation -->
-                    <div class="position-absolute w-100 h-100" id="confetti-container"></div>
+                @if(count($todayBirthdays) > 0 || count($upcomingBirthdays) > 0)
+                  <!-- Birthday Banner (existing code) -->
+                  <div class="card text-white border-0 shadow-lg"
+                    style="background: linear-gradient(135deg, #47d2b4, #53b5cf); border-radius: 15px;">
+                    <div class="card-body p-4 d-flex justify-content-between align-items-center position-relative overflow-hidden">
+                      <!-- Confetti Animation -->
+                      <div class="position-absolute w-100 h-100" id="confetti-container"></div>
 
-                    <!-- Text Content -->
-                    <div>
-                      <h3 class="text-white fw-bold">🎉 Happy Birthday to Our Valued Clients! 🎂</h3>
-                      <style>
-                        .birthday-btn {
-                          border-radius: 30px;
-                          background: #fff;
-                          color: #92ffcc;
-                          box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-                          padding: 10px 20px;
-                          font-size: 16px;
-                          text-decoration: none;
-                          display: inline-block;
-                          transition: all 0.3s ease-in-out;
-                        }
+                      <!-- Text Content -->
+                      <div>
+                        <h3 class="text-white fw-bold">🎉 Happy Birthday to Our Valued Clients! 🎂</h3>
+                      </div>
 
-                        /* Hover Effect */
-                        .birthday-btn:hover {
-                          background: #92ffcc;
-                          color: #fff;
-                          box-shadow: 0 0 15px rgba(125, 196, 165, 0.8);
-                          transform: scale(1.05);
-                        }
-                      </style>
-
-                    </div>
-
-                    <!-- Birthday Image -->
-                    <div class="d-none d-md-block">
-                      <img
-                        src="https://png.pngtree.com/template/20241213/ourmid/pngtree-happy-birthday-greeting-vector-design-lettering-in-blue-space-with-gift-image_2037581.jpg"
-                        alt="Birthday celebration"
-                        style="max-height: 200px; transform: rotate(-5deg); border-radius: 10px;">
+                      <!-- Birthday Image -->
+                      <div class="d-none d-md-block">
+                        <img src="https://png.pngtree.com/template/20241213/ourmid/pngtree-happy-birthday-greeting-vector-design-lettering-in-blue-space-with-gift-image_2037581.jpg"
+                          alt="Birthday celebration"
+                          style="max-height: 200px; transform: rotate(-5deg); border-radius: 10px;">
+                      </div>
                     </div>
                   </div>
-                </div>
+                @else
+                  <!-- Imajica Aesthetics Banner -->
+                  <div class="card text-white border-0 shadow-lg"
+                    style="background: linear-gradient(135deg, #2c3e50, #3498db); border-radius: 15px;">
+                    <div class="card-body p-4 d-flex justify-content-between align-items-center position-relative overflow-hidden">
+                      <!-- Text Content -->
+                      <div>
+                        <h3 class="text-white fw-bold mb-2">✨ Welcome to Imajica Aesthetics</h3>
+                        <p class="text-white mb-3">Experience luxury beauty and wellness treatments tailored just for you.</p>
+                        <a href="{{ route('page.booking') }}" class="btn btn-light">
+                          <i class="ti tabler-calendar-plus me-1"></i>
+                          Book an Appointment
+                        </a>
+                      </div>
+
+                      <!-- Decorative Elements -->
+                      <div class="d-none d-md-block">
+                        <img src="{{ asset('logo/imajica.png') }}" 
+                          alt="Imajica Aesthetics"
+                          style="max-height: 180px; border-radius: 10px;">
+                      </div>
+
+                      <!-- Background Decoration -->
+                      <div class="position-absolute top-0 end-0 opacity-25">
+                        <i class="ti tabler-spa" style="font-size: 180px;"></i>
+                      </div>
+                    </div>
+                  </div>
+                @endif
               </div>
             </div>
 
@@ -807,248 +808,257 @@
 <script src="{{ asset('assets/js/charts-chartjs.js') }}"></script>
 
   <script>
-    // Revenue Overview Line Chart
-    const revenueCtx = document
-      .getElementById("revenueChart")
-      .getContext("2d");
-    const revenueChart = new Chart(revenueCtx, {
-      type: "line",
-      data: {
-        labels: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
-        datasets: [
-          {
-            label: "Revenue 2024",
-            data: [
-              65000, 75000, 85000, 95000, 100000, 120000, 110000, 130000,
-              140000, 150000, 160000, 170000,
+    document.addEventListener("DOMContentLoaded", function() {
+      // Wait for Chart.js to be available
+      const initCharts = () => {
+        if (typeof Chart === 'undefined') {
+          // If Chart is not loaded yet, try again in 100ms
+          setTimeout(initCharts, 100);
+          return;
+        }
+
+        // Revenue Overview Line Chart
+        const revenueCtx = document
+          .getElementById("revenueChart")
+          .getContext("2d");
+        const revenueChart = new Chart(revenueCtx, {
+          type: "line",
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
             ],
-            borderColor: function (context) {
-              const chart = context.chart;
-              const { ctx, chartArea } = chart;
-              if (!chartArea) {
-                return null;
-              }
-              const gradient = ctx.createLinearGradient(
-                0,
-                0,
-                chartArea.width,
-                0
-              );
-              gradient.addColorStop(0, "#c4cfd9"); // Light blue
-              gradient.addColorStop(1, "#00d761"); // Dark blue
-              return gradient;
-            },
-            tension: 0.4,
-            fill: true,
-            backgroundColor: "rgba(105, 108, 255, 0.1)",
-          },
-          {
-            label: "Revenue 2023",
-            data: [
-              55000, 65000, 75000, 85000, 90000, 110000, 100000, 120000,
-              130000, 140000, 150000, 160000,
+            datasets: [
+              {
+                label: "Revenue 2024",
+                data: [
+                  65000, 75000, 85000, 95000, 100000, 120000, 110000, 130000,
+                  140000, 150000, 160000, 170000,
+                ],
+                borderColor: function (context) {
+                  const chart = context.chart;
+                  const { ctx, chartArea } = chart;
+                  if (!chartArea) {
+                    return null;
+                  }
+                  const gradient = ctx.createLinearGradient(
+                    0,
+                    0,
+                    chartArea.width,
+                    0
+                  );
+                  gradient.addColorStop(0, "#c4cfd9"); // Light blue
+                  gradient.addColorStop(1, "#00d761"); // Dark blue
+                  return gradient;
+                },
+                tension: 0.4,
+                fill: true,
+                backgroundColor: "rgba(105, 108, 255, 0.1)",
+              },
+              {
+                label: "Revenue 2023",
+                data: [
+                  55000, 65000, 75000, 85000, 90000, 110000, 100000, 120000,
+                  130000, 140000, 150000, 160000,
+                ],
+                borderColor: function (context) {
+                  const chart = context.chart;
+                  const { ctx, chartArea } = chart;
+                  if (!chartArea) {
+                    return null;
+                  }
+                  const gradient = ctx.createLinearGradient(
+                    0,
+                    0,
+                    chartArea.width,
+                    0
+                  );
+                  gradient.addColorStop(0, "#c4cfd9"); // Light gray
+                  gradient.addColorStop(1, "#da9100"); // Dark slate
+                  return gradient;
+                },
+                tension: 0.4,
+                fill: true,
+                backgroundColor: "rgba(3, 195, 236, 0.1)",
+              },
             ],
-            borderColor: function (context) {
-              const chart = context.chart;
-              const { ctx, chartArea } = chart;
-              if (!chartArea) {
-                return null;
-              }
-              const gradient = ctx.createLinearGradient(
-                0,
-                0,
-                chartArea.width,
-                0
-              );
-              gradient.addColorStop(0, "#c4cfd9"); // Light gray
-              gradient.addColorStop(1, "#da9100"); // Dark slate
-              return gradient;
-            },
-            tension: 0.4,
-            fill: true,
-            backgroundColor: "rgba(3, 195, 236, 0.1)",
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "top",
-          },
-          title: {
-            display: true,
-            text: "Monthly Revenue Overview",
-          },
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              callback: function (value) {
-                return "₱" + value.toLocaleString();
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "top",
+              },
+              title: {
+                display: true,
+                text: "Monthly Revenue Overview",
               },
             },
-          },
-        },
-      },
-    });
-
-    // Popular Services Pie Chart
-    const servicesCtx = document
-      .getElementById("popularServicesChart")
-      .getContext("2d");
-    const popularServicesChart = new Chart(servicesCtx, {
-      type: "pie",
-      data: {
-        labels: [
-          "Hair Care",
-          "Massage",
-          "Facial",
-          "Nail Care",
-          "Body Treatments",
-        ],
-        datasets: [
-          {
-            data: [30, 25, 20, 15, 10],
-            backgroundColor: [
-              "#696cff",
-              "#03c3ec",
-              "#ffab00",
-              "#28c76f",
-              "#ff3e1d",
-            ],
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "bottom",
-          },
-          title: {
-            display: true,
-            text: "Service Distribution",
-          },
-        },
-      },
-    });
-
-    // Add a new Bar Chart for Branch Performance
-    const branchPerformanceChart = new Chart(
-      document.getElementById("branchPerformanceChart").getContext("2d"),
-      {
-        type: "bar",
-        data: {
-          labels: [
-            "Branch A",
-            "Branch B",
-            "Branch C",
-            "Branch D",
-            "Branch E",
-          ],
-          datasets: [
-            {
-              label: "Bookings",
-              data: [150, 120, 140, 100, 130],
-              backgroundColor: "#696cff",
-            },
-            {
-              label: "Revenue",
-              data: [120000, 95000, 110000, 85000, 100000],
-              backgroundColor: "#28c76f",
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: "top",
-            },
-            title: {
-              display: true,
-              text: "Branch Performance Overview",
-            },
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              position: "left",
-              ticks: {
-                callback: function (value) {
-                  return this.chart.data.datasets[1].label === "Revenue"
-                    ? "₱" + value.toLocaleString()
-                    : value;
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: function (value) {
+                    return "₱" + value.toLocaleString();
+                  },
                 },
               },
             },
           },
-        },
-      }
-    );
+        });
 
-    // Booking Status Donut Chart
-    const bookingStatusCtx = document
-      .getElementById("bookingStatusChart")
-      .getContext("2d");
-    const bookingStatusChart = new Chart(bookingStatusCtx, {
-      type: "doughnut",
-      data: {
-        labels: ["Completed", "Pending", "Cancelled", "Rescheduled"],
-        datasets: [
-          {
-            data: [45, 25, 15, 15],
-            backgroundColor: ["#28c76f", "#ffab00", "#ff3e1d", "#03c3ec"],
-            borderWidth: 0,
-            cutout: "75%",
+        // Popular Services Pie Chart
+        const servicesCtx = document
+          .getElementById("popularServicesChart")
+          .getContext("2d");
+        const popularServicesChart = new Chart(servicesCtx, {
+          type: "pie",
+          data: {
+            labels: [
+              "Hair Care",
+              "Massage",
+              "Facial",
+              "Nail Care",
+              "Body Treatments",
+            ],
+            datasets: [
+              {
+                data: [30, 25, 20, 15, 10],
+                backgroundColor: [
+                  "#696cff",
+                  "#03c3ec",
+                  "#ffab00",
+                  "#28c76f",
+                  "#ff3e1d",
+                ],
+              },
+            ],
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "bottom",
-          },
-          title: {
-            display: true,
-            text: "Current Month Booking Status",
-          },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const label = context.label || "";
-                const value = context.parsed || 0;
-                const percentage = Math.round(
-                  (value / context.dataset.data.reduce((a, b) => a + b)) * 100
-                );
-                return `${label}: ${percentage}%`;
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+              },
+              title: {
+                display: true,
+                text: "Service Distribution",
               },
             },
           },
-        },
-      },
+        });
+
+        // Branch Performance Chart
+        const branchPerformanceChart = new Chart(
+          document.getElementById("branchPerformanceChart").getContext("2d"),
+          {
+            type: "bar",
+            data: {
+              labels: {!! json_encode($branchData->pluck('name')) !!},
+              datasets: [
+                {
+                  label: "Bookings",
+                  data: {!! json_encode($branchData->pluck('bookings')) !!},
+                  backgroundColor: "#696cff",
+                },
+                {
+                  label: "Revenue",
+                  data: {!! json_encode($branchData->pluck('revenue')) !!},
+                  backgroundColor: "#28c76f",
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                title: {
+                  display: true,
+                  text: "Branch Performance Overview",
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  position: "left",
+                  ticks: {
+                    callback: function (value) {
+                      return this.chart.data.datasets[1].label === "Revenue"
+                        ? "₱" + value.toLocaleString()
+                        : value;
+                    },
+                  },
+                },
+              },
+            },
+          }
+        );
+
+        // Booking Status Donut Chart
+        const bookingStatusCtx = document
+          .getElementById("bookingStatusChart")
+          .getContext("2d");
+        const bookingStatusChart = new Chart(bookingStatusCtx, {
+          type: "doughnut",
+          data: {
+            labels: ["Completed", "Pending", "Cancelled", "Rescheduled"],
+            datasets: [
+              {
+                data: [45, 25, 15, 15],
+                backgroundColor: ["#28c76f", "#ffab00", "#ff3e1d", "#03c3ec"],
+                borderWidth: 0,
+                cutout: "75%",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+              },
+              title: {
+                display: true,
+                text: "Current Month Booking Status",
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    const label = context.label || "";
+                    const value = context.parsed || 0;
+                    const percentage = Math.round(
+                      (value / context.dataset.data.reduce((a, b) => a + b)) * 100
+                    );
+                    return `${label}: ${percentage}%`;
+                  },
+                },
+              },
+            },
+          },
+        });
+      };
+
+      // Start initialization
+      initCharts();
     });
 
+    // Export functionality
     function exportChartData(chartId) {
       const chart = Chart.getChart(chartId);
       if (!chart) return;
@@ -1598,9 +1608,9 @@ The Imajica Team</textarea>
                 <option value="past">Past Birthdays</option>
               </select>
             </div>
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
               <input type="text" id="birthdaySearch" class="form-control" placeholder="Search patients...">
-            </div>
+            </div> -->  
           </div>
 
           <!-- Birthday Calendar View -->
@@ -1630,7 +1640,7 @@ The Imajica Team</textarea>
                         <div class="dropdown">
                           <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
                             data-bs-toggle="dropdown">
-                            <i class="ti tabler-dots-vertical"></i>
+                            <!-- <i class="ti tabler-dots-vertical"></i> -->
                           </button>
                           <ul class="dropdown-menu">
                             <li>
@@ -1747,8 +1757,8 @@ The Imajica Team</textarea>
           <div class="row g-3 mb-4">
             <div class="col-md-6 col-lg-3">
               <div class="input-group">
-                <span class="input-group-text"><i class="ti tabler-search"></i></span>
-                <input type="text" class="form-control" id="searchBookings" placeholder="Search bookings..." />
+                <!-- <span class="input-group-text"><i class="ti tabler-search"></i></span>
+                <input type="text" class="form-control" id="searchBookings" placeholder="Search bookings..." /> -->
               </div>
             </div>
             <div class="col-md-6 col-lg-3">
@@ -1780,7 +1790,6 @@ The Imajica Team</textarea>
                   <th>Date & Time</th>
                   <th>Amount</th>
                   <th>Status</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
