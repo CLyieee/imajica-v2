@@ -639,23 +639,60 @@
 
   <!-- Order List Table -->
   <div class="card">
-    <div class="card-datatable table-responsive">
-      <table class="datatables-order table border-top table-striped">
-        <thead class="table-light">
-          <tr>
-            <th>actions</th>
-            <th></th>
-            <th>order</th>
-            <th>date</th>
-            <th>customers</th>
-            <th>payment</th>
-            <th>status</th>
-            <th>method</th>
-           
+    <table class="table border-top table-striped" id="orderTable">
+      <thead class="table-light">
+        <tr>
+          <th></th>
+          <th>order</th>
+          <th>date</th>
+          <th>customers</th>
+          <th>payment</th>
+          <th>status</th>
+          <th>method</th>
+          <th>actions</th>
+        </tr>
+        <tbody>
+         @foreach ($orders as $order)
+          <tr 
+            data-id="{{ $order->order_id }}"
+            data-items='@json($order->orderItems)'>
+            <td></td>
+            <td>
+              <a href="javascript:void(0)" class="text-heading fw-bold">#{{ $order->order_number }}</a>
+            </td>
+            <td>{{ $order->order_date }}</td>
+            <td>
+            <div class="d-flex flex-column">
+              <h6 class="mb-0">{{ $order->customer_name }}</h6>
+              <small class="text-muted">{{ $order->customer_email ?? 'No email available' }}</small>
+            </div>
+      
+          </td>
+
+            <td>${{ $order->total }}</td>
+            <td>
+              <span class="badge bg-label-{{ $order->order_status == 'completed' ? 'success' : ($order->order_status == 'pending' ? 'warning' : 'danger') }} me-1">{{ ucfirst($order->order_status) }}</span>
+            </td>
+            <td>{{ $order->payment_method }}</td>
+            <td>
+              <div class="d-flex gap-2">
+                <a href="{{ route('page.order-details', $order->order_id) }}" 
+                   class="btn btn-sm btn-success view-order">
+                  <i class="ti tabler-eye me-1"></i> View
+                </a>
+                <button class="btn btn-sm btn-info edit-category">
+                  <i class="ti tabler-edit me-1"></i> Edit
+                </button>
+                <button class="btn btn-sm btn-danger delete-category">
+                  <i class="ti tabler-trash me-1"></i> Delete
+                </button>
+              </div>
+            </td>
           </tr>
-        </thead>
-      </table>
-    </div>
+          @endforeach
+        </tbody>
+      </thead>
+    </table>
   </div>
 </div>
           <!-- / Content -->
@@ -748,6 +785,68 @@
     <!-- Page JS -->
     <script src="../../assets/js/order-list.js"></script>
     
+
+
+    <script>
+      $(document).ready(function () {
+        // Existing DataTable initialization 
+        $('#orderTable').DataTable({
+          layout: {
+            topStart: {
+              rowClass: "card-header d-flex border-top rounded-0 flex-wrap py-0 flex-column flex-md-row align-items-center",
+              features: [{
+                pageLength: { menu: [7, 10, 25, 50, 100] }
+              }]
+            },
+            topEnd: {
+              rowClass: "row m-3 my-0 justify-content-between",
+              features: [{
+                search: {
+                  className: "me-5 ms-n4 pe-5 mb-n6 mb-md-0",
+                  placeholder: "Search Order"
+                },
+                buttons: [{
+                  text: '<span class="d-flex align-items-center gap-1"><i class="ti tabler-plus me-1"></i>Add Order</span>',
+                  className: "btn btn-primary",
+                  action: function() {
+                    window.location.href = "/add-order";
+                  }
+                }]
+              }]
+            }
+          }
+        });
+
+        // Enhanced click handler for view buttons
+        $('.view-order').on('click', function(e) {
+          e.preventDefault();
+          const row = $(this).closest('tr');
+          const orderId = row.data('id');
+          const orderItems = row.data('items');
+          
+          // Store all order details in session storage
+          const orderDetails = {
+            id: orderId,
+            items: orderItems,
+            number: row.find('td:eq(1)').text().trim(),
+            date: row.find('td:eq(2)').text().trim(),
+            customer: {
+              name: row.find('td:eq(3) h6').text().trim(),
+              email: row.find('td:eq(3) small').text().trim()
+            },
+            total: row.find('td:eq(4)').text().trim(),
+            status: row.find('td:eq(5)').text().trim(),
+            payment: row.find('td:eq(6)').text().trim()
+          };
+          
+          sessionStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+          sessionStorage.setItem('currentOrderItems', JSON.stringify(orderItems));
+          console.log("Order details from order list:", orderDetails);
+          // Redirect to order details page
+          window.location.href = $(this).attr('href');
+        });
+      });
+    </script>
   </body>
 
 <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/app-ecommerce-order-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:26:18 GMT -->

@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class order extends Model
+class Order extends Model
 {
     use HasFactory;
     
-    protected $table = 'order';
+    protected $table = 'new_order_table';
     protected $primaryKey = 'order_id';
-    public $timestamps = true; // Add this line
+    public $timestamps = true;
     
     protected $fillable = [
         'order_number',
         'order_date',
+        'order_time',
         'customer_name',
         'customer_email',
-        'customer_avatar',
         'payment_status', 
         'order_status',
         'payment_method',
@@ -31,7 +31,7 @@ class order extends Model
     // Add relationship
     public function orderItems()
     {
-        return $this->hasMany(OrderItem::class, 'order_id');
+        return $this->hasMany(OrderItem::class, 'order_id', 'order_id');
     }
 
     protected static function boot()

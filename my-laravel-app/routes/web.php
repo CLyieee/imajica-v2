@@ -16,6 +16,7 @@ use App\Http\Controllers\serviceController;
 use App\Http\Controllers\tierController;
 use App\Http\Controllers\bookingController;
 use App\Http\Controllers\orderController;
+use App\Http\Controllers\AddProductController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -65,6 +66,7 @@ Route::post('/order/create', [orderController::class, 'create'])->name('order.cr
 Route::get('/order-details', [DashboardController::class, 'order_details'])->name('page.order-details');
 
 Route::get('/add-product', [DashboardController::class, 'add_product'])->name('page.add-product');
+Route::post('/product/create', [AddProductController::class, 'create'])->name('product.create');
 
 
 Route::get('/category-list', [DashboardController::class, 'category_list'])->name('page.category-list');

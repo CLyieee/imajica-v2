@@ -12,11 +12,8 @@ use App\Models\booking;
 use App\Models\category;
 use Illuminate\Http\Request;
 use App\Models\service;
+use App\Models\order;
 use Illuminate\Support\Facades\DB;
-
-use App\Models\service;
-
-use App\Models\supplier;
 
 class DashboardController extends Controller
 {
@@ -302,11 +299,13 @@ class DashboardController extends Controller
     }
     public function order_list()
     {
-        return view('page.order-list');
+        $orders = order::all();
+        return view('page.order-list', compact('orders'));
     }
     public function order_details()
     {
-        return view('page.order-details');
+        $order = order::all();
+        return view('page.order-details', compact('order'));
     }
     public function add_product()
     {
@@ -315,10 +314,11 @@ class DashboardController extends Controller
     }
     public function add_order()
     {
-        return view('page.add-order');
+        $products = \App\Models\Product::select('bar_code', 'name', 'base_price')->get();
+        return view('page.add-order', compact('products'));
     }
 
-/******  2db3ac5a-8cdc-4742-ac17-452b916d85d5  *******/    public function category_list()
+   public function category_list()
     {
         $categories = category::all();
         return view('page.category-list', compact('categories'));
