@@ -925,22 +925,21 @@
         const popularServicesChart = new Chart(servicesCtx, {
           type: "pie",
           data: {
-            labels: [
-              "Hair Care",
-              "Massage",
-              "Facial",
-              "Nail Care",
-              "Body Treatments",
-            ],
+            labels: {!! json_encode($services->pluck('service_name')) !!},
             datasets: [
               {
-                data: [30, 25, 20, 15, 10],
+                data: {!! json_encode($services->pluck('service_cost')) !!},
                 backgroundColor: [
                   "#696cff",
                   "#03c3ec",
                   "#ffab00",
                   "#28c76f",
                   "#ff3e1d",
+                  "#8592a3",
+                  "#4b465c",
+                  "#ea5455",
+                  "#7367f0",
+                  "#6610f2"
                 ],
               },
             ],
@@ -956,6 +955,17 @@
                 display: true,
                 text: "Service Distribution",
               },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.raw || 0;
+                    const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
+                    const percentage = ((value / total) * 100).toFixed(1);
+                    return `${label}: ₱${value.toLocaleString()} (${percentage}%)`;
+                  }
+                }
+              }
             },
           },
         });
@@ -1718,22 +1728,75 @@ The Imajica Team</textarea>
         filterSelect.addEventListener("change", function (e) {
           const filterValue = e.target.value;
           const monthCards = document.querySelectorAll(".month-card");
+          const currentMonth = new Date().getMonth(); // 0-11
+          const currentDay = new Date().getDate();
 
           monthCards.forEach((card) => {
+            const monthName = card.querySelector(".month-title").textContent.trim();
+            const monthIndex = new Date(Date.parse(monthName + " 1")).getMonth();
+            const birthdayItems = card.querySelectorAll(".birthday-item");
+
             switch (filterValue) {
-              case "current":
-                card.style.display = card.classList.contains("current-month")
-                  ? "block"
-                  : "none";
-                break;
-              case "upcoming":
-                // Add logic for upcoming months
-                break;
-              case "past":
-                // Add logic for past months
-                break;
-              default:
+              case "all":
+                // Show all months and birthdays
                 card.style.display = "block";
+                birthdayItems.forEach(item => item.style.display = "flex");
+                break;
+
+              case "current":
+                // Show only current month
+                card.style.display = monthIndex === currentMonth ? "block" : "none";
+                break;
+
+              case "upcoming":
+                // Show future months and upcoming birthdays in current month
+                if (monthIndex > currentMonth) {
+                  // Future months - show all
+                  card.style.display = "block";
+                  birthdayItems.forEach(item => item.style.display = "flex");
+                } else if (monthIndex === currentMonth) {
+                  // Current month - show only upcoming days
+                  card.style.display = "block";
+                  birthdayItems.forEach(item => {
+                    const dayText = item.querySelector("small.text-muted").textContent;
+                    const day = parseInt(dayText.match(/\d+/)[0]);
+                    item.style.display = day >= currentDay ? "flex" : "none";
+                  });
+                } else {
+                  // Past months - hide
+                  card.style.display = "none";
+                }
+                break;
+
+              case "past":
+                // Show past months and past birthdays in current month
+                if (monthIndex < currentMonth) {
+                  // Past months - show all
+                  card.style.display = "block";
+                  birthdayItems.forEach(item => item.style.display = "flex");
+                } else if (monthIndex === currentMonth) {
+                  // Current month - show only past days
+                  card.style.display = "block";
+                  birthdayItems.forEach(item => {
+                    const dayText = item.querySelector("small.text-muted").textContent;
+                    const day = parseInt(dayText.match(/\d+/)[0]);
+                    item.style.display = day < currentDay ? "flex" : "none";
+                  });
+                } else {
+                  // Future months - hide
+                  card.style.display = "none";
+                }
+                break;
+            }
+
+            // Hide empty month cards
+            if (card.style.display === "block") {
+              const visibleItems = Array.from(birthdayItems).filter(item => 
+                item.style.display === "flex"
+              ).length;
+              if (visibleItems === 0) {
+                card.style.display = "none";
+              }
             }
           });
         });
@@ -1743,197 +1806,6 @@ The Imajica Team</textarea>
 
   <!-- View All Bookings Modal -->
   <div class="modal fade" id="viewAllBookingsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content">
-        <div class="modal-header bg-primary bg-opacity-10">
-          <h5 class="modal-title">
-            <i class="ti tabler-calendar me-2 text-primary"></i>
-            All Bookings
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Filter and Search Tools -->
-          <div class="row g-3 mb-4">
-            <div class="col-md-6 col-lg-3">
-              <div class="input-group">
-                <!-- <span class="input-group-text"><i class="ti tabler-search"></i></span>
-                <input type="text" class="form-control" id="searchBookings" placeholder="Search bookings..." /> -->
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-              <select class="form-select" id="statusFilter">
-                <option value="all">All Status</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
-            </div>
-            <div class="col-md-6 col-lg-3">
-              <input type="date" class="form-control" id="dateFilter" />
-            </div>
-            <div class="col-md-6 col-lg-3">
-              <button class="btn btn-primary w-100" id="exportBookings">
-                <i class="ti tabler-download me-1"></i>Export
-              </button>
-            </div>
-          </div>
-
-          <!-- Bookings Table -->
-          <div class="table-responsive">
-            <table class="table table-hover booking-table">
-              <thead class="table-light">
-                <tr>
-                  <th>Booking ID</th>
-                  <th>Client</th>
-                  <th>Service</th>
-                  <th>Date & Time</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-    @foreach($bookings as $booking)
-    <tr>
-        <td># {{ $booking->booking_id }}</td>
-        <td>
-            @if($booking->patient)
-                {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
-            @else
-                <span class="text-muted">No patient data</span>
-            @endif
-        </td>
-        <td>
-            @if($booking->service)
-                {{ $booking->service->service_name }}
-            @else
-                <span class="text-muted">No service data</span>
-            @endif
-        </td>
-        <td>{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} at {{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</td>
-        <td>
-            @if($booking->service)
-                ₱{{ number_format($booking->service->service_cost, 2) }}
-            @else
-                <span class="text-muted">N/A</span>
-            @endif
-        </td>
-        <td>
-            <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed'  ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger')  }}">
-                {{ ucfirst($booking->status) }}
-            </span>
-        </td>
-        <td>
-            <div class="dropdown">
-                <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                    <i class="ti tabler-dots-vertical"></i>
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="dropdown-item" href="#"><i class="ti tabler-edit me-1"></i>Edit</a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#"><i class="ti tabler-calendar me-1"></i>Reschedule</a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#"><i class="ti tabler-trash me-1"></i>Cancel</a>
-                    </li>
-                </ul>
-            </div>
-        </td>
-    </tr>
-    @endforeach
-</tbody>
-            </table>
-          </div>
-
-          <!-- Pagination -->
-          <div class="d-flex justify-content-between align-items-center mt-4">
-            <div class="text-muted">Showing 1 to 10 of 50 entries</div>
-            <nav aria-label="Page navigation">
-              <ul class="pagination mb-0">
-                <li class="page-item prev">
-                  <a class="page-link" href="#"><i class="ti tabler-chevron-left"></i></a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item next">
-                  <a class="page-link" href="#"><i class="ti tabler-chevron-right"></i></a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add this CSS -->
-  <style>
-    /* Modal styles */
-    .modal-xl {
-      max-width: 1200px;
-    }
-
-    /* Table styles */
-    .booking-table th {
-      white-space: nowrap;
-    }
-
-    .booking-row {
-      transition: all 0.3s ease;
-    }
-
-    .booking-row:hover {
-      background-color: rgba(105, 108, 255, 0.04);
-      transform: translateX(5px);
-    }
-
-    /* Form control focus states */
-    .form-control:focus,
-    .form-select:focus {
-      border-color: #696cff;
-      box-shadow: 0 0 0 0.25rem rgba(105, 108, 255, 0.1);
-    }
-
-    /* Pagination styles */
-    .pagination .page-link {
-      color: #696cff;
-    }
-
-    .pagination .active .page-link {
-      background-color: #696cff;
-      border-color: #696cff;
-      color: #fff;
-    }
-
-    /* Badge hover effect */
-    .badge {
-      transition: all 0.3s ease;
-    }
-
-    .badge:hover {
-      transform: scale(1.1);
-    }
-  </style>
-
-  <!-- Add this JavaScript -->
-  {{-- <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Search functionality
-      const searchInput = document.getElementById("searchBookings");
-      searchInput.addEventListener("input", function (e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const rows = document.querySelectorAll(".booking-table tbody tr");
-
-        rows.forEach((row) => {
-          const text = row.textContent.toLowerCase();
-          row.style.display = text.includes(searchTerm) ? "" : "none";
-        });
-      });
 
       // Status filter
       const statusFilter = document.getElementById("statusFilter");
