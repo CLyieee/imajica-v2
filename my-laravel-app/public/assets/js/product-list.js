@@ -60,7 +60,7 @@ t&&new DataTable(t,{
             <div class="avatar-wrapper">
               <div class="avatar avatar me-2 me-sm-4 rounded-2 bg-label-secondary">
                 ${n.product_image ? 
-                  `<img src="/storage/products/${n.product_image}" class="rounded">` :
+                  `<img src="/${n.product_image}" class="rounded">` :
                   `<span class="avatar-initial rounded-2 bg-label-${['success','danger','warning','info','dark','primary','secondary'][Math.floor(6*Math.random())]}">${(n.name.match(/\b\w/g)||[]).slice(0,2).join("").toUpperCase()}</span>`
                 }
               </div>

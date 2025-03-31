@@ -16,12 +16,12 @@ document.addEventListener("DOMContentLoaded",function(e){var t,a,r=document.quer
         <div class="d-flex justify-content-start align-items-center text-nowrap">
           <div class="avatar-wrapper">
             <div class="avatar avatar-sm me-3">${o=a?`
-          <img src="${assetsPath}img/products/${a}" lass="rounded-2">
+          <img src="${assetsPath}img/products}" lass="rounded-2">
         `:`<span class="avatar-initial rounded-2 bg-label-${["success","danger","warning","info","dark","primary","secondary"][Math.floor(6*Math.random())]}">${(s.match(/\b\w/g)||[]).slice(0,2).join("").toUpperCase()}</span>`}</div>
           </div>
           <div class="d-flex flex-column">
-            <h6 class="text-body mb-0">${s}</h6>
-            <small>${n}</small>
+            <h6 class="text-body mb-0"></h6>
+            <small></small>
           </div>
         </div>`}},{targets:3,searchable:!1,orderable:!1,render:function(e,t,a,r){return"<span>$"+a.price+"</span>"}},{targets:4,searchable:!1,orderable:!1,render:function(e,t,a,r){return'<span class="text-body">'+a.qty+"</span>"}},{targets:5,searchable:!1,orderable:!1,render:function(e,t,a,r){return'<span class="text-body">'+a.qty*a.price+"</span>"}}],order:[2,""],layout:{topStart:{rowClass:"row card-header border-bottom mx-0 px-3",features:[t]},topEnd:{features:[a]},bottomStart:{rowClass:"mt-0",features:[]},bottomEnd:{}},responsive:{details:{display:DataTable.Responsive.display.modal({header:function(e){return"Details of "+e.data().product_name}}),type:"column",renderer:function(e,t,a){var r,s,n,a=a.map(function(e){return""!==e.title?`<tr data-dt-row="${e.rowIndex}" data-dt-column="${e.columnIndex}">
             <td>${e.title}:</td>

@@ -159,163 +159,7 @@
 
 <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
   
-    <!-- Search -->
-    <div class="navbar-nav align-items-center">
-      <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-        <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
-          <span class="d-inline-block text-body-secondary fw-normal" id="autocomplete"></span>
-        </a>
-      </div>
-    </div>
 
-    <!-- /Search -->
-  
-  
-
-  
-
-  <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-    
-
-      
-      <li class="nav-item dropdown-language dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown">
-          <i class="icon-base ti tabler-language icon-22px text-heading"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
-              <span>English</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="fr" data-text-direction="ltr">
-              <span>French</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="ar" data-text-direction="rtl">
-              <span>Arabic</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="de" data-text-direction="ltr">
-              <span>German</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!--/ Language -->
-
-      
-        <!-- Style Switcher -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" id="nav-theme" href="javascript:void(0);" data-bs-toggle="dropdown">
-            <i class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"></i>
-            <span class="d-none ms-2" id="nav-theme-text">Toggle theme</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-theme-text">
-            <li>
-              <button type="button" class="dropdown-item align-items-center active" data-bs-theme-value="light" aria-pressed="false">
-                <span><i class="icon-base ti tabler-sun icon-22px me-3" data-icon="sun"></i>Light</span>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="dark" aria-pressed="true">
-                <span><i class="icon-base ti tabler-moon-stars icon-22px me-3" data-icon="moon-stars"></i>Dark</span>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="system" aria-pressed="false">
-                <span><i class="icon-base ti tabler-device-desktop-analytics icon-22px me-3" data-icon="device-desktop-analytics"></i>System</span>
-              </button>
-            </li>
-          </ul>
-        </li>
-        <!-- / Style Switcher-->
-      
-
-      <!-- Quick links  -->
-      <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-          <i class="icon-base ti tabler-layout-grid-add icon-22px text-heading"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-end p-0">
-          <div class="dropdown-menu-header border-bottom">
-            <div class="dropdown-header d-flex align-items-center py-3">
-              <h6 class="mb-0 me-auto">Shortcuts</h6>
-              <a href="javascript:void(0)" class="dropdown-shortcuts-add py-2 btn btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Add shortcuts"><i class="icon-base ti tabler-plus icon-20px text-heading"></i></a>
-            </div>
-          </div>
-          <div class="dropdown-shortcuts-list scrollable-container">
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-calendar icon-26px text-heading"></i>
-                </span>
-                <a href="app-calendar.html" class="stretched-link">Calendar</a>
-                <small>Appointments</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-file-dollar icon-26px text-heading"></i>
-                </span>
-                <a href="invoice-list.html" class="stretched-link">Invoice App</a>
-                <small>Manage Accounts</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-user icon-26px text-heading"></i>
-                </span>
-                <a href="app-user-list.html" class="stretched-link">User App</a>
-                <small>Manage Users</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-users icon-26px text-heading"></i>
-                </span>
-                <a href="app-access-roles.html" class="stretched-link">Role Management</a>
-                <small>Permission</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-device-desktop-analytics icon-26px text-heading"></i>
-                </span>
-                <a href="index.html" class="stretched-link">Dashboard</a>
-                <small>User Dashboard</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-settings icon-26px text-heading"></i>
-                </span>
-                <a href="pages-account-settings-account.html" class="stretched-link">Setting</a>
-                <small>Account Settings</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-help-circle icon-26px text-heading"></i>
-                </span>
-                <a href="pages-faq.html" class="stretched-link">FAQs</a>
-                <small>FAQs & Articles</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-square icon-26px text-heading"></i>
-                </span>
-                <a href="modal-examples.html" class="stretched-link">Modals</a>
-                <small>Useful Popups</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      <!-- Quick links -->
 
       <!-- Notification -->
       <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
@@ -1038,111 +882,103 @@
     
 
     <!-- Page JS -->
-    <script src="../../assets/js/order-details.js"></script>
-  <script src="../../assets/js/modal-edit-user.js"></script>
-  <script src="../../assets/js/modal-add-new-address.js"></script>
-  <script src="../../assets/order-details.json"></script>
-
     <script>
       $(document).ready(function() {
-        // Get order details from session storage
-        const orderDetails = JSON.parse(sessionStorage.getItem('orderDetails') || '{}');
-        console.log('Order Details:', orderDetails);
-        
-        // Update order header information
-        $('#orderNumber').text(orderDetails.number || 'N/A');
-        $('#orderDate').text(orderDetails.date || 'N/A');
-        $('#orderStatus').text(orderDetails.status || 'N/A')
-        $('#orderPayment').text(orderDetails.payment || 'N/A')
-          .addClass(getStatusClass(orderDetails.status));
-
-        // Update customer details
-        if (orderDetails.customer) {
-          $('.card-body h6.mb-0').text(orderDetails.customer.name || 'N/A');
-          $('p.mb-1').eq(0).text(`Email: ${orderDetails.customer.email || 'N/A'}`);
-          $('p.mb-0').eq(0).text(`Payment Method: ${orderDetails.payment || 'N/A'}`);
+        function getStatusClass(status) {
+            const statusClasses = {
+                'Ordered': 'bg-label-warning',
+                'Delivered': 'bg-label-success', 
+                'Out for Delivery': 'bg-label-primary',
+                'Ready to Pickup': 'bg-label-info'
+            };
+            return statusClasses[status] || 'bg-label-secondary';
         }
-        
-        // Initialize DataTable with order items
-        const table = $('.table').DataTable({
-          data: orderDetails.items || [],
-          columns: [
-            { data: null, defaultContent: '' },
-            { data: 'item_name' },
-            { 
-              data: 'unit_price',
-              render: function(data) {
-                return `$${parseFloat(data).toFixed(2)}`;
-              }
-            },
-            { data: 'quantity' },
-            { 
-              data: 'total',
-              render: function(data) {
-                return `$${parseFloat(data).toFixed(2)}`;
-              }
-            }
-          ],
-          pageLength: 7,
-          dom: '<"row mx-2"<"col-md-2"<"me-3"l>><"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"fB>>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-          language: {
-            sLengthMenu: '_MENU_',
-            search: '',
-            searchPlaceholder: 'Search Order Items'
-          },
-          buttons: [
-            {
-              extend: 'collection',
-              className: 'btn btn-label-secondary dropdown-toggle mx-3',
-              text: '<i class="ti tabler-screen-share me-1 ti-xs"></i>Export',
-              buttons: [
-                {
-                  extend: 'print',
-                  text: '<i class="ti tabler-printer me-2"></i>Print',
-                  className: 'dropdown-item'
-                },
-                {
-                  extend: 'csv',
-                  text: '<i class="ti tabler-file-text me-2"></i>Csv',
-                  className: 'dropdown-item'
-                },
-                {
-                  extend: 'excel',
-                  text: '<i class="ti tabler-file-spreadsheet me-2"></i>Excel',
-                  className: 'dropdown-item'
-                },
-                {
-                  extend: 'pdf',
-                  text: '<i class="ti tabler-file-type-pdf me-2"></i>Pdf',
-                  className: 'dropdown-item'
-                },
-                {
-                  extend: 'copy',
-                  text: '<i class="ti tabler-copy me-2"></i>Copy',
-                  className: 'dropdown-item'
+
+        const orderId = window.location.pathname.split('/').pop();
+
+        $.ajax({
+            url: `/order/order-details/${orderId}`,
+            method: 'GET',
+            success: function(orderDetails) {
+                console.log('Order Details:', orderDetails);
+                
+                // Update order header information
+                $('#orderNumber').text(orderDetails.number || 'N/A');
+                $('#orderDate').text(orderDetails.date || 'N/A');
+                $('#orderStatus').text(orderDetails.status || 'N/A')
+                    .addClass(getStatusClass(orderDetails.status));
+
+                // Update customer details
+                if (orderDetails.customer) {
+                    $('.card-body h6.mb-0').first().text(orderDetails.customer.name || 'N/A');
+                    $('p.mb-1').first().text(`Email: ${orderDetails.customer.email || 'N/A'}`);
+                    $('#orderPayment').text(orderDetails.payment || 'N/A');
                 }
-              ]
+
+                // Initialize DataTable
+                const table = $('.table').DataTable({
+                    data: orderDetails.items || [],
+                    columns: [
+                        { data: null, defaultContent: '' },
+                        { 
+                            data: null,
+                            render: function(data, type, row) {
+                                const image = row.product_image ? 
+                                    `<img src="/uploads/products/${row.product_image}" class="rounded">` :
+                                    `<span class="avatar-initial rounded-2 bg-label-${getRandomColor()}"></span>`;
+                                
+                                return `
+                                    <div class="d-flex justify-content-start align-items-center product-name">
+                                        <div class="avatar-wrapper">
+                                            <div class="avatar avatar-sm me-2 me-sm-4 rounded-2 bg-label-secondary">
+                                                ${image}
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <h6 class="text-nowrap mb-0">${row.item_name}</h6>
+                                            <small class="text-truncate d-none d-sm-block">${row.description || ''}</small>
+                                        </div>
+                                    </div>`;
+                            }
+                        },
+                        { 
+                            data: 'unit_price',
+                            render: function(data) {
+                                return `$${parseFloat(data).toFixed(2)}`;
+                            }
+                        },
+                        { data: 'quantity' },
+                        { 
+                            data: 'total',
+                            render: function(data) {
+                                return `$${parseFloat(data).toFixed(2)}`;
+                            }
+                        }
+                    ],
+                    // ... rest of your DataTable configuration ...
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching order details:', error);
+                console.log('Response:', xhr.responseText); // Add this for debugging
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load order details: ' + (xhr.responseJSON?.message || error)
+                });
             }
-          ],
-          responsive: true,
-          order: [[1, 'desc']]
         });
 
-        // Helper function to get status badge class
-        function getStatusClass(status) {
-          switch(status?.toLowerCase()) {
-            case 'completed': return 'bg-label-success';
-            case 'pending': return 'bg-label-warning';
-            case 'cancelled': return 'bg-label-danger';
-            default: return 'bg-label-secondary';
-          }
+        function getRandomColor() {
+            const colors = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
+            return colors[Math.floor(Math.random() * colors.length)];
         }
 
-        // Clear session storage after loading
-        sessionStorage.removeItem('orderDetails');
-      });
-    
+        // ... rest of your existing code ...
+    });
     </script>
+  <script src="../../assets/js/modal-edit-user.js"></script>
+  <script src="../../assets/js/modal-add-new-address.js"></script>
      
   </body>
 
