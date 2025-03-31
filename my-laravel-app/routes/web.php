@@ -14,7 +14,7 @@ use App\Http\Controllers\branchController;
 use App\Http\Controllers\supplierController;
 use App\Http\Controllers\serviceController;
 use App\Http\Controllers\tierController;
-use App\Http\Controllers\bookingController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\orderController;
 
 // Route::get('/', function () {
@@ -100,7 +100,7 @@ Route::get('/new-user', [DashboardController::class, 'new_user'])->name('page.ne
 
 Route::get('/user-list', [DashboardController::class, 'user_list'])->name('page.user-list');
 
-Route::get('/booking', [DashboardController::class, 'booking'])->name('page.booking');
+Route::get('/booking', [BookingController::class, 'index'])->name('page.booking');
 
 
 Route::get('/customer-report', [DashboardController::class, 'customer_report'])->name('page.customer-report');
@@ -166,8 +166,8 @@ Route::put('/tier/update', [App\Http\Controllers\tierController::class, 'update'
 Route::delete('/tier/{id}', [App\Http\Controllers\tierController::class, 'delete'])->name('tier.delete');
 
 //Booking Route
-Route::post('/booking/create', [App\Http\Controllers\bookingController::class, 'create'])->name('booking.create');
-Route::get('/booking/all', [App\Http\Controllers\bookingController::class, 'get_bookings'])->name('get.bookings');
-Route::put('/booking/update', [App\Http\Controllers\bookingController::class, 'update'])->name('booking.update');
-Route::delete('/booking/delete', [App\Http\Controllers\bookingController::class, 'delete'])->name('booking.delete');
+Route::post('/booking/create', [BookingController::class, 'create'])->name('booking.create');
+Route::get('/booking/all', [BookingController::class, 'get_bookings'])->name('get.bookings');
+Route::put('/booking/update', [BookingController::class, 'update'])->name('booking.update');
+Route::delete('/booking/delete', [BookingController::class, 'delete'])->name('booking.delete');
 
