@@ -369,14 +369,14 @@
                   <table class="table table-striped">
                     <thead class="table-light">
                       <tr>
-                        <th>Profile</th>
-                        <th>Staff Name</th>
-                        <th>Email</th>
-                        <th>Position</th>
-                        <th>Department</th>
-                        <th>Contact Number</th>
-                        <th>Branch</th>
-                        <th>Actions</th>
+                        <th class="text-center">Profile</th>
+                        <th class="text-center">Staff Name</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Position</th>
+                        <th class="text-center">Department</th>
+                        <th class="text-center">Contact Number</th>
+                        <th class="text-center">Branch</th>
+                        <th class="text-center">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -425,18 +425,18 @@
                               @if($staff->image_path) 
                                 data-profile-image="{{ asset('storage/'.$staff->image_path) }}" 
                               @endif>
-                              View
+                              <i class="ti tabler-eye me-1"></i> View
                             </button>
                             <button type="button" class="btn btn-sm btn-info edit-staff"
                               data-bs-toggle="modal"
                               data-bs-target="#editStaffModal"
                               data-id="{{ $staff->id }}">
-                              Edit
+                              <i class="ti tabler-edit me-1"></i> Edit
                             </button>
                             <button type="button" class="btn btn-sm btn-danger delete-staff" 
                               data-id="{{ $staff->id }}"
                               data-name="{{ $staff->firstname }} {{ $staff->lastname }}">
-                              Delete
+                              <i class="ti tabler-trash me-1"></i> Delete
                             </button>
                           </div>
                         </td>

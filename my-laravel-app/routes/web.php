@@ -15,7 +15,7 @@ use App\Http\Controllers\supplierController;
 use App\Http\Controllers\serviceController;
 use App\Http\Controllers\tierController;
 use App\Http\Controllers\bookingController;
-
+use App\Http\Controllers\orderController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -56,7 +56,10 @@ Route::get('/void-logs', [DashboardController::class, 'void_logs'])->name('page.
 
 Route::get('/product-list', [DashboardController::class, 'product_list'])->name('page.product-list');
 
+//ORDER ROUTES
 Route::get('/order-list', [DashboardController::class, 'order_list'])->name('page.order-list');
+Route::get('/add-order', [DashboardController::class, 'add_order'])->name('page.add_order');
+Route::post('/order/create', [orderController::class, 'create'])->name('order.create');
 
 
 Route::get('/order-details', [DashboardController::class, 'order_details'])->name('page.order-details');

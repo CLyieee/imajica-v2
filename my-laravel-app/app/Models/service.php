@@ -10,12 +10,13 @@ class service extends Model
     use HasFactory;
 
     protected $table = 'services';
-    public $timestamps = false;
+
+    public $timestamps = true; // Add this line
+
     public $incrementing = false;
     public $primaryKey = 'service_id';
 
 
-    
     protected $fillable = [
         'service_name',
         'branch_code',

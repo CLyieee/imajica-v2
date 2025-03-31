@@ -424,18 +424,18 @@
                               data-medical-concerns="{{ $patient->medical_concerns ?? '' }}"
                               data-medications="{{ $patient->current_medications ?? '' }}"
                               data-admin-notes="{{ $patient->note_from_admin ?? '' }}">
-                              View
+                              <i class="ti tabler-eye me-1"></i> View
                             </button>
                             <button type="button" class="btn btn-sm btn-info edit-patient"
                               data-bs-toggle="modal"
                               data-bs-target="#editPatientModal"
                               data-id="{{ $patient->patient_id }}">
-                              Edit
+                              <i class="ti tabler-edit me-1"></i> Edit
                             </button>
                             <button type="button" class="btn btn-sm btn-danger delete-patient" 
                               data-id="{{ $patient->patient_id }}"
                               data-name="{{ $patient->firstname }} {{ $patient->lastname }}">
-                              Delete
+                              <i class="ti tabler-trash me-1"></i> Delete
                             </button>
                           </div>
                         </td>
