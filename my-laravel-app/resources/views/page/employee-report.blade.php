@@ -322,11 +322,11 @@
 
                         <div class="dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortByBtn" data-bs-toggle="dropdown">
-                                Sort By
+                                Sort By: Default
                             </button>
                             <div class="dropdown-menu p-3" style="min-width: 200px;">
                                 <select class="form-select" id="sortBy">
-                                    <option value="">Select Sort Option</option>
+                                    <option value="">Default</option>
                                     <option value="totalSales">Total Sales (High to Low)</option>
                                     <option value="serviceSales">Service Sales (High to Low)</option>
                                     <option value="productSales">Product Sales (High to Low)</option>
@@ -341,9 +341,11 @@
                             </button>
                             <div class="dropdown-menu p-3" style="min-width: 250px;">
                                 <select class="form-select" id="dateFilter">
-                                    <option value="">Select Date Range</option>
+                                    <option value="">All Time</option>
                                     <option value="today">Today</option>
-                                    <option value="thisWeek">This Week</option>
+                                    <option value="yesterday">Yesterday</option>
+                                    <option value="last7days">Last 7 Days</option>
+                                    <option value="last30days">Last 30 Days</option>
                                     <option value="thisMonth">This Month</option>
                                     <option value="lastMonth">Last Month</option>
                                     <option value="thisYear">This Year</option>
@@ -351,7 +353,7 @@
                             </div>
                         </div>
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #0066ff;">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #18332a;">
                                 Export
                             </button>
                             <ul class="dropdown-menu">
@@ -364,9 +366,11 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="employeeReport">
-                    <tr style="background-color: #1e4d2b;">
+                        <thead>
+                            <tr style="background-color: #1e4d2b;">
                                 <th class="text-white">Rank</th>
                                 <th class="text-white">Employee Name</th>
+                                <th class="text-white">Date</th>
                                 <th class="text-white">No. of Service Sales</th>
                                 <th class="text-white">No. of Product Sales</th>
                                 <th class="text-white">No. of Clients</th>
@@ -380,6 +384,7 @@
                             <tr>
                                 <td>1</td>
                                 <td>Maria Garcia</td>
+                                <td>2023-11-15</td>
                                 <td>45</td>
                                 <td>78</td>
                                 <td>120</td>
@@ -387,14 +392,13 @@
                                 <td>₱200,000</td>
                                 <td>₱450,000</td>
                                 <td>
-
                                     <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#mariaDetails">View</button>
-
                                 </td>
                             </tr>
                             <tr>
                                 <td>2</td>
                                 <td>John Davis</td>
+                                <td>2023-11-14</td>
                                 <td>42</td>
                                 <td>65</td>
                                 <td>105</td>
@@ -410,6 +414,7 @@
                             <tr>
                                 <td>3</td>
                                 <td>Sarah Wilson</td>
+                                <td>2023-11-13</td>
                                 <td>38</td>
                                 <td>58</td>
                                 <td>95</td>
@@ -435,15 +440,15 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #1e4d2b;">
-                <h5 class="modal-title text-white">Employee Details</h5>
+                <h4 class="modal-title text-white">Employee Details</h4>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row g-3">
                     <!-- Employee Info Card -->
                     <div class="col-md-6 col-lg-4">
-                        <div class="card h-100">
-                            <div class="card-header d-flex align-items-center justify-content-between">
+                        <div class="card h-100" style="background-color: #f8f9fa;">
+                            <div class="card-header d-flex align-items-center justify-content-between" style="background-color: #e9ecef;">
                                 <h5 class="card-title mb-0">Employee Information</h5>
                                 <small class="text-muted">ID: #EMP001</small>
                             </div>
@@ -484,8 +489,8 @@
 
                     <!-- Recent Transactions -->
                     <div class="col-md-6 col-lg-8">
-                        <div class="card h-100">
-                            <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card h-100" style="background-color: #f8f9fa;">
+                            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #e9ecef;">
                                 <h5 class="card-title mb-0">Recent Transactions</h5>
                                 <div class="btn-group">
                                 </div>
@@ -512,7 +517,30 @@
                                                 <td><span class="badge bg-success">Completed</span></td>
                                                 <td>₱5,500</td>
                                             </tr>
-                                            <!-- Add more transaction rows as needed -->
+                                            <tr>
+                                                <td>#TRX006</td>
+                                                <td>2023-11-14</td>
+                                                <td>Hair Treatment</td>
+                                                <td>Emma Thompson</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱4,800</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#TRX007</td>
+                                                <td>2023-11-13</td>
+                                                <td>Hair Styling</td>
+                                                <td>Sophia Lee</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱3,500</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#TRX008</td>
+                                                <td>2023-11-12</td>
+                                                <td>Hair Coloring</td>
+                                                <td>Olivia Wilson</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱5,200</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -522,54 +550,53 @@
 
                     <!-- Sales Performance Chart -->
                     <div class="col-md-6">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title mb-0">Monthly Sales Performance</h5>
-        </div>
-        <div class="card-body">
-            <canvas id="employeeChart" height="300"></canvas>
-        </div>
-    </div>
-</div>
+                        <div class="card" style="background-color: #f8f9fa; max-width: 500px;">
+                            <div class="card-header" style="background-color: #e9ecef;">
+                                <h5 class="card-title mb-0">Monthly Sales Performance</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="employeeChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
 
-<!-- Include Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var ctx = document.getElementById("employeeChart").getContext("2d");
-        var employeeChart = new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                datasets: [{
-                    label: "Sales ($)",
-                    data: [1200, 1500, 1100, 1800, 1700, 1900],
-                    backgroundColor: "rgba(54, 162, 235, 0.6)",
-                    borderColor: "rgba(54, 162, 235, 1)",
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    });
-</script>
-
+                    <!-- Include Chart.js -->
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            var ctx = document.getElementById("employeeChart").getContext("2d");
+                            var employeeChart = new Chart(ctx, {
+                                type: "bar",
+                                data: {
+                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                                    datasets: [{
+                                        label: "Sales ($)",
+                                        data: [1200, 1500, 1100, 1800, 1700, 1900],
+                                        backgroundColor: "rgba(75, 192, 192, 0.2)",
+                                        borderColor: "rgba(54, 162, 235, 1)",
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    </script>
 
                     <!-- Service Distribution -->
                     <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
+                        <div class="card" style="background-color: #f8f9fa;">
+                            <div class="card-header" style="background-color: #e9ecef;">
                                 <h5 class="card-title mb-0">Service Distribution</h5>
                             </div>
                             <div class="card-body">
-                                <div class="d-flex flex-column gap-3">
+                                <div class="d-flex flex-column gap-3" style="margin-top: 20px;">
                                     <div class="service-item">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Styling</span>
@@ -579,7 +606,7 @@
                                             <div class="progress-bar" role="progressbar" style="width: 45%"></div>
                                         </div>
                                     </div>
-                                    <div class="service-item">
+                                    <div class="service-item" style="margin-top: 10px;">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Treatment</span>
                                             <span class="badge bg-info">30%</</span>
@@ -588,7 +615,7 @@
                                             <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
                                         </div>
                                     </div>
-                                    <div class="service-item">
+                                    <div class="service-item" style="margin-top: 10px;">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Coloring</span>
                                             <span class="badge bg-success">25%</</span>
@@ -601,10 +628,11 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+            <div class="modal-footer bg-light" style="padding: 1rem 1.5rem;">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -615,15 +643,15 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #1e4d2b;">
-                <h5 class="modal-title text-white">Employee Details</h5>
+                <h4 class="modal-title text-white">Employee Details</h4>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row g-3">
                     <!-- Employee Info Card -->
                     <div class="col-md-6 col-lg-4">
-                        <div class="card h-100">
-                            <div class="card-header d-flex align-items-center justify-content-between">
+                        <div class="card h-100" style="background-color: #f8f9fa;">
+                            <div class="card-header d-flex align-items-center justify-content-between" style="background-color: #e9ecef;">
                                 <h5 class="card-title mb-0">Employee Information</h5>
                                 <small class="text-muted">ID: #EMP002</small>
                             </div>
@@ -664,8 +692,8 @@
 
                     <!-- Recent Transactions -->
                     <div class="col-md-6 col-lg-8">
-                        <div class="card h-100">
-                            <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card h-100" style="background-color: #f8f9fa;">
+                            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #e9ecef;">
                                 <h5 class="card-title mb-0">Recent Transactions</h5>
                                 <div class="btn-group">
                                 </div>
@@ -692,6 +720,30 @@
                                                 <td><span class="badge bg-success">Completed</span></td>
                                                 <td>₱4,800</td>
                                             </tr>
+                                            <tr>
+                                                <td>#TRX009</td>
+                                                <td>2023-11-15</td>
+                                                <td>Hair Coloring</td>
+                                                <td>David Miller</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱5,300</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#TRX010</td>
+                                                <td>2023-11-14</td>
+                                                <td>Hair Styling</td>
+                                                <td>James Wilson</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱3,800</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#TRX011</td>
+                                                <td>2023-11-13</td>
+                                                <td>Hair Treatment</td>
+                                                <td>Daniel Lee</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱4,600</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -701,12 +753,12 @@
 
                     <!-- Sales Performance Chart -->
                     <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
+                        <div class="card" style="background-color: #f8f9fa; max-width: 500px;">
+                            <div class="card-header" style="background-color: #e9ecef;">
                                 <h5 class="card-title mb-0">Monthly Sales Performance</h5>
                             </div>
                             <div class="card-body">
-                                <canvas id="johnDavisChart" height="300"></canvas>
+                                <canvas id="johnDavisChart" height="200"></canvas>
                             </div>
                         </div>
                     </div>
@@ -721,8 +773,8 @@
                                     datasets: [{
                                         label: "Monthly Sales (₱)",
                                         data: [35000, 42000, 38000, 45000, 40000, 43000, 41000, 44000, 38000, 42000, 45000, 47000],
-                                        backgroundColor: "rgba(54, 162, 235, 0.6)",
-                                        borderColor: "rgba(54, 162, 235, 1)",
+                                        backgroundColor: "rgba(75, 192, 192, 0.2)",
+                                        borderColor: "rgba(75, 192, 192, 1)",
                                         borderWidth: 1
                                     }]
                                 },
@@ -754,12 +806,12 @@
 
                     <!-- Service Distribution -->
                     <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
+                        <div class="card" style="background-color: #f8f9fa;">
+                            <div class="card-header" style="background-color: #e9ecef;">
                                 <h5 class="card-title mb-0">Service Distribution</h5>
                             </div>
                             <div class="card-body">
-                                <div class="d-flex flex-column gap-3">
+                                <div class="d-flex flex-column gap-3" style="margin-top: 20px;">
                                     <div class="service-item">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Styling</span>
@@ -769,7 +821,7 @@
                                             <div class="progress-bar" role="progressbar" style="width: 45%"></div>
                                         </div>
                                     </div>
-                                    <div class="service-item">
+                                    <div class="service-item" style="margin-top: 10px;">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Treatment</span>
                                             <span class="badge bg-info">30%</</span>
@@ -778,7 +830,7 @@
                                             <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
                                         </div>
                                     </div>
-                                    <div class="service-item">
+                                    <div class="service-item" style="margin-top: 10px;">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Coloring</span>
                                             <span class="badge bg-success">25%</</span>
@@ -791,6 +843,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -812,8 +865,8 @@
                 <div class="row g-3">
                     <!-- Employee Info Card -->
                     <div class="col-md-6 col-lg-4">
-                        <div class="card h-100">
-                            <div class="card-header d-flex align-items-center justify-content-between">
+                        <div class="card h-100" style="background-color: #f8f9fa;">
+                            <div class="card-header d-flex align-items-center justify-content-between" style="background-color: #e9ecef;">
                                 <h5 class="card-title mb-0">Employee Information</h5>
                                 <small class="text-muted">ID: #EMP003</small>
                             </div>
@@ -854,8 +907,8 @@
 
                     <!-- Recent Transactions for Sarah Wilson -->
                     <div class="col-md-6 col-lg-8">
-                        <div class="card h-100">
-                            <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card h-100" style="background-color: #f8f9fa;">
+                            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #e9ecef;">
                                 <h5 class="card-title mb-0">Recent Transactions</h5>
                                 <div class="btn-group">
                                 </div>
@@ -883,20 +936,28 @@
                                                 <td>₱4,800</td>
                                             </tr>
                                             <tr>
-                                                <td>#TRX004</td>
+                                                <td>#TRX012</td>
                                                 <td>2023-11-13</td>
-                                                <td>Hair Coloring</td>
-                                                <td>Jessica White</td>
+                                                <td>Hair Styling</td>
+                                                <td>Isabella White</td>
                                                 <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱5,200</td>
+                                                <td>₱3,900</td>
                                             </tr>
                                             <tr>
-                                                <td>#TRX005</td>
+                                                <td>#TRX013</td>
                                                 <td>2023-11-12</td>
-                                                <td>Hair Treatment</td>
-                                                <td>Linda Martin</td>
+                                                <td>Hair Coloring</td>
+                                                <td>Ava Brown</td>
                                                 <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱4,500</td>
+                                                <td>₱5,100</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#TRX014</td>
+                                                <td>2023-11-11</td>
+                                                <td>Hair Treatment</td>
+                                                <td>Mia Johnson</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱4,700</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -906,13 +967,13 @@
                     </div>
 
                     <!-- Sales Performance Chart -->
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
+                    <div class="col-md-5">
+                        <div class="card" style="background-color: #f8f9fa; max-width: 500px;">
+                            <div class="card-header" style="background-color: #e9ecef;">
                                 <h5 class="card-title mb-0">Monthly Sales Performance</h5>
                             </div>
                             <div class="card-body">
-                                <canvas id="sarahWilsonChart" height="300"></canvas>
+                                <canvas id="sarahWilsonChart" height="200"></canvas>
                             </div>
                         </div>
                     </div>
@@ -960,22 +1021,22 @@
 
                     <!-- Service Distribution -->
                     <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
+                        <div class="card" style="background-color: #f8f9fa;">
+                            <div class="card-header" style="background-color: #e9ecef;">
                                 <h5 class="card-title mb-0">Service Distribution</h5>
                             </div>
                             <div class="card-body">
-                                <div class="d-flex flex-column gap-3">
+                                <div class="d-flex flex-column gap-3" style="margin-top: 20px;">
                                     <div class="service-item">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Treatment</span>
-                                            <span class="badge bg-primary">50%</span>
+                                            <span class="badge bg-primary">50%</</span>
                                         </div>
                                         <div class="progress" style="height: 8px;">
                                             <div class="progress-bar" role="progressbar" style="width: 50%"></div>
                                         </div>
                                     </div>
-                                    <div class="service-item">
+                                    <div class="service-item" style="margin-top: 10px;">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Styling</span>
                                             <span class="badge bg-info">30%</</span>
@@ -984,7 +1045,7 @@
                                             <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
                                         </div>
                                     </div>
-                                    <div class="service-item">
+                                    <div class="service-item" style="margin-top: 10px;">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Coloring</span>
                                             <span class="badge bg-success">20%</</span>
@@ -1088,6 +1149,140 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dateFilter = document.getElementById('dateFilter');
+    const table = document.getElementById('employeeReport');
+    const tbody = table.getElementsByTagName('tbody')[0];
+    const rows = tbody.getElementsByTagName('tr');
+
+    dateFilter.addEventListener('change', function() {
+        const selectedFilter = this.value;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        Array.from(rows).forEach(row => {
+            const dateCell = row.getElementsByTagName('td')[2]; // Date is in the third column
+            if (!dateCell) return;
+
+            const rowDate = new Date(dateCell.textContent);
+            rowDate.setHours(0, 0, 0, 0);
+            let showRow = true;
+
+            switch(selectedFilter) {
+                case 'today':
+                    showRow = rowDate.getTime() === today.getTime();
+                    break;
+                case 'yesterday':
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    showRow = rowDate.getTime() === yesterday.getTime();
+                    break;
+                case 'last7days':
+                    const last7Days = new Date(today);
+                    last7Days.setDate(last7Days.getDate() - 7);
+                    showRow = rowDate >= last7Days;
+                    break;
+                case 'last30days':
+                    const last30Days = new Date(today);
+                    last30Days.setDate(last30Days.getDate() - 30);
+                    showRow = rowDate >= last30Days;
+                    break;
+                case 'thisMonth':
+                    showRow = rowDate.getMonth() === today.getMonth() && 
+                             rowDate.getFullYear() === today.getFullYear();
+                    break;
+                case 'lastMonth':
+                    const lastMonth = new Date(today);
+                    lastMonth.setMonth(lastMonth.getMonth() - 1);
+                    showRow = rowDate.getMonth() === lastMonth.getMonth() && 
+                             rowDate.getFullYear() === lastMonth.getFullYear();
+                    break;
+                case 'thisYear':
+                    showRow = rowDate.getFullYear() === today.getFullYear();
+                    break;
+                default:
+                    showRow = true;
+            }
+
+            row.style.display = showRow ? '' : 'none';
+        });
+
+        // Update rankings for visible rows
+        let rank = 1;
+        Array.from(rows).forEach(row => {
+            if (row.style.display !== 'none') {
+                row.getElementsByTagName('td')[0].textContent = rank++;
+            }
+        });
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sortBy = document.getElementById('sortBy');
+    const sortByBtn = document.getElementById('sortByBtn');
+    const table = document.getElementById('employeeReport');
+    const tbody = table.getElementsByTagName('tbody')[0];
+
+    sortBy.addEventListener('change', function() {
+        // Update button text to show selected option
+        const selectedOption = this.options[this.selectedIndex];
+        sortByBtn.textContent = 'Sort By: ' + selectedOption.text;
+        
+        let rows = Array.from(tbody.getElementsByTagName('tr'));
+        
+        rows.sort((a, b) => {
+            let aVal, bVal;
+            
+            switch(this.value) {
+                case 'totalSales':
+                    aVal = parseFloat(a.cells[8].textContent.replace('₱', '').replace(',', ''));
+                    bVal = parseFloat(b.cells[8].textContent.replace('₱', '').replace(',', ''));
+                    return bVal - aVal;
+                case 'serviceSales':
+                    aVal = parseFloat(a.cells[6].textContent.replace('₱', '').replace(',', ''));
+                    bVal = parseFloat(b.cells[6].textContent.replace('₱', '').replace(',', ''));
+                    return bVal - aVal;
+                case 'productSales':
+                    aVal = parseFloat(a.cells[7].textContent.replace('₱', '').replace(',', ''));
+                    bVal = parseFloat(b.cells[7].textContent.replace('₱', '').replace(',', ''));
+                    return bVal - aVal;
+                case 'clients':
+                    aVal = parseInt(a.cells[5].textContent);
+                    bVal = parseInt(b.cells[5].textContent);
+                    return bVal - aVal;
+                case 'name':
+                    aVal = a.cells[1].textContent;
+                    bVal = b.cells[1].textContent;
+                    return aVal.localeCompare(bVal);
+                default:
+                    aVal = parseInt(a.cells[0].textContent);
+                    bVal = parseInt(b.cells[0].textContent);
+                    return aVal - bVal;
+            }
+        });
+        
+        // Clear table and append sorted rows
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+        
+        // Reorder the rows and update ranks
+        rows.forEach((row, index) => {
+            tbody.appendChild(row);
+            row.cells[0].textContent = index + 1; // Update rank
+        });
+    });
+
+    // Set initial button text
+    if (sortBy.value) {
+        sortByBtn.textContent = 'Sort By: ' + sortBy.options[sortBy.selectedIndex].text;
+    }
+});
+</script>
 
 </script>
   </body>

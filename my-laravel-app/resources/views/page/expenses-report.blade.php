@@ -152,7 +152,7 @@
       }
 
       .card {
-        background: rgba(255, 255, 255, 0.8);
+        background: #24b364;
         backdrop-filter: blur(10px);
         padding: 20px;
         border-radius: 12px;
@@ -336,7 +336,7 @@
                 </div>
               </div>
               <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #0066ff;">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #18332a;">
                   Export
                 </button>
                 <ul class="dropdown-menu" style="min-width: 120px;">
@@ -465,7 +465,7 @@
                 <h6 class="card-title mb-0">Basic Information</h6>
                 <small class="text-muted">Invoice: #INV-2024-001</small>
               </div>
-              <div class="card-body d-flex flex-column gap-3">
+              <div class="card-body d-flex flex-column gap-4 pt-4">
                 <div><strong>Expense Name:</strong> Electricity Bill Payment</div>
                 <div><strong>Category:</strong> Utilities</div>
                 <div><strong>Amount:</strong> <span class="text-success">₱12,450.00</span></div>
@@ -539,7 +539,7 @@
           </div>
         </div>
       </div>
-      <div class="modal-footer bg-light">
+      <div class="modal-footer bg-light" style="padding: 1rem 1.5rem;">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
@@ -556,93 +556,85 @@
       // Search functionality
       document.getElementById('searchInput').addEventListener('keyup', function() {
         let searchValue = this.value.toLowerCase();
+        filterTable(searchValue, null);
+      });
+
+      function filterTable(searchValue, dateRange) {
         let tableRows = document.querySelectorAll('tbody tr');
         
         tableRows.forEach(row => {
-          let name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-          let email = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+          let showRow = true;
           
-          if (name.includes(searchValue) || email.includes(searchValue)) {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
+          // Text search filter
+          if (searchValue) {
+            let name = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            let category = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+            if (!name.includes(searchValue) && !category.includes(searchValue)) {
+              showRow = false;
+            }
           }
+          
+          // Date filter
+          if (dateRange && showRow) {
+            let dateCell = row.querySelector('td:nth-child(1)').textContent;
+            let rowDate = new Date(dateCell);
+            if (rowDate < dateRange.start || rowDate > dateRange.end) {
+              showRow = false;
+            }
+          }
+          
+          row.style.display = showRow ? '' : 'none';
         });
-      });
+      }
 
-      // Update the script section - remove calendar input related code
-      document.addEventListener('DOMContentLoaded', function() {
-          // Custom range toggle
-          document.getElementById('customRangeBtn').addEventListener('click', function(e) {
-              e.stopPropagation();
-              document.querySelector('.custom-range-inputs').classList.toggle('d-none');
-          });
-
-          document.querySelectorAll('[data-filter]').forEach(button => {
-              button.addEventListener('click', function(e) {
-                  if (this.getAttribute('data-filter') === 'custom') return;
-                  
-                  const filterType = this.getAttribute('data-filter');
-                  const now = new Date();
-                  let startDate, endDate;
-                  
-                  switch(filterType) {
-                      case 'tomorrow':
-                          startDate = endDate = new Date(now.setDate(now.getDate() + 1));
-                          break;
-                      case 'today':
-                          startDate = endDate = now;
-                          break;
-                      case 'yesterday':
-                          startDate = endDate = new Date(now.setDate(now.getDate() - 1));
-                          break;
-                      case 'last7days':
-                          endDate = new Date();
-                          startDate = new Date(now.setDate(now.getDate() - 7));
-                          break;
-                      case 'last30days':
-                          endDate = new Date();
-                          startDate = new Date(now.setDate(now.getDate() - 30));
-                          break;
-                      case 'thisMonth':
-                          startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                          endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-                          break;
-                      case 'lastMonth':
-                          startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                          endDate = new Date(now.getFullYear(), now.getMonth(), 0);
-                          break;
-                  }
-                  
-                  updateFilterText(startDate, endDate);
-              });
-          });
-
-          document.getElementById('applyCustomRange').addEventListener('click', function(e) {
-              e.stopPropagation();
-              const startDate = new Date(document.getElementById('dateFrom').value);
-              const endDate = new Date(document.getElementById('dateTo').value);
-              updateFilterText(startDate, endDate);
-          });
-
-          function updateFilterText(startDate, endDate) {
-              const formatDate = date => date.toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric'
-              });
-              
-              const filterText = startDate.getTime() === endDate.getTime() ? 
-                  formatDate(startDate) : 
-                  `${formatDate(startDate)} - ${formatDate(endDate)}`;
-                  
-              document.getElementById('selectedDateText').textContent = `: ${filterText}`;
-              
-              // Hide dropdown after selection
-              document.querySelector('.dropdown-menu').classList.remove('show');
-              document.querySelector('.custom-range-inputs').classList.add('d-none');
-          }
-      });
+      function applyDateFilter() {
+        const filterValue = document.getElementById('dateFilter').value;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        let startDate = new Date();
+        let endDate = new Date();
+        
+        switch(filterValue) {
+          case 'today':
+            startDate = today;
+            endDate = new Date(today);
+            break;
+          case 'yesterday':
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 1);
+            endDate = new Date(startDate);
+            break;
+          case 'last7':
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 6);
+            endDate = new Date(today);
+            break;
+          case 'last30':
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 29);
+            endDate = new Date(today);
+            break;
+          case 'thisMonth':
+            startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+            endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            break;
+          case 'lastMonth':
+            startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            endDate = new Date(today.getFullYear(), today.getMonth(), 0);
+            break;
+          case 'thisYear':
+            startDate = new Date(today.getFullYear(), 0, 1);
+            endDate = new Date(today.getFullYear(), 11, 31);
+            break;
+          default:
+            startDate = null;
+            endDate = null;
+        }
+        
+        const searchValue = document.getElementById('searchInput').value.toLowerCase();
+        filterTable(searchValue, startDate && endDate ? { start: startDate, end: endDate } : null);
+      }
 
 // Add event listeners to view buttons
 document.querySelectorAll('.btn-success').forEach(button => {
@@ -662,7 +654,9 @@ document.getElementById('expenseModal').addEventListener('shown.bs.modal', funct
       datasets: [{
         label: 'Monthly Expenses (₱)',
         data: [11200, 10800, 11500, 12100, 11900, 12450],
-        backgroundColor: '#0066ff',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1
       }]
     },
     options: {

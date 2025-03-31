@@ -350,7 +350,7 @@
                   </div>
                 </div>
                 <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #0066ff;">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #18332a;">
                                 Export
                             </button>
                   <ul class="dropdown-menu" style="min-width: 120px;">
@@ -363,35 +363,19 @@
             </div>
             <div class="table-responsive">
               <table class="table table-striped" id="customerSalesTable">
-                <thead class="table-light">
-                  <tr >
-                    <th >Rank</th>
-                    <th >Customer Name</th>
-                    <th>Contact Number</th>
-                    <th >Email</th>
-                    <th >Total Transactions</th>
-                    <th >Action</th>
+                <thead style="background-color: #134013;">
+                  <tr>
+                    <th style="color: white;">Rank</th>
+                    <th style="color: white;">Customer Name</th>
+                    <th style="color: white;">Contact Number</th>
+                    <th style="color: white;">Email</th>
+                    <th style="color: white;">Total Transactions</th>
+                    <th style="color: white;">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>1</td>
-                    <td>John Smith</td>
-                    <td>+1 234-567-8900</td>
-                    <td>john.smith@email.com</td>
-                    <td>₱12,345</td>
-                    <td>
-
-                      <button class="btn btn-sm btn-success view-customer" 
-                        data-name="John Smith"
-                        data-phone="+1 234-567-8900"
-                        data-email="john.smith@email.com"
-                        data-total="₱12,345">View</button>
-
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
                     <td>Sarah Johnson</td>
                     <td>+1 234-567-8901</td>
                     <td>sarah.j@email.com</td>
@@ -407,7 +391,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>3</td>
+                    <td>2</td>
                     <td>Mike Wilson</td>
                     <td>+1 234-567-8902</td>
                     <td>mike.w@email.com</td>
@@ -423,7 +407,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>4</td>
+                    <td>3</td>
                     <td>Emily Brown</td>
                     <td>+1 234-567-8903</td>
                     <td>emily.b@email.com</td>
@@ -439,7 +423,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>5</td>
+                    <td>4</td>
                     <td>David Lee</td>
                     <td>+1 234-567-8904</td>
                     <td>david.l@email.com</td>
@@ -454,7 +438,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>6</td>
+                    <td>5</td>
                     <td>Lisa Anderson</td>
                     <td>+1 234-567-8905</td>
                     <td>lisa.a@email.com</td>
@@ -468,7 +452,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>7</td>
+                    <td>6</td>
                     <td>James Wilson</td>
                     <td>+1 234-567-8906</td>
                     <td>james.w@email.com</td>
@@ -482,7 +466,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>8</td>
+                    <td>7</td>
                     <td>Maria Garcia</td>
                     <td>+1 234-567-8907</td>
                     <td>maria.g@email.com</td>
@@ -496,7 +480,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>9</td>
+                    <td>8</td>
                     <td>Robert Taylor</td>
                     <td>+1 234-567-8908</td>
                     <td>robert.t@email.com</td>
@@ -510,7 +494,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>10</td>
+                    <td>9</td>
                     <td>Patricia Martinez</td>
                     <td>+1 234-567-8909</td>
                     <td>patricia.m@email.com</td>
@@ -886,7 +870,7 @@ document.addEventListener('DOMContentLoaded', function() {
               <span class="fw-semibold">${pref.name}</span>
               <span class="badge bg-${pref.color}">${pref.percentage}%</span>
             </div>
-            <div class="progress" style="height: 8px;">
+            <div class="progress" style="height: 5px;">
               <div class="progress-bar bg-${pref.color}" role="progressbar" style="width: ${pref.percentage}%"></div>
             </div>
           </div>
@@ -1082,6 +1066,83 @@ function initializeMiniCharts() {
       });
     </script>
 
+    <script>
+function applyDateFilter() {
+  const filterValue = document.getElementById('dateFilter').value;
+  const tableRows = document.querySelectorAll('#customerSalesTable tbody tr');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  tableRows.forEach(row => {
+    const dateStr = row.querySelector('td:nth-child(4)').getAttribute('data-date') || '';
+    const rowDate = new Date(dateStr);
+    rowDate.setHours(0, 0, 0, 0);
+    
+    let show = false;
+    
+    switch(filterValue) {
+      case 'today':
+        show = rowDate.getTime() === today.getTime();
+        break;
+      case 'yesterday':
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        show = rowDate.getTime() === yesterday.getTime();
+        break;
+      case 'last7':
+        const last7 = new Date(today);
+        last7.setDate(today.getDate() - 7);
+        show = rowDate >= last7 && rowDate <= today;
+        break;
+      case 'last30':
+        const last30 = new Date(today);
+        last30.setDate(today.getDate() - 30);
+        show = rowDate >= last30 && rowDate <= today;
+        break;
+      case 'thisMonth':
+        show = rowDate.getMonth() === today.getMonth() && 
+               rowDate.getFullYear() === today.getFullYear();
+        break;
+      case 'lastMonth':
+        const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+        const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+        show = rowDate >= lastMonth && rowDate <= lastMonthEnd;
+        break;
+      case 'thisYear':
+        show = rowDate.getFullYear() === today.getFullYear();
+        break;
+      default:
+        show = true;
+    }
+    
+    row.style.display = show ? '' : 'none';
+  });
+}
+
+// Update table cells to include data-date attributes
+document.addEventListener('DOMContentLoaded', function() {
+  const tableRows = document.querySelectorAll('#customerSalesTable tbody tr');
+  tableRows.forEach(row => {
+    // Assuming you'll add proper dates to your table data
+    const randomDate = getRandomRecentDate(); // Helper function to generate dates
+    const dateCell = row.querySelector('td:nth-child(4)'); // Email column
+    dateCell.setAttribute('data-date', randomDate.toISOString().split('T')[0]);
+  });
+
+  // Add event listener for date filter
+  document.getElementById('dateFilter').addEventListener('change', applyDateFilter);
+});
+
+// Helper function to generate random recent dates for demonstration
+function getRandomRecentDate() {
+  const today = new Date();
+  const daysBack = Math.floor(Math.random() * 365); // Random day within last year
+  const randomDate = new Date(today);
+  randomDate.setDate(today.getDate() - daysBack);
+  return randomDate;
+}
+</script>
+
           <div class="content-backdrop fade"></div>
         </div>
         <!-- Content wrapper -->
@@ -1145,7 +1206,7 @@ function initializeMiniCharts() {
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content shadow-lg rounded-4">
       <div class="modal-header" style="background-color: #134013;">
-        <h5 class="modal-title" style="color: white;">Customer Details</h5>
+        <h4 class="modal-title" style="color: white;">Customer Details</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body px-4 py-3">
@@ -1157,13 +1218,13 @@ function initializeMiniCharts() {
                 <h5 class="mb-0" style="color: black;">Customer Info</h5>
                 <small style="color: black;">ID: #CS12345</small>
               </div>
-              <div class="card-body d-flex flex-column gap-3" style="background-color: white;">
-                <p class="fw-semibold" style="color: black;">Full Name: <span class="text-dark" id="customerName">John Smith</span></p>
-                <p class="fw-semibold" style="color: black;">Email: <span class="text-dark" id="customerEmail">john.smith@email.com</span></p>
-                <p class="fw-semibold" style="color: black;">Phone: <span class="text-dark" id="customerPhone">+1 234-567-8900</span></p>
-                <p class="fw-semibold" style="color: black;">Member Since: <span class="text-dark">January 15, 2023</span></p>
-                <p class="fw-semibold" style="color: black;">Total Bookings: <span class="text-dark">15 events</span></p>
-                <p class="fw-semibold" style="color: black;">Loyalty Status: <span class="badge bg-success">Premium Member</span></p>
+              <div class="card-body d-flex flex-column gap-2 py-2" style="background-color: white;">
+                <p class="fw-semibold mb-1" style="color: black;">Full Name: <span class="text-dark" id="customerName">John Smith</span></p>
+                <p class="fw-semibold mb-1" style="color: black;">Email: <span class="text-dark" id="customerEmail">john.smith@email.com</span></p>
+                <p class="fw-semibold mb-1" style="color: black;">Phone: <span class="text-dark" id="customerPhone">+1 234-567-8900</span></p>
+                <p class="fw-semibold mb-1" style="color: black;">Member Since: <span class="text-dark">January 15, 2023</span></p>
+                <p class="fw-semibold mb-1" style="color: black;">Total Bookings: <span class="text-dark">15 events</span></p>
+                <p class="fw-semibold mb-0" style="color: black;">Loyalty Status: <span class="badge bg-success">Premium Member</span></p>
               </div>
             </div>
           </div>
@@ -1212,12 +1273,12 @@ function initializeMiniCharts() {
 
           <!-- Charts -->
           <div class="col-md-6">
-            <div class="card border-0 shadow-sm rounded-3">
+            <div class="card border-0 shadow-sm rounded-3" style="min-height: 400px;">
               <div class="card-header" style="background-color: #f0f0f0;">
                 <h5 class="mb-0" style="color: black;">Booking History</h5>
               </div>
-              <div class="card-body">
-                <canvas id="customerChart" height="300"></canvas>
+              <div class="card-body" style="height: 350px; position: relative;">
+                <canvas id="customerChart"></canvas>
               </div>
             </div>
           </div>
@@ -1225,8 +1286,7 @@ function initializeMiniCharts() {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    var ctx = document.getElementById("customerChart").getContext("2d");
-    var customerChart = new Chart(ctx, {
+    const defaultChartConfig = {
       type: "bar",
       data: {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
@@ -1240,57 +1300,125 @@ function initializeMiniCharts() {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           y: {
             beginAtZero: true
           }
         }
       }
+    };
+
+    const johnSmithChartConfig = {
+      type: "line",
+      data: {
+        labels: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"],
+        datasets: [{
+          label: "Monthly Bookings",
+          data: [85000, 95000, 120000, 45000, 75000, 150000],
+          backgroundColor: "rgba(19, 64, 19, 0.2)",
+          borderColor: "rgba(19, 64, 19, 1)",
+          borderWidth: 2,
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return '₱' + value.toLocaleString();
+              }
+            }
+          }
+        },
+        plugins: {
+          title: {
+            display: true,
+            text: 'John Smith - Booking History',
+            font: {
+              size: 16
+            }
+          }
+        }
+      }
+    };
+
+    // Initialize with default config
+    let ctx = document.getElementById("customerChart").getContext("2d");
+    let customerChart = new Chart(ctx, defaultChartConfig);
+
+    // Update chart when view button is clicked
+    document.querySelectorAll('.view-customer').forEach(button => {
+      button.addEventListener('click', function() {
+        const customerName = this.dataset.name;
+        
+        // Destroy existing chart
+        if (customerChart) {
+          customerChart.destroy();
+        }
+        
+        // Create new chart with appropriate config
+        if (customerName === "John Smith") {
+          customerChart = new Chart(ctx, johnSmithChartConfig);
+        } else {
+          customerChart = new Chart(ctx, defaultChartConfig);
+        }
+      });
     });
   });
 </script>
 
           <!-- Package Preferences -->
           <div class="col-md-6">
-            <div class="card border-0 shadow-sm rounded-3">
+            <div class="card border-0 shadow-sm rounded-3" style="min-height: 400px;">
               <div class="card-header" style="background-color: #f0f0f0;">
                 <h5 class="mb-0" style="color: black;">Package Preferences</h5>
               </div>
-              <div class="card-body d-flex flex-column gap-3">
-                <div class="progress-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold">Wedding Packages</span>
-                    <span class="badge bg-primary">25%</span>
+              <div class="card-body" style="height: 350px;">
+                <div class="d-flex flex-column justify-content-around h-100">
+                  <div class="package-item">
+                    <div class="d-flex justify-content-between mb-1">
+                      <span class="fw-semibold">Wedding Packages</span>
+                      <span class="badge bg-primary">25%</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                      <div class="progress-bar bg-primary" style="width: 25%"></div>
+                    </div>
                   </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-primary" style="width: 25%"></div>
+
+                  <div class="package-item">
+                    <div class="d-flex justify-content-between mb-1">
+                      <span class="fw-semibold">Corporate Events</span>
+                      <span class="badge bg-info">15%</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                      <div class="progress-bar bg-info" style="width: 15%"></div>
+                    </div>
                   </div>
-                </div>
-                <div class="progress-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold">Corporate Events</span>
-                    <span class="badge bg-info">15%</span>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-info" style="width: 15%"></div>
-                  </div>
-                </div>
-                <div class="progress-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold">Birthday Celebrations</span>
-                    <span class="badge bg-success">10%</span>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-success" style="width: 10%"></div>
+
+                  <div class="package-item">
+                    <div class="d-flex justify-content-between mb-1">
+                      <span class="fw-semibold">Birthday Celebrations</span>
+                      <span class="badge bg-success">10%</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                      <div class="progress-bar bg-success" style="width: 10%"></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
-      <div class="modal-footer border-0">
-        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+      <div class="modal-footer bg-light" style="padding: 1rem 1.5rem;">
+      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
