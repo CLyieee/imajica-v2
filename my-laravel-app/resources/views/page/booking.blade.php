@@ -280,7 +280,7 @@
                           <select id="id" name="id" class="form-select select2">
                             <option value="">Select a staff member</option>
                             @foreach ($staffs as $staff)
-                            <option value="{{ $staff->id }}">{{ $staff->firstname }} {{ $staff->lastname }}</option>
+                            <option value="{{ $staff->id }}">{{ $staff->name }}</option>
                             @endforeach
                           </select>
                         </div>
