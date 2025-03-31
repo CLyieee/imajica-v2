@@ -314,7 +314,8 @@ class DashboardController extends Controller
     }
     public function add_order()
     {
-        return view('page.add-order');
+        $products = \App\Models\Product::select('bar_code', 'name', 'base_price')->get();
+        return view('page.add-order', compact('products'));
     }
 
    public function category_list()

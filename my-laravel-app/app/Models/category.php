@@ -21,4 +21,21 @@ class category extends Model
         'description',
         'categoryImage',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'category_id');
+    }
+
+    public function getTotalEarningsAttribute()
+    {
+        return $this->products()
+            ->join('order_items', 'products.name', '=', 'order_items.item_name') 
+            ->sum('order_items.total');
+    }
+
+    public function getProductsCountAttribute()
+    {
+        return $this->products()->count();
+    }
 }
