@@ -492,7 +492,7 @@
                       <div>
                         <h3 class="text-white fw-bold mb-2">✨ Welcome to Imajica Aesthetics</h3>
                         <p class="text-white mb-3">Experience luxury beauty and wellness treatments tailored just for you.</p>
-                        <a href="{{ route('page.booking') }}" class="btn btn-light">
+                        <a href="{{ route('page.booking') }}" class="btn btn-primary">
                           <i class="ti tabler-calendar-plus me-1"></i>
                           Book an Appointment
                         </a>
@@ -1806,10 +1806,103 @@ The Imajica Team</textarea>
 
   <!-- View All Bookings Modal -->
   <div class="modal fade" id="viewAllBookingsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary bg-opacity-10">
+          <h5 class="modal-title">
+            <i class="ti tabler-calendar me-2 text-primary"></i>
+            All Bookings
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Filters -->
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <select class="form-select" id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <input type="date" id="dateFilter" class="form-control">
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-primary w-100" id="exportBookings">
+                <i class="ti tabler-download me-1"></i>Export Data
+              </button>
+            </div>
+          </div>
 
-      // Status filter
-      const statusFilter = document.getElementById("statusFilter");
-      statusFilter.addEventListener("change", function (e) {
+          <!-- Bookings Table -->
+          <div class="table-responsive">
+            <table class="table table-hover booking-table">
+              <thead class="table-light">
+                <tr>
+                  <th>Booking ID</th>
+                  <th>Patient</th>
+                  <th>Service</th>
+                  <th>Date & Time</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($bookings as $booking)
+                <tr>
+                  <td># {{ $booking->booking_id }}</td>
+                  <td>
+                    @if($booking->patient)
+                      {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
+                    @else
+                      <span class="text-muted">No patient data</span>
+                    @endif
+                  </td>
+                  <td>
+                    @if($booking->service)
+                      {{ $booking->service->service_name }}
+                    @else
+                      <span class="text-muted">No service data</span>
+                    @endif
+                  </td>
+                  <td>
+                    <h6 class="mb-0">{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }}</h6>
+                    <small class="text-muted">{{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</small>
+                  </td>
+                  <td>
+                    @if($booking->service)
+                      ₱{{ number_format($booking->service->service_cost, 2) }}
+                    @else
+                      <span class="text-muted">N/A</span>
+                    @endif
+                  </td>
+                  <td>
+                    <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed' ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger') }}">
+                      {{ ucfirst($booking->status) }}
+                    </span>
+                  </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add this JavaScript code after your other scripts -->
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Status filter
+    const statusFilter = document.getElementById("statusFilter");
+    if (statusFilter) {
+      statusFilter.addEventListener("change", function(e) {
         const status = e.target.value.toLowerCase();
         const rows = document.querySelectorAll(".booking-table tbody tr");
 
@@ -1825,10 +1918,12 @@ The Imajica Team</textarea>
           row.style.display = statusCell === status ? "" : "none";
         });
       });
+    }
 
-      // Date filter
-      const dateFilter = document.getElementById("dateFilter");
-      dateFilter.addEventListener("change", function (e) {
+    // Date filter
+    const dateFilter = document.getElementById("dateFilter");
+    if (dateFilter) {
+      dateFilter.addEventListener("change", function(e) {
         const selectedDate = new Date(e.target.value);
         const rows = document.querySelectorAll(".booking-table tbody tr");
 
@@ -1848,16 +1943,40 @@ The Imajica Team</textarea>
               : "none";
         });
       });
+    }
 
-      // Export functionality
-      document
-        .getElementById("exportBookings")
-        .addEventListener("click", function () {
-          // Add your export logic here
-          alert("Export functionality will be implemented here");
+    // Export functionality
+    const exportBtn = document.getElementById("exportBookings");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", function() {
+        // Get visible rows
+        const visibleRows = Array.from(document.querySelectorAll(".booking-table tbody tr"))
+          .filter(row => row.style.display !== "none");
+
+        // Create CSV content
+        let csvContent = "Booking ID,Patient,Service,Date & Time,Amount,Status\n";
+        
+        visibleRows.forEach(row => {
+          const cells = row.querySelectorAll("td");
+          const rowData = Array.from(cells).map(cell => `"${cell.textContent.trim()}"`);
+          csvContent += rowData.join(",") + "\n";
         });
-    });
-  </script> --}}
+
+        // Create and trigger download
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute("href", url);
+        link.setAttribute("download", "bookings_export.csv");
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    }
+  });
+  </script>
 
 </body>
 
