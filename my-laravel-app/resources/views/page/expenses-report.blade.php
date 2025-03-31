@@ -157,15 +157,12 @@
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
         max-width: 100%;
         width: 100%;
         margin: 0 auto;
       }
 
-      .card:hover {
-        transform: translateY(-5px);
-      }
+      /* Removed .card:hover transform effect */
 
       .header {
         text-align: center;
@@ -268,6 +265,10 @@
         }
       }
     </style>
+    <!-- Add these libraries in the head section -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   </head>
 
   <body>
@@ -313,7 +314,7 @@
                   type="text" 
                   class="form-control" 
                   id="searchInput" 
-                  placeholder="Search by category or description..."
+                  placeholder="Search by name..."
                   style="border-radius: 0 4px 4px 0;"
                 >
               </div>
@@ -512,8 +513,8 @@
               <div class="card-header bg-light">
                 <h6 class="card-title mb-0">Attached Documents</h6>
               </div>
-              <div class="card-body d-flex flex-column gap-3">
-                <div class="d-flex align-items-center p-2 border rounded bg-light">
+              <div class="card-body d-flex flex-column gap-4 pt-4">
+                <div class="d-flex align-items-center p-3 border rounded bg-light mt-2">
                   <i class="ti ti-file-invoice text-primary" style="font-size: 24px;"></i>
                   <div class="ms-2">
                     <h6 class="mb-0">Invoice_2024001.pdf</h6>
@@ -523,7 +524,7 @@
                     <i class="ti ti-download"></i>
                   </button>
                 </div>
-                <div class="d-flex align-items-center p-2 border rounded bg-light">
+                <div class="d-flex align-items-center p-3 border rounded bg-light">
                   <i class="ti ti-file-text text-success" style="font-size: 24px;"></i>
                   <div class="ms-2">
                     <h6 class="mb-0">Receipt_2024001.pdf</h6>
@@ -540,7 +541,6 @@
       </div>
       <div class="modal-footer bg-light">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Edit Expense</button>
       </div>
     </div>
   </div>
@@ -671,6 +671,86 @@ document.getElementById('expenseModal').addEventListener('shown.bs.modal', funct
     }
   });
 });
+
+// Add this new code after the existing scripts
+document.querySelectorAll('[data-export]').forEach(button => {
+    button.addEventListener('click', function() {
+        const exportType = this.getAttribute('data-export');
+        const tableData = getTableData();
+        
+        switch(exportType) {
+            case 'pdf':
+                exportToPDF(tableData);
+                break;
+            case 'excel':
+                exportToExcel(tableData);
+                break;
+            case 'csv':
+                exportToCSV(tableData);
+                break;
+        }
+    });
+});
+
+function getTableData() {
+    const table = document.querySelector('.table');
+    const headers = [...table.querySelectorAll('thead th')]
+        .map(header => header.textContent.trim());
+    
+    const rows = [...table.querySelectorAll('tbody tr')]
+        .map(row => [...row.querySelectorAll('td')]
+            .map(cell => cell.textContent.trim()));
+    
+    return { headers, rows };
+}
+
+function exportToPDF(data) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    doc.text('Expenses Report', 14, 15);
+    doc.autoTable({
+        head: [data.headers],
+        body: data.rows,
+        startY: 20,
+        theme: 'grid',
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: [30, 77, 43] }
+    });
+    
+    doc.save('expenses-report.pdf');
+}
+
+function exportToExcel(data) {
+    const worksheet = XLSX.utils.aoa_to_sheet([
+        data.headers,
+        ...data.rows
+    ]);
+    
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Expenses');
+    
+    XLSX.writeFile(workbook, 'expenses-report.xlsx');
+}
+
+function exportToCSV(data) {
+    const csvContent = [
+        data.headers.join(','),
+        ...data.rows.map(row => row.join(','))
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'expenses-report.csv');
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 </script>
 
           <div class="content-backdrop fade"></div>

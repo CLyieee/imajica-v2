@@ -156,14 +156,9 @@
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
         max-width: 100%;
         width: 100%;
         margin: 0 auto;
-      }
-
-      .card:hover {
-        transform: translateY(-5px);
       }
 
       .header {
@@ -372,7 +367,7 @@
               </div>
             </div>
             <div class="table-responsive">
-              <table class="table table-hover">
+              <table class="table">
                 <thead>
                   <tr style="background-color: #134013;">
                     <th style="color: white; font-weight: 500;">NAME</th>
@@ -564,7 +559,6 @@
               </div>
               <div class="modal-footer bg-light">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Edit Service/Product</button>
               </div>
             </div>
           </div>
@@ -1132,6 +1126,102 @@ function initializeMiniCharts() {
 
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+document.querySelectorAll('.dropdown-item[data-export]').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const exportType = this.dataset.export;
+        const table = document.querySelector('.table');
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent);
+        
+        // Get data excluding the last column (action buttons)
+        const data = rows.map(row => {
+            const cells = Array.from(row.querySelectorAll('td'));
+            return cells.slice(0, -1).map(td => td.textContent.trim());
+        });
+
+        switch(exportType) {
+            case 'pdf':
+                exportToPDF(headers.slice(0, -1), data);
+                break;
+            case 'excel':
+                exportToExcel(headers.slice(0, -1), data);
+                break;
+            case 'csv':
+                exportToCSV(headers.slice(0, -1), data);
+                break;
+        }
+    });
+});
+
+function exportToPDF(headers, data) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('l', 'mm', 'a4'); // landscape orientation
+    
+    // Add title
+    doc.setFontSize(18);
+    doc.text('Service/Product Report', 15, 15);
+    
+    // Add date
+    doc.setFontSize(11);
+    doc.text(`Generated on: ${new Date().toLocaleString()}`, 15, 22);
+    
+    doc.autoTable({
+        head: [headers],
+        body: data,
+        startY: 25,
+        theme: 'grid',
+        styles: { fontSize: 8, cellPadding: 1 },
+        headStyles: { 
+            fillColor: [19, 64, 19],
+            textColor: [255, 255, 255],
+            fontStyle: 'bold'
+        },
+        alternateRowStyles: { fillColor: [245, 245, 245] }
+    });
+    
+    doc.save('service-product-report.pdf');
+}
+
+function exportToExcel(headers, data) {
+    const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+    const workbook = XLSX.utils.book_new();
+    
+    // Adjust column widths
+    const colWidths = headers.map(h => ({wch: Math.max(h.length, 15)}));
+    worksheet['!cols'] = colWidths;
+    
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Service_Product_Report');
+    XLSX.writeFile(workbook, 'service-product-report.xlsx');
+}
+
+function exportToCSV(headers, data) {
+    // Add BOM for proper Excel UTF-8 encoding
+    const BOM = "\uFEFF";
+    const csvContent = BOM + [
+        headers.join(','),
+        ...data.map(row => row.join(','))
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'service-product-report.csv');
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
+
           <div class="content-backdrop fade"></div>
         </div>
         <!-- Content wrapper -->
@@ -1158,6 +1248,7 @@ function initializeMiniCharts() {
   <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
 
   <script src="../../assets/vendor/libs/popper/popper.js"></script>
+
   <script src="../../assets/vendor/js/bootstrap.js"></script>
   <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
 
@@ -1229,7 +1320,7 @@ function initializeMiniCharts() {
     </div>
     <div class="card-body p-3">
       <div class="table-responsive">
-        <table class="table table-hover align-middle">
+        <table class="table table-sm">
           <thead class="table-light">
             <tr>
               <th>Booking ID</th>

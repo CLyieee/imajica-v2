@@ -155,14 +155,9 @@
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
         max-width: 100%;
         width: 100%;
         margin: 0 auto;
-      }
-
-      .card:hover {
-        transform: translateY(-5px);
       }
 
       .header {
@@ -320,7 +315,7 @@
                   type="text" 
                   class="form-control" 
                   id="searchInput" 
-                  placeholder="Search by name or position..."
+                  placeholder="Search by name..."
                   style="border-radius: 0 4px 4px 0;"
                 >
               </div>
@@ -368,18 +363,17 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="employeeReport">
-                        <thead class="table-light">
-                            <tr>
-                                <th >Rank</th>
-                                <th >Employee Name</th>
-                                <th>No. of Service Sales</th>
-                                <th >No. of Product Sales</th>
-                                <th >No. of Clients</th>
-                                <th >Total Service Sales</th>
-                                <th >Total Product Sales</th>
-                                <th >Total Sales</th>
-                                <th>Action</th>
+                    <table class="table table-bordered" id="employeeReport">
+                    <tr style="background-color: #1e4d2b;">
+                                <th class="text-white">Rank</th>
+                                <th class="text-white">Employee Name</th>
+                                <th class="text-white">No. of Service Sales</th>
+                                <th class="text-white">No. of Product Sales</th>
+                                <th class="text-white">No. of Clients</th>
+                                <th class="text-white">Total Service Sales</th>
+                                <th class="text-white">Total Product Sales</th>
+                                <th class="text-white">Total Sales</th>
+                                <th class="text-white">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -494,17 +488,11 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">Recent Transactions</h5>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-outline-primary btn-sm">
-                                        <i class="ti ti-filter me-1"></i>Filter
-                                    </button>
-                                    <button type="button" class="btn btn-outline-primary btn-sm">
-                                        <i class="ti ti-download me-1"></i>Export
-                                    </button>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>Transaction ID</th>
@@ -594,7 +582,7 @@
                                     <div class="service-item">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Treatment</span>
-                                            <span class="badge bg-info">30%</span>
+                                            <span class="badge bg-info">30%</</span>
                                         </div>
                                         <div class="progress" style="height: 8px;">
                                             <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
@@ -603,7 +591,7 @@
                                     <div class="service-item">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Coloring</span>
-                                            <span class="badge bg-success">25%</span>
+                                            <span class="badge bg-success">25%</</span>
                                         </div>
                                         <div class="progress" style="height: 8px;">
                                             <div class="progress-bar bg-success" role="progressbar" style="width: 25%"></div>
@@ -617,7 +605,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">View Full Report</button>
             </div>
         </div>
     </div>
@@ -681,17 +668,11 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">Recent Transactions</h5>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-outline-primary btn-sm">
-                                        <i class="ti ti-filter me-1"></i>Filter
-                                    </button>
-                                    <button type="button" class="btn btn-outline-primary btn-sm">
-                                        <i class="ti ti-download me-1"></i>Export
-                                    </button>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>Transaction ID</th>
@@ -720,42 +701,56 @@
 
                     <!-- Sales Performance Chart -->
                     <div class="col-md-6">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title mb-0">Monthly Sales Performance</h5>
-        </div>
-        <div class="card-body">
-            <canvas id="employeeChart" height="300"></canvas>
-        </div>
-    </div>
-</div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Monthly Sales Performance</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="johnDavisChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var ctx = document.getElementById("employeeChart").getContext("2d");
-        new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                datasets: [{
-                    label: "Sales ($)",
-                    data: [12000, 15000, 13000, 17000, 16000, 18000],
-                    backgroundColor: "rgba(54, 162, 235, 0.6)",
-                    borderColor: "rgba(54, 162, 235, 1)",
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    });
-</script>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            var ctx = document.getElementById("johnDavisChart").getContext("2d");
+                            var johnDavisChart = new Chart(ctx, {
+                                type: "bar",
+                                data: {
+                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                    datasets: [{
+                                        label: "Monthly Sales (₱)",
+                                        data: [35000, 42000, 38000, 45000, 40000, 43000, 41000, 44000, 38000, 42000, 45000, 47000],
+                                        backgroundColor: "rgba(54, 162, 235, 0.6)",
+                                        borderColor: "rgba(54, 162, 235, 1)",
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            ticks: {
+                                                callback: function(value) {
+                                                    return '₱' + value.toLocaleString();
+                                                }
+                                            }
+                                        }
+                                    },
+                                    plugins: {
+                                        tooltip: {
+                                            callbacks: {
+                                                label: function(context) {
+                                                    return '₱' + context.parsed.y.toLocaleString();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    </script>
 
                     <!-- Service Distribution -->
                     <div class="col-md-6">
@@ -768,7 +763,7 @@
                                     <div class="service-item">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Styling</span>
-                                            <span class="badge bg-primary">45%</span>
+                                            <span class="badge bg-primary">45%</</span>
                                         </div>
                                         <div class="progress" style="height: 8px;">
                                             <div class="progress-bar" role="progressbar" style="width: 45%"></div>
@@ -777,7 +772,7 @@
                                     <div class="service-item">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Treatment</span>
-                                            <span class="badge bg-info">30%</span>
+                                            <span class="badge bg-info">30%</</span>
                                         </div>
                                         <div class="progress" style="height: 8px;">
                                             <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
@@ -786,7 +781,7 @@
                                     <div class="service-item">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Coloring</span>
-                                            <span class="badge bg-success">25%</span>
+                                            <span class="badge bg-success">25%</</span>
                                         </div>
                                         <div class="progress" style="height: 8px;">
                                             <div class="progress-bar bg-success" role="progressbar" style="width: 25%"></div>
@@ -800,7 +795,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">View Full Report</button>
             </div>
         </div>
     </div>
@@ -858,23 +852,17 @@
                         </div>
                     </div>
 
-                    <!-- Recent Transactions -->
+                    <!-- Recent Transactions for Sarah Wilson -->
                     <div class="col-md-6 col-lg-8">
                         <div class="card h-100">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">Recent Transactions</h5>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-outline-primary btn-sm">
-                                        <i class="ti ti-filter me-1"></i>Filter
-                                    </button>
-                                    <button type="button" class="btn btn-outline-primary btn-sm">
-                                        <i class="ti ti-download me-1"></i>Export
-                                    </button>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>Transaction ID</th>
@@ -894,7 +882,22 @@
                                                 <td><span class="badge bg-success">Completed</span></td>
                                                 <td>₱4,800</td>
                                             </tr>
-                                            <!-- Add more transaction rows as needed -->
+                                            <tr>
+                                                <td>#TRX004</td>
+                                                <td>2023-11-13</td>
+                                                <td>Hair Coloring</td>
+                                                <td>Jessica White</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱5,200</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#TRX005</td>
+                                                <td>2023-11-12</td>
+                                                <td>Hair Treatment</td>
+                                                <td>Linda Martin</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>₱4,500</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -904,44 +907,56 @@
 
                     <!-- Sales Performance Chart -->
                     <div class="col-md-6">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title mb-0">Monthly Sales Performance</h5>
-        </div>
-        <div class="card-body">
-            <canvas id="employeeChart3" height="300"></canvas>
-        </div>
-    </div>
-</div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Monthly Sales Performance</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="sarahWilsonChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var ctx = document.getElementById("employeeChart3").getContext("2d");
-        var employeeChart = new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                datasets: [{
-                    label: "Sales (in USD)",
-                    data: [5000, 7000, 8000, 6500, 9000, 10000, 11000, 9500, 10500, 11500, 12000, 13000],
-                    backgroundColor: "rgba(54, 162, 235, 0.5)",
-                    borderColor: "rgba(54, 162, 235, 1)",
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    });
-</script>
-
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            var ctx = document.getElementById("sarahWilsonChart").getContext("2d");
+                            var sarahWilsonChart = new Chart(ctx, {
+                                type: "bar",
+                                data: {
+                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                    datasets: [{
+                                        label: "Monthly Sales (₱)",
+                                        data: [32000, 38000, 35000, 40000, 38000, 42000, 39000, 41000, 36000, 39000, 41000, 43000],
+                                        backgroundColor: "rgba(54, 162, 235, 0.6)",
+                                        borderColor: "rgba(54, 162, 235, 1)",
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            ticks: {
+                                                callback: function(value) {
+                                                    return '₱' + value.toLocaleString();
+                                                }
+                                            }
+                                        }
+                                    },
+                                    plugins: {
+                                        tooltip: {
+                                            callbacks: {
+                                                label: function(context) {
+                                                    return '₱' + context.parsed.y.toLocaleString();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    </script>
 
                     <!-- Service Distribution -->
                     <div class="col-md-6">
@@ -963,7 +978,7 @@
                                     <div class="service-item">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Styling</span>
-                                            <span class="badge bg-info">30%</span>
+                                            <span class="badge bg-info">30%</</span>
                                         </div>
                                         <div class="progress" style="height: 8px;">
                                             <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
@@ -972,7 +987,7 @@
                                     <div class="service-item">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="fw-semibold">Hair Coloring</span>
-                                            <span class="badge bg-success">20%</span>
+                                            <span class="badge bg-success">20%</</span>
                                         </div>
                                         <div class="progress" style="height: 8px;">
                                             <div class="progress-bar bg-success" role="progressbar" style="width: 20%"></div>
@@ -986,7 +1001,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">View Full Report</button>
             </div>
         </div>
     </div>
@@ -1040,7 +1054,7 @@
               </div>
               <div class="card-body p-3">
                 <div class="table-responsive">
-                  <table class="table table-hover align-middle">
+                  <table class="table align-middle">
                     <thead class="table-light">
                       <tr>
                         <th>Transaction ID</th>
@@ -1070,7 +1084,6 @@
       </div>
       <div class="modal-footer bg-light">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">View Full Report</button>
       </div>
     </div>
   </div>
@@ -1137,9 +1150,90 @@
   <script src="../../assets/js/charts-chartjs-legend.js"></script>
   <script src="../../assets/js/charts-chartjs.js"></script>
 
-
+  <!-- Export Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle export button clicks
+        document.querySelectorAll('[data-export]').forEach(button => {
+            button.addEventListener('click', function() {
+                const format = this.getAttribute('data-export');
+                const table = document.getElementById('employeeReport');
+                
+                switch(format) {
+                    case 'pdf':
+                        exportToPDF(table);
+                        break;
+                    case 'excel':
+                        exportToExcel(table);
+                        break;
+                    case 'csv':
+                        exportToCSV(table);
+                        break;
+                }
+            });
+        });
+
+        function exportToPDF(table) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.text('Employee Report', 14, 15);
+            
+            doc.autoTable({
+                html: table,
+                startY: 20,
+                styles: {
+                    fontSize: 8,
+                    cellPadding: 2,
+                },
+                columnStyles: {
+                    0: {cellWidth: 10}, // Rank
+                    1: {cellWidth: 30}, // Name
+                    2: {cellWidth: 20}, // Service Sales
+                    3: {cellWidth: 20}, // Product Sales
+                    4: {cellWidth: 20}, // Clients
+                    5: {cellWidth: 25}, // Service Sales Total
+                    6: {cellWidth: 25}, // Product Sales Total
+                    7: {cellWidth: 25}, // Total Sales
+                }
+            });
+            
+            doc.save('employee-report.pdf');
+        }
+
+        function exportToExcel(table) {
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.table_to_sheet(table);
+            
+            // Format currency columns
+            const currencyColumns = ['F', 'G', 'H'];
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            
+            for (let R = range.s.r + 1; R <= range.e.r; ++R) {
+                currencyColumns.forEach(col => {
+                    const cell = ws[col + (R + 1)];
+                    if (cell && cell.v) {
+                        cell.v = cell.v.replace('₱', '').replace(',', '');
+                        cell.t = 'n';
+                    }
+                });
+            }
+            
+            XLSX.utils.book_append_sheet(wb, ws, 'Employee Report');
+            XLSX.writeFile(wb, 'employee-report.xlsx');
+        }
+
+        function exportToCSV(table) {
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.table_to_sheet(table);
+            XLSX.utils.book_append_sheet(wb, ws, 'Employee Report');
+            XLSX.writeFile(wb, 'employee-report.csv');
+        }
+    });
+  </script>
 </body>
-
-
 </html>

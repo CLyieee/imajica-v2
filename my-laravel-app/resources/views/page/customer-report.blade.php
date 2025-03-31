@@ -87,6 +87,11 @@
     />
     <link rel="stylesheet" href="../../assets/vendor/fonts/flag-icons.css" />
 
+    <!-- Add export libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <!-- Page CSS -->
     <link
       rel="stylesheet"
@@ -153,14 +158,9 @@
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
         max-width: 100%;
         width: 100%;
         margin: 0 auto;
-      }
-
-      .card:hover {
-        transform: translateY(-5px);
       }
 
       .header {
@@ -844,9 +844,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           ],
           packagePreferences: [
-            { name: "Wedding Packages", percentage: 45, color: "primary" },
-            { name: "Corporate Events", percentage: 30, color: "info" },
-            { name: "Birthday Celebrations", percentage: 25, color: "success" }
+            { name: "Wedding Packages", percentage: 25, color: "primary" },
+            { name: "Corporate Events", percentage: 15, color: "info" },
+            { name: "Birthday Celebrations", percentage: 10, color: "success" }
           ]
         };
 
@@ -1021,6 +1021,67 @@ function initializeMiniCharts() {
 
 </script>
 
+    <script>
+      // Add this after your existing scripts
+      document.addEventListener('DOMContentLoaded', function() {
+        // Export button click handlers
+        document.querySelectorAll('[data-export]').forEach(button => {
+          button.addEventListener('click', function() {
+            const exportType = this.dataset.export;
+            const table = document.getElementById('customerSalesTable');
+            const data = Array.from(table.querySelectorAll('tr')).map(row => 
+              Array.from(row.querySelectorAll('th, td')).map(cell => cell.textContent.trim())
+            );
+
+            switch(exportType) {
+              case 'pdf':
+                exportToPDF(data);
+                break;
+              case 'excel':
+                exportToExcel(data, 'xlsx');
+                break;
+              case 'csv':
+                exportToExcel(data, 'csv');
+                break;
+            }
+          });
+        });
+
+        function exportToPDF(data) {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+
+          doc.autoTable({
+            head: [data[0]],
+            body: data.slice(1),
+            startY: 20,
+            margin: { top: 15 },
+            styles: { overflow: 'linebreak' },
+            headStyles: { fillColor: [19, 64, 19] },
+            didDrawPage: function(data) {
+              doc.setFontSize(15);
+              doc.text('Customer Sales Report', 14, 15);
+            }
+          });
+
+          doc.save('customer-sales-report.pdf');
+        }
+
+        function exportToExcel(data, type) {
+          const ws = XLSX.utils.aoa_to_sheet(data);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, 'Customer Sales');
+
+          const filename = `customer-sales-report.${type}`;
+          if (type === 'csv') {
+            XLSX.writeFile(wb, filename, { bookType: 'csv' });
+          } else {
+            XLSX.writeFile(wb, filename);
+          }
+        }
+      });
+    </script>
+
           <div class="content-backdrop fade"></div>
         </div>
         <!-- Content wrapper -->
@@ -1112,8 +1173,6 @@ function initializeMiniCharts() {
               <div class="card-header d-flex justify-content-between" style="background-color: #f0f0f0;">
                 <h5 class="mb-0" style="color: black;">Recent Bookings</h5>
                 <div>
-                  <button class="btn btn-sm btn-outline-secondary">Filter</button>
-                  <button class="btn btn-sm btn-outline-secondary">Export</button>
                 </div>
               </div>
               <div class="card-body p-3">
@@ -1201,28 +1260,28 @@ function initializeMiniCharts() {
                 <div class="progress-item">
                   <div class="d-flex justify-content-between mb-1">
                     <span class="fw-semibold">Wedding Packages</span>
-                    <span class="badge bg-primary">45%</span>
+                    <span class="badge bg-primary">25%</span>
                   </div>
                   <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-primary" style="width: 45%"></div>
+                    <div class="progress-bar bg-primary" style="width: 25%"></div>
                   </div>
                 </div>
                 <div class="progress-item">
                   <div class="d-flex justify-content-between mb-1">
                     <span class="fw-semibold">Corporate Events</span>
-                    <span class="badge bg-info">30%</span>
+                    <span class="badge bg-info">15%</span>
                   </div>
                   <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-info" style="width: 30%"></div>
+                    <div class="progress-bar bg-info" style="width: 15%"></div>
                   </div>
                 </div>
                 <div class="progress-item">
                   <div class="d-flex justify-content-between mb-1">
                     <span class="fw-semibold">Birthday Celebrations</span>
-                    <span class="badge bg-success">25%</span>
+                    <span class="badge bg-success">10%</span>
                   </div>
                   <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-success" style="width: 25%"></div>
+                    <div class="progress-bar bg-success" style="width: 10%"></div>
                   </div>
                 </div>
               </div>
@@ -1232,7 +1291,6 @@ function initializeMiniCharts() {
       </div>
       <div class="modal-footer border-0">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Edit Customer</button>
       </div>
     </div>
   </div>
