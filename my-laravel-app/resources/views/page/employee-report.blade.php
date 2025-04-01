@@ -1228,6 +1228,67 @@ document.addEventListener('DOMContentLoaded', function() {
     const tbody = table.getElementsByTagName('tbody')[0];
 
     sortBy.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        sortByBtn.textContent = 'Sort By: ' + selectedOption.text;
+        
+        let rows = Array.from(tbody.getElementsByTagName('tr'));
+        
+        rows.sort((a, b) => {
+            let aVal, bVal;
+            
+            switch(this.value) {
+                case 'totalSales':
+                    // Parse total sales column (remove ₱ and commas)
+                    aVal = parseFloat(a.cells[8].textContent.replace('₱', '').replace(/,/g, ''));
+                    bVal = parseFloat(b.cells[8].textContent.replace('₱', '').replace(/,/g, ''));
+                    return bVal - aVal;
+                case 'serviceSales':
+                    // Parse total service sales column (remove ₱ and commas)
+                    aVal = parseFloat(a.cells[6].textContent.replace('₱', '').replace(/,/g, ''));
+                    bVal = parseFloat(b.cells[6].textContent.replace('₱', '').replace(/,/g, ''));
+                    return bVal - aVal;
+                case 'productSales':
+                    // Parse total product sales column (remove ₱ and commas)
+                    aVal = parseFloat(a.cells[7].textContent.replace('₱', '').replace(/,/g, ''));
+                    bVal = parseFloat(b.cells[7].textContent.replace('₱', '').replace(/,/g, ''));
+                    return bVal - aVal;
+                case 'clients':
+                    // Parse number of clients column
+                    aVal = parseInt(a.cells[5].textContent);
+                    bVal = parseInt(b.cells[5].textContent);
+                    return bVal - aVal;
+                case 'name':
+                    // Sort by employee name
+                    aVal = a.cells[1].textContent.trim().toLowerCase();
+                    bVal = b.cells[1].textContent.trim().toLowerCase();
+                    return aVal.localeCompare(bVal);
+                default:
+                    return 0;
+            }
+        });
+        
+        // Clear table and append sorted rows
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+        
+        // Reorder the rows and update ranks
+        rows.forEach((row, index) => {
+            row.cells[0].textContent = index + 1; // Update rank
+            tbody.appendChild(row);
+        });
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sortBy = document.getElementById('sortBy');
+    const sortByBtn = document.getElementById('sortByBtn');
+    const table = document.getElementById('employeeReport');
+    const tbody = table.getElementsByTagName('tbody')[0];
+
+    sortBy.addEventListener('change', function() {
         // Update button text to show selected option
         const selectedOption = this.options[this.selectedIndex];
         sortByBtn.textContent = 'Sort By: ' + selectedOption.text;
@@ -1243,25 +1304,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     bVal = parseFloat(b.cells[8].textContent.replace('₱', '').replace(',', ''));
                     return bVal - aVal;
                 case 'serviceSales':
-                    aVal = parseFloat(a.cells[6].textContent.replace('₱', '').replace(',', ''));
-                    bVal = parseFloat(b.cells[6].textContent.replace('₱', '').replace(',', ''));
+                    aVal = parseFloat(a.cells[3].textContent); // Number of Service Sales
+                    bVal = parseFloat(b.cells[3].textContent);
                     return bVal - aVal;
                 case 'productSales':
-                    aVal = parseFloat(a.cells[7].textContent.replace('₱', '').replace(',', ''));
-                    bVal = parseFloat(b.cells[7].textContent.replace('₱', '').replace(',', ''));
+                    aVal = parseFloat(a.cells[4].textContent); // Number of Product Sales
+                    bVal = parseFloat(b.cells[4].textContent);
                     return bVal - aVal;
                 case 'clients':
-                    aVal = parseInt(a.cells[5].textContent);
+                    aVal = parseInt(a.cells[5].textContent); // Number of Clients
                     bVal = parseInt(b.cells[5].textContent);
                     return bVal - aVal;
                 case 'name':
-                    aVal = a.cells[1].textContent;
+                    aVal = a.cells[1].textContent; // Employee Name
                     bVal = b.cells[1].textContent;
                     return aVal.localeCompare(bVal);
                 default:
-                    aVal = parseInt(a.cells[0].textContent);
-                    bVal = parseInt(b.cells[0].textContent);
-                    return aVal - bVal;
+                    return 0;
             }
         });
         

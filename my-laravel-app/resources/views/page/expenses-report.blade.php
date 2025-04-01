@@ -306,7 +306,7 @@
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="m-0">Expense Transactions</h3>
             <div class="d-flex gap-2">
-              <div class="input-group" style="width: 300px;">
+              <div class="input-group" style="width: 300px; position: relative;">
                 <span class="input-group-text">
                   <i class="ti tabler-search"></i>
                 </span>
@@ -315,8 +315,17 @@
                   class="form-control" 
                   id="searchInput" 
                   placeholder="Search by name..."
-                  style="border-radius: 0 4px 4px 0;"
+                  style="border-radius: 0; padding-right: 30px;"
                 >
+                <button 
+                  type="button"
+                  class="btn-close clear-search"
+                  id="clearSearch"
+                  style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
+                         z-index: 5; display: none; background-size: 8px; cursor: pointer;
+                         border: none; background-color: transparent; padding: 0.75rem;"
+                  aria-label="Clear search"
+                ></button>
               </div>
               <div class="dropdown">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" aria-expanded="false">
@@ -520,9 +529,11 @@
                     <h6 class="mb-0">Invoice_2024001.pdf</h6>
                     <small class="text-muted">PDF, 2.3 MB</small>
                   </div>
-                  <button class="btn btn-sm btn-outline-primary ms-auto">
+                  <a href="{{ asset('storage/documents/Invoice_2024001.pdf') }}" 
+                     class="btn btn-sm btn-outline-primary ms-auto"
+                     download="Invoice_2024001.pdf">
                     <i class="ti ti-download"></i>
-                  </button>
+                  </a>
                 </div>
                 <div class="d-flex align-items-center p-3 border rounded bg-light">
                   <i class="ti ti-file-text text-success" style="font-size: 24px;"></i>
@@ -530,9 +541,11 @@
                     <h6 class="mb-0">Receipt_2024001.pdf</h6>
                     <small class="text-muted">PDF, 1.1 MB</small>
                   </div>
-                  <button class="btn btn-sm btn-outline-primary ms-auto">
+                  <a href="{{ asset('storage/documents/Receipt_2024001.pdf') }}" 
+                     class="btn btn-sm btn-outline-primary ms-auto"
+                     download="Receipt_2024001.pdf">
                     <i class="ti ti-download"></i>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -554,9 +567,20 @@
         });
 
       // Search functionality
-      document.getElementById('searchInput').addEventListener('keyup', function() {
+      const searchInput = document.getElementById('searchInput');
+      const clearButton = document.getElementById('clearSearch');
+
+      searchInput.addEventListener('input', function() {
         let searchValue = this.value.toLowerCase();
         filterTable(searchValue, null);
+        clearButton.style.display = searchValue ? 'block' : 'none';
+      });
+
+      clearButton.addEventListener('click', function() {
+        searchInput.value = '';
+        filterTable('', null);
+        this.style.display = 'none';
+        searchInput.focus(); // Return focus to search input
       });
 
       function filterTable(searchValue, dateRange) {
