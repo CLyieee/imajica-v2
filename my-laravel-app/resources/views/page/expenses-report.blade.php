@@ -152,20 +152,17 @@
       }
 
       .card {
-        background: rgba(255, 255, 255, 0.8);
+        background: #24b364;
         backdrop-filter: blur(10px);
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
         max-width: 100%;
         width: 100%;
         margin: 0 auto;
       }
 
-      .card:hover {
-        transform: translateY(-5px);
-      }
+      /* Removed .card:hover transform effect */
 
       .header {
         text-align: center;
@@ -268,6 +265,10 @@
         }
       }
     </style>
+    <!-- Add these libraries in the head section -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   </head>
 
   <body>
@@ -305,7 +306,7 @@
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="m-0">Expense Transactions</h3>
             <div class="d-flex gap-2">
-              <div class="input-group" style="width: 300px;">
+              <div class="input-group" style="width: 300px; position: relative;">
                 <span class="input-group-text">
                   <i class="ti tabler-search"></i>
                 </span>
@@ -313,9 +314,18 @@
                   type="text" 
                   class="form-control" 
                   id="searchInput" 
-                  placeholder="Search by category or description..."
-                  style="border-radius: 0 4px 4px 0;"
+                  placeholder="Search by name..."
+                  style="border-radius: 0; padding-right: 30px;"
                 >
+                <button 
+                  type="button"
+                  class="btn-close clear-search"
+                  id="clearSearch"
+                  style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
+                         z-index: 5; display: none; background-size: 8px; cursor: pointer;
+                         border: none; background-color: transparent; padding: 0.75rem;"
+                  aria-label="Clear search"
+                ></button>
               </div>
               <div class="dropdown">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" aria-expanded="false">
@@ -335,7 +345,7 @@
                 </div>
               </div>
               <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #0066ff;">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #18332a;">
                   Export
                 </button>
                 <ul class="dropdown-menu" style="min-width: 120px;">
@@ -464,7 +474,7 @@
                 <h6 class="card-title mb-0">Basic Information</h6>
                 <small class="text-muted">Invoice: #INV-2024-001</small>
               </div>
-              <div class="card-body d-flex flex-column gap-3">
+              <div class="card-body d-flex flex-column gap-4 pt-4">
                 <div><strong>Expense Name:</strong> Electricity Bill Payment</div>
                 <div><strong>Category:</strong> Utilities</div>
                 <div><strong>Amount:</strong> <span class="text-success">₱12,450.00</span></div>
@@ -512,35 +522,38 @@
               <div class="card-header bg-light">
                 <h6 class="card-title mb-0">Attached Documents</h6>
               </div>
-              <div class="card-body d-flex flex-column gap-3">
-                <div class="d-flex align-items-center p-2 border rounded bg-light">
+              <div class="card-body d-flex flex-column gap-4 pt-4">
+                <div class="d-flex align-items-center p-3 border rounded bg-light mt-2">
                   <i class="ti ti-file-invoice text-primary" style="font-size: 24px;"></i>
                   <div class="ms-2">
                     <h6 class="mb-0">Invoice_2024001.pdf</h6>
                     <small class="text-muted">PDF, 2.3 MB</small>
                   </div>
-                  <button class="btn btn-sm btn-outline-primary ms-auto">
+                  <a href="{{ asset('storage/documents/Invoice_2024001.pdf') }}" 
+                     class="btn btn-sm btn-outline-primary ms-auto"
+                     download="Invoice_2024001.pdf">
                     <i class="ti ti-download"></i>
-                  </button>
+                  </a>
                 </div>
-                <div class="d-flex align-items-center p-2 border rounded bg-light">
+                <div class="d-flex align-items-center p-3 border rounded bg-light">
                   <i class="ti ti-file-text text-success" style="font-size: 24px;"></i>
                   <div class="ms-2">
                     <h6 class="mb-0">Receipt_2024001.pdf</h6>
                     <small class="text-muted">PDF, 1.1 MB</small>
                   </div>
-                  <button class="btn btn-sm btn-outline-primary ms-auto">
+                  <a href="{{ asset('storage/documents/Receipt_2024001.pdf') }}" 
+                     class="btn btn-sm btn-outline-primary ms-auto"
+                     download="Receipt_2024001.pdf">
                     <i class="ti ti-download"></i>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="modal-footer bg-light">
+      <div class="modal-footer bg-light" style="padding: 1rem 1.5rem;">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Edit Expense</button>
       </div>
     </div>
   </div>
@@ -554,95 +567,98 @@
         });
 
       // Search functionality
-      document.getElementById('searchInput').addEventListener('keyup', function() {
+      const searchInput = document.getElementById('searchInput');
+      const clearButton = document.getElementById('clearSearch');
+
+      searchInput.addEventListener('input', function() {
         let searchValue = this.value.toLowerCase();
+        filterTable(searchValue, null);
+        clearButton.style.display = searchValue ? 'block' : 'none';
+      });
+
+      clearButton.addEventListener('click', function() {
+        searchInput.value = '';
+        filterTable('', null);
+        this.style.display = 'none';
+        searchInput.focus(); // Return focus to search input
+      });
+
+      function filterTable(searchValue, dateRange) {
         let tableRows = document.querySelectorAll('tbody tr');
         
         tableRows.forEach(row => {
-          let name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-          let email = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+          let showRow = true;
           
-          if (name.includes(searchValue) || email.includes(searchValue)) {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
+          // Text search filter
+          if (searchValue) {
+            let name = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            let category = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+            if (!name.includes(searchValue) && !category.includes(searchValue)) {
+              showRow = false;
+            }
           }
+          
+          // Date filter
+          if (dateRange && showRow) {
+            let dateCell = row.querySelector('td:nth-child(1)').textContent;
+            let rowDate = new Date(dateCell);
+            if (rowDate < dateRange.start || rowDate > dateRange.end) {
+              showRow = false;
+            }
+          }
+          
+          row.style.display = showRow ? '' : 'none';
         });
-      });
+      }
 
-      // Update the script section - remove calendar input related code
-      document.addEventListener('DOMContentLoaded', function() {
-          // Custom range toggle
-          document.getElementById('customRangeBtn').addEventListener('click', function(e) {
-              e.stopPropagation();
-              document.querySelector('.custom-range-inputs').classList.toggle('d-none');
-          });
-
-          document.querySelectorAll('[data-filter]').forEach(button => {
-              button.addEventListener('click', function(e) {
-                  if (this.getAttribute('data-filter') === 'custom') return;
-                  
-                  const filterType = this.getAttribute('data-filter');
-                  const now = new Date();
-                  let startDate, endDate;
-                  
-                  switch(filterType) {
-                      case 'tomorrow':
-                          startDate = endDate = new Date(now.setDate(now.getDate() + 1));
-                          break;
-                      case 'today':
-                          startDate = endDate = now;
-                          break;
-                      case 'yesterday':
-                          startDate = endDate = new Date(now.setDate(now.getDate() - 1));
-                          break;
-                      case 'last7days':
-                          endDate = new Date();
-                          startDate = new Date(now.setDate(now.getDate() - 7));
-                          break;
-                      case 'last30days':
-                          endDate = new Date();
-                          startDate = new Date(now.setDate(now.getDate() - 30));
-                          break;
-                      case 'thisMonth':
-                          startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                          endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-                          break;
-                      case 'lastMonth':
-                          startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                          endDate = new Date(now.getFullYear(), now.getMonth(), 0);
-                          break;
-                  }
-                  
-                  updateFilterText(startDate, endDate);
-              });
-          });
-
-          document.getElementById('applyCustomRange').addEventListener('click', function(e) {
-              e.stopPropagation();
-              const startDate = new Date(document.getElementById('dateFrom').value);
-              const endDate = new Date(document.getElementById('dateTo').value);
-              updateFilterText(startDate, endDate);
-          });
-
-          function updateFilterText(startDate, endDate) {
-              const formatDate = date => date.toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric'
-              });
-              
-              const filterText = startDate.getTime() === endDate.getTime() ? 
-                  formatDate(startDate) : 
-                  `${formatDate(startDate)} - ${formatDate(endDate)}`;
-                  
-              document.getElementById('selectedDateText').textContent = `: ${filterText}`;
-              
-              // Hide dropdown after selection
-              document.querySelector('.dropdown-menu').classList.remove('show');
-              document.querySelector('.custom-range-inputs').classList.add('d-none');
-          }
-      });
+      function applyDateFilter() {
+        const filterValue = document.getElementById('dateFilter').value;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        let startDate = new Date();
+        let endDate = new Date();
+        
+        switch(filterValue) {
+          case 'today':
+            startDate = today;
+            endDate = new Date(today);
+            break;
+          case 'yesterday':
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 1);
+            endDate = new Date(startDate);
+            break;
+          case 'last7':
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 6);
+            endDate = new Date(today);
+            break;
+          case 'last30':
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 29);
+            endDate = new Date(today);
+            break;
+          case 'thisMonth':
+            startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+            endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            break;
+          case 'lastMonth':
+            startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            endDate = new Date(today.getFullYear(), today.getMonth(), 0);
+            break;
+          case 'thisYear':
+            startDate = new Date(today.getFullYear(), 0, 1);
+            endDate = new Date(today.getFullYear(), 11, 31);
+            break;
+          default:
+            startDate = null;
+            endDate = null;
+        }
+        
+        const searchValue = document.getElementById('searchInput').value.toLowerCase();
+        filterTable(searchValue, startDate && endDate ? { start: startDate, end: endDate } : null);
+      }
 
 // Add event listeners to view buttons
 document.querySelectorAll('.btn-success').forEach(button => {
@@ -662,7 +678,9 @@ document.getElementById('expenseModal').addEventListener('shown.bs.modal', funct
       datasets: [{
         label: 'Monthly Expenses (₱)',
         data: [11200, 10800, 11500, 12100, 11900, 12450],
-        backgroundColor: '#0066ff',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1
       }]
     },
     options: {
@@ -671,6 +689,86 @@ document.getElementById('expenseModal').addEventListener('shown.bs.modal', funct
     }
   });
 });
+
+// Add this new code after the existing scripts
+document.querySelectorAll('[data-export]').forEach(button => {
+    button.addEventListener('click', function() {
+        const exportType = this.getAttribute('data-export');
+        const tableData = getTableData();
+        
+        switch(exportType) {
+            case 'pdf':
+                exportToPDF(tableData);
+                break;
+            case 'excel':
+                exportToExcel(tableData);
+                break;
+            case 'csv':
+                exportToCSV(tableData);
+                break;
+        }
+    });
+});
+
+function getTableData() {
+    const table = document.querySelector('.table');
+    const headers = [...table.querySelectorAll('thead th')]
+        .map(header => header.textContent.trim());
+    
+    const rows = [...table.querySelectorAll('tbody tr')]
+        .map(row => [...row.querySelectorAll('td')]
+            .map(cell => cell.textContent.trim()));
+    
+    return { headers, rows };
+}
+
+function exportToPDF(data) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    doc.text('Expenses Report', 14, 15);
+    doc.autoTable({
+        head: [data.headers],
+        body: data.rows,
+        startY: 20,
+        theme: 'grid',
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: [30, 77, 43] }
+    });
+    
+    doc.save('expenses-report.pdf');
+}
+
+function exportToExcel(data) {
+    const worksheet = XLSX.utils.aoa_to_sheet([
+        data.headers,
+        ...data.rows
+    ]);
+    
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Expenses');
+    
+    XLSX.writeFile(workbook, 'expenses-report.xlsx');
+}
+
+function exportToCSV(data) {
+    const csvContent = [
+        data.headers.join(','),
+        ...data.rows.map(row => row.join(','))
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'expenses-report.csv');
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 </script>
 
           <div class="content-backdrop fade"></div>
