@@ -1,11 +1,4 @@
 @extends('layouts.app')
-@extends('layouts.layout-collapsed-menu-dark')
-@extends('layouts.layout-container-dark')
-@extends('layouts.layout-content-navbar-and-sidebar-dark')
-@extends('layouts.layout-without-navbar-dark')
-@extends('layouts.layout-content-navbar-dark')
-@extends('layouts.layout-fluid-dark')
-@extends('layouts.layout-without-menu-dark')
 
 <!DOCTYPE html>
 
@@ -512,6 +505,9 @@
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
                           <!-- Add this after the header and before the first form group -->
+                          <form method="post" action="{{ route('patient.create') }}" enctype="multipart/form-data">
+                            @csrf
+                            @method('POST')
                           <div class="row g-6">
                             <div class="col-12 text-center mb-4">
                               <div class="profile-upload-container mx-auto">
@@ -529,6 +525,7 @@
                                     <input
                                       type="file"
                                       id="imageUpload"
+                                      name="image_path"
                                       accept=".png, .jpg, .jpeg"
                                       class="d-none"
                                     />
@@ -550,32 +547,32 @@
                           <div class="row g-6">
                             <div class="col-md-6">
                               <label class="form-label" for="firstName">First Name</label>
-                              <input type="text" id="firstName" class="form-control" placeholder="First Name" required />
+                              <input type="text" id="firstName" name="firstname" class="form-control" placeholder="First Name" required />
                             </div>
 
                             <div class="col-md-6">
                               <label class="form-label" for="lastName">Last Name</label>
-                              <input type="text" id="lastName" class="form-control" placeholder="Last Name" required />
+                              <input type="text" id="lastName" name="lastname" class="form-control" placeholder="Last Name" required />
                             </div>
 
                             <div class="col-md-6">
                               <label class="form-label" for="email">Email Address</label>
-                              <input type="email" id="email" class="form-control" placeholder="Email Address" required />
+                              <input type="email" id="email" name="email" class="form-control" placeholder="Email Address" required />
                             </div>
 
                             <div class="col-md-6">
                               <label class="form-label" for="phone">Contact Number</label>
-                              <input type="tel" id="phone" class="form-control" placeholder="Contact Number" required />
+                              <input type="tel" id="phone" name="contact_number" class="form-control" placeholder="Contact Number" required />
                             </div>
 
                             <div class="col-md-6">
                               <label class="form-label" for="birthDate">Date of Birth</label>
-                              <input type="date" id="birthDate" class="form-control" required />
+                              <input type="date" id="birthDate" name="birthdate" class="form-control" required />
                             </div>
 
                             <div class="col-md-6">
                               <label class="form-label" for="gender">Gender</label>
-                              <select id="gender" class="form-select" required>
+                              <select id="gender" name="gender" class="form-select" required>
                                 <option value="">Select Gender</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
@@ -585,18 +582,17 @@
 
                             <div class="col-md-6">
                               <label class="form-label">Membership Tier</label>
-                              <select class="select2 form-select" data-allow-clear="true" required>
+                              <select class="form-select" name="patient_tier_id" id="patient_tier_id" required>
                                 <option value="">Select Membership Tier</option>
-                                <option value="basic">Basic</option>
-                                <option value="silver">Silver</option>
-                                <option value="gold">Gold</option>
-                                <option value="vip">VIP</option>
+                                @foreach ($tiers as $tier)
+                                  <option value="{{ $tier->patient_tier_id }}">{{ $tier->tier_name }}</option>
+                                @endforeach
                               </select>
                             </div>
 
                             <div class="col-md-6">
                               <label class="form-label" for="occupation">Occupation</label>
-                              <input type="text" id="occupation" class="form-control" placeholder="Occupation" />
+                              <input type="text" id="occupation" name="occupation" class="form-control" placeholder="Occupation" />
                             </div>
 
                             <div class="col-12">
@@ -606,29 +602,29 @@
 
                             <div class="col-md-6">
                               <label class="form-label" for="emergencyContact">Emergency Contact Name</label>
-                              <input type="text" id="emergencyContact" class="form-control" placeholder="Emergency Contact Name" />
+                              <input type="text" id="emergencyContact" name="emergency_contact_name" class="form-control" placeholder="Emergency Contact Name" />
                             </div>
 
                             <div class="col-md-6">
                               <label class="form-label" for="emergencyPhone">Emergency Contact Number</label>
-                              <input type="tel" id="emergencyPhone" class="form-control" placeholder="Emergency Contact Number" />
+                              <input type="tel" id="emergencyPhone" name="emergency_contact_number" class="form-control" placeholder="Emergency Contact Number" />
                             </div>
 
                             <div class="col-12">
                               <label class="form-label" for="allergies">Allergies / Medical Concerns</label>
-                              <textarea name="allergies" class="form-control" id="allergies" rows="3" 
+                              <textarea name="medical_concerns" class="form-control" id="allergies" rows="3" 
                                 placeholder="Please list any allergies, medical conditions, or concerns"></textarea>
                             </div>
 
                             <div class="col-12">
                               <label class="form-label" for="medications">Current Medications</label>
-                              <textarea name="medications" class="form-control" id="medications" rows="2" 
+                              <textarea name="current_medications" class="form-control" id="medications" rows="2" 
                                 placeholder="List any current medications"></textarea>
                             </div>
 
                             <div class="col-12">
                               <label class="form-label" for="adminNotes">Notes From Admin</label>
-                              <textarea name="adminNotes" class="form-control" id="adminNotes" rows="3" 
+                              <textarea name="note_from_admin" class="form-control" id="adminNotes" rows="3" 
                                 placeholder="Administrative notes about the patient"></textarea>
                             </div>
 
@@ -645,6 +641,7 @@
                               <button type="submit" class="btn btn-primary">Add Patient</button>
                               <button type="reset" class="btn btn-secondary">Reset Form</button>
                             </div>
+                          </form>
                           </div>
 
                           
@@ -757,43 +754,33 @@
         const firstName = document.getElementById("firstName");
         const lastName = document.getElementById("lastName");
 
-        function getInitials(first, last) {
-          const firstInitial = first ? first[0] : '';
-          const lastInitial = last ? last[0] : '';
-          return (firstInitial + lastInitial).toUpperCase() || 'NA';
-        }
-
         function createInitialsAvatar(initials) {
           const canvas = document.createElement("canvas");
           const context = canvas.getContext("2d");
           canvas.width = 150;
           canvas.height = 150;
 
-          // Background circle
-          context.fillStyle = "#0a3622"; // Your theme color
+          // Draw circle with light blue background
+          context.fillStyle = "#E6EEFF";  // Light blue background
           context.beginPath();
           context.arc(75, 75, 75, 0, Math.PI * 2);
           context.fill();
 
-          // Text
-          context.font = "bold 60px Arial";
-          context.fillStyle = "#FFFFFF";
-          context.textAlign = "center";
-          context.textBaseline = "middle";
-          context.fillText(initials, 75, 75);
+          // Draw silhouette
+          context.fillStyle = "#1B3F8F";  // Darker blue for silhouette
+          
+          // Draw head
+          context.beginPath();
+          context.arc(75, 60, 30, 0, Math.PI * 2);
+          context.fill();
+
+          // Draw body
+          context.beginPath();
+          context.arc(75, 140, 45, Math.PI * 1.1, Math.PI * 1.9);
+          context.fill();
 
           return canvas.toDataURL();
         }
-
-        // Update avatar when name changes
-        [firstName, lastName].forEach(input => {
-          input.addEventListener("input", function() {
-            if (!imageUpload.files.length) {
-              const initials = getInitials(firstName.value, lastName.value);
-              imagePreview.src = createInitialsAvatar(initials);
-            }
-          });
-        });
 
         // Handle image upload
         imageUpload.addEventListener("change", function(e) {
@@ -805,13 +792,12 @@
             };
             reader.readAsDataURL(file);
           } else {
-            const initials = getInitials(firstName.value, lastName.value);
-            imagePreview.src = createInitialsAvatar(initials);
+            imagePreview.src = createInitialsAvatar();
           }
         });
 
         // Set default avatar on load
-        imagePreview.src = createInitialsAvatar('NA');
+        imagePreview.src = createInitialsAvatar();
       });
     </script>
     <button
@@ -906,9 +892,68 @@
         }
       });
     </script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add form submission handler for debugging
+        document.querySelector('form').addEventListener('submit', function(e) {
+          console.log('Form submitted');
+          // Don't prevent default - let the form submit
+        });
+      
+        // Display success message using SweetAlert2
+        @if(session('success'))
+          Swal.fire({
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
+        @endif
+
+        // Display error message using SweetAlert2
+        @if(session('error'))
+          Swal.fire({
+            title: 'Error!',
+            text: '{{ session('error') }}',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        @endif
+
+        // Display validation errors if any
+        @if($errors->any())
+          let errorMessage = '<ul>';
+          @foreach($errors->all() as $error)
+            errorMessage += '<li>{{ $error }}</li>';
+          @endforeach
+          errorMessage += '</ul>';
+          
+          Swal.fire({
+            title: 'Validation Error',
+            html: errorMessage,
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        @endif
+      });
+    </script>
+
+    <!-- Add this debugging code to display request info -->
+    <script>
+      // Check the CSRF token is correctly set
+      document.addEventListener("DOMContentLoaded", function() {
+        console.log("CSRF Token check:", document.querySelector('input[name="_token"]') ? "Token exists" : "Token missing");
+        
+        // Form method check
+        const formMethod = document.querySelector('input[name="_method"]');
+        console.log("Form method:", formMethod ? formMethod.value : "No method override");
+      });
+    </script>
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->
 </html>
 
-<!-- beautify ignore:end -->

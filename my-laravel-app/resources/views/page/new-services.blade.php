@@ -1,11 +1,4 @@
 @extends('layouts.app')
-@extends('layouts.layout-collapsed-menu-dark')
-@extends('layouts.layout-container-dark')
-@extends('layouts.layout-content-navbar-and-sidebar-dark')
-@extends('layouts.layout-without-navbar-dark')
-@extends('layouts.layout-content-navbar-dark')
-@extends('layouts.layout-fluid-dark')
-@extends('layouts.layout-without-menu-dark')
 
 <!DOCTYPE html>
 
@@ -94,7 +87,9 @@
 
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
+    
   </head>
 
   <body>
@@ -340,113 +335,113 @@
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
                           <!-- 1. Delivery Address -->
+                            <form method="post" action="{{ route('service.create') }}">
+                            @csrf
+                            @method('POST')
+                            <div class="row g-6">
+                              <div class="col-md-6">
+                                <label class="form-label" for="service_name">Services Name</label>
+                                <input
+                                  type="text"
+                                  id="service_name"
+                                  name="service_name"
+                                  class="form-control"
+                                  placeholder="Services Name"
+                                  required
+                                />
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label">Branch</label>
+                                <select
+                                  class="select2 form-select branch-select"
+                                  name="branch_code"
+                                  id="branch_code"
+                                  data-allow-clear="true"
+                                  required
+                                >
+                                  <option value="">Select Branch</option>
+                                  @foreach($branches as $branch)
+                                    <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
 
-                          <div class="row g-6">
-                            <div class="col-md-6">
-                              <label class="form-label" for="fullname"
-                                >Services Name</label
-                              >
-                              <input
-                                type="text"
-                                id="fullname"
-                                class="form-control"
-                                placeholder="Services Name"
-                              />
+                              <div class="col-12">
+                                <label class="form-label" for="description">Description</label>
+                                <textarea
+                                  name="description"
+                                  class="form-control"
+                                  id="description"
+                                  rows="4"
+                                  placeholder="Service Description"
+                                ></textarea>
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="duration">Duration</label>
+                                <input
+                                  type="number"
+                                  id="duration"
+                                  name="duration"
+                                  class="form-control"
+                                  placeholder="In Minutes"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label">Service Category</label>
+                                <select
+                                  class="select2 form-select"
+                                  name="service_category"
+                                  id="service_category"
+                                  data-allow-clear="true"
+                                  required
+                                >
+                                  <option value="">Select Service Category</option>
+                                  <option value="Facials">Facials</option>
+                                  <option value="Body Contouring">Body Contouring</option>
+                                  <option value="Laser Treatments">Laser Treatments</option>
+                                  <option value="Injectables">Injectables</option>
+                                  <option value="Others">Others</option>
+                                </select>
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="service_cost">Service Cost</label>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  id="service_cost"
+                                  name="service_cost"
+                                  class="form-control"
+                                  placeholder="Amount"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="loyalty_pts">Loyalty Reward Points</label>
+                                <input
+                                  type="number"
+                                  id="loyalty_pts"
+                                  name="loyalty_pts"
+                                  class="form-control"
+                                  placeholder="Loyalty Reward Points"
+                                />
+                              </div>
                             </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label">Branch</label>
-                              <select
-                                class="select2 form-select"
-                                data-allow-clear="true"
-                              >
-                                <option value="">Select Branch</option>
-                                <option value="AL">Pasig City Branch</option>
-                                <option value="AK">
-                                  San Mateo Rizal Branch
-                                </option>
-                                <option value="AK">Cainta Rizal Branch</option>
-                              </select>
+                            <br />
+                            <div class="col-sm-2 col-4 d-grid">
+                              <button type="submit" class="btn btn-primary" id="addServiceBtn">
+                                Add Services
+                              </button>
                             </div>
-
-                            <div class="col-12">
-                              <label class="form-label" for="address"
-                                >Description</label
-                              >
-                              <textarea
-                                name="address"
-                                class="form-control"
-                                id="address"
-                                rows="4"
-                                placeholder="Service Description"
-                              ></textarea>
-                            </div>
-
-                            <div class="col-md-6">
-                              <label class="form-label" for="pincode"
-                                >Duration</label
-                              >
-                              <input
-                                type="text"
-                                id="pincode"
-                                class="form-control"
-                                placeholder="In Minutes"
-                              />
-                            </div>
-
-                            <div class="col-md-6">
-                              <label class="form-label">Service Category</label>
-                              <select
-                                class="select2 form-select"
-                                data-allow-clear="true"
-                              >
-                                <option value="">
-                                  Select Service Category
-                                </option>
-                                <option value="AL">Facials</option>
-                                <option value="AK">Body Contouring</option>
-                                <option value="AZ">Laser Treatments</option>
-                                <option value="AZ">Injectables</option>
-                                <option value="AZ">Others</option>
-                              </select>
-                            </div>
-
-                            <div class="col-md-6">
-                              <label class="form-label" for="pincode"
-                                >Service Cost</label
-                              >
-                              <input
-                                type="text"
-                                id="pincode"
-                                class="form-control"
-                                placeholder="Amount"
-                              />
-                            </div>
-
-                            <div class="col-md-6">
-                              <label class="form-label"
-                                >Loyalty Reward Points</label
-                              >
-                              <input
-                                type="text"
-                                id="pincode"
-                                class="form-control"
-                                placeholder="Loyalty Reward Points"
-                              />
-                            </div>
-                          </div>
-
-                          <!-- 2. Delivery Type -->
-
+                          </form>
                           <br />
-                          <div class="col-sm-2 col-4 d-grid">
-                            <button class="btn btn-primary">
-                              Add Services
-                            </button>
-                          </div>
-                          <br />
-
-                          <!-- 4. Payment Method -->
+                          <!-- Success/Error Messages -->
+                          <div id="responseMessage" style="display: none;" class="alert mt-3"></div>
                         </div>
                       </div>
                     </div>
@@ -529,7 +524,64 @@
 
     <!-- Page JS -->
     <script src="../../assets/js/form-layouts.js"></script>
-  </body>
+    <script>
+      $(document).ready(function() {
+        // Define routes object for API endpoints
+        const branchRoutes = {
+          getAll: "{{ route('branch.getAllBranches') }}"
+        };
+        
+        // Load branches for select dropdown
+        loadBranchOptions();
 
-  <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->
+        // Function to load branch options for select dropdown
+        function loadBranchOptions() {
+          $.ajax({
+            url: branchRoutes.getAll,
+            type: "GET",
+            dataType: 'json',
+            success: function(response) {
+              if(response.status) {
+                populateBranchOptions(response.data);
+              } else {
+                console.error('Failed to load branches:', response.message);
+                $('#responseMessage')
+                  .removeClass()
+                  .addClass('alert alert-danger')
+                  .text('Failed to load branches: ' + response.message)
+                  .show();
+              }
+            },
+            error: function(xhr) {
+              console.error('AJAX error when loading branches:', xhr);
+              $('#responseMessage')
+                .removeClass()
+                .addClass('alert alert-danger')
+                .text('Error loading branches. Please try again later.')
+                .show();
+            }
+          });
+        }
+        
+        // Function to populate branch select options
+        function populateBranchOptions(branches) {
+          const select = $('#branch_code');
+          
+          // Clear existing options except the default one
+          const defaultOption = select.find('option:first');
+          select.empty().append(defaultOption);
+          
+          // Add branch options
+          branches.forEach(branch => {
+            select.append(`<option value="${branch.branch_code}">${branch.branch_name}</option>`);
+          });
+          
+          // Refresh Select2 if it's used
+          if ($.fn.select2) {
+            select.trigger('change');
+          }
+        }
+      });
+    </script>
+  </body>
 </html>

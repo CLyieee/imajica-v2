@@ -1,0 +1,187 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+
+class OrderController extends Controller
+{
+    public function create(Request $request)
+    {
+        try {
+            // Validate request data
+            $validator = Validator::make($request->all(), [
+                'customer_name' => 'required|string|max:255',
+                'customer_email' => 'required|email|max:255',
+                'order_date' => 'required|date',
+                'order_time' => 'required',
+                'payment_status' => 'required|in:Paid,Pending,Failed,Cancelled',
+                'order_status' => 'required|in:Ordered,Delivered,Out for Delivery,Ready to Pickup',
+                'payment_method' => 'required|string',
+                'subtotal' => 'required|numeric|min:0',
+                'tax' => 'required|numeric|min:0',
+                'total' => 'required|numeric|min:0',
+                'items' => 'required|json'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            // Decode and validate items
+            $items = json_decode($request->items, true);
+            if (!is_array($items) || empty($items)) {
+                throw new \Exception('Invalid or empty items array');
+            }
+
+            // Start transaction
+            DB::beginTransaction();
+
+            // Log the attempt to create order
+            Log::info('Attempting to create order', [
+                'customer' => $request->customer_name,
+                'email' => $request->customer_email,
+                'total_items' => count($items)
+            ]);
+
+            // Create the order
+            $order = Order::create([
+                'order_date' => $request->order_date . ' ' . $request->order_time,
+                'customer_name' => $request->customer_name,
+                'customer_email' => $request->customer_email,
+                'payment_status' => $request->payment_status,
+                'order_status' => $request->order_status,
+                'payment_method' => $request->payment_method,
+                'subtotal' => $request->subtotal,
+                'tax' => $request->tax,
+                'total' => $request->total
+            ]);
+
+            if (!$order) {
+                throw new \Exception('Failed to create order record');
+            }
+
+            // Create order items
+            foreach ($items as $item) {
+                // Validate each item
+                if (!isset($item['name'], $item['quantity'], $item['price'], $item['total'])) {
+                    throw new \Exception('Invalid item data structure');
+                }
+
+                $orderItem = OrderItem::create([
+                    'order_id' => $order->order_id,
+                    'item_name' => $item['name'],
+                    'quantity' => $item['quantity'],
+                    'unit_price' => $item['price'],
+                    'total' => $item['total']
+                ]);
+
+                if (!$orderItem) {
+                    throw new \Exception('Failed to create order item: ' . $item['name']);
+                }
+            }
+
+            DB::commit();
+            
+            Log::info('Order created successfully', [
+                'order_id' => $order->order_id,
+                'order_number' => $order->order_number
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Order created successfully',
+                'data' => [
+                    'order_id' => $order->order_id,
+                    'order_number' => $order->order_number
+                ]
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            Log::error('Order creation failed', [
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            $errorMessage = 'Failed to create order: ';
+            if (app()->environment('local')) {
+                $errorMessage .= $e->getMessage();
+            } else {
+                $errorMessage .= 'An unexpected error occurred';
+            }
+
+            return response()->json([
+                'status' => 'error',
+                'message' => $errorMessage,
+                'debug' => app()->environment('local') ? [
+                    'error' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ] : null
+            ], 500);
+        }
+    }
+
+    public function index()
+    {
+        $orders = Order::with('items')->get();
+        return view('page.order-list', compact('orders'));
+    }
+
+    public function show($id)
+    {
+        try {
+            $order = Order::with(['orderItems.product'])->findOrFail($id);
+            return view('page.order-details', compact('order'));
+        } catch (\Exception $e) {
+            return redirect()->route('page.order-list')
+                           ->with('error', 'Order not found.');
+        }
+    }
+
+    public function getOrderDetails($orderId)
+    {
+        $order = Order::where('order_id', $orderId)->first();
+    
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+    
+     
+        $items = DB::table('order_items')
+            ->join('products', 'order_items.item_name', '=', 'products.name')
+            ->select(
+                'order_items.*',
+                'products.product_image as product_image',
+                'products.description'
+            )
+            ->where('order_items.order_id', $orderId)
+            ->get();
+    
+        return response()->json([
+            'number' => $order->order_number,
+            'date' => $order->created_at->format('M d, Y'),
+            'status' => $order->order_status,
+            'payment' => $order->payment_method,
+            'customer' => [
+                'name' => $order->customer_name,
+                'email' => $order->customer_email
+            ],
+            'items' => $items
+        ]);
+      
+    }
+}

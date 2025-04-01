@@ -350,645 +350,127 @@
 
           <div class="content-wrapper">
             <!-- Content -->
-            <!-- Replace the existing table section with this card-based layout -->
             <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="row g-4">
-                <!-- Search and Filter Section -->
-                <div class="card search-section">
-                  <div class="px-4 py-3">
-                    <div class="row g-3 align-items-center">
-                      <div class="col-md-8">
-                        <div class="input-group">
-                          <span class="input-group-text"
-                            ><i class="ti tabler-search"></i
-                          ></span>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="searchStaff"
-                            placeholder="Search staff name..."
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <span class="badge bg-label-primary p-2">
-                          Total Staff: <span id="totalResults">5</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+              <div class="card">
+                <!-- Branch Filter -->
+                <div class="d-flex justify-content-between align-items-center p-3">
+                  <h5 class="card-title mb-0">Staff List</h5>
+                  <a href="{{ route('page.new-staff') }}" class="btn btn-primary">
+                    <i class="ti tabler-plus me-1"></i> Add New Staff
+                  </a>
                 </div>
 
-                <!-- Staff Cards -->
-                <div class="col-md-6 col-lg-4">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <div class="d-flex align-items-start mb-3">
-                        <div class="avatar avatar-lg me-3">
-                          <img
-                            src="../../assets/img/avatars/1.png"
-                            alt="Staff Avatar"
-                            class="rounded-circle"
-                          />
-                        </div>
-                        <div>
-                          <h5 class="mb-1">John Smith</h5>
-                          <span class="badge bg-label-primary">Doctor</span>
-                        </div>
-                      </div>
 
-                      <div class="staff-info mb-3">
-                        <div class="d-flex align-items-center mb-2">
-                          <i class="ti tabler-phone text-muted me-2"></i>
-                          <span>+63 917 123 4567</span>
-                        </div>
-                        <div class="d-flex align-items-center mb-2">
-                          <i class="ti tabler-mail text-muted me-2"></i>
-                          <span>john.smith@email.com</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                          <i class="ti tabler-map-pin text-muted me-2"></i>
-                          <span>Pasig City Branch</span>
-                        </div>
-                      </div>
+                <!-- Success/Error Messages -->
+                <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
 
-                      <div class="d-flex gap-2">
-                        <button
-                          class="btn btn-success btn-sm flex-grow-1 view-staff"
-                          data-bs-toggle="modal"
-                          data-bs-target="#staffModal"
-                          data-name="John Smith"
-                          data-role="Doctor"
-                          data-contact="+63 917 123 4567"
-                          data-email="john.smith@email.com"
-                          data-branch="Pasig City Branch"
-                          data-joined="2023-01-15"
-                          data-specialization="General Medicine"
-                          data-certifications="Board Certified in Internal Medicine, Advanced Cardiac Life Support"
-                          data-notes="Excellent team player with outstanding patient care records."
-                        >
-                          View
-                        </button>
-                        <button class="btn btn-info btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Add more staff cards following the same structure -->
-                <!-- Additional staff members... -->
-              </div>
-            </div>
-
-            <!-- Staff View Modal -->
-            <div
-              class="modal fade"
-              id="staffModal"
-              tabindex="-1"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog modal-dialog-centered modal-xl">
-                <div class="modal-content border-0">
-                  <div class="modal-header text-white border-0">
-                    <h5 class="modal-title text-white fs-4">
-                      <i class="ti tabler-user me-2"></i>
-                      <span id="modalStaffName"></span>
-                    </h5>
-                    <button
-                      type="button"
-                      class="btn-close btn-close-white"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
-
-                  <div class="modal-body p-4">
-                    <div class="row g-3">
-                      <!-- Profile and Personal Info Column -->
-                      <div class="col-md-6">
-                        <div class="staff-detail-card h-100">
-                          <div class="text-center mb-3">
-                            <div class="staff-profile-wrapper mx-auto">
-                              <img
-                                src="../../assets/img/avatars/1.png"
-                                alt="Staff Profile"
-                                class="staff-profile-image"
-                                id="modalProfileImage"
-                              />
-                            </div>
-                            <h5
-                              class="mt-3 mb-1"
-                              id="modalStaffNameProfile"
-                            ></h5>
-                            <span
-                              class="badge bg-label-primary"
-                              id="modalRoleBadge"
-                            ></span>
+                <!-- Table -->
+                <div class="table-responsive text-nowrap px-3">
+                  <table class="table table-striped">
+                    <thead class="table-light">
+                      <tr>
+                        <th class="text-center">Profile</th>
+                        <th class="text-center">Staff Name</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Position</th>
+                        <th class="text-center">Department</th>
+                        <th class="text-center">Contact Number</th>
+                        <th class="text-center">Branch</th>
+                        <th class="text-center">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach ($staffs as $staff)
+                      <tr>
+                        <td>
+                          <div class="avatar">
+                            @if($staff->image_path)
+                              <img src="{{ asset('storage/'.$staff->image_path) }}" alt="Avatar" class="rounded-circle">
+                            @else
+                              <span class="avatar-initial rounded-circle bg-label-success">
+                                {{ strtoupper(substr($staff->firstname ?? '', 0, 1) . substr($staff->lastname ?? '', 0, 1)) }}
+                              </span>
+                            @endif
                           </div>
-
-                          <div class="staff-info-item">
-                            <div class="staff-info-icon">
-                              <i class="ti tabler-phone"></i>
-                            </div>
-                            <div>
-                              <span class="text-muted">Contact:</span>
-                              <span
-                                class="fw-semibold"
-                                id="modalContact"
-                              ></span>
-                            </div>
+                        </td>
+                        <td>{{ $staff->firstname }} {{ $staff->lastname }}</td>
+                        <td>{{ $staff->email }}</td>
+                        <td>{{ $staff->position }}</td>
+                        <td>{{ $staff->department }}</td>
+                        <td>{{ $staff->contact_number }}</td>
+                        <td>
+                          @if($staff->branch_code)
+                            {{ $staff->branch ? $staff->branch->branch_name : $staff->branch_code }}
+                          @else
+                            N/A
+                          @endif
+                        </td>
+                        <td>
+                          <div class="d-inline-block">
+                            <button type="button" class="btn btn-sm btn-success view-staff"
+                              data-bs-toggle="modal"
+                              data-bs-target="#staffModal"
+                              data-id="{{ $staff->id }}"
+                              data-name="{{ $staff->firstname }} {{ $staff->lastname }}"
+                              data-email="{{ $staff->email }}"
+                              data-contact="{{ $staff->contact_number }}"
+                              data-position="{{ $staff->position }}"
+                              data-department="{{ $staff->department }}"
+                              data-join-date="{{ $staff->join_date }}"
+                              data-employment-type="{{ $staff->employment_type }}"
+                              data-branch="{{ $staff->branch_code }}"
+                              data-address="{{ $staff->address }}"
+                              data-emergency-contact="{{ $staff->emergency_contact_name }}"
+                              data-emergency-number="{{ $staff->emergency_contact_number }}"
+                              @if($staff->image_path) 
+                                data-profile-image="{{ asset('storage/'.$staff->image_path) }}" 
+                              @endif>
+                              <i class="ti tabler-eye me-1"></i> View
+                            </button>
+                            <button type="button" class="btn btn-sm btn-info edit-staff"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editStaffModal"
+                              data-id="{{ $staff->id }}">
+                              <i class="ti tabler-edit me-1"></i> Edit
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger delete-staff" 
+                              data-id="{{ $staff->id }}"
+                              data-name="{{ $staff->firstname }} {{ $staff->lastname }}">
+                              <i class="ti tabler-trash me-1"></i> Delete
+                            </button>
                           </div>
-
-                          <div class="staff-info-item">
-                            <div class="staff-info-icon">
-                              <i class="ti tabler-mail"></i>
-                            </div>
-                            <div>
-                              <span class="text-muted">Email:</span>
-                              <span class="fw-semibold" id="modalEmail"></span>
-                            </div>
-                          </div>
-
-                          <div class="staff-info-item mb-0">
-                            <div class="staff-info-icon">
-                              <i class="ti tabler-map-pin"></i>
-                            </div>
-                            <div>
-                              <span class="text-muted">Branch:</span>
-                              <span class="fw-semibold" id="modalBranch"></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Professional Details Column -->
-                      <div class="col-md-6">
-                        <div class="staff-detail-card h-100">
-                          <h6 class="text-primary mb-3">
-                            Professional Details
-                          </h6>
-
-                          <div class="staff-info-item">
-                            <div class="staff-info-icon">
-                              <i class="ti tabler-briefcase"></i>
-                            </div>
-                            <div>
-                              <strong class="text-dark d-block mb-1"
-                                >Role</strong
-                              >
-                              <span
-                                class="text-secondary"
-                                id="modalRole"
-                              ></span>
-                            </div>
-                          </div>
-
-                          <div class="staff-info-item">
-                            <div class="staff-info-icon">
-                              <i class="ti tabler-certificate"></i>
-                            </div>
-                            <div>
-                              <strong class="text-dark d-block mb-1"
-                                >Specialization</strong
-                              >
-                              <span
-                                class="text-secondary"
-                                id="modalSpecialization"
-                              ></span>
-                            </div>
-                          </div>
-
-                          <div class="staff-info-item">
-                            <div class="staff-info-icon">
-                              <i class="ti tabler-calendar"></i>
-                            </div>
-                            <div>
-                              <strong class="text-dark d-block mb-1"
-                                >Joined Date</strong
-                              >
-                              <span
-                                class="text-secondary"
-                                id="modalJoined"
-                              ></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Additional Information Section -->
-                      <div class="col-12">
-                        <div class="staff-detail-card">
-                          <h6
-                            class="text-primary d-flex align-items-center mb-3"
-                          >
-                            <i class="ti tabler-file-text me-2"></i>
-                            Additional Information
-                          </h6>
-
-                          <div class="additional-info-content">
-                            <div class="alert alert-info-custom mb-3">
-                              <div class="d-flex align-items-start">
-                                <i
-                                  class="ti tabler-certificate-2 fs-5 me-2 text-primary"
-                                ></i>
-                                <div>
-                                  <h6 class="alert-heading mb-1">
-                                    Certifications
-                                  </h6>
-                                  <div id="modalCertifications"></div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="alert alert-info-custom mb-0">
-                              <div class="d-flex align-items-start">
-                                <i
-                                  class="ti tabler-notes fs-5 me-2 text-primary"
-                                ></i>
-                                <div>
-                                  <h6 class="alert-heading mb-1">Notes</h6>
-                                  <p class="mb-0" id="modalNotes"></p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                        </td>
+                      </tr>
+                      @endforeach
+                      @if(count($staffs) == 0)
+                      <tr>
+                        <td colspan="8" class="text-center">No staff found</td>
+                      </tr>
+                      @endif
+                    </tbody>
+                  </table>
+                  <br />
                 </div>
               </div>
             </div>
+            <!-- / Content -->
 
-            <!-- Add necessary styles -->
-            <style>
-              .card {
-                transition: transform 0.2s ease-in-out,
-                  box-shadow 0.2s ease-in-out;
-              }
-
-              .card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-              }
-
-              .avatar.avatar-lg {
-                width: 48px;
-                height: 48px;
-              }
-
-              .staff-info {
-                font-size: 0.875rem;
-              }
-
-              .search-section {
-                background-color: #fff;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-              }
-
-              .input-group-text {
-                background-color: #fff;
-                border-right: none;
-              }
-
-              #searchStaff {
-                border-left: none;
-              }
-
-              #searchStaff:focus {
-                box-shadow: none;
-                border-color: #dee2e6;
-              }
-              .modal-xl {
-                max-width: 1140px;
-              }
-
-              .staff-detail-card {
-                background: #fff;
-                border-radius: 0.75rem;
-                padding: 1.25rem;
-                height: 100%;
-                box-shadow: 0 0.125rem 0.25rem rgba(10, 54, 34, 0.075);
-              }
-
-              .staff-profile-wrapper {
-                width: 120px;
-                height: 120px;
-                border-radius: 50%;
-                overflow: hidden;
-                border: 3px solid #0a3622;
-                box-shadow: 0 4px 15px rgba(10, 54, 34, 0.2);
-                margin-bottom: 1rem;
-              }
-
-              .staff-profile-image {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: transform 0.3s ease;
-              }
-
-              .staff-info-item {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                margin-bottom: 1rem;
-                padding: 0.75rem;
-                border-radius: 0.5rem;
-                background-color: rgba(10, 54, 34, 0.03);
-              }
-
-              .staff-info-icon {
-                width: 32px;
-                height: 32px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: #e7efe9;
-                color: #0a3622;
-                border-radius: 0.5rem;
-                flex-shrink: 0;
-              }
-
-              .staff-info-content {
-                flex: 1;
-              }
-
-              .staff-info-label {
-                font-size: 0.75rem;
-                color: #6c757d;
-                margin-bottom: 0.25rem;
-                display: block;
-              }
-
-              .staff-info-value {
-                color: #2c3e50;
-                font-weight: 500;
-              }
-
-              .modal-header {
-                background: linear-gradient(
-                  135deg,
-                  #0a3622 0%,
-                  #1a5c3c 100%
-                ) !important;
-                border-top-left-radius: 1rem;
-                border-top-right-radius: 1rem;
-                padding: 1.5rem;
-              }
-
-              .modal-content {
-                border-radius: 1rem;
-              }
-              .alert-info-custom {
-                background-color: rgba(10, 54, 34, 0.05);
-                border: none;
-                border-radius: 0.75rem;
-              }
-
-              .staff-cert-item {
-                margin-bottom: 0.5rem;
-                display: flex;
-                align-items: center;
-              }
-
-              .text-muted {
-                margin-right: 0.5rem;
-              }
-
-              .fw-semibold {
-                font-weight: 600;
-              }
-            </style>
-
-            <!-- Add necessary scripts -->
-            <script>
-              document.addEventListener("DOMContentLoaded", function () {
-                const searchInput = document.getElementById("searchStaff");
-                const staffCards =
-                  document.querySelectorAll(".col-md-6.col-lg-4");
-                const totalResults = document.getElementById("totalResults");
-
-                function filterStaff() {
-                  const searchTerm = searchInput.value.toLowerCase();
-                  let visibleCount = 0;
-
-                  staffCards.forEach((card) => {
-                    const staffName = card
-                      .querySelector("h5")
-                      .textContent.toLowerCase();
-                    if (staffName.includes(searchTerm)) {
-                      card.style.display = "";
-                      visibleCount++;
-                    } else {
-                      card.style.display = "none";
-                    }
-                  });
-
-                  totalResults.textContent = visibleCount;
-                }
-
-                searchInput.addEventListener("input", filterStaff);
-                filterStaff();
-              });
-
-              // View staff modal handler
-              document.querySelectorAll(".view-staff").forEach((button) => {
-                button.addEventListener("click", function () {
-                  document.getElementById("modalStaffName").textContent =
-                    this.dataset.name;
-
-                  const modalContent = `
-      <div class="row g-3">
-        <div class="col-md-6">
-          <div class="staff-detail-card">
-            <div class="text-center mb-3">
-              <div class="staff-profile-wrapper mx-auto">
-                <img src="../../assets/img/avatars/1.png" alt="Staff Profile" class="staff-profile-image">
+            <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl">
+                <div class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
+                  <div class="text-body">
+                    © <script>document.write(new Date().getFullYear());</script>
+                    Developed by <a href="https://intra-code.com/" target="_blank" class="footer-link">Intracode IT Solutions</a>
+                  </div>
+                </div>
               </div>
-              <h5 class="mt-3 mb-1">${this.dataset.name}</h5>
-              <span class="badge bg-label-primary">${this.dataset.role}</span>
-            </div>
-            <div class="staff-info-item">
-              <small class="text-muted d-block">Contact</small>
-              <span class="fw-semibold">${this.dataset.contact}</span>
-            </div>
-            <div class="staff-info-item">
-              <small class="text-muted d-block">Email</small>
-              <span class="fw-semibold">${this.dataset.email}</span>
-            </div>
-            <div class="staff-info-item">
-              <small class="text-muted d-block">Branch</small>
-              <span class="fw-semibold">${this.dataset.branch}</span>
-            </div>
+            </footer>
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="staff-detail-card">
-            <h6 class="text-primary mb-3">Professional Details</h6>
-            <div class="staff-info-item">
-              <small class="text-muted d-block">Role</small>
-              <span class="fw-semibold">${this.dataset.role}</span>
-            </div>
-            <div class="staff-info-item">
-              <small class="text-muted d-block">Specialization</small>
-              <span class="fw-semibold">${this.dataset.specialization}</span>
-            </div>
-            <div class="staff-info-item">
-              <small class="text-muted d-block">Joined Date</small>
-              <span class="fw-semibold">${this.dataset.joined}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-                  document.querySelector("#staffModal .modal-body").innerHTML =
-                    modalContent;
-                });
-              });
-            </script>
-            <script>
-              document.addEventListener("DOMContentLoaded", function () {
-                document.querySelectorAll(".view-staff").forEach((button) => {
-                  button.addEventListener("click", function () {
-                    // Update modal content
-                    document.getElementById("modalStaffName").textContent =
-                      this.dataset.name;
-                    document.getElementById(
-                      "modalStaffNameProfile"
-                    ).textContent = this.dataset.name;
-                    document.getElementById("modalRoleBadge").textContent =
-                      this.dataset.role;
-                    document.getElementById("modalContact").textContent =
-                      this.dataset.contact;
-                    document.getElementById("modalEmail").textContent =
-                      this.dataset.email;
-                    document.getElementById("modalBranch").textContent =
-                      this.dataset.branch;
-                    document.getElementById("modalRole").textContent =
-                      this.dataset.role;
-                    document.getElementById("modalSpecialization").textContent =
-                      this.dataset.specialization;
-                    document.getElementById("modalJoined").textContent =
-                      this.dataset.joined;
-                  });
-                });
-              });
-            </script>
-            <script>
-              document.addEventListener("DOMContentLoaded", function () {
-                document.querySelectorAll(".view-staff").forEach((button) => {
-                  button.addEventListener("click", function () {
-                    const name = this.dataset.name;
-
-                    // Update modal content
-                    document.getElementById("modalStaffName").textContent =
-                      name;
-                    document.getElementById(
-                      "modalStaffNameProfile"
-                    ).textContent = name;
-                    document.getElementById("modalRoleBadge").textContent =
-                      this.dataset.role;
-                    document.getElementById("modalContact").textContent =
-                      this.dataset.contact;
-                    document.getElementById("modalEmail").textContent =
-                      this.dataset.email;
-                    document.getElementById("modalBranch").textContent =
-                      this.dataset.branch;
-                    document.getElementById("modalRole").textContent =
-                      this.dataset.role;
-                    document.getElementById("modalSpecialization").textContent =
-                      this.dataset.specialization;
-                    document.getElementById("modalJoined").textContent =
-                      this.dataset.joined;
-
-                    // Handle certifications
-                    const certifications = this.dataset.certifications;
-                    const certDiv = document.getElementById(
-                      "modalCertifications"
-                    );
-                    if (certifications) {
-                      const certList = certifications
-                        .split(",")
-                        .map(
-                          (cert) => `<div class="staff-cert-item">
-            <i class="ti tabler-point text-primary me-2"></i>
-            ${cert.trim()}
-          </div>`
-                        )
-                        .join("");
-                      certDiv.innerHTML = certList;
-                    } else {
-                      certDiv.innerHTML =
-                        '<p class="mb-0">No certifications listed</p>';
-                    }
-
-                    // Handle notes
-                    document.getElementById("modalNotes").textContent =
-                      this.dataset.notes || "No additional notes";
-                  });
-                });
-              });
-            </script>
-            <script>
-              document.addEventListener("DOMContentLoaded", function () {
-                document.querySelectorAll(".view-staff").forEach((button) => {
-                  button.addEventListener("click", function () {
-                    // Update modal content
-                    document.getElementById("modalStaffName").textContent =
-                      this.dataset.name;
-                    document.getElementById(
-                      "modalStaffNameProfile"
-                    ).textContent = this.dataset.name;
-                    document.getElementById("modalRoleBadge").textContent =
-                      this.dataset.role;
-                    document.getElementById("modalContact").textContent =
-                      this.dataset.contact;
-                    document.getElementById("modalEmail").textContent =
-                      this.dataset.email;
-                    document.getElementById("modalBranch").textContent =
-                      this.dataset.branch;
-                    document.getElementById("modalRole").textContent =
-                      this.dataset.role;
-                    document.getElementById("modalSpecialization").textContent =
-                      this.dataset.specialization;
-                    document.getElementById("modalJoined").textContent =
-                      this.dataset.joined;
-
-                    // Handle certifications
-                    const certifications = this.dataset.certifications;
-                    const certDiv = document.getElementById(
-                      "modalCertifications"
-                    );
-                    if (certifications) {
-                      const certList = certifications
-                        .split(",")
-                        .map(
-                          (cert) => `<div class="staff-cert-item">
-                          <i class="ti tabler-point text-primary me-2"></i>
-                          ${cert.trim()}
-                        </div>`
-                        )
-                        .join("");
-                      certDiv.innerHTML = certList;
-                    } else {
-                      certDiv.innerHTML =
-                        '<p class="mb-0">No certifications listed</p>';
-                    }
-
-                    // Handle notes
-                    document.getElementById("modalNotes").textContent =
-                      this.dataset.notes || "No additional notes";
-                  });
-                });
-              });
-            </script>
-          </div>
-
-          <!-- Content wrapper -->
-
           <!-- Content wrapper -->
         </div>
         <!-- / Layout page -->
@@ -996,7 +478,7 @@
 
       <!-- Overlay -->
       <div class="layout-overlay layout-menu-toggle"></div>
-
+      
       <!-- Drag Target Area To SlideIn Menu On Small Screens -->
       <div class="drag-target"></div>
     </div>
@@ -1008,6 +490,7 @@
     <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
 
     <script src="../../assets/vendor/libs/popper/popper.js"></script>
+
     <script src="../../assets/vendor/js/bootstrap.js"></script>
     <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
 
@@ -1047,24 +530,568 @@
     <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
     <script>
       $(document).ready(function () {
-        var table = $("#servicesTable").DataTable();
+        $("#servicesTable").DataTable();
+      });
+    </script>
 
-        // Update total employees count
-        function updateTotalEmployees() {
-          var visibleRows = table.page.info().recordsDisplay;
-          $(".card-title span").text(visibleRows);
-        }
 
-        // Update count on filter change
-        $("#branchFilter").on("change", function () {
-          var selectedBranch = $(this).val();
-          table.column(2).search(selectedBranch).draw();
-          updateTotalEmployees();
+    <!-- Staff Modal -->
+    <div class="modal fade" id="staffModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0">
+          <div class="modal-header bg-primary text-white border-0">
+            <h5 class="modal-title text-white fs-4">
+              <i class="ti tabler-user me-2"></i>
+              <span id="modalStaffName" class="text-white"></span>
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="row g-3">
+              <!-- Profile and Personal Info Column -->
+              <div class="col-md-6">
+                <div class="patient-detail-card h-100">
+                  <!-- Profile Section -->
+                  <div class="text-center mb-3">
+                    <div class="patient-profile-wrapper mx-auto">
+                      <img
+                        src="../../assets/img/avatars/default-avatar.png"
+                        alt="Staff Profile"
+                        class="patient-profile-image"
+                        id="modalProfileImage"
+                      />
+                    </div>
+                    <h5 class="mt-3 mb-1" id="modalStaffNameProfile"></h5>
+                    <p class="text-muted mb-0" id="modalPosition"></p>
+                  </div>
+                  <!-- Personal Info -->
+                  <div class="patient-info-item">
+                    <div class="patient-info-icon">
+                      <i class="ti tabler-phone"></i>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Contact</small>
+                      <span id="modalContact" class="fw-semibold"></span>
+                    </div>
+                  </div>
+                  <div class="patient-info-item">
+                    <div class="patient-info-icon">
+                      <i class="ti tabler-mail"></i>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Email</small>
+                      <span id="modalEmail" class="fw-semibold"></span>
+                    </div>
+                  </div>
+                  <div class="patient-info-item">
+                    <div class="patient-info-icon">
+                      <i class="ti tabler-briefcase"></i>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Department</small>
+                      <span id="modalDepartment" class="fw-semibold"></span>
+                    </div>
+                  </div>
+                  <div class="patient-info-item">
+                    <div class="patient-info-icon">
+                      <i class="ti tabler-building"></i>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Branch</small>
+                      <span id="modalBranch" class="fw-semibold"></span>
+                    </div>
+                  </div>
+                  <div class="patient-info-item mb-0">
+                    <div class="patient-info-icon">
+                      <i class="ti tabler-map-pin"></i>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Address</small>
+                      <span id="modalAddress" class="fw-semibold"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Additional Information Column -->
+              <div class="col-md-6">
+                <div class="patient-detail-card h-100">
+                  <h6 class="text-primary mb-3">Employment Information</h6>
+                  <div class="patient-info-item">
+                    <div class="patient-info-icon">
+                      <i class="ti tabler-calendar"></i>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Join Date</small>
+                      <span id="modalJoinDate" class="fw-semibold"></span>
+                    </div>
+                  </div>
+                  <div class="patient-info-item">
+                    <div class="patient-info-icon">
+                      <i class="ti tabler-id"></i>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Employment Type</small>
+                      <span id="modalEmploymentType" class="fw-semibold"></span>
+                    </div>
+                  </div>
+                  <div class="patient-info-item mb-0">
+                    <div class="patient-info-icon">
+                      <i class="ti tabler-emergency"></i>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Emergency Contact</small>
+                      <span id="modalEmergencyContact" class="fw-semibold"></span>
+                      <small id="modalEmergencyNumber" class="text-muted d-block mt-1"></small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="editStaffLink" class="btn btn-info" data-bs-dismiss="modal">
+              <i class="ti tabler-edit me-1"></i> Edit Staff
+            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Staff Modal -->
+    <div class="modal fade" id="editStaffModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <form id="editStaffForm" method="POST" action="{{ route('staff.update') }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="staff_id" id="edit_staff_id">
+            
+            <div class="modal-header bg-info">
+              <h5 class="modal-title text-white">
+                <i class="ti tabler-edit me-1"></i> Edit Staff
+              </h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body">
+              <div class="row g-3">
+                <!-- Personal Information Section -->
+                <div class="col-12">
+                  <h6 class="fw-semibold">Personal Information</h6>
+                  <hr class="mt-0">
+                </div>
+                
+                <!-- Profile Image -->
+                <div class="col-12 text-center mb-3">
+                  <div class="patient-profile-wrapper mx-auto position-relative">
+                    <img id="edit_preview_image" src="../../assets/img/avatars/default-avatar.png" 
+                         class="patient-profile-image" alt="Staff Profile">
+                    <div class="profile-image-overlay">
+                      <label for="edit_image_path" class="btn btn-sm btn-primary position-absolute bottom-0 end-0 m-2">
+                        <i class="ti tabler-camera"></i>
+                      </label>
+                      <input type="file" name="image_path" id="edit_image_path" class="d-none" accept="image/*">
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Name Fields -->
+                <div class="col-md-6">
+                  <label for="edit_firstname" class="form-label">First Name</label>
+                  <input type="text" class="form-control" id="edit_firstname" name="firstname" required>
+                </div>
+                
+                <div class="col-md-6">
+                  <label for="edit_lastname" class="form-label">Last Name</label>
+                  <input type="text" class="form-control" id="edit_lastname" name="lastname" required>
+                </div>
+                
+                <!-- Contact Fields -->
+                <div class="col-md-6">
+                  <label for="edit_email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="edit_email" name="email" required>
+                </div>
+                
+                <div class="col-md-6">
+                  <label for="edit_contact_number" class="form-label">Contact Number</label>
+                  <input type="text" class="form-control" id="edit_contact_number" name="contact_number" required>
+                </div>
+                
+                <!-- Employment Details -->
+                <div class="col-md-6">
+                  <label for="edit_position" class="form-label">Position</label>
+                  <input type="text" class="form-control" id="edit_position" name="position" required>
+                </div>
+                
+                <div class="col-md-6">
+                  <label for="edit_department" class="form-label">Department</label>
+                  <input type="text" class="form-control" id="edit_department" name="department" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="edit_join_date" class="form-label">Join Date</label>
+                  <input type="date" class="form-control" id="edit_join_date" name="join_date" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="edit_employment_type" class="form-label">Employment Type</label>
+                  <select class="form-select" id="edit_employment_type" name="employment_type" required>
+                    <option value="">Select Type</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Freelance">Freelance</option>
+                  </select>
+                </div>
+                
+                <div class="col-md-6">
+                  <label for="edit_branch_code" class="form-label">Branch</label>
+                  <select class="form-select" id="edit_branch_code" name="branch_code" required>
+                    <option value="">Select Branch</option>
+                    @foreach($branches as $branch)
+                      <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                
+                <div class="col-md-6"></div>
+                
+                <div class="col-12">
+                  <label for="edit_address" class="form-label">Address</label>
+                  <textarea class="form-control" id="edit_address" name="address" rows="2" required></textarea>
+                </div>
+                
+                <!-- Emergency Contact Section -->
+                <div class="col-12 mt-3">
+                  <h6 class="fw-semibold">Emergency Contact</h6>
+                  <hr class="mt-0">
+                </div>
+                
+                <div class="col-md-6">
+                  <label for="edit_emergency_contact_name" class="form-label">Contact Name</label>
+                  <input type="text" class="form-control" id="edit_emergency_contact_name" name="emergency_contact_name">
+                </div>
+                
+                <div class="col-md-6">
+                  <label for="edit_emergency_contact_number" class="form-label">Contact Number</label>
+                  <input type="text" class="form-control" id="edit_emergency_contact_number" name="emergency_contact_number">
+                </div>
+              </div>
+            </div>
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-info">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteStaffModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-danger">
+            <h5 class="modal-title text-white">Confirm Delete</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete <span id="deleteStaffName" class="fw-bold"></span>? This action cannot be undone.</p>
+          </div>
+          <div class="modal-footer">
+            <form id="deleteStaffForm" action="" method="POST">
+              @csrf
+              @method('DELETE')
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Clean modal styles -->
+    <style>
+      .avatar {
+        width: 38px;
+        height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .avatar-initial {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 500;
+        font-size: 0.875rem;
+      }
+      
+      .rounded-circle {
+        border-radius: 50% !important;
+      }
+      
+      .modal-header {
+        background: linear-gradient(135deg, #0a3622 0%, #1a5c3c 100%) !important;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+      }
+      
+      .patient-profile-wrapper {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid #0a3622;
+        box-shadow: 0 4px 15px rgba(10, 54, 34, 0.2);
+        margin: 0 auto 1rem;
+      }
+      
+      .patient-profile-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .patient-detail-card {
+        background: #fff;
+        border-radius: 0.75rem;
+        padding: 1.25rem;
+        height: 100%;
+        box-shadow: 0 0.125rem 0.25rem rgba(10, 54, 34, 0.075);
+      }
+      
+      .patient-info-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+      }
+      
+      .patient-info-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e7efe9;
+        color: #0a3622;
+        border-radius: 0.5rem;
+        margin-right: 0.75rem;
+      }
+      
+      /* Profile image edit overlay */
+      .profile-image-overlay {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+      
+      .patient-profile-wrapper:hover .patient-profile-image {
+        opacity: 0.7;
+      }
+      
+      /* Form styling */
+      .modal-lg {
+        max-width: 900px;
+      }
+      
+      .form-label {
+        font-weight: 500;
+      }
+      
+      .modal-body hr {
+        opacity: 0.1;
+      }
+    </style>
+
+    <!-- JavaScript for staff modals -->
+    <script>
+      // Create initials avatar when no image is available
+      function createInitialsAvatar(name) {
+        if (!name) return '';
+        
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.width = 120;
+        canvas.height = 120;
+
+        context.fillStyle = "#0a3622";
+
+        context.beginPath();
+        context.arc(60, 60, 60, 0, Math.PI * 2);
+        context.fill();
+
+        const initials = name
+          .split(" ")
+          .map(word => word[0])
+          .join("")
+          .toUpperCase();
+
+        context.font = "bold 48px Arial";
+        context.fillStyle = "#FFFFFF";
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillText(initials, 60, 60);
+
+        return canvas.toDataURL();
+      }
+
+      // Handle staff actions
+      document.addEventListener("DOMContentLoaded", function() {
+        // Image preview for edit form
+        document.getElementById('edit_image_path').addEventListener('change', function(e) {
+          if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              document.getElementById('edit_preview_image').src = e.target.result;
+            }
+            reader.readAsDataURL(e.target.files[0]);
+          }
         });
 
-        // Initial count
-        updateTotalEmployees();
+        // View staff details
+        const viewButtons = document.querySelectorAll(".view-staff");
+        viewButtons.forEach(button => {
+          button.addEventListener("click", function() {
+            const data = this.dataset;
+            
+            // Store staff ID for edit button
+            document.getElementById("editStaffLink").setAttribute('data-id', data.id);
+            
+            // Set profile image
+            const profileImage = document.getElementById("modalProfileImage");
+            profileImage.src = data.profileImage || createInitialsAvatar(data.name);
+            
+            // Basic information
+            document.getElementById("modalStaffName").textContent = data.name || '';
+            document.getElementById("modalStaffNameProfile").textContent = data.name || '';
+            document.getElementById("modalPosition").textContent = data.position || '';
+            document.getElementById("modalContact").textContent = data.contact || 'Not provided';
+            document.getElementById("modalEmail").textContent = data.email || 'Not provided';
+            document.getElementById("modalDepartment").textContent = data.department || 'Not specified';
+            document.getElementById("modalAddress").textContent = data.address || 'Not provided';
+            
+            // Employment information
+            document.getElementById("modalJoinDate").textContent = data.joinDate || 'Not provided';
+            document.getElementById("modalEmploymentType").textContent = data.employmentType || 'Not specified';
+            document.getElementById("modalBranch").textContent = getBranchName(data.branch) || 'Not assigned';
+            
+            // Emergency contact
+            document.getElementById("modalEmergencyContact").textContent = data.emergencyContact || 'Not provided';
+            document.getElementById("modalEmergencyNumber").textContent = data.emergencyNumber || '';
+          });
+        });
+        
+        // Get branch name from branch code
+        function getBranchName(branchCode) {
+          const branchSelect = document.getElementById('edit_branch_code');
+          for (let i = 0; i < branchSelect.options.length; i++) {
+            if (branchSelect.options[i].value === branchCode) {
+              return branchSelect.options[i].text;
+            }
+          }
+          return null;
+        }
+        
+        // Edit staff button click
+        document.getElementById('editStaffLink').addEventListener('click', function() {
+          const staffId = this.getAttribute('data-id');
+          // Open the edit modal programmatically after the view modal is dismissed
+          $('#staffModal').on('hidden.bs.modal', function () {
+            // Populate the edit form
+            populateEditForm(staffId);
+            // Show the edit modal
+            $('#editStaffModal').modal('show');
+            // Remove the event to prevent multiple bindings
+            $('#staffModal').off('hidden.bs.modal');
+          });
+        });
+        
+        // Direct edit button click
+        const editButtons = document.querySelectorAll(".edit-staff");
+        editButtons.forEach(button => {
+          button.addEventListener("click", function() {
+            const staffId = this.dataset.id;
+            populateEditForm(staffId);
+          });
+        });
+
+        // Function to populate edit form with staff data
+        function populateEditForm(staffId) {
+          // Find the view button for this staff to get data
+          const viewButton = document.querySelector(`.view-staff[data-id="${staffId}"]`);
+          if (!viewButton) return;
+          
+          const data = viewButton.dataset;
+          
+          // Set form action and staff ID
+          document.getElementById('edit_staff_id').value = staffId;
+          
+          // Set image preview
+          const previewImage = document.getElementById('edit_preview_image');
+          previewImage.src = data.profileImage || createInitialsAvatar(data.name);
+          
+          // Fill form fields with staff data
+          document.getElementById('edit_firstname').value = data.name.split(' ')[0] || '';
+          document.getElementById('edit_lastname').value = data.name.split(' ').slice(1).join(' ') || '';
+          document.getElementById('edit_email').value = data.email || '';
+          document.getElementById('edit_contact_number').value = data.contact || '';
+          document.getElementById('edit_position').value = data.position || '';
+          document.getElementById('edit_department').value = data.department || '';
+          document.getElementById('edit_join_date').value = data.joinDate || '';
+          document.getElementById('edit_employment_type').value = data.employmentType || '';
+          document.getElementById('edit_branch_code').value = data.branch || '';
+          document.getElementById('edit_address').value = data.address || '';
+          document.getElementById('edit_emergency_contact_name').value = data.emergencyContact || '';
+          document.getElementById('edit_emergency_contact_number').value = data.emergencyNumber || '';
+        }
+        
+        // Delete staff confirmation
+        const deleteButtons = document.querySelectorAll(".delete-staff");
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteStaffModal'));
+        
+        deleteButtons.forEach(button => {
+          button.addEventListener("click", function() {
+            const staffId = this.dataset.id;
+            const staffName = this.dataset.name;
+            
+            document.getElementById("deleteStaffName").textContent = staffName;
+            document.getElementById("deleteStaffForm").action = `/staff/${staffId}`;
+            
+            deleteModal.show();
+          });
+        });
       });
+    </script>
+
+    <!-- Update this script to handle staff deletion instead of patient deletion -->
+    <script>
+    function confirmDelete() {
+      if (confirm('Are you sure you want to delete this staff? This action cannot be undone.')) {
+        // Add your delete logic here
+        console.log('Staff deleted');
+      }
+    }
     </script>
   </body>
 </html>

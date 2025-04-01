@@ -102,11 +102,7 @@
 
     <!-- Helpers -->
     <script src="../../assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    
-      <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-      <script src="../../assets/vendor/js/template-customizer.js"></script>
-    
+  
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     
       <script src="../../assets/js/config.js"></script>
@@ -175,145 +171,6 @@
   <ul class="navbar-nav flex-row align-items-center ms-md-auto">
     
 
-      
-      <li class="nav-item dropdown-language dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown">
-          <i class="icon-base ti tabler-language icon-22px text-heading"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
-              <span>English</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="fr" data-text-direction="ltr">
-              <span>French</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="ar" data-text-direction="rtl">
-              <span>Arabic</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="de" data-text-direction="ltr">
-              <span>German</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!--/ Language -->
-
-      
-        <!-- Style Switcher -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" id="nav-theme" href="javascript:void(0);" data-bs-toggle="dropdown">
-            <i class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"></i>
-            <span class="d-none ms-2" id="nav-theme-text">Toggle theme</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-theme-text">
-            <li>
-              <button type="button" class="dropdown-item align-items-center active" data-bs-theme-value="light" aria-pressed="false">
-                <span><i class="icon-base ti tabler-sun icon-22px me-3" data-icon="sun"></i>Light</span>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="dark" aria-pressed="true">
-                <span><i class="icon-base ti tabler-moon-stars icon-22px me-3" data-icon="moon-stars"></i>Dark</span>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="system" aria-pressed="false">
-                <span><i class="icon-base ti tabler-device-desktop-analytics icon-22px me-3" data-icon="device-desktop-analytics"></i>System</span>
-              </button>
-            </li>
-          </ul>
-        </li>
-        <!-- / Style Switcher-->
-      
-
-      <!-- Quick links  -->
-      <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-          <i class="icon-base ti tabler-layout-grid-add icon-22px text-heading"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-end p-0">
-          <div class="dropdown-menu-header border-bottom">
-            <div class="dropdown-header d-flex align-items-center py-3">
-              <h6 class="mb-0 me-auto">Shortcuts</h6>
-              <a href="javascript:void(0)" class="dropdown-shortcuts-add py-2 btn btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Add shortcuts"><i class="icon-base ti tabler-plus icon-20px text-heading"></i></a>
-            </div>
-          </div>
-          <div class="dropdown-shortcuts-list scrollable-container">
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-calendar icon-26px text-heading"></i>
-                </span>
-                <a href="app-calendar.html" class="stretched-link">Calendar</a>
-                <small>Appointments</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-file-dollar icon-26px text-heading"></i>
-                </span>
-                <a href="app-invoice-list.html" class="stretched-link">Invoice App</a>
-                <small>Manage Accounts</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-user icon-26px text-heading"></i>
-                </span>
-                <a href="app-user-list.html" class="stretched-link">User App</a>
-                <small>Manage Users</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-users icon-26px text-heading"></i>
-                </span>
-                <a href="app-access-roles.html" class="stretched-link">Role Management</a>
-                <small>Permission</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-device-desktop-analytics icon-26px text-heading"></i>
-                </span>
-                <a href="index.html" class="stretched-link">Dashboard</a>
-                <small>User Dashboard</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-settings icon-26px text-heading"></i>
-                </span>
-                <a href="pages-account-settings-account.html" class="stretched-link">Setting</a>
-                <small>Account Settings</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-help-circle icon-26px text-heading"></i>
-                </span>
-                <a href="pages-faq.html" class="stretched-link">FAQs</a>
-                <small>FAQs & Articles</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-square icon-26px text-heading"></i>
-                </span>
-                <a href="modal-examples.html" class="stretched-link">Modals</a>
-                <small>Useful Popups</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      <!-- Quick links -->
 
       <!-- Notification -->
       <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
@@ -591,412 +448,311 @@
         <p class="mb-0">Orders placed across your store</p>
       </div>
       <div class="d-flex align-content-center flex-wrap gap-4">
-        <div class="d-flex gap-4"><button class="btn btn-label-secondary">Discard</button> <button class="btn btn-label-primary">Save draft</button></div>
-        <button type="submit" class="btn btn-primary">Publish product</button>
+        <div class="d-flex gap-4">
+          <button type="button" class="btn btn-label-secondary" id="discardBtn">Discard</button>
+          <button type="button" class="btn btn-primary" id="createProductBtn">Create Product</button>
+        </div>
       </div>
     </div>
 
-    <div class="row">
-      <!-- First column-->
-      <div class="col-12 col-lg-8">
-        <!-- Product Information -->
-        <div class="card mb-6">
-          <div class="card-header">
-            <h5 class="card-tile mb-0">Product information</h5>
-          </div>
-          <div class="card-body">
-            <div class="mb-6">
-              <label class="form-label" for="ecommerce-product-name">Name</label>
-              <input type="text" class="form-control" id="ecommerce-product-name" placeholder="Product title" name="productTitle" aria-label="Product title" />
+    <form method="POST" action="{{ route('product.create') }}" enctype="multipart/form-data">
+      @csrf
+      <div class="row">
+        <!-- First column-->
+        <div class="col-12 col-lg-8">
+          <!-- Product Information -->
+          <div class="card mb-6">
+            <div class="card-header">
+              <h5 class="card-tile mb-0">Product information</h5>
             </div>
-            <div class="row mb-6">
-              <div class="col"><label class="form-label" for="ecommerce-product-sku">SKU</label> <input type="number" class="form-control" id="ecommerce-product-sku" placeholder="SKU" name="productSku" aria-label="Product SKU" /></div>
-              <div class="col"><label class="form-label" for="ecommerce-product-barcode">Barcode</label> <input type="text" class="form-control" id="ecommerce-product-barcode" placeholder="0123-4567" name="productBarcode" aria-label="Product barcode" /></div>
-            </div>
-            <!-- Description -->
-            <div>
-              <label class="mb-1">Description (Optional)</label>
-              <div class="form-control p-0">
-                <div class="comment-toolbar border-0 border-bottom">
-                  <div class="d-flex justify-content-start">
-                    <span class="ql-formats me-0">
-                      <button class="ql-bold"></button>
-                      <button class="ql-italic"></button>
-                      <button class="ql-underline"></button>
-                      <button class="ql-list" value="ordered"></button>
-                      <button class="ql-list" value="bullet"></button>
-                      <button class="ql-link"></button>
-                      <button class="ql-image"></button>
-                    </span>
-                  </div>
+            <div class="card-body">
+              <div class="mb-6">
+                <label class="form-label" for="ecommerce-product-name">Name</label>
+                <input type="text" class="form-control" id="ecommerce-product-name" name="name" placeholder="Product title" required />
+              </div>
+              <div class="row mb-6">
+                <div class="col">
+                  <label class="form-label" for="ecommerce-product-sku">SKU</label>
+                  <input type="text" class="form-control" id="ecommerce-product-sku" name="sku" placeholder="SKU" required />
                 </div>
-                <div class="comment-editor border-0 pb-6" id="ecommerce-category-description"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /Product Information -->
-        <!-- Media -->
-        <div class="card mb-6">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0 card-title">Product Image</h5>
-            <a href="javascript:void(0);" class="fw-medium">Add media from URL</a>
-          </div>
-          <div class="card-body">
-            <form action="https://demos.pixinvent.com/upload" class="dropzone needsclick p-0" id="dropzone-basic">
-              <div class="dz-message needsclick">
-                <p class="h4 needsclick pt-3 mb-2">Drag and drop your image here</p>
-                <p class="h6 text-body-secondary d-block fw-normal mb-2">or</p>
-                <span class="needsclick btn btn-sm btn-label-primary" id="btnBrowse">Browse image</span>
-              </div>
-              <div class="fallback">
-                <input name="file" type="file" />
-              </div>
-            </form>
-          </div>
-        </div>
-        <!-- /Media -->
-        <!-- Variants -->
-        <div class="card mb-6">
-          <div class="card-header">
-            <h5 class="card-title mb-0">Variants</h5>
-          </div>
-          <div class="card-body">
-            <form class="form-repeater">
-              <div data-repeater-list="group-a">
-                <div data-repeater-item>
-                  <div class="row g-sm-6 mb-6">
-                    <div class="col-sm-4">
-                      <label class="form-label" for="form-repeater-1-1">Options</label>
-                      <select id="form-repeater-1-1" class="select2 form-select" data-placeholder="Size">
-                        <option value="">Size</option>
-                        <option value="size">Size</option>
-                        <option value="color">Color</option>
-                        <option value="weight">Weight</option>
-                        <option value="smell">Smell</option>
-                      </select>
-                    </div>
-
-                    <div class="col-sm-8">
-                      <label class="form-label invisible" for="form-repeater-1-2">Not visible</label>
-                      <input type="number" id="form-repeater-1-2" class="form-control" placeholder="Enter size" />
-                    </div>
-                  </div>
+                <div class="col">
+                  <label class="form-label" for="ecommerce-product-barcode">Barcode</label>
+                  <input type="text" class="form-control" id="ecommerce-product-barcode" name="bar_code" placeholder="0123-4567" required />
                 </div>
               </div>
+              <!-- Description -->
               <div>
-                <button class="btn btn-primary" data-repeater-create>
-                  <i class="icon-base ti tabler-plus icon-xs me-2"></i>
-                  Add another option
+                <label class="mb-1">Description (Optional)</label>
+                <textarea name="description" class="form-control" rows="4"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Media -->
+          <div class="card mb-6">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0 card-title">Product Image</h5>
+              <a href="javascript:void(0);" class="fw-medium">Add media from URL</a>
+            </div>
+            <div class="card-body">
+              <input type="file" name="product_image" class="form-control" accept="image/*">
+            </div>
+          </div>
+
+          <!-- Inventory -->
+          <div class="card mb-6">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Inventory</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <!-- Navigation -->
+                <div class="col-12 col-md-4 col-xl-5 col-xxl-4 mx-auto card-separator">
+                  <div class="d-flex justify-content-between flex-column mb-4 mb-md-0 pe-md-4">
+                    <div class="nav-align-left">
+                      <ul class="nav nav-pills flex-column w-100">
+                        <li class="nav-item">
+                          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
+                            <i class="icon-base ti tabler-box icon-sm me-1_5"></i>
+                            <span class="align-middle">Restock</span>
+                          </button>
+                        </li>
+                        <li class="nav-item">
+                          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping">
+                            <i class="icon-base ti tabler-car icon-sm me-1_5"></i>
+                            <span class="align-middle">Shipping</span>
+                          </button>
+                        </li>
+                        
+                        <li class="nav-item">
+                          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attributes">
+                            <i class="icon-base ti tabler-link icon-sm me-1_5"></i>
+                            <span class="align-middle">Attributes</span>
+                          </button>
+                        </li>
+                        
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <!-- /Navigation -->
+                <!-- Options -->
+                <div class="col-12 col-md-8 col-xl-7 col-xxl-8 pt-6 pt-md-0">
+                  <div class="tab-content p-0 ps-md-4">
+                    <!-- Restock Tab -->
+                    <div class="tab-pane fade show active" id="restock" role="tabpanel">
+                      <h6 class="text-body">Options</h6>
+                      <label class="form-label" for="ecommerce-product-stock">Add to Stock</label>
+                      <div class="row mb-4 g-4 pe-md-4">
+                        <div class="col-12 col-sm-9">
+                          <input type="number" class="form-control" name="quantity" placeholder="Quantity" required />
+                        </div>
+                      </div>
+                      <div>
+                        <h6 class="mb-2 fw-normal">Product in stock now: 54</h6>
+                        <h6 class="mb-2 fw-normal">Product in transit: 390</h6>
+                        <h6 class="mb-2 fw-normal">Last time restocked: 24th June, 2023</h6>
+                        <h6 class="mb-0 fw-normal">Total stock over lifetime: 2430</h6>
+                      </div>
+                    </div>
+                    <!-- Shipping Tab -->
+                    <div class="tab-pane fade" id="shipping" role="tabpanel">
+                      <h6 class="mb-3 text-body">Shipping Type</h6>
+                      <div>
+                        <div class="form-check mb-4">
+                          <input class="form-check-input" type="radio" name="shipping_type" value="seller" id="seller" />
+                          <label class="form-check-label" for="seller">
+                            <span class="mb-1 h6">Fulfilled by Seller</span><br />
+                            <small
+                              >You'll be responsible for product delivery.<br />
+                              Any damage or delay during shipping may cost you a Damage fee.</small
+                            >
+                          </label>
+                        </div>
+                        <div class="form-check mb-6">
+                          <input class="form-check-input" type="radio" name="shipping_type" value="company" id="companyName" checked />
+                          <label class="form-check-label" for="companyName">
+                            <span class="mb-1 h6">Fulfilled by Company name &nbsp;<span class="badge rounded-2 badge-warning bg-label-warning fs-tiny py-1">RECOMMENDED</span></span
+                            ><br />
+                            <small
+                              >Your product, Our responsibility.<br />
+                              For a measly fee, we will handle the delivery process for you.</small
+                            >
+                          </label>
+                        </div>
+                        <p class="mb-0">See our <a href="javascript:void(0);">Delivery terms and conditions</a> for details</p>
+                      </div>
+                    </div>
+              
+                    <!-- Attributes Tab -->
+                    <div class="tab-pane fade" id="attributes" role="tabpanel">
+                      <h6 class="mb-2 text-body">Attributes</h6>
+                      <div>
+                        <!-- Fragile Product -->
+                        <div class="form-check mb-4">
+                          <input class="form-check-input" type="checkbox" name="is_fragile" value="fragile" id="fragile" />
+                          <label class="form-check-label" for="fragile">
+                            <span class="fw-medium">Fragile Product</span>
+                          </label>
+                        </div>
+                        <!-- Biodegradable -->
+                        <div class="form-check mb-4">
+                          <input class="form-check-input" type="checkbox" name="is_biodegradable" value="biodegradable" id="biodegradable" />
+                          <label class="form-check-label" for="biodegradable">
+                            <span class="fw-medium">Biodegradable</span>
+                          </label>
+                        </div>
+                        <!-- Frozen Product -->
+                        <div class="form-check mb-4">
+                          <input class="form-check-input" type="checkbox" name="is_frozen" value="frozen" checked />
+                          <label class="form-check-label w-75 pe-12" for="frozen">
+                            <span class="mb-1 h6">Frozen Product</span>
+                            <input type="number" name="max_temperature" class="form-control" placeholder="Max. allowed Temperature" id="frozen" />
+                          </label>
+                        </div>
+                        <!-- Exp Date -->
+                        <div class="form-check mb-6">
+                          <input class="form-check-input" type="checkbox" name="expiry_date" value="expDate" id="expDate" checked />
+                          <label class="form-check-label w-75 pe-12" for="date-input">
+                            <span class="mb-1 h6">Expiry Date of Product</span>
+                            <input type="date" name="expiry_date" class="product-date form-control" id="date-input" />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- /Attributes Tab -->
+                  
+                    <!-- /Advanced Tab -->
+                  </div>
+                </div>
+                <!-- /Options-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /First column -->
+
+        <!-- Second column -->
+        <div class="col-12 col-lg-4">
+          <!-- Pricing Card -->
+          <div class="card mb-6">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Pricing</h5>
+            </div>
+            <div class="card-body">
+              <!-- Base Price -->
+              <div class="mb-6">
+                <label class="form-label" for="ecommerce-product-price">Base Price</label>
+                <input type="number" step="0.01" name="base_price" class="form-control" id="ecommerce-product-price" placeholder="Price" required />
+              </div>
+              <!-- Discounted Price -->
+              <div class="mb-6">
+                <label class="form-label" for="ecommerce-product-discount-price">Discounted Price</label>
+                <input type="number" step="0.01" name="discounted_price" class="form-control" id="ecommerce-product-discount-price" placeholder="Discounted Price" />
+              </div>
+              <!-- Charge tax check box -->
+              <div class="form-check ms-2 mt-2 mb-4">
+                <input class="form-check-input" type="checkbox" name="in_stock" value="" id="price-charge-tax" checked />
+                <label class="switch-label" for="price-charge-tax"> Charge tax on this product </label>
+              </div>
+              <!-- Instock switch -->
+              <div class="d-flex justify-content-between align-items-center border-top pt-2">
+                <span class="mb-0">In stock</span>
+                <div class="w-25 d-flex justify-content-end">
+                  <div class="form-check form-switch me-n3">
+                    <input type="checkbox" name="in_stock" class="form-check-input" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Organize Card -->
+          <div class="card mb-6">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Organize</h5>
+            </div>
+            <div class="card-body">
+              <!-- Category -->
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="mb-6 col ecommerce-select2-dropdown">
+                  <label class="form-label mb-1" for="category-org">
+                    <span>Product Category</span>
+                  </label>
+                  <select name="category_id" id="category-org" class="select2 form-select" data-placeholder="Select Category" required>
+                    <option value="">Select Category</option>
+                    @foreach($categories as $category)
+                    <option value="{{ $category->category_id }}">{{ $category->categoryTitle }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <button 
+                class="fw-medium btn btn-icon btn-label-primary ms-4"
+                data-bs-toggle="offcanvas" 
+                data-bs-target="#offcanvasEcommerceCategoryList"
+                >
+                <i class="icon-base ti tabler-plus icon-md"></i>
                 </button>
               </div>
-            </form>
-          </div>
-        </div>
-        <!-- /Variants -->
-        <!-- Inventory -->
-        <div class="card mb-6">
-          <div class="card-header">
-            <h5 class="card-title mb-0">Inventory</h5>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <!-- Navigation -->
-              <div class="col-12 col-md-4 col-xl-5 col-xxl-4 mx-auto card-separator">
-                <div class="d-flex justify-content-between flex-column mb-4 mb-md-0 pe-md-4">
-                  <div class="nav-align-left">
-                    <ul class="nav nav-pills flex-column w-100">
-                      <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
-                          <i class="icon-base ti tabler-box icon-sm me-1_5"></i>
-                          <span class="align-middle">Restock</span>
-                        </button>
-                      </li>
-                      <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping">
-                          <i class="icon-base ti tabler-car icon-sm me-1_5"></i>
-                          <span class="align-middle">Shipping</span>
-                        </button>
-                      </li>
-                      <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#global-delivery">
-                          <i class="icon-base ti tabler-world icon-sm me-1_5"></i>
-                          <span class="align-middle">Global Delivery</span>
-                        </button>
-                      </li>
-                      <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attributes">
-                          <i class="icon-base ti tabler-link icon-sm me-1_5"></i>
-                          <span class="align-middle">Attributes</span>
-                        </button>
-                      </li>
-                      <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#advanced">
-                          <i class="icon-base ti tabler-lock icon-sm me-1_5"></i>
-                          <span class="align-middle">Advanced</span>
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <!-- /Navigation -->
-              <!-- Options -->
-              <div class="col-12 col-md-8 col-xl-7 col-xxl-8 pt-6 pt-md-0">
-                <div class="tab-content p-0 ps-md-4">
-                  <!-- Restock Tab -->
-                  <div class="tab-pane fade show active" id="restock" role="tabpanel">
-                    <h6 class="text-body">Options</h6>
-                    <label class="form-label" for="ecommerce-product-stock">Add to Stock</label>
-                    <div class="row mb-4 g-4 pe-md-4">
-                      <div class="col-12 col-sm-9">
-                        <input type="number" class="form-control" id="ecommerce-product-stock" placeholder="Quantity" name="quantity" aria-label="Quantity" />
-                      </div>
-                      <div class="col-12 col-sm-3">
-                        <button class="btn btn-primary">Confirm</button>
-                      </div>
-                    </div>
-                    <div>
-                      <h6 class="mb-2 fw-normal">Product in stock now: 54</h6>
-                      <h6 class="mb-2 fw-normal">Product in transit: 390</h6>
-                      <h6 class="mb-2 fw-normal">Last time restocked: 24th June, 2023</h6>
-                      <h6 class="mb-0 fw-normal">Total stock over lifetime: 2430</h6>
-                    </div>
-                  </div>
-                  <!-- Shipping Tab -->
-                  <div class="tab-pane fade" id="shipping" role="tabpanel">
-                    <h6 class="mb-3 text-body">Shipping Type</h6>
-                    <div>
-                      <div class="form-check mb-4">
-                        <input class="form-check-input" type="radio" name="shippingType" id="seller" />
-                        <label class="form-check-label" for="seller">
-                          <span class="mb-1 h6">Fulfilled by Seller</span><br />
-                          <small
-                            >You'll be responsible for product delivery.<br />
-                            Any damage or delay during shipping may cost you a Damage fee.</small
-                          >
-                        </label>
-                      </div>
-                      <div class="form-check mb-6">
-                        <input class="form-check-input" type="radio" name="shippingType" id="companyName" checked />
-                        <label class="form-check-label" for="companyName">
-                          <span class="mb-1 h6">Fulfilled by Company name &nbsp;<span class="badge rounded-2 badge-warning bg-label-warning fs-tiny py-1">RECOMMENDED</span></span
-                          ><br />
-                          <small
-                            >Your product, Our responsibility.<br />
-                            For a measly fee, we will handle the delivery process for you.</small
-                          >
-                        </label>
-                      </div>
-                      <p class="mb-0">See our <a href="javascript:void(0);">Delivery terms and conditions</a> for details</p>
-                    </div>
-                  </div>
-                  <!-- Global Delivery Tab -->
-                  <div class="tab-pane fade" id="global-delivery" role="tabpanel">
-                    <h6 class="mb-3 text-body">Global Delivery</h6>
-                    <!-- Worldwide delivery -->
-                    <div class="form-check mb-4">
-                      <input class="form-check-input" type="radio" name="globalDel" id="worldwide" />
-                      <label class="form-check-label" for="worldwide">
-                        <span class="mb-1 h6">Worldwide delivery</span><br />
-                        <small>Only available with Shipping method: <a href="javascript:void(0);">Fulfilled by Company name</a></small>
-                      </label>
-                    </div>
-                    <!-- Global delivery -->
-                    <div class="form-check mb-4">
-                      <input class="form-check-input" type="radio" name="globalDel" checked />
-                      <label class="form-check-label w-75 pe-12" for="country-selected">
-                        <span class="mb-2 h6">Selected Countries</span>
-                        <input type="text" class="form-control" placeholder="Type Country name" id="country-selected" />
-                      </label>
-                    </div>
-                    <!-- Local delivery -->
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="globalDel" id="local" />
-                      <label class="form-check-label" for="local">
-                        <span class="mb-1 h6">Local delivery</span><br />
-                        <small>Deliver to your country of residence : <a href="javascript:void(0);">Change profile address</a></small>
-                      </label>
-                    </div>
-                  </div>
-                  <!-- Attributes Tab -->
-                  <div class="tab-pane fade" id="attributes" role="tabpanel">
-                    <h6 class="mb-2 text-body">Attributes</h6>
-                    <div>
-                      <!-- Fragile Product -->
-                      <div class="form-check mb-4">
-                        <input class="form-check-input" type="checkbox" value="fragile" id="fragile" />
-                        <label class="form-check-label" for="fragile">
-                          <span class="fw-medium">Fragile Product</span>
-                        </label>
-                      </div>
-                      <!-- Biodegradable -->
-                      <div class="form-check mb-4">
-                        <input class="form-check-input" type="checkbox" value="biodegradable" id="biodegradable" />
-                        <label class="form-check-label" for="biodegradable">
-                          <span class="fw-medium">Biodegradable</span>
-                        </label>
-                      </div>
-                      <!-- Frozen Product -->
-                      <div class="form-check mb-4">
-                        <input class="form-check-input" type="checkbox" value="frozen" checked />
-                        <label class="form-check-label w-75 pe-12" for="frozen">
-                          <span class="mb-1 h6">Frozen Product</span>
-                          <input type="number" class="form-control" placeholder="Max. allowed Temperature" id="frozen" />
-                        </label>
-                      </div>
-                      <!-- Exp Date -->
-                      <div class="form-check mb-6">
-                        <input class="form-check-input" type="checkbox" value="expDate" id="expDate" checked />
-                        <label class="form-check-label w-75 pe-12" for="date-input">
-                          <span class="mb-1 h6">Expiry Date of Product</span>
-                          <input type="date" class="product-date form-control" id="date-input" />
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- /Attributes Tab -->
-                  <!-- Advanced Tab -->
-                  <div class="tab-pane fade" id="advanced" role="tabpanel">
-                    <h6 class="mb-3 text-body">Advanced</h6>
-                    <div class="row">
-                      <!-- Product Id Type -->
-                      <div class="col">
-                        <label class="form-label" for="product-id">
-                          <span class="mb-1 h6">Product ID Type</span>
-                        </label>
-                        <select id="product-id" class="select2 form-select" data-placeholder="ISBN">
-                          <option value="">ISBN</option>
-                          <option value="ISBN">ISBN</option>
-                          <option value="UPC">UPC</option>
-                          <option value="EAN">EAN</option>
-                          <option value="JAN">JAN</option>
-                        </select>
-                      </div>
-                      <!-- Product Id -->
-                      <div class="col">
-                        <label class="form-label" for="product-id-1">
-                          <span class="mb-1 h6">Product ID</span>
-                        </label>
-                        <input type="number" id="product-id-1" class="form-control" placeholder="ISBN Number" />
-                      </div>
-                    </div>
-                  </div>
-                  <!-- /Advanced Tab -->
-                </div>
-              </div>
-              <!-- /Options-->
-            </div>
-          </div>
-        </div>
-        <!-- /Inventory -->
-      </div>
-      <!-- /Second column -->
-
-      <!-- Second column -->
-      <div class="col-12 col-lg-4">
-        <!-- Pricing Card -->
-        <div class="card mb-6">
-          <div class="card-header">
-            <h5 class="card-title mb-0">Pricing</h5>
-          </div>
-          <div class="card-body">
-            <!-- Base Price -->
-            <div class="mb-6">
-              <label class="form-label" for="ecommerce-product-price">Base Price</label>
-              <input type="number" class="form-control" id="ecommerce-product-price" placeholder="Price" name="productPrice" aria-label="Product price" />
-            </div>
-            <!-- Discounted Price -->
-            <div class="mb-6">
-              <label class="form-label" for="ecommerce-product-discount-price">Discounted Price</label>
-              <input type="number" class="form-control" id="ecommerce-product-discount-price" placeholder="Discounted Price" name="productDiscountedPrice" aria-label="Product discounted price" />
-            </div>
-            <!-- Charge tax check box -->
-            <div class="form-check ms-2 mt-2 mb-4">
-              <input class="form-check-input" type="checkbox" value="" id="price-charge-tax" checked />
-              <label class="switch-label" for="price-charge-tax"> Charge tax on this product </label>
-            </div>
-            <!-- Instock switch -->
-            <div class="d-flex justify-content-between align-items-center border-top pt-2">
-              <span class="mb-0">In stock</span>
-              <div class="w-25 d-flex justify-content-end">
-                <div class="form-check form-switch me-n3">
-                  <input type="checkbox" class="form-check-input" checked />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /Pricing Card -->
-        <!-- Organize Card -->
-        <div class="card mb-6">
-          <div class="card-header">
-            <h5 class="card-title mb-0">Organize</h5>
-          </div>
-          <div class="card-body">
-            <!-- Vendor -->
-            <div class="mb-6 col ecommerce-select2-dropdown">
-              <label class="form-label mb-1" for="vendor"> Vendor </label>
-              <select id="vendor" class="select2 form-select" data-placeholder="Select Vendor">
-                <option value="">Select Vendor</option>
-                <option value="men-clothing">Men's Clothing</option>
-                <option value="women-clothing">Women's-clothing</option>
-                <option value="kid-clothing">Kid's-clothing</option>
-              </select>
-            </div>
-            <!-- Category -->
-            <div class="d-flex justify-content-between align-items-center">
+              <!-- Status -->
               <div class="mb-6 col ecommerce-select2-dropdown">
-                <label class="form-label mb-1" for="category-org">
-                  <span>Category</span>
-                </label>
-                <select id="category-org" class="select2 form-select" data-placeholder="Select Category">
-                  <option value="">Select Category</option>
-                  <option value="Household">Household</option>
-                  <option value="Management">Management</option>
-                  <option value="Electronics">Electronics</option>
-                  <option value="Office">Office</option>
-                  <option value="Automotive">Automotive</option>
+                <label class="form-label mb-1" for="status-org">Status </label>
+                <select name="status" id="status-org" class="select2 form-select" data-placeholder="Published" required>
+                  <option value="Published">Published</option>
+                  <option value="Scheduled">Scheduled</option>
+                  <option value="Inactive">Inactive</option>
                 </select>
               </div>
-              <a href="javascript:void(0);" class="fw-medium btn btn-icon btn-label-primary ms-4"><i class="icon-base ti tabler-plus icon-md"></i></a>
-            </div>
-            <!-- Collection -->
-            <div class="mb-6 col ecommerce-select2-dropdown">
-              <label class="form-label mb-1" for="collection">Collection </label>
-              <select id="collection" class="select2 form-select" data-placeholder="Collection">
-                <option value="">Collection</option>
-                <option value="men-clothing">Men's Clothing</option>
-                <option value="women-clothing">Women's-clothing</option>
-                <option value="kid-clothing">Kid's-clothing</option>
-              </select>
-            </div>
-            <!-- Status -->
-            <div class="mb-6 col ecommerce-select2-dropdown">
-              <label class="form-label mb-1" for="status-org">Status </label>
-              <select id="status-org" class="select2 form-select" data-placeholder="Published">
-                <option value="">Published</option>
-                <option value="Published">Published</option>
-                <option value="Scheduled">Scheduled</option>
-                <option value="Inactive">Inactive</option>
-              </select>
-            </div>
-            <!-- Tags -->
-            <div>
-              <label for="ecommerce-product-tags" class="form-label mb-1">Tags</label>
-              <input id="ecommerce-product-tags" class="form-control" name="ecommerce-product-tags" value="Normal,Standard,Premium" aria-label="Product Tags" />
+              <!-- Tags -->
+              <div>
+                <label for="ecommerce-product-tags" class="form-label mb-1">Tags</label>
+                <input name="tags" id="ecommerce-product-tags" class="form-control" value="Normal,Standard,Premium" aria-label="Product Tags" />
+              </div>
             </div>
           </div>
         </div>
-        <!-- /Organize Card -->
+        <!-- /Second column -->
       </div>
-      <!-- /Second column -->
-    </div>
-  </div></div>
+    </form>
+  </div>
+</div>
           <!-- / Content -->
+<!-- Offcanvas for Adding New Category -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Add New Category</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form id="eCommerceCategoryListForm">
+      <div class="mb-3">
+        <label for="categoryTitle" class="form-label">Category Title</label>
+        <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" required>
+      </div>
+      <div class="mb-3">
+        <label for="slug" class="form-label">Slug</label>
+        <input type="text" class="form-control" id="slug" name="slug" required>
+        <small class="text-muted">The slug will be automatically generated from the title. Example: "Home & Garden" → "home-garden"</small>
+      </div>
+      <button type="submit" class="btn btn-primary">Save Category</button>
+    </form>
+  </div>
+</div>
+     
+<script>
+  document.getElementById('categoryTitle').addEventListener('input', function(e) {
+      const title = e.target.value;
+      const slug = title.toLowerCase()
+          .replace(/[^\w\s-]/g, '') // Remove special characters
+          .replace(/\s+/g, '-')     // Replace spaces with hyphens
+          .replace(/-+/g, '-');     // Replace multiple hyphens with single hyphen
+      
+      document.getElementById('slug').value = slug;
+  });
 
-          
-            
+ 
+</script>
+     
 
 <!-- Footer -->
 <footer class="content-footer footer bg-footer-theme">
@@ -1088,10 +844,158 @@
     <!-- Page JS -->
     <script src="../../assets/js/add-product.js"></script>
     
+
+    <script>
+      $(document).ready(function() {
+   // Handle variant selection change
+   $(document).on('change', '[id^=form-repeater-1-1], [id^=form-repeater-1-2]', function() {
+       const variantRow = $(this).closest('.row');
+       const variantType = variantRow.find('[id^=form-repeater-1-1]').val();
+       const variantValue = variantRow.find('[id^=form-repeater-1-2]').val();
+       
+       // Log the variant details
+       console.log({
+           type: variantType,
+           value: variantValue
+       });
+
+       // Update input placeholder based on selected variant
+       const variantInput = variantRow.find('[id^=form-repeater-1-2]');
+       const selectedVariant = variantType;
+       
+       const placeholders = {
+           'size': 'Enter size',
+           'color': 'Enter color',
+           'weight': 'Enter weight in grams',
+           'smell': 'Enter smell/fragrance'
+       };
+       
+       variantInput.attr('placeholder', placeholders[selectedVariant]);
+       
+       // Change input type for specific variants
+       if (selectedVariant === 'weight') {
+           variantInput.attr('type', 'number');
+       } else {
+           variantInput.attr('type', 'text');
+       }
+   });
+});
+     
+     </script>     
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+      $(document).ready(function() {
+        // SweetAlert default configuration
+        const swalConfig = {
+          customClass: {
+            confirmButton: 'btn btn-primary me-3',
+            cancelButton: 'btn btn-label-secondary' 
+          },
+          buttonsStyling: false
+        };
+
+        // Handle discard button
+        $('#discardBtn').on('click', function() {
+            Swal.fire({
+                ...swalConfig,
+                title: 'Discard Changes?',
+                text: 'Are you sure you want to discard all changes?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, discard',
+                cancelButtonText: 'No, keep editing'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '{{ route("page.product-list") }}';
+                }
+            });
+        });
+
+        // Handle form submission
+        $('#createProductBtn').on('click', function(e) {
+            e.preventDefault();
+            
+            const form = $('form');
+            const formData = new FormData(form[0]);
+
+            // Validate required fields
+            const requiredFields = {
+                'name': 'Product name',
+                'sku': 'SKU',
+                'bar_code': 'Barcode',
+                'base_price': 'Base price',
+                'category_id': 'Category',
+                'status': 'Status'
+            };
+
+            for (const [field, label] of Object.entries(requiredFields)) {
+                if (!formData.get(field)) {
+                    Swal.fire({
+                        ...swalConfig,
+                        icon: 'error',
+                        title: 'Required Field Missing',
+                        text: `${label} is required`
+                    });
+                    return;
+                }
+            }
+
+            // Show loading state
+            Swal.fire({
+                title: 'Creating Product',
+                html: 'Please wait while we create your product...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Submit form via AJAX
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    Swal.fire({
+                        ...swalConfig,
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Product created successfully!',
+                        showConfirmButton: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '{{ route("page.product-list") }}';
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    let errorMessage = 'An error occurred while creating the product.';
+                    
+                    if (xhr.responseJSON) {
+                        if (xhr.responseJSON.errors) {
+                            errorMessage = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                        } else if (xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                    }
+
+                    Swal.fire({
+                        ...swalConfig,
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorMessage
+                    });
+                }
+            });
+        });
+      });
+    </script>
   </body>
-
-<!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/app-ecommerce-product-add.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:26:17 GMT -->
 </html>
-
-  <!-- beautify ignore:end -->
 

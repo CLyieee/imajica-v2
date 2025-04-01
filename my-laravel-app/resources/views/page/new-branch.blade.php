@@ -106,7 +106,9 @@
 
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
+    
   </head>
 
   <body>
@@ -350,56 +352,63 @@
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <!-- 1. Delivery Address -->
+                          <!-- Branch Information Form -->
+                          <form method="post" action="{{ route('branch.create') }}">
+                            @csrf
+                            @method('POST')
+                            <div class="row g-3 mb-4">
+                              <div class="col-12">
+                                <h6 class="fw-semibold">Branch Information</h6>
+                                <hr class="mt-0" />
+                              </div>
+                              
+                              <div class="col-md-6">
+                                <label class="form-label" for="branch_code">Branch Code</label>
+                                <input
+                                  type="text"
+                                  id="branch_code"
+                                  name="branch_code"
+                                  class="form-control"
+                                  placeholder="Branch Code"
+                                  required
+                                />
+                              </div>
 
-                          <div class="row g-6">
-                            <div class="col-md-6">
-                              <label class="form-label" for="fullname"
-                                >Branch Code</label
-                              >
-                              <input
-                                type="text"
-                                id="fullname"
-                                class="form-control"
-                                placeholder="Branch Code"
-                              />
+                              <div class="col-md-6">
+                                <label class="form-label" for="branch_name">Branch Name</label>
+                                <input
+                                  type="text"
+                                  id="branch_name"
+                                  name="branch_name"
+                                  class="form-control"
+                                  placeholder="Branch Name"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-12">
+                                <label class="form-label" for="address">Address</label>
+                                <textarea
+                                  name="address"
+                                  class="form-control"
+                                  id="address"
+                                  rows="4"
+                                  placeholder="Full Address"
+                                  required
+                                ></textarea>
+                              </div>
                             </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label" for="fullname"
-                                >Branch Name</label
-                              >
-                              <input
-                                type="text"
-                                id="fullname"
-                                class="form-control"
-                                placeholder="Branch Name"
-                              />
+                            <div class="row">
+                              <div class="col-12 d-flex gap-3">
+                                <button type="submit" class="btn btn-primary">Add Branch</button>
+                                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                              </div>
                             </div>
-
-                            <div class="col-12">
-                              <label class="form-label" for="address"
-                                >Address</label
-                              >
-                              <textarea
-                                name="address"
-                                class="form-control"
-                                id="address"
-                                rows="4"
-                                placeholder="Full Address"
-                              ></textarea>
-                            </div>
-                          </div>
-
-                          <!-- 2. Delivery Type -->
-
-                          <br />
-                          <div class="col-sm-2 col-4 d-grid">
-                            <button class="btn btn-primary">Add Branch</button>
-                          </div>
-                          <br />
-
-                          <!-- 4. Payment Method -->
+                          </form>
+                          
+                          <!-- Success/Error Messages -->
+                          <div id="responseMessage" style="display: none;" class="alert mt-3"></div>
                         </div>
                       </div>
                     </div>
@@ -489,6 +498,9 @@
     <!-- Page JS -->
     <script src="../../assets/js/form-layouts.js"></script>
     <script src="../../assets/js/forms-pickers.js"></script>
+
+    <!-- AJAX Form Submission Script -->
+  
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->

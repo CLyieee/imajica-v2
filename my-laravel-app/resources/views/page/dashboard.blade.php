@@ -245,15 +245,13 @@
                         </span>
                       </div>
                       <div>
-                        <h4 class="mb-0">10,000</h4>
-                        <span class="badge bg-label-success">+12.5%</span>
+                        <h4 class="mb-0">{{ count($bookings) }}</h4>
+                        <span class="badge bg-label-{{ $bookingGrowth >= 0 ? 'success' : 'danger' }}">{{ $bookingGrowth >= 0 ? '+' : '' }}{{ $bookingGrowth }}%</span>
                       </div>
                     </div>
                     <p class="mb-1">Total Completed Bookings</p>
                     <div class="d-flex align-items-center">
-                      <small class="text-body-secondary">vs last month</small>
                       <div class="ms-auto">
-                        <span class="text-success">↑ 152</span>
                       </div>
                     </div>
                   </div>
@@ -270,15 +268,13 @@
                         </span>
                       </div>
                       <div>
-                        <h4 class="mb-0">₱1,000,000</h4>
+                        <h4 class="mb-0">₱100,000</h4>
                         <span class="badge bg-label-success">+8.4%</span>
                       </div>
                     </div>
                     <p class="mb-1">Total Revenue</p>
                     <div class="d-flex align-items-center">
-                      <small class="text-body-secondary">vs last month</small>
                       <div class="ms-auto">
-                        <span class="text-success">↑ ₱84,000</span>
                       </div>
                     </div>
                   </div>
@@ -295,17 +291,15 @@
                         </span>
                       </div>
                       <div>
-                        <h4 class="mb-0">500</h4>
-                        <span class="badge bg-label-success">+5.2%</span>
+                        <h4 class="mb-0">
+                          {{ count($patients) }}
+                        </h4>
+                      <span class="badge bg-label-{{ $patientGrowth > 0 ? 'success' : 'danger' }}">
+            {{ $patientGrowth > 0 ? '+' : '' }}{{ number_format($patientGrowth, 1) }}%
+          </span>
                       </div>
                     </div>
                     <p class="mb-1">Total Patients</p>
-                    <div class="d-flex align-items-center">
-                      <small class="text-body-secondary">vs last month</small>
-                      <div class="ms-auto">
-                        <span class="text-success">↑ 26</span>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -322,15 +316,13 @@
                         </span>
                       </div>
                       <div>
-                        <h4 class="mb-0">₱850,000</h4>
+                        <h4 class="mb-0">₱50,000</h4>
                         <span class="badge bg-label-warning">+3.2%</span>
                       </div>
                     </div>
                     <p class="mb-1">Total Expenses</p>
                     <div class="d-flex align-items-center">
-                      <small class="text-body-secondary">vs last month</small>
                       <div class="ms-auto">
-                        <span class="text-warning">↑ ₱26,000</span>
                       </div>
                     </div>
                   </div>
@@ -365,35 +357,41 @@
                       Today's Birthdays
                     </h6>
                     <div class="birthday-today">
-                      <li class="d-flex mb-2 pb-1 birthday-item position-relative">
-                        <div class="avatar flex-shrink-0 me-3">
-                          <span
-                            class="avatar-initial rounded-circle bg-label-danger d-flex align-items-center justify-content-center"
-                            style="width: 45px; height: 45px">
-                            <i class="icon-base ti tabler-confetti icon-md"></i>
-                          </span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                          <div class="me-2">
-                            <h6 class="mb-0 fw-semibold">Emily Thompson</h6>
-                            <div class="d-flex align-items-center mt-1">
-                              <i class="ti tabler-calendar-event text-muted me-1"></i>
-                              <small class="text-body-secondary">March 22, 1988</small>
-                              <span class="badge bg-label-danger ms-2 px-2 py-1">
-                                <i class="ti tabler-party-popper me-1"></i>Today
-                              </span>
+                      @if(count($todayBirthdays) > 0)
+                        @foreach($todayBirthdays as $patient)
+                        <li class="d-flex mb-2 pb-1 birthday-item position-relative">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span
+                              class="avatar-initial rounded-circle bg-label-danger d-flex align-items-center justify-content-center"
+                              style="width: 45px; height: 45px">
+                              <i class="icon-base ti tabler-confetti icon-md"></i>
+                            </span>
+                          </div>
+                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                              <h6 class="mb-0 fw-semibold">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
+                              <div class="d-flex align-items-center mt-1">
+                                <i class="ti tabler-calendar-event text-muted me-1"></i>
+                                <small class="text-body-secondary">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d, Y') }} ({{ $patient->age }} years)</small>
+                                <span class="badge bg-label-danger ms-2 px-2 py-1">
+                                  <i class="ti tabler-party-popper me-1"></i>Today
+                                </span>
+                              </div>
+                            </div>
+                            <div class="action-buttons d-flex gap-2">
+                              <button class="btn btn-sm btn-primary" data-action="send-wishes" data-patient="{{ $patient->patient_id }}">
+                                <i class="ti tabler-mail me-1"></i>Send Wishes
+                              </button>
+                              <button class="btn btn-sm btn-outline-primary" data-action="send-offers" data-patient="{{ $patient->patient_id }}">
+                                <i class="ti tabler-gift me-1"></i>Send Offer
+                              </button>
                             </div>
                           </div>
-                          <div class="action-buttons d-flex gap-2">
-                            <button class="btn btn-sm btn-primary" data-action="send-wishes">
-                              <i class="ti tabler-mail me-1"></i>Send Wishes
-                            </button>
-                            <button class="btn btn-sm btn-outline-primary" data-action="send-offers">
-                              <i class="ti tabler-gift me-1"></i>Send Offer
-                            </button>
-                          </div>
-                        </div>
-                      </li>
+                        </li>
+                        @endforeach
+                      @else
+                        <p class="text-center text-muted my-3">No birthdays today</p>
+                      @endif
                     </div>
                   </div>
 
@@ -404,101 +402,56 @@
                       Upcoming Birthdays
                     </h6>
                     <ul class="p-0 m-0">
-                      <!-- Birthday List Items -->
-                      <li class="d-flex mb-4 pb-1 birthday-item position-relative">
-                        <div class="avatar flex-shrink-0 me-3">
-                          <span
-                            class="avatar-initial rounded-circle bg-label-primary d-flex align-items-center justify-content-center"
-                            style="width: 45px; height: 45px">
-                            <i class="icon-base ti tabler-cake icon-md"></i>
-                          </span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                          <div class="me-2">
-                            <h6 class="mb-0 fw-semibold">Maria Garcia</h6>
-                            <div class="d-flex align-items-center mt-1">
-                              <i class="ti tabler-calendar-event text-muted me-1"></i>
-                              <small class="text-body-secondary">March 25, 1990</small>
-                              <span class="badge bg-label-primary ms-2 px-2 py-1">
-                                <i class="ti tabler-clock me-1"></i>In 3 days
-                              </span>
+                      @if(count($upcomingBirthdays) > 0)
+                        @foreach($upcomingBirthdays->take(5) as $patient)
+                        <li class="d-flex mb-4 pb-1 birthday-item position-relative">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span
+                              class="avatar-initial rounded-circle bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} d-flex align-items-center justify-content-center"
+                              style="width: 45px; height: 45px">
+                              <i class="icon-base ti tabler-cake icon-md"></i>
+                            </span>
+                          </div>
+                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                              <h6 class="mb-0 fw-semibold">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
+                              <div class="d-flex align-items-center mt-1">
+                                <i class="ti tabler-calendar-event text-muted me-1"></i>
+                                <small class="text-body-secondary">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d, Y') }}</small>
+                                <span class="badge bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} ms-2 px-2 py-1">
+                                  <i class="ti tabler-clock me-1"></i>In {{ $patient->daysUntil }} days
+                                </span>
+                              </div>
+                            </div>
+                            <div class="dropdown">
+                              <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="ti tabler-dots-vertical"></i>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-end show-on-hover">
+                                <li>
+                                  <a class="dropdown-item" href="#" data-action="send-wishes" data-patient="{{ $patient->patient_id }}">
+                                    <i class="ti tabler-mail me-2"></i>Send Wishes
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="#" data-action="send-offers" data-patient="{{ $patient->patient_id }}">
+                                    <i class="ti tabler-gift me-2"></i>Send Offer
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="#">
+                                    <i class="ti tabler-calendar-plus me-2"></i>Schedule Service
+                                  </a>
+                                </li>
+                              </ul>
                             </div>
                           </div>
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle"
-                              data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="ti tabler-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end show-on-hover">
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="send-wishes">
-                                  <i class="ti tabler-mail me-2"></i>Send Wishes
-                                </a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="send-offers">
-                                  <i class="ti tabler-gift me-2"></i>Send Offer
-                                </a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#">
-                                  <i class="ti tabler-calendar-plus me-2"></i>Schedule Service
-                                  <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                                    Service</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-
-                      <li class="d-flex mb-4 pb-1 birthday-item position-relative">
-                        <div class="avatar flex-shrink-0 me-3">
-                          <span
-                            class="avatar-initial rounded-circle bg-label-success d-flex align-items-center justify-content-center"
-                            style="width: 45px; height: 45px">
-                            <i class="icon-base ti tabler-cake icon-md"></i>
-                          </span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                          <div class="me-2">
-                            <h6 class="mb-0 fw-semibold">John Smith</h6>
-                            <div class="d-flex align-items-center mt-1">
-                              <i class="ti tabler-calendar-event text-muted me-1"></i>
-                              <small class="text-body-secondary">March 27, 1985</small>
-                              <span class="badge bg-label-success ms-2 px-2 py-1">
-                                <i class="ti tabler-clock me-1"></i>In 5 days
-                              </span>
-                            </div>
-                          </div>
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                              data-bs-toggle="dropdown">
-                              <i class="ti tabler-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="send-wishes">
-                                  <i class="ti tabler-mail me-2"></i>Send
-                                  Wishes
-                                </a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="send-offers">
-                                  <i class="ti tabler-gift me-2"></i>Send
-                                  Offer
-                                </a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                                  Service</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-
-                      <!-- Add similar structure for Sarah Johnson and James Wilson -->
-                      <!-- ... existing entries with updated styling ... -->
+                        </li>
+                        @endforeach
+                      @else
+                        <p class="text-center text-muted my-3">No upcoming birthdays in the next 30 days</p>
+                      @endif
                     </ul>
                   </div>
                 </div>
@@ -506,57 +459,59 @@
             </div>
 
 
-            <!-- Merchant Banner -->
+            <!-- Dynamic Banner Section -->
             <div class="row mb-4">
               <div class="col-lg-12">
-                <div class="card text-white border-0 shadow-lg"
-                  style="background: linear-gradient(135deg, #7367f0, #a49cf6); border-radius: 15px;">
-                  <div
-                    class="card-body p-4 d-flex justify-content-between align-items-center position-relative overflow-hidden">
-                    <!-- Confetti Animation -->
-                    <div class="position-absolute w-100 h-100" id="confetti-container"></div>
+                @if(count($todayBirthdays) > 0 || count($upcomingBirthdays) > 0)
+                  <!-- Birthday Banner (existing code) -->
+                  <div class="card text-white border-0 shadow-lg"
+                    style="background: linear-gradient(135deg, #47d2b4, #53b5cf); border-radius: 15px;">
+                    <div class="card-body p-4 d-flex justify-content-between align-items-center position-relative overflow-hidden">
+                      <!-- Confetti Animation -->
+                      <div class="position-absolute w-100 h-100" id="confetti-container"></div>
 
-                    <!-- Text Content -->
-                    <div>
-                      <h3 class="text-white fw-bold">🎉 Happy Birthday to Our Valued Clients! 🎂</h3>
-                      <p class="mb-3">Celebrate your special day with us and enjoy exclusive offers!</p>
-                      <a href="#" class="btn btn-light text-primary fw-bold birthday-btn">
-                        Claim Your Birthday Offer 🎁
-                      </a>
+                      <!-- Text Content -->
+                      <div>
+                        <h3 class="text-white fw-bold">🎉 Happy Birthday to Our Valued Clients! 🎂</h3>
+                      </div>
 
-                      <style>
-                        .birthday-btn {
-                          border-radius: 30px;
-                          background: #fff;
-                          color: #92ffcc;
-                          box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-                          padding: 10px 20px;
-                          font-size: 16px;
-                          text-decoration: none;
-                          display: inline-block;
-                          transition: all 0.3s ease-in-out;
-                        }
-
-                        /* Hover Effect */
-                        .birthday-btn:hover {
-                          background: #92ffcc;
-                          color: #fff;
-                          box-shadow: 0 0 15px rgba(125, 196, 165, 0.8);
-                          transform: scale(1.05);
-                        }
-                      </style>
-
-                    </div>
-
-                    <!-- Birthday Image -->
-                    <div class="d-none d-md-block">
-                      <img
-                        src="https://png.pngtree.com/template/20241213/ourmid/pngtree-happy-birthday-greeting-vector-design-lettering-in-blue-space-with-gift-image_2037581.jpg"
-                        alt="Birthday celebration"
-                        style="max-height: 200px; transform: rotate(-5deg); border-radius: 10px;">
+                      <!-- Birthday Image -->
+                      <div class="d-none d-md-block">
+                        <img src="https://png.pngtree.com/template/20241213/ourmid/pngtree-happy-birthday-greeting-vector-design-lettering-in-blue-space-with-gift-image_2037581.jpg"
+                          alt="Birthday celebration"
+                          style="max-height: 200px; transform: rotate(-5deg); border-radius: 10px;">
+                      </div>
                     </div>
                   </div>
-                </div>
+                @else
+                  <!-- Imajica Aesthetics Banner -->
+                  <div class="card text-white border-0 shadow-lg"
+                    style="background: linear-gradient(135deg, #2c3e50, #3498db); border-radius: 15px;">
+                    <div class="card-body p-4 d-flex justify-content-between align-items-center position-relative overflow-hidden">
+                      <!-- Text Content -->
+                      <div>
+                        <h3 class="text-white fw-bold mb-2">✨ Welcome to Imajica Aesthetics</h3>
+                        <p class="text-white mb-3">Experience luxury beauty and wellness treatments tailored just for you.</p>
+                        <a href="{{ route('page.booking') }}" class="btn btn-light">
+                          <i class="ti tabler-calendar-plus me-1"></i>
+                          Book an Appointment
+                        </a>
+                      </div>
+
+                      <!-- Decorative Elements -->
+                      <div class="d-none d-md-block">
+                        <img src="{{ asset('logo/imajica.png') }}" 
+                          alt="Imajica Aesthetics"
+                          style="max-height: 180px; border-radius: 10px;">
+                      </div>
+
+                      <!-- Background Decoration -->
+                      <div class="position-absolute top-0 end-0 opacity-25">
+                        <i class="ti tabler-spa" style="font-size: 180px;"></i>
+                      </div>
+                    </div>
+                  </div>
+                @endif
               </div>
             </div>
 
@@ -677,6 +632,10 @@
                             <a class="dropdown-item" href="#">This Month</a>
                           </li>
                           <li>
+                          <li>
+                            <a class="dropdown-item" href="#">This Month</a>
+                          </li>
+                          <li>
                             <a class="dropdown-item" href="#">Last Month</a>
                           </li>
                           <li>
@@ -747,75 +706,39 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr class="booking-row">
-                          <td>
-                            <span class="fw-semibold">#BK001</span>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <div class="avatar avatar-sm me-2">
-                                <span class="avatar-initial rounded-circle bg-label-primary">JS</span>
-                              </div>
-                              <div>
-                                <h6 class="mb-0 fw-semibold">John Smith</h6>
-                                <small class="text-muted">Regular Client</small>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <div>
-                              <h6 class="mb-0">Hair Cut & Style</h6>
-                              <small class="text-muted">45 mins</small>
-                            </div>
-                          </td>
-                          <td>
-                            <div>
-                              <h6 class="mb-0">Mar 15, 2024</h6>
-                              <small class="text-muted">10:30 AM</small>
-                            </div>
-                          </td>
-                          <td>
-                            <h6 class="mb-0">₱1,500</h6>
-                          </td>
-                          <td>
-                            <span class="badge bg-label-success rounded-pill">Completed</span>
-                          </td>
-                        </tr>
-                        <tr class="booking-row">
-                          <td>
-                            <span class="fw-semibold">#BK002</span>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <div class="avatar avatar-sm me-2">
-                                <span class="avatar-initial rounded-circle bg-label-info">MG</span>
-                              </div>
-                              <div>
-                                <h6 class="mb-0 fw-semibold">Maria Garcia</h6>
-                                <small class="text-muted">VIP Client</small>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <div>
-                              <h6 class="mb-0">Full Body Massage</h6>
-                              <small class="text-muted">90 mins</small>
-                            </div>
-                          </td>
-                          <td>
-                            <div>
-                              <h6 class="mb-0">Mar 15, 2024</h6>
-                              <small class="text-muted">2:00 PM</small>
-                            </div>
-                          </td>
-                          <td>
-                            <h6 class="mb-0">₱2,500</h6>
-                          </td>
-                          <td>
-                            <span class="badge bg-label-warning rounded-pill">Pending</span>
-                          </td>
-                        </tr>
-                      </tbody>
+    @foreach($bookings as $booking)
+    <tr>
+        <td># {{ $booking->booking_id }}</td>
+        <td>
+            @if($booking->patient)
+                {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
+            @else
+                <span class="text-muted">No patient data</span>
+            @endif
+        </td>
+        <td>
+            @if($booking->service)
+                {{ $booking->service->service_name }}
+            @else
+                <span class="text-muted">No service data</span>
+            @endif
+        </td>
+        <td>{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} at {{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</td>
+        <td>
+            @if($booking->service)
+                ₱{{ number_format($booking->service->service_cost, 2) }}
+            @else
+                <span class="text-muted">N/A</span>
+            @endif
+        </td>
+        <td>
+            <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed'  ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger')  }}">
+                {{ ucfirst($booking->status) }}
+            </span>
+        </td>
+    </tr>
+    @endforeach
+</tbody>
                     </table>
                   </div>
                 </div>
@@ -885,248 +808,267 @@
 <script src="{{ asset('assets/js/charts-chartjs.js') }}"></script>
 
   <script>
-    // Revenue Overview Line Chart
-    const revenueCtx = document
-      .getElementById("revenueChart")
-      .getContext("2d");
-    const revenueChart = new Chart(revenueCtx, {
-      type: "line",
-      data: {
-        labels: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
-        datasets: [
-          {
-            label: "Revenue 2024",
-            data: [
-              65000, 75000, 85000, 95000, 100000, 120000, 110000, 130000,
-              140000, 150000, 160000, 170000,
+    document.addEventListener("DOMContentLoaded", function() {
+      // Wait for Chart.js to be available
+      const initCharts = () => {
+        if (typeof Chart === 'undefined') {
+          // If Chart is not loaded yet, try again in 100ms
+          setTimeout(initCharts, 100);
+          return;
+        }
+
+        // Revenue Overview Line Chart
+        const revenueCtx = document
+          .getElementById("revenueChart")
+          .getContext("2d");
+        const revenueChart = new Chart(revenueCtx, {
+          type: "line",
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
             ],
-            borderColor: function (context) {
-              const chart = context.chart;
-              const { ctx, chartArea } = chart;
-              if (!chartArea) {
-                return null;
-              }
-              const gradient = ctx.createLinearGradient(
-                0,
-                0,
-                chartArea.width,
-                0
-              );
-              gradient.addColorStop(0, "#c4cfd9"); // Light blue
-              gradient.addColorStop(1, "#00d761"); // Dark blue
-              return gradient;
-            },
-            tension: 0.4,
-            fill: true,
-            backgroundColor: "rgba(105, 108, 255, 0.1)",
-          },
-          {
-            label: "Revenue 2023",
-            data: [
-              55000, 65000, 75000, 85000, 90000, 110000, 100000, 120000,
-              130000, 140000, 150000, 160000,
+            datasets: [
+              {
+                label: "Revenue 2024",
+                data: [
+                  65000, 75000, 85000, 95000, 100000, 120000, 110000, 130000,
+                  140000, 150000, 160000, 170000,
+                ],
+                borderColor: function (context) {
+                  const chart = context.chart;
+                  const { ctx, chartArea } = chart;
+                  if (!chartArea) {
+                    return null;
+                  }
+                  const gradient = ctx.createLinearGradient(
+                    0,
+                    0,
+                    chartArea.width,
+                    0
+                  );
+                  gradient.addColorStop(0, "#c4cfd9"); // Light blue
+                  gradient.addColorStop(1, "#00d761"); // Dark blue
+                  return gradient;
+                },
+                tension: 0.4,
+                fill: true,
+                backgroundColor: "rgba(105, 108, 255, 0.1)",
+              },
+              {
+                label: "Revenue 2023",
+                data: [
+                  55000, 65000, 75000, 85000, 90000, 110000, 100000, 120000,
+                  130000, 140000, 150000, 160000,
+                ],
+                borderColor: function (context) {
+                  const chart = context.chart;
+                  const { ctx, chartArea } = chart;
+                  if (!chartArea) {
+                    return null;
+                  }
+                  const gradient = ctx.createLinearGradient(
+                    0,
+                    0,
+                    chartArea.width,
+                    0
+                  );
+                  gradient.addColorStop(0, "#c4cfd9"); // Light gray
+                  gradient.addColorStop(1, "#da9100"); // Dark slate
+                  return gradient;
+                },
+                tension: 0.4,
+                fill: true,
+                backgroundColor: "rgba(3, 195, 236, 0.1)",
+              },
             ],
-            borderColor: function (context) {
-              const chart = context.chart;
-              const { ctx, chartArea } = chart;
-              if (!chartArea) {
-                return null;
-              }
-              const gradient = ctx.createLinearGradient(
-                0,
-                0,
-                chartArea.width,
-                0
-              );
-              gradient.addColorStop(0, "#c4cfd9"); // Light gray
-              gradient.addColorStop(1, "#da9100"); // Dark slate
-              return gradient;
-            },
-            tension: 0.4,
-            fill: true,
-            backgroundColor: "rgba(3, 195, 236, 0.1)",
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "top",
-          },
-          title: {
-            display: true,
-            text: "Monthly Revenue Overview",
-          },
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              callback: function (value) {
-                return "₱" + value.toLocaleString();
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "top",
+              },
+              title: {
+                display: true,
+                text: "Monthly Revenue Overview",
               },
             },
-          },
-        },
-      },
-    });
-
-    // Popular Services Pie Chart
-    const servicesCtx = document
-      .getElementById("popularServicesChart")
-      .getContext("2d");
-    const popularServicesChart = new Chart(servicesCtx, {
-      type: "pie",
-      data: {
-        labels: [
-          "Hair Care",
-          "Massage",
-          "Facial",
-          "Nail Care",
-          "Body Treatments",
-        ],
-        datasets: [
-          {
-            data: [30, 25, 20, 15, 10],
-            backgroundColor: [
-              "#696cff",
-              "#03c3ec",
-              "#ffab00",
-              "#28c76f",
-              "#ff3e1d",
-            ],
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "bottom",
-          },
-          title: {
-            display: true,
-            text: "Service Distribution",
-          },
-        },
-      },
-    });
-
-    // Add a new Bar Chart for Branch Performance
-    const branchPerformanceChart = new Chart(
-      document.getElementById("branchPerformanceChart").getContext("2d"),
-      {
-        type: "bar",
-        data: {
-          labels: [
-            "Branch A",
-            "Branch B",
-            "Branch C",
-            "Branch D",
-            "Branch E",
-          ],
-          datasets: [
-            {
-              label: "Bookings",
-              data: [150, 120, 140, 100, 130],
-              backgroundColor: "#696cff",
-            },
-            {
-              label: "Revenue",
-              data: [120000, 95000, 110000, 85000, 100000],
-              backgroundColor: "#28c76f",
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: "top",
-            },
-            title: {
-              display: true,
-              text: "Branch Performance Overview",
-            },
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              position: "left",
-              ticks: {
-                callback: function (value) {
-                  return this.chart.data.datasets[1].label === "Revenue"
-                    ? "₱" + value.toLocaleString()
-                    : value;
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: function (value) {
+                    return "₱" + value.toLocaleString();
+                  },
                 },
               },
             },
           },
-        },
-      }
-    );
+        });
 
-    // Booking Status Donut Chart
-    const bookingStatusCtx = document
-      .getElementById("bookingStatusChart")
-      .getContext("2d");
-    const bookingStatusChart = new Chart(bookingStatusCtx, {
-      type: "doughnut",
-      data: {
-        labels: ["Completed", "Pending", "Cancelled", "Rescheduled"],
-        datasets: [
+        // Popular Services Pie Chart
+        const servicesCtx = document
+          .getElementById("popularServicesChart")
+          .getContext("2d");
+        const popularServicesChart = new Chart(servicesCtx, {
+          type: "pie",
+          data: {
+            labels: {!! json_encode($services->pluck('service_name')) !!},
+            datasets: [
+              {
+                data: {!! json_encode($services->pluck('service_cost')) !!},
+                backgroundColor: [
+                  "#696cff",
+                  "#03c3ec",
+                  "#ffab00",
+                  "#28c76f",
+                  "#ff3e1d",
+                  "#8592a3",
+                  "#4b465c",
+                  "#ea5455",
+                  "#7367f0",
+                  "#6610f2"
+                ],
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+              },
+              title: {
+                display: true,
+                text: "Service Distribution",
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.raw || 0;
+                    const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
+                    const percentage = ((value / total) * 100).toFixed(1);
+                    return `${label}: ₱${value.toLocaleString()} (${percentage}%)`;
+                  }
+                }
+              }
+            },
+          },
+        });
+
+        // Branch Performance Chart
+        const branchPerformanceChart = new Chart(
+          document.getElementById("branchPerformanceChart").getContext("2d"),
           {
-            data: [45, 25, 15, 15],
-            backgroundColor: ["#28c76f", "#ffab00", "#ff3e1d", "#03c3ec"],
-            borderWidth: 0,
-            cutout: "75%",
+            type: "bar",
+            data: {
+              labels: {!! json_encode($branchData->pluck('name')) !!},
+              datasets: [
+                {
+                  label: "Bookings",
+                  data: {!! json_encode($branchData->pluck('bookings')) !!},
+                  backgroundColor: "#696cff",
+                },
+                {
+                  label: "Revenue",
+                  data: {!! json_encode($branchData->pluck('revenue')) !!},
+                  backgroundColor: "#28c76f",
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                title: {
+                  display: true,
+                  text: "Branch Performance Overview",
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  position: "left",
+                  ticks: {
+                    callback: function (value) {
+                      return this.chart.data.datasets[1].label === "Revenue"
+                        ? "₱" + value.toLocaleString()
+                        : value;
+                    },
+                  },
+                },
+              },
+            },
+          }
+        );
+
+        // Booking Status Donut Chart
+        const bookingStatusCtx = document
+          .getElementById("bookingStatusChart")
+          .getContext("2d");
+        const bookingStatusChart = new Chart(bookingStatusCtx, {
+          type: "doughnut",
+          data: {
+            labels: ["Completed", "Pending", "Cancelled", "Rescheduled"],
+            datasets: [
+              {
+                data: [45, 25, 15, 15],
+                backgroundColor: ["#28c76f", "#ffab00", "#ff3e1d", "#03c3ec"],
+                borderWidth: 0,
+                cutout: "75%",
+              },
+            ],
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "bottom",
-          },
-          title: {
-            display: true,
-            text: "Current Month Booking Status",
-          },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const label = context.label || "";
-                const value = context.parsed || 0;
-                const percentage = Math.round(
-                  (value / context.dataset.data.reduce((a, b) => a + b)) * 100
-                );
-                return `${label}: ${percentage}%`;
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+              },
+              title: {
+                display: true,
+                text: "Current Month Booking Status",
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    const label = context.label || "";
+                    const value = context.parsed || 0;
+                    const percentage = Math.round(
+                      (value / context.dataset.data.reduce((a, b) => a + b)) * 100
+                    );
+                    return `${label}: ${percentage}%`;
+                  },
+                },
               },
             },
           },
-        },
-      },
+        });
+      };
+
+      // Start initialization
+      initCharts();
     });
 
+    // Export functionality
     function exportChartData(chartId) {
       const chart = Chart.getChart(chartId);
       if (!chart) return;
@@ -1668,7 +1610,7 @@ The Imajica Team</textarea>
         <div class="modal-body">
           <!-- Filter Section -->
           <div class="row mb-4">
-            <div class="col-md-12">
+            <div class="col-md-8">
               <select class="form-select" id="birthdayFilter">
                 <option value="all">All Months</option>
                 <option value="current">Current Month</option>
@@ -1676,162 +1618,63 @@ The Imajica Team</textarea>
                 <option value="past">Past Birthdays</option>
               </select>
             </div>
+            <!-- <div class="col-md-4">
+              <input type="text" id="birthdaySearch" class="form-control" placeholder="Search patients...">
+            </div> -->  
           </div>
 
           <!-- Birthday Calendar View -->
           <div class="birthday-calendar mb-4">
             <div class="month-grid">
-              <!-- March -->
-              <div class="month-card current-month">
-                <h6 class="month-title">March 2024</h6>
-                <div class="birthday-list">
-                  <div class="birthday-item d-flex align-items-center p-3 border-bottom">
-                    <div class="avatar avatar-md me-3">
-                      <span class="avatar-initial rounded-circle bg-label-danger">ET</span>
-                    </div>
-                    <div class="flex-grow-1">
-                      <h6 class="mb-0">Emily Thompson</h6>
-                      <div class="d-flex align-items-center">
-                        <i class="ti tabler-calendar-event text-muted me-1"></i>
-                        <small class="text-muted">March 22</small>
-                        <span class="badge bg-label-danger ms-2">Today</span>
+              @foreach($allBirthdays as $month => $patients)
+                <div class="month-card {{ $month == Carbon\Carbon::now()->format('F') ? 'current-month' : '' }}">
+                  <h6 class="month-title">{{ $month }}</h6>
+                  <div class="birthday-list">
+                    @foreach($patients as $patient)
+                      <div class="birthday-item d-flex align-items-center p-3 border-bottom">
+                        <div class="avatar avatar-md me-3">
+                          <span class="avatar-initial rounded-circle bg-label-{{ $patient->daysUntil == 0 ? 'danger' : ($patient->daysUntil <= 7 ? 'primary' : 'success') }}">{{ $patient->initials }}</span>
+                        </div>
+                        <div class="flex-grow-1">
+                          <h6 class="mb-0">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
+                          <div class="d-flex align-items-center">
+                            <i class="ti tabler-calendar-event text-muted me-1"></i>
+                            <small class="text-muted">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d') }} ({{ $patient->age }} years)</small>
+                            @if($patient->daysUntil == 0)
+                              <span class="badge bg-label-danger ms-2">Today</span>
+                            @elseif($patient->daysUntil > 0 && $patient->daysUntil <= 30)
+                              <span class="badge bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} ms-2">In {{ $patient->daysUntil }} days</span>
+                            @endif
+                          </div>
+                        </div>
+                        <div class="dropdown">
+                          <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
+                            data-bs-toggle="dropdown">
+                            <!-- <i class="ti tabler-dots-vertical"></i> -->
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li>
+                              <a class="dropdown-item" href="#" data-action="send-wishes" data-patient="{{ $patient->patient_id }}">
+                                <i class="ti tabler-mail me-2"></i>Send Wishes
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#" data-action="send-offers" data-patient="{{ $patient->patient_id }}">
+                                <i class="ti tabler-gift me-2"></i>Send Offer
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <i class="ti tabler-calendar-plus me-2"></i>Schedule Service
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
-                    </div>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-wishes"><i
-                              class="ti tabler-mail me-2"></i>Send Wishes</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-offers"><i
-                              class="ti tabler-gift me-2"></i>Send Offer</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                            Service</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div class="birthday-item d-flex align-items-center p-3 border-bottom">
-                    <div class="avatar avatar-md me-3">
-                      <span class="avatar-initial rounded-circle bg-label-primary">MG</span>
-                    </div>
-                    <div class="flex-grow-1">
-                      <h6 class="mb-0">Maria Garcia</h6>
-                      <div class="d-flex align-items-center">
-                        <i class="ti tabler-calendar-event text-muted me-1"></i>
-                        <small class="text-muted">March 25</small>
-                        <span class="badge bg-label-primary ms-2">In 3 days</span>
-                      </div>
-                    </div>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-wishes"><i
-                              class="ti tabler-mail me-2"></i>Send Wishes</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-offers"><i
-                              class="ti tabler-gift me-2"></i>Send Offer</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                            Service</a>
-                        </li>
-                      </ul>
-                    </div>
+                    @endforeach
                   </div>
                 </div>
-              </div>
-
-              <!-- April -->
-              <div class="month-card">
-                <h6 class="month-title">April 2024</h6>
-                <div class="birthday-list">
-                  <div class="birthday-item d-flex align-items-center p-3 border-bottom">
-                    <div class="avatar avatar-md me-3">
-                      <span class="avatar-initial rounded-circle bg-label-info">RJ</span>
-                    </div>
-                    <div class="flex-grow-1">
-                      <h6 class="mb-0">Robert Johnson</h6>
-                      <div class="d-flex align-items-center">
-                        <i class="ti tabler-calendar-event text-muted me-1"></i>
-                        <small class="text-muted">April 5</small>
-                      </div>
-                    </div>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-wishes"><i
-                              class="ti tabler-mail me-2"></i>Send Wishes</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-offers"><i
-                              class="ti tabler-gift me-2"></i>Send Offer</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                            Service</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- May -->
-              <div class="month-card">
-                <h6 class="month-title">May 2024</h6>
-                <div class="birthday-list">
-                  <div class="birthday-item d-flex align-items-center p-3 border-bottom">
-                    <div class="avatar avatar-md me-3">
-                      <span class="avatar-initial rounded-circle bg-label-success">SL</span>
-                    </div>
-                    <div class="flex-grow-1">
-                      <h6 class="mb-0">Sarah Lee</h6>
-                      <div class="d-flex align-items-center">
-                        <i class="ti tabler-calendar-event text-muted me-1"></i>
-                        <small class="text-muted">May 15</small>
-                      </div>
-                    </div>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-wishes"><i
-                              class="ti tabler-mail me-2"></i>Send Wishes</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#" data-action="send-offers"><i
-                              class="ti tabler-gift me-2"></i>Send Offer</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar-plus me-2"></i>Schedule
-                            Service</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              @endforeach
             </div>
           </div>
         </div>
@@ -1846,7 +1689,7 @@ The Imajica Team</textarea>
 
   <script>
     // Add this to your existing JavaScript
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       // Update the View All button click handler
       const viewAllButton = document.querySelector(
         "button[onclick=\"window.location.href='all-birthdays.html'\"]"
@@ -1885,22 +1728,75 @@ The Imajica Team</textarea>
         filterSelect.addEventListener("change", function (e) {
           const filterValue = e.target.value;
           const monthCards = document.querySelectorAll(".month-card");
+          const currentMonth = new Date().getMonth(); // 0-11
+          const currentDay = new Date().getDate();
 
           monthCards.forEach((card) => {
+            const monthName = card.querySelector(".month-title").textContent.trim();
+            const monthIndex = new Date(Date.parse(monthName + " 1")).getMonth();
+            const birthdayItems = card.querySelectorAll(".birthday-item");
+
             switch (filterValue) {
-              case "current":
-                card.style.display = card.classList.contains("current-month")
-                  ? "block"
-                  : "none";
-                break;
-              case "upcoming":
-                // Add logic for upcoming months
-                break;
-              case "past":
-                // Add logic for past months
-                break;
-              default:
+              case "all":
+                // Show all months and birthdays
                 card.style.display = "block";
+                birthdayItems.forEach(item => item.style.display = "flex");
+                break;
+
+              case "current":
+                // Show only current month
+                card.style.display = monthIndex === currentMonth ? "block" : "none";
+                break;
+
+              case "upcoming":
+                // Show future months and upcoming birthdays in current month
+                if (monthIndex > currentMonth) {
+                  // Future months - show all
+                  card.style.display = "block";
+                  birthdayItems.forEach(item => item.style.display = "flex");
+                } else if (monthIndex === currentMonth) {
+                  // Current month - show only upcoming days
+                  card.style.display = "block";
+                  birthdayItems.forEach(item => {
+                    const dayText = item.querySelector("small.text-muted").textContent;
+                    const day = parseInt(dayText.match(/\d+/)[0]);
+                    item.style.display = day >= currentDay ? "flex" : "none";
+                  });
+                } else {
+                  // Past months - hide
+                  card.style.display = "none";
+                }
+                break;
+
+              case "past":
+                // Show past months and past birthdays in current month
+                if (monthIndex < currentMonth) {
+                  // Past months - show all
+                  card.style.display = "block";
+                  birthdayItems.forEach(item => item.style.display = "flex");
+                } else if (monthIndex === currentMonth) {
+                  // Current month - show only past days
+                  card.style.display = "block";
+                  birthdayItems.forEach(item => {
+                    const dayText = item.querySelector("small.text-muted").textContent;
+                    const day = parseInt(dayText.match(/\d+/)[0]);
+                    item.style.display = day < currentDay ? "flex" : "none";
+                  });
+                } else {
+                  // Future months - hide
+                  card.style.display = "none";
+                }
+                break;
+            }
+
+            // Hide empty month cards
+            if (card.style.display === "block") {
+              const visibleItems = Array.from(birthdayItems).filter(item => 
+                item.style.display === "flex"
+              ).length;
+              if (visibleItems === 0) {
+                card.style.display = "none";
+              }
             }
           });
         });
@@ -1910,253 +1806,6 @@ The Imajica Team</textarea>
 
   <!-- View All Bookings Modal -->
   <div class="modal fade" id="viewAllBookingsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content">
-        <div class="modal-header bg-primary bg-opacity-10">
-          <h5 class="modal-title">
-            <i class="ti tabler-calendar me-2 text-primary"></i>
-            All Bookings
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Filter and Search Tools -->
-          <div class="row g-3 mb-4">
-            <div class="col-md-6 col-lg-3">
-              <div class="input-group">
-                <span class="input-group-text"><i class="ti tabler-search"></i></span>
-                <input type="text" class="form-control" id="searchBookings" placeholder="Search bookings..." />
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-              <select class="form-select" id="statusFilter">
-                <option value="all">All Status</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
-            </div>
-            <div class="col-md-6 col-lg-3">
-              <input type="date" class="form-control" id="dateFilter" />
-            </div>
-            <div class="col-md-6 col-lg-3">
-              <button class="btn btn-primary w-100" id="exportBookings">
-                <i class="ti tabler-download me-1"></i>Export
-              </button>
-            </div>
-          </div>
-
-          <!-- Bookings Table -->
-          <div class="table-responsive">
-            <table class="table table-hover booking-table">
-              <thead class="table-light">
-                <tr>
-                  <th>Booking ID</th>
-                  <th>Client</th>
-                  <th>Service</th>
-                  <th>Date & Time</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- First Row -->
-                <tr class="booking-row">
-                  <td><span class="fw-semibold">#BK001</span></td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <div class="avatar avatar-sm me-2">
-                        <span class="avatar-initial rounded-circle bg-label-primary">JS</span>
-                      </div>
-                      <div>
-                        <h6 class="mb-0 fw-semibold">John Smith</h6>
-                        <small class="text-muted">Regular Client</small>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <h6 class="mb-0">Hair Cut & Style</h6>
-                      <small class="text-muted">45 mins</small>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <h6 class="mb-0">Mar 15, 2024</h6>
-                      <small class="text-muted">10:30 AM</small>
-                    </div>
-                  </td>
-                  <td>
-                    <h6 class="mb-0">₱1,500</h6>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-success rounded-pill">Completed</span>
-                  </td>
-                  <td>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-edit me-1"></i>Edit</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar me-1"></i>Reschedule</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-trash me-1"></i>Cancel</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-
-                <!-- Second Row -->
-                <tr class="booking-row">
-                  <td><span class="fw-semibold">#BK002</span></td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <div class="avatar avatar-sm me-2">
-                        <span class="avatar-initial rounded-circle bg-label-info">MG</span>
-                      </div>
-                      <div>
-                        <h6 class="mb-0 fw-semibold">Maria Garcia</h6>
-                        <small class="text-muted">VIP Client</small>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <h6 class="mb-0">Full Body Massage</h6>
-                      <small class="text-muted">90 mins</small>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <h6 class="mb-0">Mar 15, 2024</h6>
-                      <small class="text-muted">2:00 PM</small>
-                    </div>
-                  </td>
-                  <td>
-                    <h6 class="mb-0">₱2,500</h6>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-warning rounded-pill">Pending</span>
-                  </td>
-                  <td>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-edit me-1"></i>Edit</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-calendar me-1"></i>Reschedule</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#"><i class="ti tabler-trash me-1"></i>Cancel</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Pagination -->
-          <div class="d-flex justify-content-between align-items-center mt-4">
-            <div class="text-muted">Showing 1 to 10 of 50 entries</div>
-            <nav aria-label="Page navigation">
-              <ul class="pagination mb-0">
-                <li class="page-item prev">
-                  <a class="page-link" href="#"><i class="ti tabler-chevron-left"></i></a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item next">
-                  <a class="page-link" href="#"><i class="ti tabler-chevron-right"></i></a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add this CSS -->
-  <style>
-    /* Modal styles */
-    .modal-xl {
-      max-width: 1200px;
-    }
-
-    /* Table styles */
-    .booking-table th {
-      white-space: nowrap;
-    }
-
-    .booking-row {
-      transition: all 0.3s ease;
-    }
-
-    .booking-row:hover {
-      background-color: rgba(105, 108, 255, 0.04);
-      transform: translateX(5px);
-    }
-
-    /* Form control focus states */
-    .form-control:focus,
-    .form-select:focus {
-      border-color: #696cff;
-      box-shadow: 0 0 0 0.25rem rgba(105, 108, 255, 0.1);
-    }
-
-    /* Pagination styles */
-    .pagination .page-link {
-      color: #696cff;
-    }
-
-    .pagination .active .page-link {
-      background-color: #696cff;
-      border-color: #696cff;
-      color: #fff;
-    }
-
-    /* Badge hover effect */
-    .badge {
-      transition: all 0.3s ease;
-    }
-
-    .badge:hover {
-      transform: scale(1.1);
-    }
-  </style>
-
-  <!-- Add this JavaScript -->
-  {{-- <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Search functionality
-      const searchInput = document.getElementById("searchBookings");
-      searchInput.addEventListener("input", function (e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const rows = document.querySelectorAll(".booking-table tbody tr");
-
-        rows.forEach((row) => {
-          const text = row.textContent.toLowerCase();
-          row.style.display = text.includes(searchTerm) ? "" : "none";
-        });
-      });
 
       // Status filter
       const statusFilter = document.getElementById("statusFilter");

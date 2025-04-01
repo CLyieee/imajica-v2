@@ -34,19 +34,17 @@
 
     <title>Imajica Booking System</title>
 
-    
-      <meta name="description" content="Vuexy is the best bootstrap 5 dashboard for responsive web apps. Streamline your app development process with ease." />
-      <!-- Canonical SEO -->
-      <meta name="keywords" content="Vuexy bootstrap dashboard, vuexy bootstrap 5 dashboard, themeselection, html dashboard, web dashboard, frontend dashboard, responsive bootstrap theme" />
-      <meta property="og:title" content="Vuexy bootstrap Dashboard by Pixinvent" />
-      <meta property="og:type" content="product" />
-      <meta property="og:url" content="https://themeforest.net/item/vuexy-vuejs-html-laravel-admin-dashboard-template/23328599" />
-      <meta property="og:image" content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png" />
-      <meta property="og:description" content="Vuexy is the best bootstrap 5 dashboard for responsive web apps. Streamline your app development process with ease." />
-      <meta property="og:site_name" content="Pixinvent" />
-      <link rel="canonical" href="https://themeforest.net/item/vuexy-vuejs-html-laravel-admin-dashboard-template/23328599" />
-    
-    
+  <meta name="description" content="Imajica Booking System" />
+
+  <meta name="keywords" content="Imajica Booking System" />
+  <meta property="og:title" content="Imajica Booking System" />
+  <meta property="og:type" content="product" />
+  <meta property="og:url" content="Imajica Booking System" />
+  <meta property="og:image" content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png" />
+  <meta property="og:description" content="Imajica Booking System." />
+  <meta property="og:site_name" content="Pixinvent" />
+  <link rel="canonical" href="Imajica Booking System" />
+
       <!-- ? PROD Only: Google Tag Manager (Default ThemeSelection: GTM-5DDHKGP, PixInvent: GTM-5J3LMKC) -->
       <script>
         (function (w, d, s, l, i) {
@@ -102,9 +100,7 @@
     <script src="../../assets/vendor/js/helpers.js"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     
-      <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-      <script src="../../assets/vendor/js/template-customizer.js"></script>
-    
+   
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     
       <script src="../../assets/js/config.js"></script>
@@ -654,8 +650,8 @@
       </div>
     </div>
     <div class="card-datatable">
-      <table class="datatables-products table">
-        <thead class="border-top">
+      <table class="table datatables-products table-striped">
+        <thead class="border-top table-light">
           <tr>
             <th></th>
             <th></th>

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(e) {
-    let t = document.querySelector(".purchase"),
+    let t = document.querySelector(".purchaseTable"),
         o = {
             1: { title: "Pending", class: "bg-label-warning" },
             2: { title: "Completed", class: "bg-label-success" },
@@ -98,7 +98,13 @@ document.addEventListener("DOMContentLoaded", function(e) {
             <td>${item.amount}</td>
             <td>${item.payment_terms}</td>
 
-                <td><button class="btn btn-primary">View</button><button class="btn btn-danger">Edit</button></td>
+                <td>
+                <div class='d-flex gap-2'>
+                            <button class='btn btn-success btn-sm'></i>View</button>
+                            <button class='btn btn-info btn-sm'>Edit</button>
+                            <button class='btn btn-danger btn-sm'></i>Delete</button>
+                        </div>
+                  </td>
             </tr>
         `;
     }

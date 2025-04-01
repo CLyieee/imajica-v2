@@ -100,8 +100,7 @@
     <script src="../../assets/vendor/js/helpers.js"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     
-      <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-      <script src="../../assets/vendor/js/template-customizer.js"></script>
+  
     
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     
@@ -173,144 +172,6 @@
     
 
       
-      <li class="nav-item dropdown-language dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown">
-          <i class="icon-base ti tabler-language icon-22px text-heading"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
-              <span>English</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="fr" data-text-direction="ltr">
-              <span>French</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="ar" data-text-direction="rtl">
-              <span>Arabic</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="de" data-text-direction="ltr">
-              <span>German</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!--/ Language -->
-
-      
-        <!-- Style Switcher -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" id="nav-theme" href="javascript:void(0);" data-bs-toggle="dropdown">
-            <i class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"></i>
-            <span class="d-none ms-2" id="nav-theme-text">Toggle theme</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-theme-text">
-            <li>
-              <button type="button" class="dropdown-item align-items-center active" data-bs-theme-value="light" aria-pressed="false">
-                <span><i class="icon-base ti tabler-sun icon-22px me-3" data-icon="sun"></i>Light</span>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="dark" aria-pressed="true">
-                <span><i class="icon-base ti tabler-moon-stars icon-22px me-3" data-icon="moon-stars"></i>Dark</span>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="system" aria-pressed="false">
-                <span><i class="icon-base ti tabler-device-desktop-analytics icon-22px me-3" data-icon="device-desktop-analytics"></i>System</span>
-              </button>
-            </li>
-          </ul>
-        </li>
-        <!-- / Style Switcher-->
-      
-
-      <!-- Quick links  -->
-      <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-          <i class="icon-base ti tabler-layout-grid-add icon-22px text-heading"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-end p-0">
-          <div class="dropdown-menu-header border-bottom">
-            <div class="dropdown-header d-flex align-items-center py-3">
-              <h6 class="mb-0 me-auto">Shortcuts</h6>
-              <a href="javascript:void(0)" class="dropdown-shortcuts-add py-2 btn btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Add shortcuts"><i class="icon-base ti tabler-plus icon-20px text-heading"></i></a>
-            </div>
-          </div>
-          <div class="dropdown-shortcuts-list scrollable-container">
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-calendar icon-26px text-heading"></i>
-                </span>
-                <a href="app-calendar.html" class="stretched-link">Calendar</a>
-                <small>Appointments</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-file-dollar icon-26px text-heading"></i>
-                </span>
-                <a href="app-invoice-list.html" class="stretched-link">Invoice App</a>
-                <small>Manage Accounts</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-user icon-26px text-heading"></i>
-                </span>
-                <a href="app-user-list.html" class="stretched-link">User App</a>
-                <small>Manage Users</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-users icon-26px text-heading"></i>
-                </span>
-                <a href="app-access-roles.html" class="stretched-link">Role Management</a>
-                <small>Permission</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-device-desktop-analytics icon-26px text-heading"></i>
-                </span>
-                <a href="index.html" class="stretched-link">Dashboard</a>
-                <small>User Dashboard</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-settings icon-26px text-heading"></i>
-                </span>
-                <a href="pages-account-settings-account.html" class="stretched-link">Setting</a>
-                <small>Account Settings</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-help-circle icon-26px text-heading"></i>
-                </span>
-                <a href="pages-faq.html" class="stretched-link">FAQs</a>
-                <small>FAQs & Articles</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-square icon-26px text-heading"></i>
-                </span>
-                <a href="modal-examples.html" class="stretched-link">Modals</a>
-                <small>Useful Popups</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      <!-- Quick links -->
 
       <!-- Notification -->
       <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
@@ -640,23 +501,60 @@
 
   <!-- Order List Table -->
   <div class="card">
-    <div class="card-datatable table-responsive">
-      <table class="datatables-order table border-top">
-        <thead>
-          <tr>
-            <th></th>
-            <th></th>
-            <th>order</th>
-            <th>date</th>
-            <th>customers</th>
-            <th>payment</th>
-            <th>status</th>
-            <th>method</th>
-            <th>actions</th>
+    <table class="table border-top table-striped" id="orderTable">
+      <thead class="table-light">
+        <tr>
+          <th></th>
+          <th>order</th>
+          <th>date</th>
+          <th>customers</th>
+          <th>payment</th>
+          <th>status</th>
+          <th>method</th>
+          <th>actions</th>
+        </tr>
+        <tbody>
+         @foreach ($orders as $order)
+          <tr 
+            data-id="{{ $order->order_id }}"
+            data-items='@json($order->orderItems)'>
+            <td></td>
+            <td>
+              <a href="javascript:void(0)" class="text-heading fw-bold">#{{ $order->order_number }}</a>
+            </td>
+            <td>{{ $order->order_date }}</td>
+            <td>
+            <div class="d-flex flex-column">
+              <h6 class="mb-0">{{ $order->customer_name }}</h6>
+              <small class="text-muted">{{ $order->customer_email ?? 'No email available' }}</small>
+            </div>
+      
+          </td>
+
+            <td>${{ $order->total }}</td>
+            <td>
+              <span class="badge bg-label-{{ $order->order_status == 'completed' ? 'success' : ($order->order_status == 'pending' ? 'warning' : 'danger') }} me-1">{{ ucfirst($order->order_status) }}</span>
+            </td>
+            <td>{{ $order->payment_method }}</td>
+            <td>
+              <div class="d-flex gap-2">
+                <a href="{{ route('page.order-details', $order->order_id) }}" 
+                   class="btn btn-sm btn-success view-order">
+                  <i class="ti tabler-eye me-1"></i> View
+                </a>
+                <button class="btn btn-sm btn-info edit-category">
+                  <i class="ti tabler-edit me-1"></i> Edit
+                </button>
+                <button class="btn btn-sm btn-danger delete-category">
+                  <i class="ti tabler-trash me-1"></i> Delete
+                </button>
+              </div>
+            </td>
           </tr>
-        </thead>
-      </table>
-    </div>
+          @endforeach
+        </tbody>
+      </thead>
+    </table>
   </div>
 </div>
           <!-- / Content -->
@@ -749,6 +647,68 @@
     <!-- Page JS -->
     <script src="../../assets/js/order-list.js"></script>
     
+
+
+    <script>
+      $(document).ready(function () {
+        // Existing DataTable initialization 
+        $('#orderTable').DataTable({
+          layout: {
+            topStart: {
+              rowClass: "card-header d-flex border-top rounded-0 flex-wrap py-0 flex-column flex-md-row align-items-center",
+              features: [{
+                pageLength: { menu: [7, 10, 25, 50, 100] }
+              }]
+            },
+            topEnd: {
+              rowClass: "row m-3 my-0 justify-content-between",
+              features: [{
+                search: {
+                  className: "me-5 ms-n4 pe-5 mb-n6 mb-md-0",
+                  placeholder: "Search Order"
+                },
+                buttons: [{
+                  text: '<span class="d-flex align-items-center gap-1"><i class="ti tabler-plus me-1"></i>Add Order</span>',
+                  className: "btn btn-primary",
+                  action: function() {
+                    window.location.href = "/add-order";
+                  }
+                }]
+              }]
+            }
+          }
+        });
+
+        // Enhanced click handler for view buttons
+        $('.view-order').on('click', function(e) {
+          e.preventDefault();
+          const row = $(this).closest('tr');
+          const orderId = row.data('id');
+          const orderItems = row.data('items');
+          
+          // Store all order details in session storage
+          const orderDetails = {
+            id: orderId,
+            items: orderItems,
+            number: row.find('td:eq(1)').text().trim(),
+            date: row.find('td:eq(2)').text().trim(),
+            customer: {
+              name: row.find('td:eq(3) h6').text().trim(),
+              email: row.find('td:eq(3) small').text().trim()
+            },
+            total: row.find('td:eq(4)').text().trim(),
+            status: row.find('td:eq(5)').text().trim(),
+            payment: row.find('td:eq(6)').text().trim()
+          };
+          
+          sessionStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+          sessionStorage.setItem('currentOrderItems', JSON.stringify(orderItems));
+          console.log("Order details from order list:", orderDetails);
+          // Redirect to order details page
+          window.location.href = $(this).attr('href');
+        });
+      });
+    </script>
   </body>
 
 <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/app-ecommerce-order-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:26:18 GMT -->

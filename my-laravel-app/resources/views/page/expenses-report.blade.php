@@ -120,10 +120,8 @@
         font-family: "Poppins", sans-serif;
         background: linear-gradient(135deg, #eef2f3, #d0d0d2);
         color: #333;
-        padding: 20px;
-        display: flex;
-        margin: 0;
         padding: 0;
+        display: flex;
         min-height: 100vh;
       }
 
@@ -131,25 +129,40 @@
         max-width: 1200px;
         margin: auto;
         flex: 1;
-        padding: 20px;
-        margin-left: 300px;
         padding: 2rem;
         background: linear-gradient(135deg, #eef2f3, #f5f5f5);
+        margin-left: auto;
+        margin-right: auto;
         margin-top: 15px;
+        width: 100%;
+      }
+
+      .container-p-y {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding: 0 20px;
+        margin-left: 280px;
+      }
+
+      @media (max-width: 1199px) {
+        .container-p-y {
+          margin-left: 0;
+        }
       }
 
       .card {
-        background: rgba(255, 255, 255, 0.8);
+        background: #24b364;
         backdrop-filter: blur(10px);
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
+        max-width: 100%;
+        width: 100%;
+        margin: 0 auto;
       }
 
-      .card:hover {
-        transform: translateY(-5px);
-      }
+      /* Removed .card:hover transform effect */
 
       .header {
         text-align: center;
@@ -179,9 +192,10 @@
       }
 
       .metrics {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        display: flex;
+        flex-wrap: wrap;
         gap: 20px;
+        justify-content: center;
       }
 
       .metric-card {
@@ -189,11 +203,24 @@
         padding: 15px;
         border-radius: 10px;
         background: rgba(255, 255, 255, 0.9);
+        min-width: 200px;
+        max-width: 300px;
+        flex: 1;
+      }
+
+      .metric-card i {
+        font-size: 24px;
+        margin-bottom: 1rem;
+      }
+
+      .metric-card h5 {
+        margin-bottom: 1.5rem;
+        color: #2b2c2d;
       }
 
       .metric-card h4 {
         font-size: 2rem;
-        margin: 10px 0;
+        margin-bottom: 0.5rem;
       }
 
       #layout-menu {
@@ -237,95 +264,15 @@
           display: block;
         }
       }
-
-      .service-product-report {
-        margin-top: 30px;
-      }
-
-      .service-product-report h2 {
-        text-align: center;
-        font-weight: 600;
-        margin-bottom: 20px;
-      }
-
-      .service-product-report .metrics {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-      }
-
-      .service-product-report .metric-card {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.9);
-      }
-
-      .service-product-report .metric-card h4 {
-        font-size: 2rem;
-        margin: 10px 0;
-      }
-
-      .employee-report {
-        margin-top: 30px;
-        text-align: center; /* Center the content */
-      }
-
-      .employee-report h2 {
-        text-align: center;
-        font-weight: 600;
-        margin-bottom: 20px;
-      }
-
-      .employee-report .metrics {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-margin-top: 20px; /* Add margin to move the cards down */
-      }
-
-      .employee-report .metric-card {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.9);
-      }
-
-      .employee-report .metric-card h4 {
-        font-size: 2rem;
-        margin: 10px 0;
-      }
-
-      /* Update this style for table headers */
-      #expensesTable thead th {
-        background-color: #0f4f2b; /* Dark green color */
-        color: white;
-        text-align: center; /* Center align the header text */
-        padding: 12px;
-      }
-
-      /* Add styles for blurred status badges */
-      .badge.bg-success,
-      .badge.bg-warning,
-      .badge.bg-danger {
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        background-color: rgba(25, 135, 84, 0.85) !important; /* For success */
-      }
-
-      .badge.bg-warning {
-        background-color: rgba(255, 193, 7, 0.85) !important; /* For warning */
-      }
-
-      .badge.bg-danger {
-        background-color: rgba(220, 53, 69, 0.85) !important; /* For danger */
-      }
     </style>
+    <!-- Add these libraries in the head section -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   </head>
 
   <body>
-  @include('components.sidebar')
-
+    @include('components.sidebar')
     <div class="menu-mobile-toggler d-xl-none rounded-1 layout-wrapper">
       <a
         href="javascript:void(0);"
@@ -335,211 +282,508 @@ margin-top: 20px; /* Add margin to move the cards down */
         <i class="ti tabler-chevron-right icon-base"></i>
       </a>
     </div>
-    <div class="container-p-y">
-      <div class="container rounded">
-        <div class="employee-report">
-          <h2>Expenses Report Summary</h2>
-      
-          <div class="metrics">
-            <div class="metric-card">
-              <h5>Total Expenses</h5>
-              <h4>₱185,620</h4>
-              <p class="text-danger">+8.2%</p>
-            </div>
-            <div class="metric-card">
-              <h5>Highest Category</h5>
-              <h4>Utilities</h4>
-              <p>32% of expenses</p>
-            </div>
-            <div class="metric-card">
-              <h5>This Month</h5>
-              <h4>₱42,850</h4>
-              <p class="text-danger">+5.4%</p>
-            </div>
-          </div>
-          
-          <div class="card mt-4" style="background: rgba(255, 255, 255, 0.9); padding: 20px;">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <h3 class="mb-0">All Expenses</h3>
-              <div class="d-flex gap-2 align-items-center">
-                <input type="text" 
-                    class="form-control" 
-                    style="width: 200px;" 
-                    id="searchInput" 
-                    placeholder="Search expenses..." 
-                    role="searchbox"
-                    onkeyup="searchTable()">
-                <select class="form-select" style="width: 200px;" id="categoryFilter">
-                  <option value="">Filter by</option>
-                  <option value="utilities">Utilities</option>
-                  <option value="supplies">Supplies</option>
-                  <option value="maintenance">Maintenance</option>
-                  <option value="salary">Salary</option>
-                  <option value="others">Others</option>
-                </select>
-                <div class="dropdown">
-                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                    Filter By Date
-                  </button>
-                  <div class="dropdown-menu p-3" style="min-width: 250px;">
-                    <select class="form-select" id="dateFilter">
-                      <option value="">Select Date Range</option>
-                      <option value="today">Today</option>
-                      <option value="yesterday">Yesterday</option>
-                      <option value="last7">Last 7 Days</option>
-                      <option value="last30">Last 30 Days</option>
-                      <option value="thisMonth">This Month</option>
-                      <option value="lastMonth">Last Month</option>
-                      <option value="thisYear">This Year</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="dropdown">
-                  <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="width: 120px;">
-                    Export
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#" data-export="pdf">PDF</a></li>
-                    <li><a class="dropdown-item" href="#" data-export="excel">Excel</a></li>
-                    <li><a class="dropdown-item" href="#" data-export="csv">CSV</a></li>
-                  </ul>
+<div class="container-p-y">
+    <div class="container rounded">
+      <div class="header">
+        <h1>Expenses Report Summary</h1>
+      </div>
+
+      <div class="metrics">
+        <div class="metric-card">
+          <i class="ti tabler-receipt mb-2" style="font-size: 24px; color: #dc3545;"></i>
+          <h5>Total Expenses</h5>
+          <h4>₱85,430.00</h4>
+        </div>
+        <div class="metric-card">
+          <i class="ti tabler-chart-pie mb-2" style="font-size: 24px; color: #fd7e14;"></i>
+          <h5>Highest Category</h5>
+          <h4>Utilities</h4>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="m-0">Expense Transactions</h3>
+            <div class="d-flex gap-2">
+              <div class="input-group" style="width: 300px; position: relative;">
+                <span class="input-group-text">
+                  <i class="ti tabler-search"></i>
+                </span>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="searchInput" 
+                  placeholder="Search by name..."
+                  style="border-radius: 0; padding-right: 30px;"
+                >
+                <button 
+                  type="button"
+                  class="btn-close clear-search"
+                  id="clearSearch"
+                  style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
+                         z-index: 5; display: none; background-size: 8px; cursor: pointer;
+                         border: none; background-color: transparent; padding: 0.75rem;"
+                  aria-label="Clear search"
+                ></button>
+              </div>
+              <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  Filter By Date
+                </button>
+                <div class="dropdown-menu p-3" style="min-width: 250px;">
+                  <select class="form-select" id="dateFilter" onchange="applyDateFilter()">
+                    <option value="">Select Date Range</option>
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="last7">Last 7 Days</option>
+                    <option value="last30">Last 30 Days</option>
+                    <option value="thisMonth">This Month</option>
+                    <option value="lastMonth">Last Month</option>
+                    <option value="thisYear">This Year</option>
+                  </select>
                 </div>
               </div>
+              <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #18332a;">
+                  Export
+                </button>
+                <ul class="dropdown-menu" style="min-width: 120px;">
+                  <li><a class="dropdown-item" href="#" data-export="pdf">PDF</a></li>
+                  <li><a class="dropdown-item" href="#" data-export="excel">Excel</a></li>
+                  <li><a class="dropdown-item" href="#" data-export="csv">CSV</a></li>
+                </ul>
+              </div>
             </div>
-            <div class="table-responsive">
-              <table class="table table-hover" id="expensesTable">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Category</th>
-                    <th>Description</th>
-                    <th>Branch</th>
-                    <th>Amount</th>
-                    <th>Payment Method</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>2024-01-15</td>
-                    <td>Utilities</td>
-                    <td>Electricity Bill</td>
-                    <td>Main Branch</td>
-                    <td>₱12,450</td>
-                    <td>Bank Transfer</td>
-                    <td><span class="badge bg-label-success">Paid</span></td>
-                    <td>
-                      <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-sm btn-success">VIEW</a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2024-01-14</td>
-                    <td>Supplies</td>
-                    <td>Beauty Products Stock</td>
-                    <td>North Branch</td>
-                    <td>₱28,900</td>
-                    <td>Credit Card</td>
-                    <td><span class="badge bg-label-success">Paid</span></td>
-                    <td>
-                      <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-sm btn-success">VIEW</a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2024-01-13</td>
-                    <td>Maintenance</td>
-                    <td>Equipment Repair</td>
-                    <td>Main Branch</td>
-                    <td>₱8,500</td>
-                    <td>Cash</td>
-                    <td><span class="badge bg-label-warning">Pending</span></td>
-                    <td>
-                      <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-sm btn-success">VIEW</a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2024-01-12</td>
-                    <td>Salary</td>
-                    <td>Staff Payroll</td>
-                    <td>All Branches</td>
-                    <td>₱85,000</td>
-                    <td>Bank Transfer</td>
-                    <td><span class="badge bg-label-success">Paid</span></td>
-                    <td>
-                      <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-sm btn-success">VIEW</a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2024-01-11</td>
-                    <td>Others</td>
-                    <td>Marketing Materials</td>
-                    <td>All Branches</td>
-                    <td>₱15,200</td>
-                    <td>Credit Card</td>
-                    <td><span class="badge bg-label-danger"  >Overdue</span></td>
-                    <td>
-                      <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-sm btn-success">VIEW</a>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <script>
-              function searchTable() {
-                const input = document.getElementById('searchInput');
-                const filter = input.value.toLowerCase();
-                const table = document.getElementById('expensesTable');
-                const rows = table.getElementsByTagName('tr');
-
-                for (let i = 1; i < rows.length; i++) {
-                  let row = rows[i];
-                  let found = false;
-                  
-                  for (let j = 0; j < row.cells.length - 1; j++) {
-                    let cell = row.cells[j];
-                    if (cell) {
-                      let text = cell.textContent || cell.innerText;
-                      if (text.toLowerCase().indexOf(filter) > -1) {
-                        found = true;
-                        break;
-                      }
-                    }
-                  }
-                  
-                  row.style.display = found ? '' : 'none';
-                }
-              }
-            </script>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr style="background-color: #1e4d2b;">
+                  <th style="color: white; font-weight: 500;">Date</th>
+                  <th style="color: white; font-weight: 500;">Receipt/Invoice No.</th>
+                  <th style="color: white; font-weight: 500;">Expense Name</th>
+                  <th style="color: white; font-weight: 500;">Expense Category</th>
+                  <th style="color: white; font-weight: 500;">Payment Status</th>
+                  <th style="color: white; font-weight: 500;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024-01-15</td>
+                  <td>INV-2024-001</td>
+                  <td>Electricity Bill Payment</td>
+                  <td>Utilities</td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-14</td>
+                  <td>INV-2024-002</td>
+                  <td>Office Supplies Purchase</td>
+                  <td>Supplies</td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-13</td>
+                  <td>INV-2024-003</td>
+                  <td>Equipment Maintenance</td>
+                  <td>Maintenance</td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-12</td>
+                  <td>INV-2024-004</td>
+                  <td>Marketing Campaign</td>
+                  <td>Marketing</td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-11</td>
+                  <td>INV-2024-005</td>
+                  <td>Monthly Payroll</td>
+                  <td>Payroll</td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-10</td>
+                  <td>INV-2024-006</td>
+                  <td>Internet Service</td>
+                  <td>Utilities</td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-09</td>
+                  <td>INV-2024-007</td>
+                  <td>Office Rent</td>
+                  <td>Rent</td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-08</td>
+                  <td>INV-2024-008</td>
+                  <td>Software Licenses</td>
+                  <td>IT Services</td>
+                  <td><span class="badge bg-label-warning">Pending</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-07</td>
+                  <td>INV-2024-009</td>
+                  <td>Water Bill</td>
+                  <td>Utilities</td>
+                  <td><span class="badge bg-label-success">Paid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+                <tr>
+                  <td>2024-01-06</td>
+                  <td>INV-2024-010</td>
+                  <td>Equipment Purchase</td>
+                  <td>Assets</td>
+                  <td><span class="badge bg-label-danger">Unpaid</span></td>
+                  <td><button class="btn btn-sm btn-success">View</button></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-    </div>
+    </div>      
+</div>
 
-    <script>
+<!-- Expense Details Modal -->
+<div class="modal fade" id="expenseModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content shadow-lg rounded-3">
+      <div class="modal-header text-white" style="background-color: #1e4d2b;">
+        <h5 class="modal-title text-white">Expense Details</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="row g-4">
+          <!-- Expense Info Card -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-header bg-light d-flex align-items-center justify-content-between">
+                <h6 class="card-title mb-0">Basic Information</h6>
+                <small class="text-muted">Invoice: #INV-2024-001</small>
+              </div>
+              <div class="card-body d-flex flex-column gap-4 pt-4">
+                <div><strong>Expense Name:</strong> Electricity Bill Payment</div>
+                <div><strong>Category:</strong> Utilities</div>
+                <div><strong>Amount:</strong> <span class="text-success">₱12,450.00</span></div>
+                <div><strong>Date:</strong> January 15, 2024</div>
+                <div><strong>Payment Status:</strong> <span class="badge bg-success">Paid</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Details -->
+          <div class="col-md-6 col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-header bg-light">
+                <h6 class="card-title mb-0">Payment Details</h6>
+              </div>
+              <div class="card-body">
+                <table class="table table-striped">
+                  <tbody>
+                    <tr><td><strong>Payment Method:</strong></td><td>Bank Transfer</td></tr>
+                    <tr><td><strong>Transaction ID:</strong></td><td>TXN-987654321</td></tr>
+                    <tr><td><strong>Payment Date:</strong></td><td>January 15, 2024</td></tr>
+                    <tr><td><strong>Processed By:</strong></td><td>John Smith</td></tr>
+                    <tr><td><strong>Notes:</strong></td><td>Monthly electricity consumption for main office</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Monthly Comparison -->
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-light">
+                <h6 class="card-title mb-0">Monthly Comparison</h6>
+              </div>
+              <div class="card-body">
+                <canvas id="expenseChart" height="300"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Attached Documents -->
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-light">
+                <h6 class="card-title mb-0">Attached Documents</h6>
+              </div>
+              <div class="card-body d-flex flex-column gap-4 pt-4">
+                <div class="d-flex align-items-center p-3 border rounded bg-light mt-2">
+                  <i class="ti ti-file-invoice text-primary" style="font-size: 24px;"></i>
+                  <div class="ms-2">
+                    <h6 class="mb-0">Invoice_2024001.pdf</h6>
+                    <small class="text-muted">PDF, 2.3 MB</small>
+                  </div>
+                  <a href="{{ asset('storage/documents/Invoice_2024001.pdf') }}" 
+                     class="btn btn-sm btn-outline-primary ms-auto"
+                     download="Invoice_2024001.pdf">
+                    <i class="ti ti-download"></i>
+                  </a>
+                </div>
+                <div class="d-flex align-items-center p-3 border rounded bg-light">
+                  <i class="ti ti-file-text text-success" style="font-size: 24px;"></i>
+                  <div class="ms-2">
+                    <h6 class="mb-0">Receipt_2024001.pdf</h6>
+                    <small class="text-muted">PDF, 1.1 MB</small>
+                  </div>
+                  <a href="{{ asset('storage/documents/Receipt_2024001.pdf') }}" 
+                     class="btn btn-sm btn-outline-primary ms-auto"
+                     download="Receipt_2024001.pdf">
+                    <i class="ti ti-download"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-light" style="padding: 1rem 1.5rem;">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
       document
         .querySelector(".menu-mobile-toggler")
         .addEventListener("click", function () {
           document.querySelector("#layout-menu").classList.toggle("show");
         });
-    </script>
-    <div class="content-backdrop fade"></div>
-    <!-- Content wrapper -->
-    <!-- / Layout page -->
+
+      // Search functionality
+      const searchInput = document.getElementById('searchInput');
+      const clearButton = document.getElementById('clearSearch');
+
+      searchInput.addEventListener('input', function() {
+        let searchValue = this.value.toLowerCase();
+        filterTable(searchValue, null);
+        clearButton.style.display = searchValue ? 'block' : 'none';
+      });
+
+      clearButton.addEventListener('click', function() {
+        searchInput.value = '';
+        filterTable('', null);
+        this.style.display = 'none';
+        searchInput.focus(); // Return focus to search input
+      });
+
+      function filterTable(searchValue, dateRange) {
+        let tableRows = document.querySelectorAll('tbody tr');
+        
+        tableRows.forEach(row => {
+          let showRow = true;
+          
+          // Text search filter
+          if (searchValue) {
+            let name = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            let category = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+            if (!name.includes(searchValue) && !category.includes(searchValue)) {
+              showRow = false;
+            }
+          }
+          
+          // Date filter
+          if (dateRange && showRow) {
+            let dateCell = row.querySelector('td:nth-child(1)').textContent;
+            let rowDate = new Date(dateCell);
+            if (rowDate < dateRange.start || rowDate > dateRange.end) {
+              showRow = false;
+            }
+          }
+          
+          row.style.display = showRow ? '' : 'none';
+        });
+      }
+
+      function applyDateFilter() {
+        const filterValue = document.getElementById('dateFilter').value;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        let startDate = new Date();
+        let endDate = new Date();
+        
+        switch(filterValue) {
+          case 'today':
+            startDate = today;
+            endDate = new Date(today);
+            break;
+          case 'yesterday':
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 1);
+            endDate = new Date(startDate);
+            break;
+          case 'last7':
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 6);
+            endDate = new Date(today);
+            break;
+          case 'last30':
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 29);
+            endDate = new Date(today);
+            break;
+          case 'thisMonth':
+            startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+            endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            break;
+          case 'lastMonth':
+            startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            endDate = new Date(today.getFullYear(), today.getMonth(), 0);
+            break;
+          case 'thisYear':
+            startDate = new Date(today.getFullYear(), 0, 1);
+            endDate = new Date(today.getFullYear(), 11, 31);
+            break;
+          default:
+            startDate = null;
+            endDate = null;
+        }
+        
+        const searchValue = document.getElementById('searchInput').value.toLowerCase();
+        filterTable(searchValue, startDate && endDate ? { start: startDate, end: endDate } : null);
+      }
+
+// Add event listeners to view buttons
+document.querySelectorAll('.btn-success').forEach(button => {
+  button.addEventListener('click', () => {
+    const modal = new bootstrap.Modal(document.getElementById('expenseModal'));
+    modal.show();
+  });
+});
+
+// Initialize chart when modal is shown
+document.getElementById('expenseModal').addEventListener('shown.bs.modal', function () {
+  const ctx = document.getElementById('expenseChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+      datasets: [{
+        label: 'Monthly Expenses (₱)',
+        data: [11200, 10800, 11500, 12100, 11900, 12450],
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    }
+  });
+});
+
+// Add this new code after the existing scripts
+document.querySelectorAll('[data-export]').forEach(button => {
+    button.addEventListener('click', function() {
+        const exportType = this.getAttribute('data-export');
+        const tableData = getTableData();
+        
+        switch(exportType) {
+            case 'pdf':
+                exportToPDF(tableData);
+                break;
+            case 'excel':
+                exportToExcel(tableData);
+                break;
+            case 'csv':
+                exportToCSV(tableData);
+                break;
+        }
+    });
+});
+
+function getTableData() {
+    const table = document.querySelector('.table');
+    const headers = [...table.querySelectorAll('thead th')]
+        .map(header => header.textContent.trim());
+    
+    const rows = [...table.querySelectorAll('tbody tr')]
+        .map(row => [...row.querySelectorAll('td')]
+            .map(cell => cell.textContent.trim()));
+    
+    return { headers, rows };
+}
+
+function exportToPDF(data) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    doc.text('Expenses Report', 14, 15);
+    doc.autoTable({
+        head: [data.headers],
+        body: data.rows,
+        startY: 20,
+        theme: 'grid',
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: [30, 77, 43] }
+    });
+    
+    doc.save('expenses-report.pdf');
+}
+
+function exportToExcel(data) {
+    const worksheet = XLSX.utils.aoa_to_sheet([
+        data.headers,
+        ...data.rows
+    ]);
+    
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Expenses');
+    
+    XLSX.writeFile(workbook, 'expenses-report.xlsx');
+}
+
+function exportToCSV(data) {
+    const csvContent = [
+        data.headers.join(','),
+        ...data.rows.map(row => row.join(','))
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'expenses-report.csv');
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
+
+          <div class="content-backdrop fade"></div>
+        </div>
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
+
     <!-- Drag Target Area To SlideIn Menu On Small Screens -->
     <div class="drag-target"></div>
+    
   </div>
   <!-- / Layout wrapper -->
 
@@ -547,12 +791,13 @@ margin-top: 20px; /* Add margin to move the cards down */
   <!-- build:js assets/vendor/js/theme.js -->
 
   <!-- Footer -->
-
+ 
   <!-- / Footer -->
 
   <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
 
   <script src="../../assets/vendor/libs/popper/popper.js"></script>
+
   <script src="../../assets/vendor/js/bootstrap.js"></script>
   <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
 
@@ -583,6 +828,8 @@ margin-top: 20px; /* Add margin to move the cards down */
   <script src="../../assets/vendor/libs/chartjs/chartjs.js"></script>
   <script src="../../assets/js/charts-chartjs-legend.js"></script>
   <script src="../../assets/js/charts-chartjs.js"></script>
+  
 </body>
+
 
 </html>

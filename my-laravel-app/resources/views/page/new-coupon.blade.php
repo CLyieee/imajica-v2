@@ -89,6 +89,9 @@
       href="{{ asset('assets/vendor/libs/select2/select2.css') }}"
     />
 
+    <!-- Add SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -341,43 +344,75 @@
                       </h5>
                     </div>
                     <div class="card-body pt-6">
+                      @if ($errors->any())
+                          <script>
+                              document.addEventListener('DOMContentLoaded', function() {
+                                  Swal.fire({
+                                      icon: 'error',
+                                      title: 'Validation Error',
+                                      html: `@foreach ($errors->all() as $error)
+                                          - {{ $error }}<br>
+                                      @endforeach`,
+                                  });
+                              });
+                          </script>
+                      @endif
+          
+                      @if(session('success'))
+                          <script>
+                              document.addEventListener('DOMContentLoaded', function() {
+                                  Swal.fire({
+                                      icon: 'success',
+                                      title: 'Success',
+                                      text: '{{ session('success') }}',
+                                  });
+                              });
+                          </script>
+                      @endif
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <!-- 1. Delivery Address -->
-
+                      
+                        <form method="post" action="{{ route('coupon.create') }}">
+                            @csrf
+                            @method('POST')
+                          
+                        
                           <div class="row g-6">
                             <div class="col-md-6">
-                              <label class="form-label" for="fullname"
+                              <label class="form-label" for="coupon_code"
                                 >Coupon Code</label
                               >
                               <input
                                 type="text"
-                                id="fullname"
+                                id="coupon_code"
+                                name="coupon_code"
                                 class="form-control"
                                 placeholder="Coupon Code"
                               />
                             </div>
 
                             <div class="col-md-6">
-                              <label class="form-label" for="fullname"
+                              <label class="form-label" for="discount_name"
                                 >Coupon Name</label
                               >
                               <input
                                 type="text"
-                                id="fullname"
+                                id="discount_name"
+                                name="discount_name"  
                                 class="form-control"
                                 placeholder="Coupon Name"
                               />
                             </div>
 
                             <div class="col-12">
-                              <label class="form-label" for="address"
+                              <label class="form-label" for="description"
                                 >Description</label
                               >
                               <textarea
-                                name="address"
+                                name="description"
                                 class="form-control"
-                                id="address"
+                                id="description"
+
                                 rows="4"
                                 placeholder="Coupon Description"
                               ></textarea>
@@ -388,20 +423,23 @@
                               <select
                                 class="select2 form-select"
                                 data-allow-clear="true"
+                                id="discount_type"
+                                name="discount_type"
                               >
                                 <option value="">Select Discount Type</option>
-                                <option value="AL">Fixed Amount</option>
-                                <option value="AK">Percentage</option>
+                                <option value="fixed">Fixed Amount</option>
+                                <option value="percentage">Percentage</option>
                               </select>
                             </div>
 
                             <div class="col-md-6">
-                              <label class="form-label" for="pincode"
+                              <label class="form-label" for="discount_value"
                                 >Discount Value</label
                               >
                               <input
                                 type="text"
-                                id="pincode"
+                                id="discount_value"
+                                name="discount_value"
                                 class="form-control"
                                 placeholder="Amount"
                               />
@@ -414,36 +452,39 @@
                               <select
                                 class="select2 form-select"
                                 data-allow-clear="true"
-                                multiple
+                           
+                                name="applicable_service"
+                                id="applicable_service"
                               >
                                 <option value="">
                                   Select Applicable Services
                                 </option>
-                                <option value="AL">Anti-Aging IV Drip</option>
-                                <option value="AK">
+                                <option value="anti-aging">Anti-Aging IV Drip</option>
+                                <option value="contouring">
                                   Body Contouring & Sculpting
                                 </option>
-                                <option value="AZ">
+                                <option value="facial">
                                   Facial Rejuvenation Therapy
                                 </option>
-                                <option value="AZ">
+                                <option value="hydrating">
                                   Hydrating Skin Booster
                                 </option>
-                                <option value="AZ">
+                                <option value="laser">
                                   Laser Hair Removal (Underarm)
                                 </option>
                               </select>
                             </div>
 
                             <div class="col-md-6">
-                              <label for="flatpickr-range" class="form-label"
+                              <label for="start_end_date" class="form-label"
                                 >Start and End Date</label
                               >
                               <input
                                 type="text"
                                 class="form-control"
                                 placeholder="YYYY-MM-DD to YYYY-MM-DD"
-                                id="flatpickr-range"
+                                id="start_end_date"
+                                name="start_end_date"
                               />
                             </div>
 
@@ -458,14 +499,14 @@
                                   >
                                     <label
                                       class="form-check-label custom-option-content"
-                                      for="customRadioTemp1"
+                                      for="new_customer"
                                     >
                                       <input
-                                        name="customRadioTemp"
+                                        name="new_customer"
                                         class="form-check-input"
                                         type="radio"
-                                        value=""
-                                        id="customRadioTemp1"
+                                        value="Yes"
+                                        id="new_customer"
                                         checked
                                       />
                                       <span class="custom-option-header">
@@ -480,14 +521,14 @@
                                   >
                                     <label
                                       class="form-check-label custom-option-content"
-                                      for="customRadioTemp2"
+                                      for="new_customer"
                                     >
                                       <input
-                                        name="customRadioTemp"
+                                        name="new_customer"
                                         class="form-check-input"
                                         type="radio"
-                                        value=""
-                                        id="customRadioTemp2"
+                                        value="No"
+                                        id="new_customer"
                                       />
                                       <span class="custom-option-header">
                                         <span class="h6 mb-0">No</span>
@@ -503,25 +544,22 @@
                               <select
                                 class="select2 form-select"
                                 data-allow-clear="true"
+                                name="branch_code"
                               >
                                 <option value="">Select Branch</option>
-                                <option value="AL">Pasig City Branch</option>
-                                <option value="AK">
-                                  San Mateo Rizal Branch
-                                </option>
-                                <option value="AK">Cainta Rizal Branch</option>
+                                @foreach($branches as $branch)
+                                  <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
+                                @endforeach
                               </select>
                             </div>
                           </div>
 
-                          <!-- 2. Delivery Type -->
-
                           <br />
                           <div class="col-sm-2 col-4 d-grid">
-                            <button class="btn btn-primary">Add Coupon</button>
+                            <button type="submit" class="btn btn-primary">Add Coupon</button>
                           </div>
                           <br />
-
+                        </form>
                           <!-- 4. Payment Method -->
                         </div>
                       </div>
@@ -572,6 +610,9 @@
     </div>
     <!-- / Layout wrapper -->
 
+    <!-- Add SweetAlert JS before closing body -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/theme.js -->
 
@@ -612,6 +653,18 @@
     <!-- Page JS -->
     <script src="{{ asset('assets/js/form-layouts.js') }}"></script>
     <script src="{{ asset('assets/js/forms-pickers.js') }}"></script>
+    <script>
+      // Initialize date range picker
+      document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#start_end_date", {
+          mode: "range",
+          dateFormat: "Y-m-d"
+        });
+        
+        // Initialize select2
+        $('.select2').select2();
+      });
+    </script>
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->

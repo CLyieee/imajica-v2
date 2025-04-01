@@ -102,12 +102,7 @@
 
     <!-- Helpers -->
     <script src="../../assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    
-      <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-      <script src="../../assets/vendor/js/template-customizer.js"></script>
-    
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+
     
       <script src="../../assets/js/config.js"></script>
     
@@ -140,6 +135,7 @@
 
       
 
+
       <!-- Layout container -->
       <div class="layout-page">
         
@@ -163,163 +159,7 @@
 
 <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
   
-    <!-- Search -->
-    <div class="navbar-nav align-items-center">
-      <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-        <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
-          <span class="d-inline-block text-body-secondary fw-normal" id="autocomplete"></span>
-        </a>
-      </div>
-    </div>
 
-    <!-- /Search -->
-  
-  
-
-  
-
-  <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-    
-
-      
-      <li class="nav-item dropdown-language dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown">
-          <i class="icon-base ti tabler-language icon-22px text-heading"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
-              <span>English</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="fr" data-text-direction="ltr">
-              <span>French</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="ar" data-text-direction="rtl">
-              <span>Arabic</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="de" data-text-direction="ltr">
-              <span>German</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!--/ Language -->
-
-      
-        <!-- Style Switcher -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" id="nav-theme" href="javascript:void(0);" data-bs-toggle="dropdown">
-            <i class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"></i>
-            <span class="d-none ms-2" id="nav-theme-text">Toggle theme</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-theme-text">
-            <li>
-              <button type="button" class="dropdown-item align-items-center active" data-bs-theme-value="light" aria-pressed="false">
-                <span><i class="icon-base ti tabler-sun icon-22px me-3" data-icon="sun"></i>Light</span>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="dark" aria-pressed="true">
-                <span><i class="icon-base ti tabler-moon-stars icon-22px me-3" data-icon="moon-stars"></i>Dark</span>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="system" aria-pressed="false">
-                <span><i class="icon-base ti tabler-device-desktop-analytics icon-22px me-3" data-icon="device-desktop-analytics"></i>System</span>
-              </button>
-            </li>
-          </ul>
-        </li>
-        <!-- / Style Switcher-->
-      
-
-      <!-- Quick links  -->
-      <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-          <i class="icon-base ti tabler-layout-grid-add icon-22px text-heading"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-end p-0">
-          <div class="dropdown-menu-header border-bottom">
-            <div class="dropdown-header d-flex align-items-center py-3">
-              <h6 class="mb-0 me-auto">Shortcuts</h6>
-              <a href="javascript:void(0)" class="dropdown-shortcuts-add py-2 btn btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Add shortcuts"><i class="icon-base ti tabler-plus icon-20px text-heading"></i></a>
-            </div>
-          </div>
-          <div class="dropdown-shortcuts-list scrollable-container">
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-calendar icon-26px text-heading"></i>
-                </span>
-                <a href="app-calendar.html" class="stretched-link">Calendar</a>
-                <small>Appointments</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-file-dollar icon-26px text-heading"></i>
-                </span>
-                <a href="invoice-list.html" class="stretched-link">Invoice App</a>
-                <small>Manage Accounts</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-user icon-26px text-heading"></i>
-                </span>
-                <a href="app-user-list.html" class="stretched-link">User App</a>
-                <small>Manage Users</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-users icon-26px text-heading"></i>
-                </span>
-                <a href="app-access-roles.html" class="stretched-link">Role Management</a>
-                <small>Permission</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-device-desktop-analytics icon-26px text-heading"></i>
-                </span>
-                <a href="index.html" class="stretched-link">Dashboard</a>
-                <small>User Dashboard</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-settings icon-26px text-heading"></i>
-                </span>
-                <a href="pages-account-settings-account.html" class="stretched-link">Setting</a>
-                <small>Account Settings</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-help-circle icon-26px text-heading"></i>
-                </span>
-                <a href="pages-faq.html" class="stretched-link">FAQs</a>
-                <small>FAQs & Articles</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-square icon-26px text-heading"></i>
-                </span>
-                <a href="modal-examples.html" class="stretched-link">Modals</a>
-                <small>Useful Popups</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      <!-- Quick links -->
 
       <!-- Notification -->
       <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
@@ -591,122 +431,79 @@
           <div class="container-xxl flex-grow-1 container-p-y">
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
     <div class="d-flex flex-column justify-content-center">
-      <div class="mb-1"><span class="h5">Order #32543 </span><span class="badge bg-label-success me-1 ms-2">Paid</span> <span class="badge bg-label-info">Ready to Pickup</span></div>
-      <p class="mb-0">Aug 17, <span id="orderYear"></span>, 5:48 (ET)</p>
-    </div>
-    <div class="d-flex align-content-center flex-wrap gap-2">
-      <button class="btn btn-label-danger delete-order">Delete Order</button>
+      <div class="mb-1">
+        <span class="h5">Order <span id="orderNumber"></span></span>
+        <span id="orderStatus" class="badge bg-label ms-2"></span>
+      </div>
+      <p class="mb-0" id="orderDate"></p>
     </div>
   </div>
 
   <!-- Order Details Table -->
-
   <div class="row">
     <div class="col-12 col-lg-8">
       <div class="card mb-6">
         <div class="card-datatable">
-          <table class="datatables-order-details table">
-            <thead>
+          <table class="table table-striped table-bordered" id="datatables-order-details" style="width: 100%">
+            <thead >
               <tr>
                 <th></th>
-                <th></th>
-                <th class="w-50">products</th>
-                <th class="w-25">price</th>
-                <th class="w-25">qty</th>
-                <th>total</th>
+                <th>Product/Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
               </tr>
             </thead>
-<tbody>
-</tbody>
-
+            <tbody>
+            
+            </tbody>
           </table>
-
-          
-          <div class="d-flex justify-content-end align-items-center m-6 mb-2">
-            <div class="order-calculations">
-              <div class="d-flex justify-content-start mb-2">
-                <span class="w-px-100 text-heading">Subtotal:</span>
-                <h6 class="mb-0">$2093</h6>
-              </div>
-              <div class="d-flex justify-content-start mb-2">
-                <span class="w-px-100 text-heading">Discount:</span>
-                <h6 class="mb-0">$2</h6>
-              </div>
-              <div class="d-flex justify-content-start mb-2">
-                <span class="w-px-100 text-heading">Tax:</span>
-                <h6 class="mb-0">$28</h6>
-              </div>
-              <div class="d-flex justify-content-start">
-                <h6 class="w-px-100 mb-0">Total:</h6>
-                <h6 class="mb-0">$2113</h6>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-      <div class="card mb-6">
-        <div class="card-header">
-          <h5 class="card-title m-0">Shipping activity</h5>
-        </div>
-        <div class="card-body pt-1">
-          <ul class="timeline pb-0 mb-0">
-            <li class="timeline-item timeline-item-transparent border-primary">
-              <span class="timeline-point timeline-point-primary"></span>
+
+      <!-- Shipping Activity Timeline -->
+      <div class="card mb-4">
+        <h5 class="card-header">Order Activity</h5>
+        <div class="card-body">
+          <ul class="timeline">
+            <li class="timeline-item timeline-item-transparent">
+              <span class="timeline-point timeline-point-success"></span>
               <div class="timeline-event">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Order was placed (Order ID: #32543)</h6>
-                  <small class="text-body-secondary">Tuesday 11:29 AM</small>
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Order Delivered</h6>
+                  <small class="text-muted">Today</small>
                 </div>
-                <p class="mt-3">Your order has been placed successfully</p>
+                <p class="mb-2">Order has been delivered to the customer</p>
               </div>
             </li>
-            <li class="timeline-item timeline-item-transparent border-primary">
-              <span class="timeline-point timeline-point-primary"></span>
+            <li class="timeline-item timeline-item-transparent">
+              <span class="timeline-point timeline-point-warning"></span>
               <div class="timeline-event">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Pick-up</h6>
-                  <small class="text-body-secondary">Wednesday 11:29 AM</small>
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Out for Delivery</h6>
+                  <small class="text-muted">Yesterday</small>
                 </div>
-                <p class="mt-3 mb-3">Pick-up scheduled with courier</p>
+                <p class="mb-2">Package has left the warehouse</p>
               </div>
             </li>
-            <li class="timeline-item timeline-item-transparent border-primary">
-              <span class="timeline-point timeline-point-primary"></span>
+            <li class="timeline-item timeline-item-transparent">
+              <span class="timeline-point timeline-point-info"></span>
               <div class="timeline-event">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Dispatched</h6>
-                  <small class="text-body-secondary">Thursday 11:29 AM</small>
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Order Processing</h6>
+                  <small class="text-muted">2 days ago</small>
                 </div>
-                <p class="mt-3 mb-3">Item has been picked up by courier</p>
+                <p class="mb-0">Order is being prepared for shipment</p>
               </div>
             </li>
-            <li class="timeline-item timeline-item-transparent border-primary">
+            <li class="timeline-item timeline-item-transparent">
               <span class="timeline-point timeline-point-primary"></span>
               <div class="timeline-event">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Package arrived</h6>
-                  <small class="text-body-secondary">Saturday 15:20 AM</small>
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Order Placed</h6>
+                  <small class="text-muted">3 days ago</small>
                 </div>
-                <p class="mt-3 mb-3">Package arrived at an Amazon facility, NY</p>
-              </div>
-            </li>
-            <li class="timeline-item timeline-item-transparent border-dashed">
-              <span class="timeline-point timeline-point-primary"></span>
-              <div class="timeline-event">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Dispatched for delivery</h6>
-                  <small class="text-body-secondary">Today 14:12 PM</small>
-                </div>
-                <p class="mt-3 mb-3">Package has left an Amazon facility, NY</p>
-              </div>
-            </li>
-            <li class="timeline-item timeline-item-transparent border-transparent pb-0">
-              <span class="timeline-point timeline-point-secondary"></span>
-              <div class="timeline-event pb-0">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Delivery</h6>
-                </div>
-                <p class="mt-1 mb-0">Package will be delivered by tomorrow</p>
+                <p class="mb-0">Customer placed order #{{ $order['order_number'] ?? 'N/A' }}</p>
               </div>
             </li>
           </ul>
@@ -720,36 +517,25 @@
         </div>
         <div class="card-body">
           <div class="d-flex justify-content-start align-items-center mb-6">
-            <div class="avatar me-3">
-              <img src="../../assets/img/avatars/1.png" alt="Avatar" class="rounded-circle" />
-            </div>
             <div class="d-flex flex-column">
-              <a href="app-user-view-account.html" class="text-body text-nowrap">
-                <h6 class="mb-0">Shamus Tuttle</h6>
-              </a>
-              <span>Customer ID: #58909</span>
+              <h6 class="mb-0">{{ $order['customer_name'] ?? 'N/A' }}</h6>
+              <span>Customer ID: #{{ $order['customer_id'] ?? 'N/A' }}</span>
             </div>
-          </div>
-          <div class="d-flex justify-content-start align-items-center mb-6">
-            <span class="avatar rounded-circle bg-label-success me-3 d-flex align-items-center justify-content-center"><i class="icon-base ti tabler-shopping-cart icon-lg"></i></span>
-            <h6 class="text-nowrap mb-0">12 Orders</h6>
           </div>
           <div class="d-flex justify-content-between">
             <h6 class="mb-1">Contact info</h6>
-            <h6 class="mb-1"><a href=" javascript:void(0)" data-bs-toggle="modal" data-bs-target="#editUser">Edit</a></h6>
           </div>
-          <p class=" mb-1">Email: Shamus889@yahoo.com</p>
-          <p class=" mb-0">Mobile: +1 (609) 972-22-22</p>
+          <p class="mb-1">Email: {{ $order['customer_email'] ?? 'N/A' }}</p>
+          <p class="mb-0">Payment Method: <span id="orderPayment"></span></p>
         </div>
       </div>
-
       <div class="card mb-6">
         <div class="card-header d-flex justify-content-between">
           <h5 class="card-title m-0">Shipping address</h5>
           <h6 class="m-0"><a href=" javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addNewAddress">Edit</a></h6>
         </div>
         <div class="card-body">
-          <p class="mb-0">45 Roker Terrace <br />Latheronwheel <br />KW5 8NW,London <br />UK</p>
+          <p class="mb-0">{{ $order['shipping_address'] ?? 'N/A' }}</p>
         </div>
       </div>
       <div class="card mb-6">
@@ -758,9 +544,9 @@
           <h6 class="m-0"><a href=" javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addNewAddress">Edit</a></h6>
         </div>
         <div class="card-body">
-          <p class="mb-6">45 Roker Terrace <br />Latheronwheel <br />KW5 8NW,London <br />UK</p>
-          <h5 class="mb-1">Mastercard</h5>
-          <p class="mb-0">Card Number: ******4291</p>
+          <p class="mb-6">{{ $order['billing_address'] ?? 'N/A' }}</p>
+          <h5 class="mb-1">{{ $order['payment_method'] ?? 'N/A' }}</h5>
+          <p class="mb-0">Card Number: ******{{ $order['card_last_digits'] ?? 'XXXX' }}</p>
         </div>
       </div>
     </div>
@@ -1096,11 +882,104 @@
     
 
     <!-- Page JS -->
-    <script src="../../assets/js/order-details.js"></script>
+    <script>
+      $(document).ready(function() {
+        function getStatusClass(status) {
+            const statusClasses = {
+                'Ordered': 'bg-label-warning',
+                'Delivered': 'bg-label-success', 
+                'Out for Delivery': 'bg-label-primary',
+                'Ready to Pickup': 'bg-label-info'
+            };
+            return statusClasses[status] || 'bg-label-secondary';
+        }
+
+        const orderId = window.location.pathname.split('/').pop();
+
+        $.ajax({
+            url: `/order/order-details/${orderId}`,
+            method: 'GET',
+            success: function(orderDetails) {
+                console.log('Order Details:', orderDetails);
+                
+                // Update order header information
+                $('#orderNumber').text(orderDetails.number || 'N/A');
+                $('#orderDate').text(orderDetails.date || 'N/A');
+                $('#orderStatus').text(orderDetails.status || 'N/A')
+                    .addClass(getStatusClass(orderDetails.status));
+
+                // Update customer details
+                if (orderDetails.customer) {
+                    $('.card-body h6.mb-0').first().text(orderDetails.customer.name || 'N/A');
+                    $('p.mb-1').first().text(`Email: ${orderDetails.customer.email || 'N/A'}`);
+                    $('#orderPayment').text(orderDetails.payment || 'N/A');
+                }
+
+                // Initialize DataTable
+                const table = $('.table').DataTable({
+                    data: orderDetails.items || [],
+                    columns: [
+                        { data: null, defaultContent: '' },
+                        { 
+                            data: null,
+                            render: function(data, type, row) {
+                                const image = row.product_image ? 
+                                    `<img src="/uploads/products/${row.product_image}" class="rounded">` :
+                                    `<span class="avatar-initial rounded-2 bg-label-${getRandomColor()}"></span>`;
+                                
+                                return `
+                                    <div class="d-flex justify-content-start align-items-center product-name">
+                                        <div class="avatar-wrapper">
+                                            <div class="avatar avatar-sm me-2 me-sm-4 rounded-2 bg-label-secondary">
+                                                ${image}
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <h6 class="text-nowrap mb-0">${row.item_name}</h6>
+                                            <small class="text-truncate d-none d-sm-block">${row.description || ''}</small>
+                                        </div>
+                                    </div>`;
+                            }
+                        },
+                        { 
+                            data: 'unit_price',
+                            render: function(data) {
+                                return `$${parseFloat(data).toFixed(2)}`;
+                            }
+                        },
+                        { data: 'quantity' },
+                        { 
+                            data: 'total',
+                            render: function(data) {
+                                return `$${parseFloat(data).toFixed(2)}`;
+                            }
+                        }
+                    ],
+                    // ... rest of your DataTable configuration ...
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching order details:', error);
+                console.log('Response:', xhr.responseText); // Add this for debugging
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load order details: ' + (xhr.responseJSON?.message || error)
+                });
+            }
+        });
+
+        function getRandomColor() {
+            const colors = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // ... rest of your existing code ...
+    });
+    </script>
   <script src="../../assets/js/modal-edit-user.js"></script>
   <script src="../../assets/js/modal-add-new-address.js"></script>
-  <script src="../../assets/order-details.json"></script>
-    
+     
   </body>
 
 <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/app-ecommerce-order-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:26:20 GMT -->

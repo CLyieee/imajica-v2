@@ -30,22 +30,21 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Demo: eCommerce Category List - Apps | Vuexy - Bootstrap Dashboard PRO</title>
+    <title>Imajica Booking System</title>
 
-    
-      <meta name="description" content="Vuexy is the best bootstrap 5 dashboard for responsive web apps. Streamline your app development process with ease." />
-      <!-- Canonical SEO -->
-      <meta name="keywords" content="Vuexy bootstrap dashboard, vuexy bootstrap 5 dashboard, themeselection, html dashboard, web dashboard, frontend dashboard, responsive bootstrap theme" />
-      <meta property="og:title" content="Vuexy bootstrap Dashboard by Pixinvent" />
-      <meta property="og:type" content="product" />
-      <meta property="og:url" content="https://themeforest.net/item/vuexy-vuejs-html-laravel-admin-dashboard-template/23328599" />
-      <meta property="og:image" content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png" />
-      <meta property="og:description" content="Vuexy is the best bootstrap 5 dashboard for responsive web apps. Streamline your app development process with ease." />
-      <meta property="og:site_name" content="Pixinvent" />
-      <link rel="canonical" href="https://themeforest.net/item/vuexy-vuejs-html-laravel-admin-dashboard-template/23328599" />
-    
-    
+  <meta name="description" content="Imajica Booking System" />
+
+  <meta name="keywords" content="Imajica Booking System" />
+  <meta property="og:title" content="Imajica Booking System" />
+  <meta property="og:type" content="product" />
+  <meta property="og:url" content="Imajica Booking System" />
+  <meta property="og:image" content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png" />
+  <meta property="og:description" content="Imajica Booking System." />
+  <meta property="og:site_name" content="Pixinvent" />
+  <link rel="canonical" href="Imajica Booking System" />
+
       <!-- ? PROD Only: Google Tag Manager (Default ThemeSelection: GTM-5DDHKGP, PixInvent: GTM-5J3LMKC) -->
       <script>
         (function (w, d, s, l, i) {
@@ -104,11 +103,7 @@
 
     <!-- Helpers -->
     <script src="../../assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    
-      <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-      <script src="../../assets/vendor/js/template-customizer.js"></script>
-    
+  
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     
       <script src="../../assets/js/config.js"></script>
@@ -177,145 +172,8 @@
   <ul class="navbar-nav flex-row align-items-center ms-md-auto">
     
 
+    
       
-      <li class="nav-item dropdown-language dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown">
-          <i class="icon-base ti tabler-language icon-22px text-heading"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
-              <span>English</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="fr" data-text-direction="ltr">
-              <span>French</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="ar" data-text-direction="rtl">
-              <span>Arabic</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="de" data-text-direction="ltr">
-              <span>German</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!--/ Language -->
-
-      
-        <!-- Style Switcher -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" id="nav-theme" href="javascript:void(0);" data-bs-toggle="dropdown">
-            <i class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"></i>
-            <span class="d-none ms-2" id="nav-theme-text">Toggle theme</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-theme-text">
-            <li>
-              <button type="button" class="dropdown-item align-items-center active" data-bs-theme-value="light" aria-pressed="false">
-                <span><i class="icon-base ti tabler-sun icon-22px me-3" data-icon="sun"></i>Light</span>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="dark" aria-pressed="true">
-                <span><i class="icon-base ti tabler-moon-stars icon-22px me-3" data-icon="moon-stars"></i>Dark</span>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="system" aria-pressed="false">
-                <span><i class="icon-base ti tabler-device-desktop-analytics icon-22px me-3" data-icon="device-desktop-analytics"></i>System</span>
-              </button>
-            </li>
-          </ul>
-        </li>
-        <!-- / Style Switcher-->
-      
-
-      <!-- Quick links  -->
-      <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-          <i class="icon-base ti tabler-layout-grid-add icon-22px text-heading"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-end p-0">
-          <div class="dropdown-menu-header border-bottom">
-            <div class="dropdown-header d-flex align-items-center py-3">
-              <h6 class="mb-0 me-auto">Shortcuts</h6>
-              <a href="javascript:void(0)" class="dropdown-shortcuts-add py-2 btn btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Add shortcuts"><i class="icon-base ti tabler-plus icon-20px text-heading"></i></a>
-            </div>
-          </div>
-          <div class="dropdown-shortcuts-list scrollable-container">
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-calendar icon-26px text-heading"></i>
-                </span>
-                <a href="app-calendar.html" class="stretched-link">Calendar</a>
-                <small>Appointments</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-file-dollar icon-26px text-heading"></i>
-                </span>
-                <a href="app-invoice-list.html" class="stretched-link">Invoice App</a>
-                <small>Manage Accounts</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-user icon-26px text-heading"></i>
-                </span>
-                <a href="app-user-list.html" class="stretched-link">User App</a>
-                <small>Manage Users</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-users icon-26px text-heading"></i>
-                </span>
-                <a href="app-access-roles.html" class="stretched-link">Role Management</a>
-                <small>Permission</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-device-desktop-analytics icon-26px text-heading"></i>
-                </span>
-                <a href="index.html" class="stretched-link">Dashboard</a>
-                <small>User Dashboard</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-settings icon-26px text-heading"></i>
-                </span>
-                <a href="pages-account-settings-account.html" class="stretched-link">Setting</a>
-                <small>Account Settings</small>
-              </div>
-            </div>
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-help-circle icon-26px text-heading"></i>
-                </span>
-                <a href="pages-faq.html" class="stretched-link">FAQs</a>
-                <small>FAQs & Articles</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="icon-base ti tabler-square icon-26px text-heading"></i>
-                </span>
-                <a href="modal-examples.html" class="stretched-link">Modals</a>
-                <small>Useful Popups</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      <!-- Quick links -->
 
       <!-- Notification -->
       <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
@@ -581,109 +439,153 @@
 
         
 
-        <!-- Content wrapper -->
-        <div class="content-wrapper">
-          <!-- Content -->
-          <div class="container-xxl flex-grow-1 container-p-y">
-  <div class="app-ecommerce-category">
-    <!-- Category List Table -->
-    <div class="card">
-      <div class="card-datatable">
-        <table class="datatables-category-list table">
-          <thead>
-            <tr>
-              <th></th>
-              <th></th>
-              <th>Categories</th>
-              <th class="text-nowrap text-sm">Total Products</th>
-              <th class="text-nowrap text-sm">Total Earning</th>
-              <th class="text-lg">Actions</th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-    </div>
-    <!-- Offcanvas to add new customer -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList" aria-labelledby="offcanvasEcommerceCategoryListLabel">
-      <!-- Offcanvas Header -->
-      <div class="offcanvas-header py-6">
-        <h5 id="offcanvasEcommerceCategoryListLabel" class="offcanvas-title">Add Category</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <!-- Offcanvas Body -->
-      <div class="offcanvas-body border-top">
-        <form class="pt-0" id="eCommerceCategoryListForm" onsubmit="return true">
-          <!-- Title -->
-          <div class="mb-6 form-control-validation">
-            <label class="form-label" for="ecommerce-category-title">Title</label>
-            <input type="text" class="form-control" id="ecommerce-category-title" placeholder="Enter category title" name="categoryTitle" aria-label="category title" />
-          </div>
-          <!-- Slug -->
-          <div class="mb-6 form-control-validation">
-            <label class="form-label" for="ecommerce-category-slug">Slug</label>
-            <input type="text" id="ecommerce-category-slug" class="form-control" placeholder="Enter slug" aria-label="slug" name="slug" />
-          </div>
-          <!-- Image -->
-          <div class="mb-6">
-            <label class="form-label" for="ecommerce-category-image">Attachment</label>
-            <input class="form-control" type="file" id="ecommerce-category-image" />
-          </div>
-          <!-- Parent category -->
-          <div class="mb-6 ecommerce-select2-dropdown">
-            <label class="form-label" for="ecommerce-category-parent-category">Parent category</label>
-            <select id="ecommerce-category-parent-category" class="select2 form-select" data-placeholder="Select parent category">
-              <option value="">Select parent Category</option>
-              <option value="Household">Household</option>
-              <option value="Management">Management</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Office">Office</option>
-              <option value="Automotive">Automotive</option>
-            </select>
-          </div>
-          <!-- Description -->
-          <div class="mb-6">
-            <label class="form-label">Description</label>
-            <div class="form-control p-0 py-1">
-              <div class="comment-editor border-0" id="ecommerce-category-description"></div>
-              <div class="comment-toolbar border-0 rounded">
-                <div class="d-flex justify-content-end">
-                  <span class="ql-formats me-0">
-                    <button class="ql-bold"></button>
-                    <button class="ql-italic"></button>
-                    <button class="ql-underline"></button>
-                    <button class="ql-list" value="ordered"></button>
-                    <button class="ql-list" value="bullet"></button>
-                    <button class="ql-link"></button>
-                    <button class="ql-image"></button>
-                  </span>
-                </div>
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center">
+    <h3>Category List</h3>
+    <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEcommerceCategoryList" id="eCommerceCategoryListForm">
+      <i class="ti tabler-plus me-1"></i> Add New Category
+</div>
+  <!-- Table for Category List -->
+  <table class="table table-striped" id="categoryTable" style="width: 100%">   
+     <thead class="table-light">
+      <tr>
+        <th>ID</th>
+        <th>Select</th>
+        <th>Category</th>
+        <th>Total Products</th>
+        <th>Total Earnings</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach ($categories as $category)
+      <tr>
+        <td>{{ $category->category_id }}</td>
+        <td><input type="checkbox" class="form-check-input select-category"></td>
+        <td>
+          <div class="d-flex justify-content-start align-items-center">
+            <div class="avatar-wrapper me-3">
+              <div class="avatar rounded-2 bg-label-secondary">
+                <img src="{{ $category->categoryImage ? asset($category->categoryImage) : asset('assets/img/products/default.jpg') }}" 
+                     class="rounded-2" alt="{{ $category->categoryTitle }}">
               </div>
             </div>
+            <div class="d-flex flex-column">
+              <h6 class="mb-0">{{ $category->categoryTitle }}</h6>
+              <small class="text-muted">{{ $category->description ?? 'No description available' }}</small>
+            </div>
           </div>
-          <!-- Status -->
-          <div class="mb-6 ecommerce-select2-dropdown">
-            <label class="form-label">Select category status</label>
-            <select id="ecommerce-category-status" class="select2 form-select" data-placeholder="Select category status">
-              <option value="">Select category status</option>
-              <option value="Scheduled">Scheduled</option>
-              <option value="Publish">Publish</option>
-              <option value="Inactive">Inactive</option>
-            </select>
+        </td>
+        <td>
+          <span class="fw-semibold align-middle">{{ $category->products_count }}</span>
+
+        </td>
+        <td>
+          <span class="fw-semibold">₱{{ number_format($category->total_earnings, 2) }}</span>
+         
+        </td>
+        <td>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-success view-category" data-id="{{ $category->category_id }}">
+              <i class="ti tabler-eye me-1"></i> View
+            </button>
+            <button class="btn btn-sm btn-info edit-category" data-id="{{ $category->category_id }}">
+              <i class="ti tabler-edit me-1"></i> Edit
+            </button>
+            <button class="btn btn-sm btn-danger delete-category" 
+                    data-category-id="{{ $category->category_id }}"
+                    data-category-name="{{ $category->categoryTitle }}">
+              <i class="ti tabler-trash me-1"></i> Delete
+            </button>
           </div>
-          <!-- Submit and reset -->
-          <div class="mb-6">
-            <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Add</button>
-            <button type="reset" class="btn btn-label-danger" data-bs-dismiss="offcanvas">Discard</button>
+        </td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+
+<form id="deleteCategoryForm" method="POST" action="{{ route('category.delete') }}" style="display: none;">
+  @csrf
+  @method('DELETE')
+  <input type="hidden" id="deleteCategoryId" name="category_id">
+</form>
+
+<!-- Offcanvas for Adding New Category -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Add New Category</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" id="offcanvasEcommerceCategoryListClose"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form id="eCommerceCategoryListForm" method="POST" action="{{ route('category.create') }}" enctype="multipart/form-data">
+      @csrf
+      <div class="mb-3">
+        <label for="categoryTitle" class="form-label">Category Title</label>
+        <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" required>
+      </div>
+      <div class="mb-3">
+        <label for="slug" class="form-label">Slug</label>
+        <input type="text" class="form-control" id="slug" name="slug" required>
+        <small class="text-muted">The slug will be automatically generated from the title.</small>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="categoryImage" class="form-label">Category Image</label>
+        <input type="file" class="form-control" id="categoryImage" name="categoryImage" accept="image/*">
+        <div id="imagePreview" class="mt-2" style="max-width: 200px;">
+          <img src="" alt="Preview" style="width: 100%; display: none;">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Save Category</button>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Category Modal -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #0a3622">
+        <h5 class="modal-title text-white">Edit Category</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editCategoryForm" method="POST" action="/category/update" enctype="multipart/form-data">
+          @csrf
+          @method('PUT')
+          <input type="hidden" id="edit_category_id" name="category_id">
+          <div class="mb-3">
+            <label for="edit_categoryTitle" class="form-label">Category Title</label>
+            <input type="text" class="form-control" id="edit_categoryTitle" name="categoryTitle" required>
+            <div class="invalid-feedback" id="edit_categoryTitle_error"></div>
+          </div>
+          <div class="mb-3">
+            <label for="edit_description" class="form-label">Description</label>
+            <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
+            <div class="invalid-feedback" id="edit_description_error"></div>
+          </div>
+          <div class="mb-3">
+            <label for="edit_categoryImage" class="form-label">Category Image</label>
+            <input type="file" class="form-control" id="edit_categoryImage" name="categoryImage" accept="image/*">
+            <div id="edit_imagePreview" class="mt-2" style="max-width: 200px;">
+              <img src="" alt="Preview" style="width: 100%; display: none;">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Update Category</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
-          <!-- / Content -->
 
-          
-            
+
 
 <!-- Footer -->
 <footer class="content-footer footer bg-footer-theme">
@@ -771,33 +673,464 @@
     <!-- Main JS -->
     
       <script src="../../assets/js/main.js"></script>
+
     
 
     <!-- Page JS -->
-    <script src="../../assets/js/category-list.js"></script>
-    
+   
+
 
     <script>
-        var table = new DataTable('.datatables-category-list', {
-            ajax: '../../assets/category-list.json',
-            columns: [
-                { data: "id" },
-                { data: "id", orderable: false, render: DataTable.render.select() },
-                { data: "categories" },
-                { data: "total_products" },
-                { data: "total_earnings" },
-                { data: "id" }
-            ]
+      document.getElementById('categoryTitle').addEventListener('input', function(e) {
+          const title = e.target.value;
+          const slug = title.toLowerCase()
+              .replace(/[^\w\s-]/g, '') // Remove special characters
+              .replace(/\s+/g, '-')     // Replace spaces with hyphens
+              .replace(/-+/g, '-');     // Replace multiple hyphens with single hyphen
+          
+          document.getElementById('slug').value = slug;
+      });
+      
+      // Handle form submission
+      $('#eCommerceCategoryListForm').on('submit', function(e) {
+          e.preventDefault();
+          const form = $(this);
+          const categoryTitle = $('#categoryTitle').val();
+          const slug = $('#slug').val();
+      
+          $.ajax({
+              url: form.attr('action'),
+              method: 'POST',
+              data: {
+                  _token: $('input[name="_token"]').val(),
+                  categoryTitle: categoryTitle,
+                  slug: slug
+              },
+              success: function(response) {
+                  if (response.success) {
+                      // Add new row to DataTable
+                      dt_category_table.DataTable().ajax.reload();
+      
+                      // Close offcanvas
+                      var offcanvasElement = document.querySelector('#offcanvasEcommerceCategoryList');
+                      var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                      offcanvas.hide();
+      
+                      // Reset form
+                      form[0].reset();
+                      
+                      // Show success message
+                      alert('Category added successfully!');
+                  } else {
+                      alert('Error: ' + response.message);
+                  }
+              },
+              error: function(xhr) {
+                  alert('Error: ' + xhr.responseJSON.message);
+              }
+          });
+      });
+      </script>
+
+
+
+<script>
+  $(document).ready(function() {
+    // SweetAlert default configuration
+    const swalConfig = {
+      customClass: {
+        container: 'swal-container-class',
+        popup: 'swal-popup-class',
+        confirmButton: 'btn btn-primary me-3',
+        cancelButton: 'btn btn-label-secondary'
+      },
+      buttonsStyling: false,
+      backdrop: true,
+      allowOutsideClick: false
+    };
+  
+    // Add custom CSS to ensure SweetAlert appears above modal
+    $('<style>')
+      .prop('type', 'text/css')
+      .html(`
+        .swal-container-class {
+          z-index: 2000 !important;
+        }
+        .swal-popup-class {
+          z-index: 2001 !important;
+        }
+        .swal2-backdrop-show {
+          z-index: 1999 !important;
+        }
+        .modal-backdrop {
+          z-index: 1050 !important;
+        }
+        .modal {
+          z-index: 1055 !important;
+        }
+      `)
+      .appendTo('head');
+  
+    // Handle edit category button clicks
+    $('.edit-category').on('click', function() {
+      try {
+        const categoryId = $(this).data('id');
+        
+        // Show the modal immediately
+        $('#editCategoryModal').modal('show');
+        
+        // Fetch category data via AJAX
+        $.ajax({
+          url: `/category/get/${categoryId}`,
+          type: 'GET',
+          success: function(response) {
+            $('#edit_category_id').val(response.category_id);
+            $('#edit_categoryTitle').val(response.categoryTitle);
+            $('#edit_description').val(response.description);
+            
+            if (response.categoryImage) {
+              $('#edit_imagePreview img')
+                .attr('src', '/' + response.categoryImage)
+                .show();
+            }
+          },
+          error: function(xhr) {
+            console.error("Error fetching category data:", xhr);
+            Swal.fire({
+              ...swalConfig,
+              icon: 'error',
+              title: 'Error',
+              text: 'Could not load category data',
+              showConfirmButton: true
+            });
+          }
         });
-    </script>
+      } catch (e) {
+        console.error("Error in edit button handler:", e);
+      }
+    });
+  
+    // Handle edit form submission
+    $('#editCategoryForm').on('submit', function(e) {
+      e.preventDefault();
+      
+      $('#editCategoryModal').modal('hide');
+      
+      setTimeout(() => {
+        Swal.fire({
+          ...swalConfig,
+          title: 'Confirm Update',
+          text: 'Are you sure you want to update this category?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, update it!',
+          cancelButtonText: 'Cancel',
+          confirmButtonColor: '#0a3622',
+          cancelButtonColor: '#d33'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          } else {
+            $('#editCategoryModal').modal('show');
+          }
+        });
+      }, 200);
+    });
+  
+    // Handle delete category button clicks
+    $('.delete-category').on('click', function() {
+      const categoryId = $(this).data('category-id');
+      const categoryName = $(this).data('category-name');
+      console.log("ID, Name:", categoryId, categoryName);
+
+      $('#deleteCategoryId').val(categoryId);
+console.log("Delete ID:", $('#deleteCategoryId').val());
+      Swal.fire({
+        ...swalConfig,
+        title: 'Confirm Delete',
+        html: `Are you sure you want to delete category <strong>${categoryName}</strong>?<br>This action cannot be undone.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d'
+      }).then((result) => {
+        if (result.isConfirmed) {
+      
+          $('#deleteCategoryForm').submit();
+        }
+      });
+    });
+  
+    // Display success/error messages
+    @if(session('success'))
+      Swal.fire({
+        ...swalConfig,
+        icon: 'success',
+        title: 'Success',
+        text: "{{ session('success') }}",
+        timer: 3000,
+        showConfirmButton: false
+      });
+    @endif
+  
+    @if(session('error'))
+      Swal.fire({
+        ...swalConfig,
+        icon: 'error',
+        title: 'Error',
+        text: "{{ session('error') }}",
+        timer: 3000,
+        showConfirmButton: false
+      });
+    @endif
+  });
+  </script>
+  
+  <script>
+    $(document).ready(function() {
+      $('#categoryTable').DataTable();
+    });
+  </script>
+  
+            
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{{-- <script>
+$(document).ready(function() {
+  // SweetAlert default configuration
+  const swalConfig = {
+    customClass: {
+      container: 'swal-container-class',
+      popup: 'swal-popup-class',
+      confirmButton: 'btn btn-primary me-3',
+      cancelButton: 'btn btn-label-secondary'
+    },
+    buttonsStyling: false,
+    backdrop: true,
+    allowOutsideClick: false
+  };
+
+  // Handle edit button click
+  $('.edit-category').on('click', function() {
+    const categoryId = $(this).data('id');
     
+    $.ajax({
+      url: `/category/${categoryId}/edit`,
+      type: 'GET',
+      success: function(response) {
+        if(response.success) {
+          $('#edit_category_id').val(response.data.category_id);
+          $('#edit_categoryTitle').val(response.data.categoryTitle); 
+          $('#edit_description').val(response.data.description);
+          
+          if(response.data.categoryImage) {
+            $('#edit_imagePreview img').attr('src', response.data.categoryImage).show();
+          }
+          
+          $('#editCategoryModal').modal('show');
+        } else {
+          Swal.fire({
+            ...swalConfig,
+            icon: 'error',
+            title: 'Error',
+            text: response.message || 'Failed to get category details'
+          });
+        }
+      },
+      error: function(xhr) {
+        Swal.fire({
+          ...swalConfig,
+          icon: 'error',
+          title: 'Error',
+          text: xhr.responseJSON?.message || 'Failed to fetch category details'
+        });
+      }
+    });
+  });
 
-  </body>
+  // Handle edit form submission
+  $('#editCategoryForm').on('submit', function(e) {
+    e.preventDefault();
 
-<!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/app-ecommerce-category-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:26:18 GMT -->
+    const formData = new FormData(this);
+
+    $.ajax({
+      url: $(this).attr('action'),
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        if(response.success) {
+          $('#editCategoryModal').modal('hide');
+          Swal.fire({
+            ...swalConfig,
+            icon: 'success',
+            title: 'Success',
+            text: response.message || 'Category updated successfully',
+            timer: 1500
+          }).then(() => {
+            window.location.reload();
+          });
+        } else {
+          Swal.fire({
+            ...swalConfig,
+            icon: 'error',
+            title: 'Error',
+            text: response.message || 'Failed to update category'
+          });
+        }
+      },
+      error: function(xhr) {
+        const errors = xhr.responseJSON?.errors;
+        if(errors) {
+          let errorMessage = '<ul>';
+          Object.keys(errors).forEach(key => {
+            errorMessage += `<li>${errors[key][0]}</li>`;
+          });
+          errorMessage += '</ul>';
+
+          Swal.fire({
+            ...swalConfig,
+            icon: 'error',
+            title: 'Validation Error',
+            html: errorMessage
+          });
+        } else {
+          Swal.fire({
+            ...swalConfig,
+            icon: 'error',
+            title: 'Error',
+            text: xhr.responseJSON?.message || 'Failed to update category'
+          });
+        }
+      }
+    });
+  });
+
+  // Handle delete button click
+  $('.delete-category').on('click', function() {
+    const categoryId = $(this).data('category-id');
+    const categoryName = $(this).data('category-name');
+    $('#deleteCategoryId').val(categoryId);
+    Swal.fire({
+      ...swalConfig,
+      title: 'Are you sure?',
+      html: `You are about to delete category <strong>${categoryName}</strong>.<br>This action cannot be undone!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#dc3545'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: `/category/${categoryId}`,
+          type: 'DELETE',
+          data: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function(response) {
+            if(response.success) {
+              Swal.fire({
+                ...swalConfig,
+                icon: 'success',
+                title: 'Deleted!',
+                text: response.message || 'Category deleted successfully',
+                timer: 1500
+              }).then(() => {
+                window.location.reload();
+              });
+            } else {
+              Swal.fire({
+                ...swalConfig,
+                icon: 'error',
+                title: 'Error',
+                text: response.message || 'Failed to delete category'
+              });
+            }
+          },
+          error: function(xhr) {
+            Swal.fire({
+              ...swalConfig,
+              icon: 'error',
+              title: 'Error',
+              text: xhr.responseJSON?.message || 'Failed to delete category'
+            });
+          }
+        });
+      }
+    });
+  });
+
+  // Handle view button click
+  $('.view-category').on('click', function() {
+    const categoryId = $(this).data('id');
+    
+    $.ajax({
+      url: `/category/${categoryId}`,
+      type: 'GET',
+      success: function(response) {
+        if(response.success) {
+          Swal.fire({
+            ...swalConfig,
+            title: response.data.categoryTitle,
+            html: `
+              <div class="text-start">
+                <p><strong>Description:</strong> ${response.data.description || 'No description'}</p>
+                <p><strong>Total Products:</strong> ${response.data.totalProducts}</p>
+                <p><strong>Total Earnings:</strong> ${response.data.totalEarnings}</p>
+              </div>
+              ${response.data.categoryImage ? `<img src="${response.data.categoryImage}" class="img-fluid mt-3" alt="Category Image">` : ''}
+            `,
+            showCloseButton: true,
+            showConfirmButton: false
+          });
+        } else {
+          Swal.fire({
+            ...swalConfig,
+            icon: 'error',
+            title: 'Error',
+            text: response.message || 'Failed to fetch category details'
+          });
+        }
+      },
+      error: function(xhr) {
+        Swal.fire({
+          ...swalConfig,
+          icon: 'error',
+          title: 'Error',
+          text: xhr.responseJSON?.message || 'Failed to fetch category details'
+        });
+      }
+    });
+  });
+
+  // Display flash messages
+  @if(session('success'))
+    Swal.fire({
+      ...swalConfig,
+      icon: 'success',
+      title: 'Success',
+      text: "{{ session('success') }}",
+      timer: 1500
+    });
+  @endif
+
+  @if(session('error'))
+    Swal.fire({
+      ...swalConfig,
+      icon: 'error',
+      title: 'Error',
+      text: "{{ session('error') }}"
+    });
+  @endif
+});
+</script> --}}
+
+</body>
 </html>
 
-  <!-- beautify ignore:end -->
 
-
-  
