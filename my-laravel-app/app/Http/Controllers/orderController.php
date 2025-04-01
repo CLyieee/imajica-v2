@@ -143,12 +143,45 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        // Find the order and handle if not found
-        $order = Order::findOrFail($id);
-        
-        // Load the order items relationship if needed
-        $order->load('orderItems');
-        
-        return view('page.order-details', compact('order'));
+        try {
+            $order = Order::with(['orderItems.product'])->findOrFail($id);
+            return view('page.order-details', compact('order'));
+        } catch (\Exception $e) {
+            return redirect()->route('page.order-list')
+                           ->with('error', 'Order not found.');
+        }
+    }
+
+    public function getOrderDetails($orderId)
+    {
+        $order = Order::where('order_id', $orderId)->first();
+    
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+    
+     
+        $items = DB::table('order_items')
+            ->join('products', 'order_items.item_name', '=', 'products.name')
+            ->select(
+                'order_items.*',
+                'products.product_image as product_image',
+                'products.description'
+            )
+            ->where('order_items.order_id', $orderId)
+            ->get();
+    
+        return response()->json([
+            'number' => $order->order_number,
+            'date' => $order->created_at->format('M d, Y'),
+            'status' => $order->order_status,
+            'payment' => $order->payment_method,
+            'customer' => [
+                'name' => $order->customer_name,
+                'email' => $order->customer_email
+            ],
+            'items' => $items
+        ]);
+      
     }
 }

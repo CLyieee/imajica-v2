@@ -5,8 +5,35 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Add Order | Imajica Booking System</title>
+    <title>Imajica Booking System</title>
+
+    <meta name="description" content="Imajica Booking System" />
+  
+    <meta name="keywords" content="Imajica Booking System" />
+    <meta property="og:title" content="Imajica Booking System" />
+    <meta property="og:type" content="product" />
+    <meta property="og:url" content="Imajica Booking System" />
+    <meta property="og:image" content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png" />
+    <meta property="og:description" content="Imajica Booking System." />
+    <meta property="og:site_name" content="Pixinvent" />
+    <link rel="canonical" href="Imajica Booking System" />
+  
+
+
+
+
+
+
+
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
+
+
+
+
+
     <!-- Sweet Alert -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 </head>
@@ -37,74 +64,7 @@
                         <!-- /Search -->
 
                         <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                            <!-- Language -->
-                            <li class="nav-item dropdown-language dropdown">
-                                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                    <i class="icon-base ti tabler-language icon-22px text-heading"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
-                                            <span>English</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-language="fr" data-text-direction="ltr">
-                                            <span>French</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-language="ar" data-text-direction="rtl">
-                                            <span>Arabic</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-language="de" data-text-direction="ltr">
-                                            <span>German</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- /Language -->
-
-                            <!-- Quick links -->
-                            <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown">
-                                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                    <i class="icon-base ti tabler-layout-grid-add icon-22px text-heading"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end p-0">
-                                    <div class="dropdown-menu-header border-bottom">
-                                        <div class="dropdown-header d-flex align-items-center py-3">
-                                            <h6 class="mb-0 me-auto">Shortcuts</h6>
-                                            <a href="javascript:void(0)" class="dropdown-shortcuts-add py-2 btn btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Add shortcuts">
-                                                <i class="icon-base ti tabler-plus icon-20px text-heading"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-shortcuts-list scrollable-container">
-                                        <!-- Quick links content from add-product page -->
-                                    </div>
-                                </div>
-                            </li>
-
-                            <!-- Style Switcher-->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" id="nav-theme" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                    <i class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <button type="button" class="dropdown-item align-items-center active" data-bs-theme-value="light">
-                                            <span><i class="icon-base ti tabler-sun icon-22px me-3"></i>Light</span>
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="dark">
-                                            <span><i class="icon-base ti tabler-moon-stars icon-22px me-3"></i>Dark</span>
-                                        </button>
-                                    </li>
-                                </ul>
-                            </li>
+                           
 
                             <!-- Notification -->
                             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">

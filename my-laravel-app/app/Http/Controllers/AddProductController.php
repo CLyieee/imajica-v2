@@ -38,8 +38,10 @@ class AddProductController extends Controller
 
         // Handle image upload
         if ($request->hasFile('product_image')) {
-            $imagePath = $request->file('product_image')->store('products', 'public');
-            $data['image'] = $imagePath;
+            $image = $request->file('product_image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/products'), $imageName);
+            $data['product_image'] = 'uploads/products/' . $imageName;
         }
 
         // Convert checkbox values to boolean
