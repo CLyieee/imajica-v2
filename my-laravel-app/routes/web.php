@@ -163,7 +163,8 @@ Route::delete('/staff/{id}', [App\Http\Controllers\staffController::class, 'dele
 Route::post('/tier/create', [App\Http\Controllers\tierController::class, 'create'])->name('tier.create');
 Route::get('/tier/all', [App\Http\Controllers\tierController::class, 'list'])->name('tier.list');
 Route::put('/tier/update', [App\Http\Controllers\tierController::class, 'update'])->name('tier.update');
-Route::delete('/tier/{id}', [App\Http\Controllers\tierController::class, 'delete'])->name('tier.delete');
+Route::delete('/tier/delete', [App\Http\Controllers\tierController::class, 'delete'])->name('tier.delete');
+
 
 //Booking Route
 Route::post('/booking/create', [BookingController::class, 'create'])->name('booking.create');

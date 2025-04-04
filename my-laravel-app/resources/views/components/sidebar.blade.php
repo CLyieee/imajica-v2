@@ -353,7 +353,27 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Prevent default behavior for menu toggle links
+        // Add CSS to completely disable transitions for menu items
+        const style = document.createElement('style');
+        style.textContent = `
+            .menu-sub {
+                transition: none !important;
+                animation: none !important;
+            }
+            .menu-item.open > .menu-sub {
+                max-height: none !important;
+                display: block !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
+            .menu-item:not(.open) > .menu-sub {
+                max-height: 0 !important;
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Handle menu toggle clicks
         const menuToggles = document.querySelectorAll('.menu-toggle');
         menuToggles.forEach(toggle => {
             toggle.addEventListener('click', function(e) {
@@ -362,26 +382,22 @@
                 // Find the parent menu item
                 const menuItem = this.closest('.menu-item');
                 
-                // Toggle active and open classes
-                if (menuItem.classList.contains('open')) {
-                    menuItem.classList.remove('open');
-                } else {
-                    menuItem.classList.add('open');
-                }
+                // Toggle the open class
+                menuItem.classList.toggle('open');
                 
-                // Stop event propagation to prevent bouncing
+                // Stop event propagation to prevent the bouncing effect
                 e.stopPropagation();
+                return false;
             });
         });
         
         // Ensure active menu items with submenu are opened by default
-        const activeSubmenuItems = document.querySelectorAll('.menu-item.active.open');
+        const activeSubmenuItems = document.querySelectorAll('.menu-item.active');
         activeSubmenuItems.forEach(item => {
-            // Make sure parent menu items are also open
             let parent = item.closest('.menu-item:not(.active)');
             while (parent) {
                 parent.classList.add('open');
-                parent = parent.closest('.menu-item:not(.active)');
+                parent = parent.parentElement.closest('.menu-item:not(.active)');
             }
         });
     });

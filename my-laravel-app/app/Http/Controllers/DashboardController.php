@@ -251,12 +251,14 @@ class DashboardController extends Controller
 
     public function new_loyalty()
     {
-        return view('page.new-loyalty');
+        $tiers = tier::all();
+        return view('page.new-loyalty', compact('tiers'));
     }
 
     public function loyalty_list()
     {
-        return view('page.loyalty-list');
+        $tiers = tier::all();
+        return view('page.loyalty-list', compact('tiers'));
     }
     public function new_patient()
     {
