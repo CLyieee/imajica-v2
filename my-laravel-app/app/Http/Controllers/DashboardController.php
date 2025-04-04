@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\supplier;
 use App\Models\Patient;
 use Carbon\Carbon;
-use App\Models\branch;
+use App\Models\Branch;
 use App\Models\coupon;
 use App\Models\tier;
 use App\Models\staff;
@@ -12,11 +12,8 @@ use App\Models\booking;
 use App\Models\category;
 use Illuminate\Http\Request;
 use App\Models\service;
+use App\Models\order;
 use Illuminate\Support\Facades\DB;
-
-use App\Models\service;
-
-use App\Models\supplier;
 
 class DashboardController extends Controller
 {
@@ -37,6 +34,9 @@ class DashboardController extends Controller
         // Calculate patient growth (example calculation - modify as needed)
         $patientGrowth = $this->calculatePatientGrowth();
         
+        // Calculate booking growth
+        $bookingGrowth = $this->calculateBookingGrowth();
+        
         // Get today's birthdays
         $todayBirthdays = $this->getTodayBirthdays();
         
@@ -46,7 +46,32 @@ class DashboardController extends Controller
         // Get all birthdays for the modal
         $allBirthdays = $this->getAllBirthdays();
         
-        return view('page.dashboard', compact('patients', 'bookings', 'patientGrowth', 'todayBirthdays', 'upcomingBirthdays', 'allBirthdays'));
+        // Updated branch data fetching
+        $branchData = Branch::with(['bookings', 'bookings.service'])
+            ->get()
+            ->map(function ($branch) {
+                $totalBookings = $branch->bookings->count();
+                $totalRevenue = $branch->bookings->sum(function ($booking) {
+                    return $booking->service ? $booking->service->service_cost : 0;
+                });
+                
+                return [
+                    'name' => $branch->branch_name,
+                    'bookings' => $totalBookings,
+                    'revenue' => $totalRevenue
+                ];
+            });
+
+        return view('page.dashboard', compact(
+            'patients', 
+            'bookings', 
+            'patientGrowth', 
+            'bookingGrowth', 
+            'todayBirthdays', 
+            'upcomingBirthdays', 
+            'allBirthdays',
+            'branchData'
+        ));
     }
     
     private function calculatePatientGrowth()
@@ -67,6 +92,27 @@ class DashboardController extends Controller
         }
         
         return $thisMonth > 0 ? 100 : 0; // If last month was 0, return 100% growth or 0 if no new patients
+    }
+    
+    private function calculateBookingGrowth()
+    {
+        // Get the start of the current month and previous month
+        $currentMonthStart = Carbon::now()->startOfMonth();
+        $lastMonthStart = Carbon::now()->subMonth()->startOfMonth();
+        $lastMonthEnd = Carbon::now()->subMonth()->endOfMonth();
+
+        // Count bookings for current month and previous month
+        $currentMonthBookings = Booking::where('start_date', '>=', $currentMonthStart)->count();
+        $lastMonthBookings = Booking::whereBetween('start_date', [$lastMonthStart, $lastMonthEnd])->count();
+
+        // Calculate growth percentage
+        if ($lastMonthBookings > 0) {
+            $growth = (($currentMonthBookings - $lastMonthBookings) / $lastMonthBookings) * 100;
+        } else {
+            $growth = $currentMonthBookings > 0 ? 100 : 0;
+        }
+
+        return round($growth, 1);
     }
     
     private function getTodayBirthdays()
@@ -189,7 +235,7 @@ class DashboardController extends Controller
 
     public function new_coupon()
     {
-        $branches = branch::all();
+        $branches = Branch::all();
 
         return view('page.new-coupon', compact('branches')); 
 
@@ -198,7 +244,7 @@ class DashboardController extends Controller
     public function coupon_list()
     {
         $coupons = coupon::all();
-        $branches = branch::all();
+        $branches = Branch::all();
         return view('page.coupon-list', compact('coupons', 'branches'));
     }
 
@@ -236,15 +282,28 @@ class DashboardController extends Controller
         return view('page.supplier-list',compact('suppliers'));
 
     }
+    public function expenses_list()
+    {
+    
+        return view('page.expenses-list');
+    }
+
+    public function new_expenses()
+    {
+    
+        return view('page.new-expenses');
+    }
+
     public function new_staff()
     {
-        $branches = branch::all();
+        $branches = Branch::all();
         return view('page.new-staff', compact('branches'));
     }
+
     public function staff_list()
     {
         $staffs = staff::all();
-        $branches = branch::all();
+        $branches = Branch::all();
         return view('page.staff-list', compact('branches', 'staffs'));
     } 
     public function new_branch()
@@ -253,7 +312,7 @@ class DashboardController extends Controller
     }  
     public function branch_list()
     {
-        $branchs = branch::all();
+        $branchs = Branch::all();
         
         return view('page.branch-list', ['branchs'=> $branchs]);
     }
@@ -302,11 +361,13 @@ class DashboardController extends Controller
     }
     public function order_list()
     {
-        return view('page.order-list');
+        $orders = order::all();
+        return view('page.order-list', compact('orders'));
     }
     public function order_details()
     {
-        return view('page.order-details');
+        $order = order::all();
+        return view('page.order-details', compact('order'));
     }
     public function add_product()
     {
@@ -315,10 +376,11 @@ class DashboardController extends Controller
     }
     public function add_order()
     {
-        return view('page.add-order');
+        $products = \App\Models\Product::select('bar_code', 'name', 'base_price')->get();
+        return view('page.add-order', compact('products'));
     }
 
-/******  2db3ac5a-8cdc-4742-ac17-452b916d85d5  *******/    public function category_list()
+   public function category_list()
     {
         $categories = category::all();
         return view('page.category-list', compact('categories'));
@@ -331,7 +393,7 @@ class DashboardController extends Controller
     public function new_services()
     {
         // Get all branches to display in the form
-        $branches = branch::all();
+        $branches = Branch::all();
         $services = service::all();
         
         return view('page.new-services', compact('branches')); 
@@ -339,7 +401,7 @@ class DashboardController extends Controller
     public function services_list()
     {
         $services = service::all();
-        $branches = branch::all();
+        $branches = Branch::all();
         return view('page.services-list', compact('services', 'branches'));
     }
     public function new_user()
@@ -353,7 +415,7 @@ class DashboardController extends Controller
     public function booking()
     {
         $services = service::all();
-        $branches = branch::all();
+        $branches = Branch::all();
         $patients = patient::all();
         $staffs =   staff::all();
         return view('page.booking', compact('services', 'staffs', 'branches', 'patients'));

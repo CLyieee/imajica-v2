@@ -6,13 +6,52 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
     public function create(Request $request)
     {
         try {
+            // Validate request data
+            $validator = Validator::make($request->all(), [
+                'customer_name' => 'required|string|max:255',
+                'customer_email' => 'required|email|max:255',
+                'order_date' => 'required|date',
+                'order_time' => 'required',
+                'payment_status' => 'required|in:Paid,Pending,Failed,Cancelled',
+                'order_status' => 'required|in:Ordered,Delivered,Out for Delivery,Ready to Pickup',
+                'payment_method' => 'required|string',
+                'subtotal' => 'required|numeric|min:0',
+                'tax' => 'required|numeric|min:0',
+                'total' => 'required|numeric|min:0',
+                'items' => 'required|json'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            // Decode and validate items
+            $items = json_decode($request->items, true);
+            if (!is_array($items) || empty($items)) {
+                throw new \Exception('Invalid or empty items array');
+            }
+
+            // Start transaction
             DB::beginTransaction();
+
+            // Log the attempt to create order
+            Log::info('Attempting to create order', [
+                'customer' => $request->customer_name,
+                'email' => $request->customer_email,
+                'total_items' => count($items)
+            ]);
 
             // Create the order
             $order = Order::create([
@@ -27,32 +66,89 @@ class OrderController extends Controller
                 'total' => $request->total
             ]);
 
+            if (!$order) {
+                throw new \Exception('Failed to create order record');
+            }
+
             // Create order items
-            foreach ($request->items as $item) {
-                OrderItem::create([
+            foreach ($items as $item) {
+                // Validate each item
+                if (!isset($item['name'], $item['quantity'], $item['price'], $item['total'])) {
+                    throw new \Exception('Invalid item data structure');
+                }
+
+                $orderItem = OrderItem::create([
                     'order_id' => $order->order_id,
                     'item_name' => $item['name'],
                     'quantity' => $item['quantity'],
                     'unit_price' => $item['price'],
                     'total' => $item['total']
                 ]);
+
+                if (!$orderItem) {
+                    throw new \Exception('Failed to create order item: ' . $item['name']);
+                }
             }
 
             DB::commit();
+            
+            Log::info('Order created successfully', [
+                'order_id' => $order->order_id,
+                'order_number' => $order->order_number
+            ]);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Order created successfully',
-                'data' => $order
+                'data' => [
+                    'order_id' => $order->order_id,
+                    'order_number' => $order->order_number
+                ]
             ], 201);
 
         } catch (\Exception $e) {
             DB::rollback();
+            
+            Log::error('Order creation failed', [
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            $errorMessage = 'Failed to create order: ';
+            if (app()->environment('local')) {
+                $errorMessage .= $e->getMessage();
+            } else {
+                $errorMessage .= 'An unexpected error occurred';
+            }
+
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to create order',
-                'error' => $e->getMessage()
+                'message' => $errorMessage,
+                'debug' => app()->environment('local') ? [
+                    'error' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ] : null
             ], 500);
         }
+    }
+
+    public function index()
+    {
+        $orders = Order::with('items')->get();
+        return view('page.order-list', compact('orders'));
+    }
+
+    public function show($id)
+    {
+        // Find the order and handle if not found
+        $order = Order::findOrFail($id);
+        
+        // Load the order items relationship if needed
+        $order->load('orderItems');
+        
+        return view('page.order-details', compact('order'));
     }
 }

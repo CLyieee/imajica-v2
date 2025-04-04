@@ -4,10 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;
+use App\Models\Service;
+use App\Models\Staff;
+use App\Models\Branch;
+use App\Models\Patient;
 use Illuminate\Support\Facades\Log;
 
-class bookingController extends Controller
+class BookingController extends Controller
 {
+    public function index()
+    {
+        // Get all services for the booking form
+        $services = Service::all();
+        // Get all staff members
+        $staffs = Staff::all();
+        // Get all branches
+        $branches = Branch::all();
+        // Get all patients
+        $patients = Patient::all();
+        
+        return view('page.booking', compact('services', 'staffs', 'branches', 'patients'));
+    }
+
     public function create(Request $request)
     {
         $data = $request->validate([
@@ -136,6 +154,4 @@ class bookingController extends Controller
             return response()->json(['error' => 'Failed to fetch bookings: ' . $e->getMessage()], 500);
         }
     }
-
-
 }

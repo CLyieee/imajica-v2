@@ -19,7 +19,7 @@ class CreateOrderItemsTable extends Migration
             
             $table->foreign('order_id')
                   ->references('order_id')
-                  ->on('order')
+                  ->on('new_order_table')
                   ->onDelete('cascade');
         });
     }

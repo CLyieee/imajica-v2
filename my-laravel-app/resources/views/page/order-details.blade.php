@@ -135,6 +135,7 @@
 
       
 
+
       <!-- Layout container -->
       <div class="layout-page">
         
@@ -586,122 +587,79 @@
           <div class="container-xxl flex-grow-1 container-p-y">
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
     <div class="d-flex flex-column justify-content-center">
-      <div class="mb-1"><span class="h5">Order #32543 </span><span class="badge bg-label-success me-1 ms-2">Paid</span> <span class="badge bg-label-info">Ready to Pickup</span></div>
-      <p class="mb-0">Aug 17, <span id="orderYear"></span>, 5:48 (ET)</p>
-    </div>
-    <div class="d-flex align-content-center flex-wrap gap-2">
-      <button class="btn btn-label-danger delete-order">Delete Order</button>
+      <div class="mb-1">
+        <span class="h5">Order <span id="orderNumber"></span></span>
+        <span id="orderStatus" class="badge bg-label ms-2"></span>
+      </div>
+      <p class="mb-0" id="orderDate"></p>
     </div>
   </div>
 
   <!-- Order Details Table -->
-
   <div class="row">
     <div class="col-12 col-lg-8">
       <div class="card mb-6">
         <div class="card-datatable">
-          <table class="datatables-order-details table">
-            <thead>
+          <table class="table table-striped table-bordered" id="datatables-order-details" style="width: 100%">
+            <thead >
               <tr>
                 <th></th>
-                <th></th>
-                <th class="w-50">products</th>
-                <th class="w-25">price</th>
-                <th class="w-25">qty</th>
-                <th>total</th>
+                <th>Product/Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
               </tr>
             </thead>
-<tbody>
-</tbody>
-
+            <tbody>
+            
+            </tbody>
           </table>
-
-          
-          <div class="d-flex justify-content-end align-items-center m-6 mb-2">
-            <div class="order-calculations">
-              <div class="d-flex justify-content-start mb-2">
-                <span class="w-px-100 text-heading">Subtotal:</span>
-                <h6 class="mb-0">$2093</h6>
-              </div>
-              <div class="d-flex justify-content-start mb-2">
-                <span class="w-px-100 text-heading">Discount:</span>
-                <h6 class="mb-0">$2</h6>
-              </div>
-              <div class="d-flex justify-content-start mb-2">
-                <span class="w-px-100 text-heading">Tax:</span>
-                <h6 class="mb-0">$28</h6>
-              </div>
-              <div class="d-flex justify-content-start">
-                <h6 class="w-px-100 mb-0">Total:</h6>
-                <h6 class="mb-0">$2113</h6>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-      <div class="card mb-6">
-        <div class="card-header">
-          <h5 class="card-title m-0">Shipping activity</h5>
-        </div>
-        <div class="card-body pt-1">
-          <ul class="timeline pb-0 mb-0">
-            <li class="timeline-item timeline-item-transparent border-primary">
-              <span class="timeline-point timeline-point-primary"></span>
+
+      <!-- Shipping Activity Timeline -->
+      <div class="card mb-4">
+        <h5 class="card-header">Order Activity</h5>
+        <div class="card-body">
+          <ul class="timeline">
+            <li class="timeline-item timeline-item-transparent">
+              <span class="timeline-point timeline-point-success"></span>
               <div class="timeline-event">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Order was placed (Order ID: #32543)</h6>
-                  <small class="text-body-secondary">Tuesday 11:29 AM</small>
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Order Delivered</h6>
+                  <small class="text-muted">Today</small>
                 </div>
-                <p class="mt-3">Your order has been placed successfully</p>
+                <p class="mb-2">Order has been delivered to the customer</p>
               </div>
             </li>
-            <li class="timeline-item timeline-item-transparent border-primary">
-              <span class="timeline-point timeline-point-primary"></span>
+            <li class="timeline-item timeline-item-transparent">
+              <span class="timeline-point timeline-point-warning"></span>
               <div class="timeline-event">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Pick-up</h6>
-                  <small class="text-body-secondary">Wednesday 11:29 AM</small>
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Out for Delivery</h6>
+                  <small class="text-muted">Yesterday</small>
                 </div>
-                <p class="mt-3 mb-3">Pick-up scheduled with courier</p>
+                <p class="mb-2">Package has left the warehouse</p>
               </div>
             </li>
-            <li class="timeline-item timeline-item-transparent border-primary">
-              <span class="timeline-point timeline-point-primary"></span>
+            <li class="timeline-item timeline-item-transparent">
+              <span class="timeline-point timeline-point-info"></span>
               <div class="timeline-event">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Dispatched</h6>
-                  <small class="text-body-secondary">Thursday 11:29 AM</small>
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Order Processing</h6>
+                  <small class="text-muted">2 days ago</small>
                 </div>
-                <p class="mt-3 mb-3">Item has been picked up by courier</p>
+                <p class="mb-0">Order is being prepared for shipment</p>
               </div>
             </li>
-            <li class="timeline-item timeline-item-transparent border-primary">
+            <li class="timeline-item timeline-item-transparent">
               <span class="timeline-point timeline-point-primary"></span>
               <div class="timeline-event">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Package arrived</h6>
-                  <small class="text-body-secondary">Saturday 15:20 AM</small>
+                <div class="timeline-header mb-1">
+                  <h6 class="mb-0">Order Placed</h6>
+                  <small class="text-muted">3 days ago</small>
                 </div>
-                <p class="mt-3 mb-3">Package arrived at an Amazon facility, NY</p>
-              </div>
-            </li>
-            <li class="timeline-item timeline-item-transparent border-dashed">
-              <span class="timeline-point timeline-point-primary"></span>
-              <div class="timeline-event">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Dispatched for delivery</h6>
-                  <small class="text-body-secondary">Today 14:12 PM</small>
-                </div>
-                <p class="mt-3 mb-3">Package has left an Amazon facility, NY</p>
-              </div>
-            </li>
-            <li class="timeline-item timeline-item-transparent border-transparent pb-0">
-              <span class="timeline-point timeline-point-secondary"></span>
-              <div class="timeline-event pb-0">
-                <div class="timeline-header">
-                  <h6 class="mb-0">Delivery</h6>
-                </div>
-                <p class="mt-1 mb-0">Package will be delivered by tomorrow</p>
+                <p class="mb-0">Customer placed order #{{ $order['order_number'] ?? 'N/A' }}</p>
               </div>
             </li>
           </ul>
@@ -715,36 +673,25 @@
         </div>
         <div class="card-body">
           <div class="d-flex justify-content-start align-items-center mb-6">
-            <div class="avatar me-3">
-              <img src="../../assets/img/avatars/1.png" alt="Avatar" class="rounded-circle" />
-            </div>
             <div class="d-flex flex-column">
-              <a href="app-user-view-account.html" class="text-body text-nowrap">
-                <h6 class="mb-0">Shamus Tuttle</h6>
-              </a>
-              <span>Customer ID: #58909</span>
+              <h6 class="mb-0">{{ $order['customer_name'] ?? 'N/A' }}</h6>
+              <span>Customer ID: #{{ $order['customer_id'] ?? 'N/A' }}</span>
             </div>
-          </div>
-          <div class="d-flex justify-content-start align-items-center mb-6">
-            <span class="avatar rounded-circle bg-label-success me-3 d-flex align-items-center justify-content-center"><i class="icon-base ti tabler-shopping-cart icon-lg"></i></span>
-            <h6 class="text-nowrap mb-0">12 Orders</h6>
           </div>
           <div class="d-flex justify-content-between">
             <h6 class="mb-1">Contact info</h6>
-            <h6 class="mb-1"><a href=" javascript:void(0)" data-bs-toggle="modal" data-bs-target="#editUser">Edit</a></h6>
           </div>
-          <p class=" mb-1">Email: Shamus889@yahoo.com</p>
-          <p class=" mb-0">Mobile: +1 (609) 972-22-22</p>
+          <p class="mb-1">Email: {{ $order['customer_email'] ?? 'N/A' }}</p>
+          <p class="mb-0">Payment Method: <span id="orderPayment"></span></p>
         </div>
       </div>
-
       <div class="card mb-6">
         <div class="card-header d-flex justify-content-between">
           <h5 class="card-title m-0">Shipping address</h5>
           <h6 class="m-0"><a href=" javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addNewAddress">Edit</a></h6>
         </div>
         <div class="card-body">
-          <p class="mb-0">45 Roker Terrace <br />Latheronwheel <br />KW5 8NW,London <br />UK</p>
+          <p class="mb-0">{{ $order['shipping_address'] ?? 'N/A' }}</p>
         </div>
       </div>
       <div class="card mb-6">
@@ -753,9 +700,9 @@
           <h6 class="m-0"><a href=" javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addNewAddress">Edit</a></h6>
         </div>
         <div class="card-body">
-          <p class="mb-6">45 Roker Terrace <br />Latheronwheel <br />KW5 8NW,London <br />UK</p>
-          <h5 class="mb-1">Mastercard</h5>
-          <p class="mb-0">Card Number: ******4291</p>
+          <p class="mb-6">{{ $order['billing_address'] ?? 'N/A' }}</p>
+          <h5 class="mb-1">{{ $order['payment_method'] ?? 'N/A' }}</h5>
+          <p class="mb-0">Card Number: ******{{ $order['card_last_digits'] ?? 'XXXX' }}</p>
         </div>
       </div>
     </div>
@@ -1095,7 +1042,108 @@
   <script src="../../assets/js/modal-edit-user.js"></script>
   <script src="../../assets/js/modal-add-new-address.js"></script>
   <script src="../../assets/order-details.json"></script>
+
+    <script>
+      $(document).ready(function() {
+        // Get order details from session storage
+        const orderDetails = JSON.parse(sessionStorage.getItem('orderDetails') || '{}');
+        console.log('Order Details:', orderDetails);
+        
+        // Update order header information
+        $('#orderNumber').text(orderDetails.number || 'N/A');
+        $('#orderDate').text(orderDetails.date || 'N/A');
+        $('#orderStatus').text(orderDetails.status || 'N/A')
+        $('#orderPayment').text(orderDetails.payment || 'N/A')
+          .addClass(getStatusClass(orderDetails.status));
+
+        // Update customer details
+        if (orderDetails.customer) {
+          $('.card-body h6.mb-0').text(orderDetails.customer.name || 'N/A');
+          $('p.mb-1').eq(0).text(`Email: ${orderDetails.customer.email || 'N/A'}`);
+          $('p.mb-0').eq(0).text(`Payment Method: ${orderDetails.payment || 'N/A'}`);
+        }
+        
+        // Initialize DataTable with order items
+        const table = $('.table').DataTable({
+          data: orderDetails.items || [],
+          columns: [
+            { data: null, defaultContent: '' },
+            { data: 'item_name' },
+            { 
+              data: 'unit_price',
+              render: function(data) {
+                return `$${parseFloat(data).toFixed(2)}`;
+              }
+            },
+            { data: 'quantity' },
+            { 
+              data: 'total',
+              render: function(data) {
+                return `$${parseFloat(data).toFixed(2)}`;
+              }
+            }
+          ],
+          pageLength: 7,
+          dom: '<"row mx-2"<"col-md-2"<"me-3"l>><"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"fB>>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+          language: {
+            sLengthMenu: '_MENU_',
+            search: '',
+            searchPlaceholder: 'Search Order Items'
+          },
+          buttons: [
+            {
+              extend: 'collection',
+              className: 'btn btn-label-secondary dropdown-toggle mx-3',
+              text: '<i class="ti tabler-screen-share me-1 ti-xs"></i>Export',
+              buttons: [
+                {
+                  extend: 'print',
+                  text: '<i class="ti tabler-printer me-2"></i>Print',
+                  className: 'dropdown-item'
+                },
+                {
+                  extend: 'csv',
+                  text: '<i class="ti tabler-file-text me-2"></i>Csv',
+                  className: 'dropdown-item'
+                },
+                {
+                  extend: 'excel',
+                  text: '<i class="ti tabler-file-spreadsheet me-2"></i>Excel',
+                  className: 'dropdown-item'
+                },
+                {
+                  extend: 'pdf',
+                  text: '<i class="ti tabler-file-type-pdf me-2"></i>Pdf',
+                  className: 'dropdown-item'
+                },
+                {
+                  extend: 'copy',
+                  text: '<i class="ti tabler-copy me-2"></i>Copy',
+                  className: 'dropdown-item'
+                }
+              ]
+            }
+          ],
+          responsive: true,
+          order: [[1, 'desc']]
+        });
+
+        // Helper function to get status badge class
+        function getStatusClass(status) {
+          switch(status?.toLowerCase()) {
+            case 'completed': return 'bg-label-success';
+            case 'pending': return 'bg-label-warning';
+            case 'cancelled': return 'bg-label-danger';
+            default: return 'bg-label-secondary';
+          }
+        }
+
+        // Clear session storage after loading
+        sessionStorage.removeItem('orderDetails');
+      });
     
+    </script>
+     
   </body>
 
 <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/app-ecommerce-order-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:26:20 GMT -->
