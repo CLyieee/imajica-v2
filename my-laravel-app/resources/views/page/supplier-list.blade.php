@@ -115,7 +115,7 @@
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
-          <nav
+          {{-- <nav
             class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
             id="layout-navbar"
           >
@@ -164,7 +164,7 @@
                 <!-- / Style Switcher-->
               </ul>
             </div>
-          </nav>
+          </nav> --}}
           <!-- / Navbar -->
 
           <!-- Content wrapper -->

@@ -335,45 +335,22 @@
             </ul>
         </li>
 
-        <li class="menu-item">
-            <a href="/system-settings" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-adjustments"></i>
-                <div data-i18n="System Settings">System Settings</div>
-            </a>
-        </li>
 
         <li class="menu-item">
-            <a href="login.html" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-logout"></i>
-                <div data-i18n="Logout">Logout</div>
-            </a>
+            <form">
+                
+                <a href="login.html" class="menu-link" onclick="event.preventDefault(); this.closest('form').submit();">
+                    <i class="menu-icon icon-base ti tabler-logout"></i>
+                    <div data-i18n="Logout">Logout</div>
+                </a>
+            </form>
         </li>
     </ul>
 </aside>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Add CSS to completely disable transitions for menu items
-        const style = document.createElement('style');
-        style.textContent = `
-            .menu-sub {
-                transition: none !important;
-                animation: none !important;
-            }
-            .menu-item.open > .menu-sub {
-                max-height: none !important;
-                display: block !important;
-                transform: none !important;
-                opacity: 1 !important;
-            }
-            .menu-item:not(.open) > .menu-sub {
-                max-height: 0 !important;
-                display: none !important;
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Handle menu toggle clicks
+        // Prevent default behavior for menu toggle links
         const menuToggles = document.querySelectorAll('.menu-toggle');
         menuToggles.forEach(toggle => {
             toggle.addEventListener('click', function(e) {
@@ -382,18 +359,52 @@
                 // Find the parent menu item
                 const menuItem = this.closest('.menu-item');
                 
-                // Toggle the open class
-                menuItem.classList.toggle('open');
+                // Get all open menu items at the same level
+                const siblingMenuItems = menuItem.parentElement.querySelectorAll('.menu-item.open');
                 
-                // Stop event propagation to prevent the bouncing effect
+                // Toggle active and open classes
+                if (menuItem.classList.contains('open')) {
+                    menuItem.classList.remove('open');
+                } else {
+                    // Close other menus at the same level for cleaner UI (optional)
+                    // siblingMenuItems.forEach(item => {
+                    //    if (item !== menuItem) item.classList.remove('open');
+                    // });
+                    menuItem.classList.add('open');
+                }
+                
+                // Stop event propagation to prevent bubbling which causes the bouncing effect
                 e.stopPropagation();
-                return false;
+                
+                // Add a specific class to indicate this menu was toggled by user
+                menuItem.classList.add('menu-toggled-by-user');
             });
         });
+        
+        // Add CSS to prevent animation conflicts and remove arrow icons
+        const style = document.createElement('style');
+        style.textContent = `
+            .menu-item .menu-sub {
+                transition: none !important;
+            }
+            .menu-item.open > .menu-sub {
+                transition: none !important;
+                animation: none !important;
+            }
+            .menu-toggled-by-user .menu-sub {
+                max-height: none !important;
+            }
+            /* Remove arrow icons from menu toggles */
+            .menu-toggle::after {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
         
         // Ensure active menu items with submenu are opened by default
         const activeSubmenuItems = document.querySelectorAll('.menu-item.active');
         activeSubmenuItems.forEach(item => {
+            // Find parent menu items and open them
             let parent = item.closest('.menu-item:not(.active)');
             while (parent) {
                 parent.classList.add('open');

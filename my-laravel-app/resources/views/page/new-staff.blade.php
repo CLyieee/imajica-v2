@@ -170,7 +170,7 @@
         <div class="layout-page">
           <!-- Navbar -->
 
-          <nav
+          {{-- <nav
             class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
             id="layout-navbar"
           >
@@ -365,7 +365,7 @@
                 <!--/ User -->
               </ul>
             </div>
-          </nav>
+          </nav> --}}
 
           <!-- / Navbar -->
 
@@ -378,7 +378,7 @@
                 <div class="col-12">
                   <div class="card">
                     <div
-                      class="card-header sticky-element d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
+                      class="card-header d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
                       style="background-color: #0a3622"
                     >
                       <h5 class="card-title mb-sm-0 me-2 text-white">

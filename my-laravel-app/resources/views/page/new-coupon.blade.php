@@ -128,7 +128,7 @@
         <div class="layout-page">
           <!-- Navbar -->
 
-          <nav
+          {{-- <nav
             class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
             id="layout-navbar"
           >
@@ -323,7 +323,7 @@
                 <!--/ User -->
               </ul>
             </div>
-          </nav>
+          </nav> --}}
 
           <!-- / Navbar -->
 
