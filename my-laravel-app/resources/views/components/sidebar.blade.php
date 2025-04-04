@@ -1,77 +1,3 @@
-<html lang="en" class="layout-navbar-fixed layout-menu-fixed layout-compact" dir="ltr" data-skin="default"
-    data-assets-path="../../assets/" data-template="vertical-menu-template" data-bs-theme="light">
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
-    <title>Imajica Booking System</title>
-
-    <meta name="description" content="Imajica Booking System" />
-
-    <meta name="keywords" content="Imajica Booking System" />
-    <meta property="og:title" content="Imajica Booking System" />
-    <meta property="og:type" content="product" />
-    <meta property="og:url" content="Imajica Booking System" />
-    <meta property="og:image" content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png" />
-    <meta property="og:description" content="Imajica Booking System." />
-    <meta property="og:site_name" content="Pixinvent" />
-    <link rel="canonical" href="Imajica Booking System" />
-
-    <!-- End Google Tag Manager -->
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com/" />
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;ampdisplay=swap"
-        rel="stylesheet" />
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}" />
-
-    <!-- Core CSS -->
-    <!-- build:css assets/vendor/css/theme.css  -->
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" />
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" />
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/chartjs/chartjs.css') }}" />
-
-    <!-- Vendors CSS -->
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-
-    <!-- endbuild -->
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/apex-charts/apex-charts.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/swiper/swiper.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
-    <link rel="stylesheet"
-        href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
-    <link rel="stylesheet" href="{{ asset(path: 'assets/vendor/fonts/flag-icons.css')  }}" />
-
-    <!-- Page CSS -->
-    <link rel="stylesheet" href="{{ asset(path: 'assets/vendor/css/pages/cards-advance.css') }}" />
-    <link rel="stylesheet" href="{{ asset(path:'assets/css/demo.css') }}">
-    <!-- Helpers -->
-    <script src="{{ asset(path: 'assets/vendor/js/helpers.js') }}"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-
-    <script src="{{ asset(path: 'assets/js/config.js') }}"></script>
-</head>
-
-
 <aside id="layout-menu" class="layout-menu menu-vertical menu">
     <br />
     <br />
@@ -104,7 +30,6 @@
                 <div data-i18n="Booking">Booking</div>
             </a>
         </li>
-
 
         <li class="menu-item {{ request()->is('sales-transaction') || request()->is('commision-employee') || request()->is('employee-sales') || request()->is('purchase') || request()->is('void-logs') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -142,7 +67,6 @@
                 </li>
             </ul>
         </li>
-
 
         <li class="menu-item {{ request()->is('new-services') || request()->is('services-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -217,8 +141,6 @@
             </ul>
         </li>
 
-
-
         <li class="menu-item {{ request()->is('new-supplier') || request()->is('supplier-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-truck"></i>
@@ -278,8 +200,6 @@
                 </li>
             </ul>
         </li>
-
-
 
         <li class="menu-item {{ request()->is('new-patient') || request()->is('patient-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -341,8 +261,6 @@
             </ul>
         </li>
 
-        
-
         <li class="menu-item {{ request()->is('new-loyalty') || request()->is('loyalty-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-id"></i>
@@ -397,10 +315,7 @@
             </ul>
         </li>
 
-
         <li class="menu-item">
-
-        
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-settings"></i>
                 <div data-i18n="Users">Users</div>
@@ -435,3 +350,39 @@
         </li>
     </ul>
 </aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Prevent default behavior for menu toggle links
+        const menuToggles = document.querySelectorAll('.menu-toggle');
+        menuToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Find the parent menu item
+                const menuItem = this.closest('.menu-item');
+                
+                // Toggle active and open classes
+                if (menuItem.classList.contains('open')) {
+                    menuItem.classList.remove('open');
+                } else {
+                    menuItem.classList.add('open');
+                }
+                
+                // Stop event propagation to prevent bouncing
+                e.stopPropagation();
+            });
+        });
+        
+        // Ensure active menu items with submenu are opened by default
+        const activeSubmenuItems = document.querySelectorAll('.menu-item.active.open');
+        activeSubmenuItems.forEach(item => {
+            // Make sure parent menu items are also open
+            let parent = item.closest('.menu-item:not(.active)');
+            while (parent) {
+                parent.classList.add('open');
+                parent = parent.closest('.menu-item:not(.active)');
+            }
+        });
+    });
+</script>
