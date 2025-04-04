@@ -61,10 +61,8 @@ Route::get('/product-list', [DashboardController::class, 'product_list'])->name(
 Route::get('/order-list', [DashboardController::class, 'order_list'])->name('page.order-list');
 Route::get('/add-order', [DashboardController::class, 'add_order'])->name('page.add_order');
 Route::post('/order/create', [orderController::class, 'create'])->name('order.create');
-
-
-Route::get('/order-details', [DashboardController::class, 'order_details'])->name('page.order-details');
-
+Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('page.order-details');
+Route::get('/order/order-details/{orderId}', [OrderController::class, 'getOrderDetails'])->name('api.order.details');
 Route::get('/add-product', [DashboardController::class, 'add_product'])->name('page.add-product');
 Route::post('/product/create', [AddProductController::class, 'create'])->name('product.create');
 

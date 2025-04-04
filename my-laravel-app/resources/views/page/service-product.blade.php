@@ -156,14 +156,9 @@
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
         max-width: 100%;
         width: 100%;
         margin: 0 auto;
-      }
-
-      .card:hover {
-        transform: translateY(-5px);
       }
 
       .header {
@@ -281,6 +276,20 @@
         width: 100%;
         height: 100%;
       }
+
+      /* Add these styles for centering the modal */
+      .modal-dialog.modal-xl {
+        display: flex;
+        align-items: center;
+        min-height: calc(100% - 1rem);
+        margin: 0 auto;
+      }
+
+      @media (min-width: 1200px) {
+        .modal-dialog.modal-xl {
+          min-height: calc(100% - 3.5rem);
+        }
+      }
     </style>
   </head>
 
@@ -360,7 +369,7 @@
                   </div>
                 </div>
                 <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #0066ff;">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #18332a;">
                                 Export
                             </button>
                   <ul class="dropdown-menu" style="min-width: 120px;">
@@ -372,7 +381,7 @@
               </div>
             </div>
             <div class="table-responsive">
-              <table class="table table-hover">
+              <table class="table">
                 <thead>
                   <tr style="background-color: #134013;">
                     <th style="color: white; font-weight: 500;">NAME</th>
@@ -423,7 +432,7 @@
                     <td>₱15,750</td>
                     <td>₱4,500</td>
                     <td>₱157,500</td>
-                    <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
+                    <td><span class="badge" style="background-color: rgba(255,  165, 0, 0.2); color: #FF8C00;">Service</span></td>
                     <td><button class="btn btn-sm btn-success view-details" data-service-id="4">VIEW</button></td>
                   </tr>
                   <tr>
@@ -478,7 +487,7 @@
           <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content shadow-lg rounded-3">
               <div class="modal-header" style="background-color: #134013;">
-                <h5 class="modal-title" style="color: white;">Service/Product Details</h5>
+                <h4 class="modal-title" style="color: white;">Service/Product Details</h4>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body p-4">
@@ -492,11 +501,11 @@
                           <small style="color: rgba(7, 5, 5, 0.8);">ID: #SRV-2024-001</small>
                         </div>
                       </div>
-                      <div class="card-body d-flex flex-column gap-3">
-                        <div><strong>Name:</strong> <span id="serviceName">Hair Color Treatment</span></div>
-                        <div><strong>Category:</strong> <span id="serviceType">Beauty Services</span></div>
-                        <div><strong>Base Price:</strong> <span class="text-success" id="servicePrice">₱1,500.00</span></div>
-                        <div><strong>Total Sales:</strong> <span class="text-primary" id="serviceTotalSales">₱147,000.00</span></div>
+                      <div class="card-body d-flex flex-column" style="gap: 0.5rem; padding-top: 0.75rem; padding-bottom: 0.75rem;">
+                        <div style="margin-bottom: 0.35rem;"><strong>Name:</strong> <span id="serviceName">Hair Color Treatment</span></div>
+                        <div style="margin-bottom: 0.35rem;"><strong>Category:</strong> <span id="serviceType">Beauty Services</span></div>
+                        <div style="margin-bottom: 0.35rem;"><strong>Base Price:</strong> <span class="text-success" id="servicePrice">₱1,500.00</span></div>
+                        <div style="margin-bottom: 0.35rem;"><strong>Total Sales:</strong> <span class="text-primary" id="serviceTotalSales">₱147,000.00</span></div>
                         <div><strong>Status:</strong> <span class="badge bg-success">Active</span></div>
                       </div>
                     </div>
@@ -528,8 +537,10 @@
                       <div class="card-header" style="background-color: #f0f0f0;">
                         <h6 class="card-title mb-0" style="color: black;">Monthly Sales Trend</h6>
                       </div>
-                      <div class="card-body">
-                        <canvas id="salesTrendChart" height="300"></canvas>
+                      <div class="card-body p-3" style="position: relative;">
+                        <div style="height: 250px;">
+                          <canvas id="salesTrendChart"></canvas>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -537,12 +548,11 @@
                   <!-- Recent Transactions -->
                   <div class="col-md-6">
                     <div class="card border-0 shadow-sm">
-                      <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #f0f0f0;">
+                      <div class="card-header" style="background-color: #f0f0f0;">
                         <h6 class="card-title mb-0" style="color: black;">Recent Transactions</h6>
-                        <button class="btn btn-sm btn-light">View All</button>
                       </div>
-                      <div class="card-body">
-                        <div class="table-responsive">
+                      <div class="card-body" style="height: 300px; overflow-y: auto;">
+                        <div class="table-responsive h-100">
                           <table class="table table-sm">
                             <thead>
                               <tr>
@@ -560,11 +570,11 @@
                       </div>
                     </div>
                   </div>
+
                 </div>
               </div>
-              <div class="modal-footer bg-light">
+              <div class="modal-footer bg-light" style="padding: 1rem 1.5rem;">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Edit Service/Product</button>
               </div>
             </div>
           </div>
@@ -573,34 +583,104 @@
 
         <script>
           document.addEventListener('DOMContentLoaded', function() {
+            // Sample data for each service/product
+            const servicesData = {
+              '1': {
+                id: 'SRV-2024-001',
+                name: 'Hair Color Treatment',
+                category: 'Beauty Services',
+                basePrice: 1500,
+                totalSales: 147000,
+                status: 'Active',
+                metrics: {
+                  totalQuantity: '98 units',
+                  totalDiscounts: '₱14,700.00',
+                  giftCardUsage: '₱5,000.00',
+                  rating: '4.8/5.0',
+                  satisfaction: '96% Positive'
+                },
+                monthlyData: [12500, 15800, 14700, 16900, 15500, 17800],
+                transactions: [
+                  { date: '2024-01-15', customer: 'Maria Santos', amount: '₱1,500', status: 'Completed' },
+                  { date: '2024-01-14', customer: 'John Cruz', amount: '₱3,000', status: 'Completed' },
+                  { date: '2024-01-13', customer: 'Ana Reyes', amount: '₱1,500', status: 'Completed' },
+                  { date: '2024-01-12', customer: 'Mark Tan', amount: '₱1,500', status: 'Completed' }
+                ]
+              },
+              '2': {
+                id: 'SRV-2024-002',
+                name: 'Hair Rebonding',
+                category: 'Beauty Services',
+                basePrice: 2500,
+                totalSales: 187500,
+                status: 'Active',
+                metrics: {
+                  totalQuantity: '75 units',
+                  totalDiscounts: '₱18,750.00',
+                  giftCardUsage: '₱3,500.00',
+                  rating: '4.7/5.0',
+                  satisfaction: '94% Positive'
+                },
+                monthlyData: [15000, 18500, 17000, 19500, 18000, 20000],
+                transactions: [
+                  { date: '2024-01-15', customer: 'Jenny Lee', amount: '₱2,500', status: 'Completed' },
+                  { date: '2024-01-14', customer: 'Mike Zhang', amount: '₱5,000', status: 'Completed' },
+                  { date: '2024-01-13', customer: 'Sarah Kim', amount: '₱2,500', status: 'Completed' },
+                  { date: '2024-01-12', customer: 'David Wang', amount: '₱2,500', status: 'Completed' }
+                ]
+              }
+              // Add more services data here...
+            };
+
             // Initialize the modal
             const serviceModal = new bootstrap.Modal(document.getElementById('serviceDetailsModal'));
-            
+
             // Handle view button clicks
             document.querySelectorAll('.view-details').forEach(button => {
               button.addEventListener('click', function() {
                 const serviceId = this.dataset.serviceId;
+                const data = servicesData[serviceId] || servicesData['1']; // Default to first item if not found
                 
-                // Populate monthly sales trend chart
+                // Update modal content
+                document.querySelector('#serviceDetailsModal small').textContent = `ID: #${data.id}`;
+                document.getElementById('serviceName').textContent = data.name;
+                document.getElementById('serviceType').textContent = data.category;
+                document.getElementById('servicePrice').textContent = `₱${data.basePrice.toLocaleString()}.00`;
+
+                // Update metrics
+                Object.entries(data.metrics).forEach(([key, value]) => {
+                  const element = document.getElementById(`service${key.charAt(0).toUpperCase() + key.slice(1)}`);
+                  if (element) element.textContent = value;
+                });
+
+                // Update sales trend chart
                 const ctx = document.getElementById('salesTrendChart').getContext('2d');
-                new Chart(ctx, {
-                  type: 'line',
+                if (window.salesChart) window.salesChart.destroy();
+                
+                window.salesChart = new Chart(ctx, {
+                  type: 'bar',
                   data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                     datasets: [{
                       label: 'Monthly Sales',
-                      data: [12500, 15800, 14700, 16900, 15500, 17800],
-                      borderColor: '#134013',
-                      backgroundColor: 'rgba(19, 64, 19, 0.1)',
-                      tension: 0.4,
-                      fill: true
+                      data: data.monthlyData,
+                      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                      borderColor: 'rgba(75, 192, 192, 1)',
+                      borderWidth: 1,
+                      borderRadius: 4,
+                      maxBarThickness: 35
                     }]
                   },
                   options: {
                     responsive: true,
                     plugins: {
-                      legend: {
-                        display: false
+                      legend: { display: false },
+                      tooltip: {
+                        callbacks: {
+                          label: function(context) {
+                            return '₱' + context.raw.toLocaleString();
+                          }
+                        }
                       }
                     },
                     scales: {
@@ -616,20 +696,12 @@
                   }
                 });
 
-                // Populate recent transactions
-                const transactions = [
-                  { date: '2024-01-15', customer: 'John Smith', quantity: 1, amount: '₱1,500', status: 'Completed' },
-                  { date: '2024-01-14', customer: 'Maria Garcia', quantity: 2, amount: '₱3,000', status: 'Completed' },
-                  { date: '2024-01-13', customer: 'Sarah Johnson', quantity: 1, amount: '₱1,500', status: 'Completed' },
-                  { date: '2024-01-12', customer: 'Mike Wilson', quantity: 1, amount: '₱1,500', status: 'Completed' },
-                ];
-
+                // Update transactions table
                 const transactionsList = document.getElementById('transactionsList');
-                transactionsList.innerHTML = transactions.map(t => `
+                transactionsList.innerHTML = data.transactions.map(t => `
                   <tr>
                     <td>${t.date}</td>
                     <td>${t.customer}</td>
-                    <td>${t.quantity}</td>
                     <td>${t.amount}</td>
                     <td><span class="badge bg-success">${t.status}</span></td>
                   </tr>
@@ -644,8 +716,6 @@
       
       </div>      
     </div>
-
-
 
     <script>
       document
@@ -1132,6 +1202,167 @@ function initializeMiniCharts() {
 
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+document.querySelectorAll('.dropdown-item[data-export]').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const exportType = this.dataset.export;
+        const table = document.querySelector('.table');
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent);
+        
+        // Get data excluding the last column (action buttons)
+        const data = rows.map(row => {
+            const cells = Array.from(row.querySelectorAll('td'));
+            return cells.slice(0, -1).map(td => td.textContent.trim());
+        });
+
+        switch(exportType) {
+            case 'pdf':
+                exportToPDF(headers.slice(0, -1), data);
+                break;
+            case 'excel':
+                exportToExcel(headers.slice(0, -1), data);
+                break;
+            case 'csv':
+                exportToCSV(headers.slice(0, -1), data);
+                break;
+        }
+    });
+});
+
+function exportToPDF(headers, data) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('l', 'mm', 'a4'); // landscape orientation
+    
+    // Add title
+    doc.setFontSize(18);
+    doc.text('Service/Product Report', 15, 15);
+    
+    // Add date
+    doc.setFontSize(11);
+    doc.text(`Generated on: ${new Date().toLocaleString()}`, 15, 22);
+    
+    doc.autoTable({
+        head: [headers],
+        body: data,
+        startY: 25,
+        theme: 'grid',
+        styles: { fontSize: 8, cellPadding: 1 },
+        headStyles: { 
+            fillColor: [19, 64, 19],
+            textColor: [255, 255, 255],
+            fontStyle: 'bold'
+        },
+        alternateRowStyles: { fillColor: [245, 245, 245] }
+    });
+    
+    doc.save('service-product-report.pdf');
+}
+
+function exportToExcel(headers, data) {
+    const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+    const workbook = XLSX.utils.book_new();
+    
+    // Adjust column widths
+    const colWidths = headers.map(h => ({wch: Math.max(h.length, 15)}));
+    worksheet['!cols'] = colWidths;
+    
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Service_Product_Report');
+    XLSX.writeFile(workbook, 'service-product-report.xlsx');
+}
+
+function exportToCSV(headers, data) {
+    // Add BOM for proper Excel UTF-8 encoding
+    const BOM = "\uFEFF";
+    const csvContent = BOM + [
+        headers.join(','),
+        ...data.map(row => row.join(','))
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'service-product-report.csv');
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
+
+    <script>
+      // Add this function to filter table rows by date
+      function applyDateFilter() {
+        const filterValue = document.getElementById('dateFilter').value;
+        const tableRows = document.querySelectorAll('tbody tr');
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        tableRows.forEach(row => {
+          const dateCell = row.cells[0]; // Get first column containing the date
+          const [year, month, day] = dateCell.textContent.split('-').map(Number);
+          const rowDate = new Date(year, month - 1, day);
+          rowDate.setHours(0, 0, 0, 0);
+
+          let showRow = false;
+
+          switch(filterValue) {
+            case 'today':
+              showRow = rowDate.getTime() === today.getTime();
+              break;
+            case 'yesterday':
+              const yesterday = new Date(today);
+              yesterday.setDate(today.getDate() - 1);
+              showRow = rowDate.getTime() === yesterday.getTime();
+              break;
+            case 'last7':
+              const last7 = new Date(today);
+              last7.setDate(today.getDate() - 7);
+              showRow = rowDate >= last7 && rowDate <= today;
+              break;
+            case 'last30':
+              const last30 = new Date(today);
+              last30.setDate(today.getDate() - 30);
+              showRow = rowDate >= last30 && rowDate <= today;
+              break;
+            case 'thisMonth':
+              showRow = rowDate.getMonth() === today.getMonth() && 
+                       rowDate.getFullYear() === today.getFullYear();
+              break;
+            case 'lastMonth':
+              const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+              const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+              showRow = rowDate >= lastMonth && rowDate <= lastMonthEnd;
+              break;
+            case 'thisYear':
+              showRow = rowDate.getFullYear() === today.getFullYear();
+              break;
+            default:
+              showRow = true;
+          }
+
+          row.style.display = showRow ? '' : 'none';
+        });
+
+        // Update dropdown button text
+        const filterText = document.getElementById('dateFilter').options[document.getElementById('dateFilter').selectedIndex].text;
+        document.getElementById('dateFilterBtn').textContent = `Filter: ${filterText}`;
+      }
+
+      // Initialize filter on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('dateFilter').addEventListener('change', applyDateFilter);
+      });
+    </script>
+
           <div class="content-backdrop fade"></div>
         </div>
         <!-- Content wrapper -->
@@ -1158,6 +1389,7 @@ function initializeMiniCharts() {
   <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
 
   <script src="../../assets/vendor/libs/popper/popper.js"></script>
+
   <script src="../../assets/vendor/js/bootstrap.js"></script>
   <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
 
@@ -1229,7 +1461,7 @@ function initializeMiniCharts() {
     </div>
     <div class="card-body p-3">
       <div class="table-responsive">
-        <table class="table table-hover align-middle">
+        <table class="table table-sm">
           <thead class="table-light">
             <tr>
               <th>Booking ID</th>
