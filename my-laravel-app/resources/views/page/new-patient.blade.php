@@ -638,7 +638,6 @@
 
                             <div class="col-12">
                               <button type="submit" class="btn btn-primary">Add Patient</button>
-                              <button type="reset" class="btn btn-secondary">Reset Form</button>
                             </div>
                           </form>
                           </div>

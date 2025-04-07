@@ -630,12 +630,7 @@
                               >
                                 Add Staff
                               </button>
-                              <button
-                                type="reset"
-                                class="btn btn-label-secondary"
-                              >
-                                Reset
-                              </button>
+                               
                             </div>
                           </div>
                           </form>
