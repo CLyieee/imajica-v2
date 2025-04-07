@@ -355,7 +355,7 @@
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="card">
                 <!-- Branch Filter -->
-                <div class="px-4 py-3">
+                {{-- <div class="px-4 py-3">
                   <label for="branchFilter" class="fw-bold me-2"
                     >Select Branch:</label
                   >
@@ -372,7 +372,7 @@
                       Cainta Rizal Branch
                     </option>
                   </select>
-                </div>
+                </div> --}}
 
                 <!-- Table Header with Search -->
                 <div class="d-flex justify-content-between align-items-center p-3">
@@ -489,23 +489,23 @@
     <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
     <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
     <script>
-      $(document).ready(function () {
-        var table = $("#expensesTable").DataTable({
-          responsive: true,
-          columnDefs: [
-            {
-              targets: [5], // Branch column index
-              visible: false // Hide the branch column initially
-            }
-          ]
-        });
+      // $(document).ready(function () {
+      //   var table = $("#expensesTable").DataTable({
+      //     responsive: true,
+      //     columnDefs: [
+      //       {
+      //         targets: [5], // Branch column index
+      //         visible: false // Hide the branch column initially
+      //       }
+      //     ]
+      //   });
 
-        // Branch filter functionality
-        $("#branchFilter").on("change", function () {
-          var selectedBranch = $(this).val();
-          table.column(5).search(selectedBranch).draw();
-        });
-      });
+      //   // Branch filter functionality
+      //   $("#branchFilter").on("change", function () {
+      //     var selectedBranch = $(this).val();
+      //     table.column(5).search(selectedBranch).draw();
+      //   });
+      // });
     </script>
   </body>
 </html>
