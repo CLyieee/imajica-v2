@@ -1806,58 +1806,77 @@ The Imajica Team</textarea>
 
   <!-- View All Bookings Modal -->
   <div class="modal fade" id="viewAllBookingsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">All Bookings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Add your booking table content here -->
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
       // Status filter
       const statusFilter = document.getElementById("statusFilter");
-      statusFilter.addEventListener("change", function (e) {
-        const status = e.target.value.toLowerCase();
-        const rows = document.querySelectorAll(".booking-table tbody tr");
+      if (statusFilter) {
+        statusFilter.addEventListener("change", function (e) {
+          const status = e.target.value.toLowerCase();
+          const rows = document.querySelectorAll(".booking-table tbody tr");
 
-        rows.forEach((row) => {
-          if (status === "all") {
-            row.style.display = "";
-            return;
-          }
+          rows.forEach((row) => {
+            if (status === "all") {
+              row.style.display = "";
+              return;
+            }
 
-          const statusCell = row
-            .querySelector(".badge")
-            .textContent.toLowerCase();
-          row.style.display = statusCell === status ? "" : "none";
+            const statusCell = row
+              .querySelector(".badge")
+              .textContent.toLowerCase();
+            row.style.display = statusCell === status ? "" : "none";
+          });
         });
-      });
+      }
 
       // Date filter
       const dateFilter = document.getElementById("dateFilter");
-      dateFilter.addEventListener("change", function (e) {
-        const selectedDate = new Date(e.target.value);
-        const rows = document.querySelectorAll(".booking-table tbody tr");
+      if (dateFilter) {
+        dateFilter.addEventListener("change", function (e) {
+          const selectedDate = new Date(e.target.value);
+          const rows = document.querySelectorAll(".booking-table tbody tr");
 
-        rows.forEach((row) => {
-          const dateCell =
-            row.querySelector("td:nth-child(4) h6").textContent;
-          const bookingDate = new Date(dateCell);
+          rows.forEach((row) => {
+            const dateCell =
+              row.querySelector("td:nth-child(4) h6").textContent;
+            const bookingDate = new Date(dateCell);
 
-          if (isNaN(selectedDate.getTime())) {
-            row.style.display = "";
-            return;
-          }
+            if (isNaN(selectedDate.getTime())) {
+              row.style.display = "";
+              return;
+            }
 
-          row.style.display =
-            selectedDate.toDateString() === bookingDate.toDateString()
-              ? ""
-              : "none";
+            row.style.display =
+              selectedDate.toDateString() === bookingDate.toDateString()
+                ? ""
+                : "none";
+          });
         });
-      });
+      }
 
       // Export functionality
-      document
-        .getElementById("exportBookings")
-        .addEventListener("click", function () {
+      const exportButton = document.getElementById("exportBookings");
+      if (exportButton) {
+        exportButton.addEventListener("click", function () {
           // Add your export logic here
           alert("Export functionality will be implemented here");
         });
+      }
     });
-  </script> --}}
+  </script>
 
 </body>
 
