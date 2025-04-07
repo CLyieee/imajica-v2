@@ -295,6 +295,18 @@ class DashboardController extends Controller
         return view('page.new-expenses');
     }
 
+    public function newcategory_expenses()
+    {
+    
+        return view('page.newcategory-expenses');
+    }
+
+    public function categoryexpenses_list()
+    {
+    
+        return view('page.categoryexpenses-list');
+    }
+
     public function new_staff()
     {
         $branches = Branch::all();
