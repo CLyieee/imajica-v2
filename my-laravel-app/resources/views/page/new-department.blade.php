@@ -106,45 +106,9 @@
 
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
-
-    <style>
-      .profile-upload-container {
-        width: 200px;
-        margin-bottom: 2rem;
-      }
-
-      .avatar-upload {
-        position: relative;
-        text-align: center;
-      }
-
-      .avatar-preview {
-        width: 150px;
-        height: 150px;
-        position: relative;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 4px solid #0a3622;
-        box-shadow: 0 0 20px rgba(10, 54, 34, 0.15);
-        margin: 0 auto;
-      }
-
-      .avatar-preview img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .avatar-edit label {
-        transition: all 0.3s ease;
-      }
-
-      .avatar-edit label:hover {
-        background-color: #0a3622;
-        border-color: #0a3622;
-      }
-    </style>
+    
   </head>
 
   <body>
@@ -382,263 +346,94 @@
                       style="background-color: #0a3622"
                     >
                       <h5 class="card-title mb-sm-0 me-2 text-white">
-                        Staff Management
+                        Department Management
                       </h5>
                     </div>
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <!-- 1. Delivery Address -->
-                        
-                          <!-- Add form tag with proper enctype for file uploads -->
-                          <form method="post" action="{{ route('staff.create') }}" enctype="multipart/form-data">
+                          <!-- Department Information Form -->
+                          <form method="post" action="{{ route('department.create') }}">
                             @csrf
                             @method('POST')
-                          <div class="row g-6">
-                            <div class="col-12 text-center mb-4">
-                              <div class="profile-upload-container mx-auto">
-                                <div class="avatar-upload">
-                                  <div class="avatar-preview">
-                                    <img
-                                      id="imagePreview"
-                                      src="../../assets/img/avatars/default-avatar.png"
-                                      alt="Profile Preview"
-                                      class="rounded-circle"
-                                      style="
-                                        width: 100%;
-                                        height: 100%;
-                                        object-fit: cover;
-                                      "
-                                    />
-                                  </div>
-                                  <div class="avatar-edit">
-                                    <input
-                                      type="file"
-                                      id="imageUpload"
-                                      name="image_path"
-                                      accept=".png, .jpg, .jpeg"
-                                      class="d-none"
-                                    />
-                                    <label
-                                      for="imageUpload"
-                                      class="btn btn-primary btn-sm mt-2"
-                                    >
-                                      <i class="ti tabler-upload me-1"></i
-                                      >Upload Photo
-                                    </label>
-                                  </div>
-                                </div>
+                            <div class="row g-3 mb-4">
+                              <div class="col-12">
+                                <h6 class="fw-semibold">Department Information</h6>
+                                <hr class="mt-0" />
+                              </div>
+                              
+                              <div class="col-md-6">
+                                <label class="form-label" for="department_code">Department Code</label>
+                                <input
+                                  type="text"
+                                  id="department_code"
+                                  name="department_code"
+                                  class="form-control"
+                                  placeholder="Department Code"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="department_name">Department Name</label>
+                                <input
+                                  type="text"
+                                  id="department_name"
+                                  name="department_name"
+                                  class="form-control"
+                                  placeholder="Department Name"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-12">
+                                <label class="form-label" for="description">Description</label>
+                                <textarea
+                                  name="description"
+                                  class="form-control"
+                                  id="description"
+                                  rows="4"
+                                  placeholder="Department Description"
+                                  required
+                                ></textarea>
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="department_head">Department Head</label>
+                                <input
+                                  type="text"
+                                  id="department_head"
+                                  name="department_head"
+                                  class="form-control"
+                                  placeholder="Department Head Name"
+                                  required
+                                />
+                                <small class="text-muted">Enter the full name of the department head</small>
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="contact_email">Contact Email</label>
+                                <input
+                                  type="email"
+                                  id="contact_email"
+                                  name="contact_email"
+                                  class="form-control"
+                                  placeholder="department@example.com"
+                                  required
+                                />
+                                <small class="text-muted">This email will be used to create a staff record for the department head</small>
                               </div>
                             </div>
-                            <!-- Personal Information -->
-                            <div class="col-md-6">
-                              <label class="form-label" for="firstName"
-                                >First Name</label
-                              >
-                              <input
-                                type="text"
-                                id="firstName"
-                                name="firstname"
-                                class="form-control"
-                                placeholder="First Name"
-                                required
-                              />
-                            </div>
-                            <div class="col-md-6">
-                              <label class="form-label" for="lastName"
-                                >Last Name</label
-                              >
-                              <input
-                                type="text"
-                                id="lastName"
-                                name="lastname"
-                                class="form-control"
-                                placeholder="Last Name"
-                                required
-                              />
-                            </div>
 
-                            <!-- Contact Information -->
-                            <div class="col-md-6">
-                              <label class="form-label" for="email"
-                                >Email Address</label
-                              >
-                              <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                class="form-control"
-                                placeholder="Email Address"
-                                required
-                              />
+                            <div class="row">
+                              <div class="col-12 d-flex gap-3">
+                                <button type="submit" class="btn btn-primary">Add Department</button>
+                              </div>
                             </div>
-                            <div class="col-md-6">
-                              <label class="form-label" for="phone"
-                                >Contact Number</label
-                              >
-                              <input
-                                type="tel"
-                                id="phone"
-                                name="contact_number"
-                                class="form-control"
-                                placeholder="Contact Number"
-                                required
-                              />
-                            </div>
-
-                            <!-- Work Information -->
-                            <div class="col-md-6">
-                              <label class="form-label" for="position"
-                                >Position</label
-                              >
-                              <select
-                                class="select2 form-select"
-                                id="position"
-                                name="position"
-                                data-allow-clear="true"
-                                required
-                              >
-                                <option value="">Select Position</option>
-                                <option value="aesthetician">
-                                  Aesthetician
-                                </option>
-                                <option value="branch_manager">
-                                  Branch Manager
-                                </option>
-                                <option value="general_manager">
-                                  General Manager
-                                </option>
-                                <option value="receptionist">
-                                  Receptionist
-                                </option>
-                                <option value="therapist">Therapist</option>
-                              </select>
-                            </div>
-                            <div class="col-md-6">
-                              <label class="form-label" for="department"
-                                >Department</label
-                              >
-                              <select
-                                class="select2 form-select"
-                                id="department"
-                                name="department"
-                                data-allow-clear="true"
-                                required
-                              >
-                                <option value="">Select Department</option>
-                                <option value="management">Management</option>
-                                <option value="operations">Operations</option>
-                                <option value="services">Services</option>
-                                <option value="admin">Administration</option>
-                              </select>
-                            </div>
-
-                            <!-- Additional Details -->
-                            <div class="col-md-6">
-                              <label class="form-label" for="joinDate"
-                                >Join Date</label
-                              >
-                              <input
-                                type="date"
-                                id="joinDate"
-                                name="join_date"
-                                class="form-control flatpickr-basic"
-                                required
-                              />
-                            </div>
-                            <div class="col-md-6">
-                              <label class="form-label" for="employmentType"
-                                >Employment Type</label
-                              >
-                              <select
-                                class="select2 form-select"
-                                id="employmentType"
-                                name="employment_type"
-                                data-allow-clear="true"
-                                required
-                              >
-                                <option value="">Select Type</option>
-                                <option value="full_time">Full Time</option>
-                                <option value="part_time">Part Time</option>
-                                <option value="contract">Contract</option>
-                              </select>
-                            </div>
-
-                            <div class="col-md-12">
-                              <label class="form-label" for="branch"
-                                >Branch Assignment</label
-                              >
-                              <select
-                                class="select2 form-select"
-                                id="branch"
-                                name="branch_code"
-                                data-allow-clear="true"
-                                required
-                              >
-                                <option value="">Select Branch</option>
-                                @foreach ($branches as $branch)
-                                <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
-                                @endforeach
-                              </select>
-                            </div>
-
-                            <div class="col-12">
-                              <label class="form-label" for="address"
-                                >Residential Address</label
-                              >
-                              <textarea
-                                name="address"
-                                class="form-control"
-                                id="address"
-                                rows="4"
-                                placeholder="Complete Address"
-                                required
-                              ></textarea>
-                            </div>
-
-                            <!-- Emergency Contact -->
-                            <div class="col-md-6">
-                              <label class="form-label" for="emergencyContact"
-                                >Emergency Contact Name</label
-                              >
-                              <input
-                                type="text"
-                                id="emergencyContact"
-                                name="emergency_contact_name"
-                                class="form-control"
-                                placeholder="Emergency Contact Person"
-                              />
-                            </div>
-                            <div class="col-md-6">
-                              <label class="form-label" for="emergencyPhone"
-                                >Emergency Contact Number</label
-                              >
-                              <input
-                                type="tel"
-                                id="emergencyPhone"
-                                name="emergency_contact_number"
-                                class="form-control"
-                                placeholder="Emergency Contact Number"
-                              />
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div class="col-12 mt-4">
-                              <button
-                                type="submit"
-                                class="btn btn-primary me-1"
-                              >
-                                Add Staff
-                              </button>
-                               
-                            </div>
-                          </div>
                           </form>
-                          <!-- 2. Delivery Type -->
-
-                          <br />
-
-                          <!-- 4. Payment Method -->
+                          
+                          <!-- Success/Error Messages -->
+                          <div id="responseMessage" style="display: none;" class="alert mt-3"></div>
                         </div>
                       </div>
                     </div>
@@ -728,114 +523,94 @@
     <!-- Page JS -->
     <script src="../../assets/js/form-layouts.js"></script>
     <script src="../../assets/js/forms-pickers.js"></script>
+
+    <!-- AJAX Form Submission Script -->
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const imageUpload = document.getElementById("imageUpload");
-        const imagePreview = document.getElementById("imagePreview");
-        const firstName = document.getElementById("firstName");
-        const lastName = document.getElementById("lastName");
-
-        function getInitials(first, last) {
-          return (
-            ((first ? first[0] : "") + (last ? last[0] : "")).toUpperCase() ||
-            "NA"
-          );
-        }
-
-        function createInitialsAvatar(initials) {
-          const canvas = document.createElement("canvas");
-          const context = canvas.getContext("2d");
-          canvas.width = 150;
-          canvas.height = 150;
-
-          // Draw background circle
-          context.fillStyle = "#0a3622";
-          context.beginPath();
-          context.arc(75, 75, 75, 0, Math.PI * 2);
-          context.fill();
-
-          // Draw initials
-          context.font = "bold 60px Arial";
-          context.fillStyle = "#FFFFFF";
-          context.textAlign = "center";
-          context.textBaseline = "middle";
-          context.fillText(initials, 75, 75);
-
-          return canvas.toDataURL();
-        }
-
-        // Generate avatar when names change
-        [firstName, lastName].forEach((input) => {
-          input.addEventListener("input", function () {
-            if (!imageUpload.files.length) {
-              const initials = getInitials(firstName.value, lastName.value);
-              imagePreview.src = createInitialsAvatar(initials);
+      $(document).ready(function() {
+        // Handle form submission
+        $('form').on('submit', function(e) {
+          e.preventDefault();
+          
+          // Get form data
+          var formData = $(this).serialize();
+          
+          // Show loading state
+          $('button[type="submit"]').prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...');
+          
+          // Submit form via AJAX
+          $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+              // Show success message
+              $('#responseMessage')
+                .removeClass('alert-danger')
+                .addClass('alert-success')
+                .html('Department added successfully!')
+                .show();
+              
+              // Reset form
+              $('form')[0].reset();
+              
+              // Redirect to department list after 1.5 seconds
+              setTimeout(function() {
+                window.location.href = "{{ route('page.department-list') }}";
+              }, 1500);
+            },
+            error: function(xhr) {
+              // Show error message
+              var errorMessage = 'An error occurred while adding the department.';
+              
+              if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+              } else if (xhr.responseText) {
+                try {
+                  var response = JSON.parse(xhr.responseText);
+                  if (response.message) {
+                    errorMessage = response.message;
+                  }
+                } catch (e) {
+                  // If not JSON, use the response text
+                  errorMessage = xhr.responseText;
+                }
+              }
+              
+              $('#responseMessage')
+                .removeClass('alert-success')
+                .addClass('alert-danger')
+                .html(errorMessage)
+                .show();
+            },
+            complete: function() {
+              // Reset button state
+              $('button[type="submit"]').prop('disabled', false).html('Add Department');
             }
           });
         });
-
-        // Handle photo upload
-        imageUpload.addEventListener("change", function (e) {
-          const file = e.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              imagePreview.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-          } else {
-            const initials = getInitials(firstName.value, lastName.value);
-            imagePreview.src = createInitialsAvatar(initials);
-          }
-        });
-
-        // Set default avatar on page load
-        imagePreview.src = createInitialsAvatar("NA");
-      });
-    </script>
-
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Display success message using SweetAlert2
+        
+        // Display session messages if any
         @if(session('success'))
-          Swal.fire({
-            title: 'Success!',
-            text: '{{ session('success') }}',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          });
+          $('#responseMessage')
+            .removeClass('alert-danger')
+            .addClass('alert-success')
+            .html("{{ session('success') }}")
+            .show();
         @endif
-
-        // Display error message using SweetAlert2
+        
         @if(session('error'))
-          Swal.fire({
-            title: 'Error!',
-            text: '{{ session('error') }}',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
-        @endif
-
-        // Display validation errors if any
-        @if($errors->any())
-          let errorMessage = '<ul>';
-          @foreach($errors->all() as $error)
-            errorMessage += '<li>{{ $error }}</li>';
-          @endforeach
-          errorMessage += '</ul>';
-          
-          Swal.fire({
-            title: 'Validation Error',
-            html: errorMessage,
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
+          $('#responseMessage')
+            .removeClass('alert-success')
+            .addClass('alert-danger')
+            .html("{{ session('error') }}")
+            .show();
         @endif
       });
     </script>
+  
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->

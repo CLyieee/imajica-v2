@@ -181,7 +181,7 @@
             </ul>
         </li>
 
-        <li class="menu-item {{ request()->is('new-coupon') || request()->is('expenses-list') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->is('new-expenses') || request()->is('expenses-list') || request()->is('new category-expenses') || request()->is('categoryexpenses-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-layout-board"></i>
                 <div data-i18n="Expenses">Expenses</div>
@@ -196,6 +196,18 @@
                 <li class="menu-item {{ request()->is('expenses-list') ? 'active' : '' }}">
                     <a href="/expenses-list" class="menu-link">
                         <div data-i18n="Expenses List">Expenses List</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('new category-expenses') ? 'active' : '' }}">
+                    <a href="/new category-expenses" class="menu-link">
+                        <div data-i18n="New Category Expenses">New Category Expenses</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('categoryexpenses-list') ? 'active' : '' }}">
+                    <a href="/categoryexpenses-list" class="menu-link">
+                        <div data-i18n="Category Expenses List">Category Expenses List</div>
                     </a>
                 </li>
             </ul>
@@ -288,23 +300,27 @@
             </ul>
         </li>
 
-        <li class="menu-item {{  request()->is('customer-report') || request()->is('service-product') || request()->is('employee-report') || request()->is('expenses-report') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->is('department*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-chart-pie "></i>
-                <div data-i18n="Reports">Reports</div>
+                <i class="menu-icon icon-base ti tabler-building"></i>
+                <div data-i18n="Department">Department</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('customer-report') ? 'active' : '' }}">
-                    <a href="/customer-report" class="menu-link">
-                        <div data-i18n="Customer Report">Customer Report</div>
+                <li class="menu-item {{ request()->is('new-department') ? 'active' : '' }}">
+                    <a href="{{ route('page.new-department') }}" class="menu-link">
+                        <div data-i18n="New Department">New Department</div>
                     </a>
                 </li>
 
-                <li class="menu-item {{ request()->is('service-product') ? 'active' : '' }}">
-                    <a href="/service-product" class="menu-link">
-                        <div data-i18n="Service/Product Report">Service/Product Report</div>
+                <li class="menu-item {{ request()->is('department-list') ? 'active' : '' }}">
+                    <a href="{{ route('page.department-list') }}" class="menu-link">
+                        <div data-i18n="Department List">Department List</div>
                     </a>
                 </li>
+            </ul>
+        </li>
+
+        <li class="menu-item {{  request()->is('customer-report') || request()->is('service-product') || request()->is('employee-report') || request()->is('expenses-report') ? 'active open' : '' }}">
                 <li class="menu-item {{ request()->is('employee-report') ? 'active' : '' }}">
                     <a href="/employee-report" class="menu-link">
                         <div data-i18n="Employee Report">Employee Report</div>
@@ -342,9 +358,9 @@
 
 
         <li class="menu-item">
-            <form">
-                
-                <a href="login.html" class="menu-link" onclick="event.preventDefault(); this.closest('form').submit();">
+            <form method="POST" action="">
+                @csrf
+                <a href="javascript:void(0);" class="menu-link" onclick="event.preventDefault(); this.closest('form').submit();">
                     <i class="menu-icon icon-base ti tabler-logout"></i>
                     <div data-i18n="Logout">Logout</div>
                 </a>
@@ -364,40 +380,43 @@
                 // Find the parent menu item
                 const menuItem = this.closest('.menu-item');
                 
-                // Get all open menu items at the same level
-                const siblingMenuItems = menuItem.parentElement.querySelectorAll('.menu-item.open');
+                // Toggle open class only
+                menuItem.classList.toggle('open');
                 
-                // Toggle active and open classes
-                if (menuItem.classList.contains('open')) {
-                    menuItem.classList.remove('open');
-                } else {
-                    // Close other menus at the same level for cleaner UI (optional)
-                    // siblingMenuItems.forEach(item => {
-                    //    if (item !== menuItem) item.classList.remove('open');
-                    // });
-                    menuItem.classList.add('open');
-                }
-                
-                // Stop event propagation to prevent bubbling which causes the bouncing effect
+                // Stop event propagation
                 e.stopPropagation();
-                
-                // Add a specific class to indicate this menu was toggled by user
-                menuItem.classList.add('menu-toggled-by-user');
             });
         });
         
-        // Add CSS to prevent animation conflicts and remove arrow icons
+        // Ensure menu links don't lose their text when clicked
+        const menuLinks = document.querySelectorAll('.menu-link:not(.menu-toggle)');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Only prevent default for javascript:void(0) links
+                if (this.getAttribute('href') === 'javascript:void(0);') {
+                    e.preventDefault();
+                }
+                
+                // Don't remove any content - just let the link work normally
+                // This preserves the menu item text
+            });
+        });
+        
+        // Add CSS to fix menu transitions and styling
         const style = document.createElement('style');
         style.textContent = `
             .menu-item .menu-sub {
                 transition: none !important;
             }
             .menu-item.open > .menu-sub {
+                max-height: 2000px !important;
                 transition: none !important;
                 animation: none !important;
             }
-            .menu-toggled-by-user .menu-sub {
-                max-height: none !important;
+            /* Ensure menu text doesn't disappear */
+            .menu-link div[data-i18n] {
+                display: block !important;
+                visibility: visible !important;
             }
             /* Remove arrow icons from menu toggles */
             .menu-toggle::after {
