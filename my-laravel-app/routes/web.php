@@ -176,3 +176,8 @@ Route::get('/booking/all', [BookingController::class, 'get_bookings'])->name('ge
 Route::put('/booking/update', [BookingController::class, 'update'])->name('booking.update');
 Route::delete('/booking/delete', [BookingController::class, 'delete'])->name('booking.delete');
 
+//Catehgory Route
+Route::post('/category_expense/create', [App\Http\Controllers\category_expenseController::class, 'create'])->name('category_expense.create');
+Route::get('/category_expense/all', [App\Http\Controllers\category_expenseController::class, 'get_category_expenses'])->name('get.category_expenses');
+Route::put('/category_expense/update/{id}', [App\Http\Controllers\category_expenseController::class, 'update'])->name('category_expense.update');
+Route::delete('/category_expense/delete/{id}', [App\Http\Controllers\category_expenseController::class, 'delete'])->name('category_expense.delete');

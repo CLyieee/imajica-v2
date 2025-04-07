@@ -13,6 +13,7 @@ use App\Models\category;
 use Illuminate\Http\Request;
 use App\Models\service;
 use App\Models\order;
+use App\Models\category_expense;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -305,8 +306,9 @@ class DashboardController extends Controller
 
     public function categoryexpenses_list()
     {
-    
-        return view('page.categoryexpenses-list');
+        $categories = category_expense::all();
+        $branches = Branch::all();
+        return view('page.categoryexpenses-list', compact('categories', 'branches'));
     }
 
     public function new_staff()

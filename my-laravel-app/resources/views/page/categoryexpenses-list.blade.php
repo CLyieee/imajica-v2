@@ -145,7 +145,7 @@
         <div class="layout-page">
           <!-- Navbar -->
 
-          <nav
+          {{-- <nav
             class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
             id="layout-navbar"
           >
@@ -340,7 +340,7 @@
                 <!--/ User -->
               </ul>
             </div>
-          </nav>
+          </nav> --}}
 
           <!-- / Navbar -->
 
@@ -370,48 +370,21 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Food & Beverages</td>
-                        <td>All food and drink related expenses</td>
-                        <td class="text-center">
-                          <div class="d-flex gap-2 justify-content-center">
-                            <button class="btn btn-sm btn-info edit-category" data-category-id="CAT001">
-                              <i class="ti tabler-edit me-1"></i> Edit
+                      @foreach ($categories as $category)
+                        <tr>
+                          <td>{{ $category->name }}</td>
+                          <td>{{ $category->description }}</td>
+                          <td class="text-center">
+                            <button class="btn btn-sm btn-info edit-category" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="{{ $category->category_expense_id }}" data-category-name="{{ $category->name }}" data-description="{{ $category->description }}">
+                              <i class="ti tabler-edit"></i> Edit
                             </button>
-                            <button class="btn btn-sm btn-danger delete-category" data-category-id="CAT001">
-                              <i class="ti tabler-trash me-1"></i> Delete
+                            <button class="btn btn-sm btn-danger delete-category" data-category-id="{{ $category->category_expense_id }}" data-category-name="{{ $category->name }}">
+                              <i class="ti tabler-trash"></i> Delete
                             </button>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Utilities</td>
-                        <td>Electricity, water, and other utility expenses</td>
-                        <td class="text-center">
-                          <div class="d-flex gap-2 justify-content-center">
-                            <button class="btn btn-sm btn-info edit-category" data-category-id="CAT002">
-                              <i class="ti tabler-edit me-1"></i> Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-category" data-category-id="CAT002">
-                              <i class="ti tabler-trash me-1"></i> Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Maintenance</td>
-                        <td>Equipment and facility maintenance costs</td>
-                        <td class="text-center">
-                          <div class="d-flex gap-2 justify-content-center">
-                            <button class="btn btn-sm btn-info edit-category" data-category-id="CAT003">
-                              <i class="ti tabler-edit me-1"></i> Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-category" data-category-id="CAT003">
-                              <i class="ti tabler-trash me-1"></i> Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
+                          </td>
+                        </tr>
+                      @endforeach
+                        
                     </tbody>
                   </table>
                   <br />
@@ -444,29 +417,17 @@
           <div class="modal-body">
             <form id="editCategoryForm" method="POST">
               @csrf
-              @method('PUT')
-              <input type="hidden" id="edit_category_id" name="category_id">
+              <input type="hidden" name="_method" value="PUT">
+              <input type="hidden" id="edit_category_id" name="category_expense_id">
               <div class="mb-3">
                 <label class="form-label">Category Name</label>
-                <input type="text" id="edit_category_name" name="category_name" class="form-control" required>
+                <input type="text" id="edit_category_name" name="name" class="form-control" required>
               </div>
               <div class="mb-3">
                 <label class="form-label">Description</label>
                 <textarea id="edit_description" name="description" class="form-control" rows="3"></textarea>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Branch</label>
-                <select id="edit_branch_code" name="branch_code" class="form-select" required>
-                 
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Status</label>
-                <select id="edit_status" name="status" class="form-select" required>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
+              
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-primary">Update Category</button>
@@ -481,7 +442,7 @@
     <form id="deleteCategoryForm" method="POST" style="display: none;">
       @csrf
       @method('DELETE')
-      <input type="hidden" id="delete_category_id" name="category_id">
+      <input type="hidden" id="delete_category_id" name="category_expense_id">
     </form>
 
     <!-- Core JS -->
@@ -543,7 +504,7 @@
       });
     </script>
     
-    <!-- Custom Script for Coupon Management -->
+    <!-- Custom Script for Category Management -->
     <script>
       $(document).ready(function() {
         // SweetAlert default configuration to appear above the modal
@@ -611,100 +572,35 @@
 
         // Debug information
         console.log("Document ready triggered");
-        console.log("Edit coupon buttons found:", $('.edit-coupon').length);
-        console.log("Delete coupon buttons found:", $('.delete-coupon').length);
-        console.log("Modal element exists:", $('#editCouponModal').length);
+        console.log("Edit category buttons found:", $('.edit-category').length);
+        console.log("Delete category buttons found:", $('.delete-category').length);
+        console.log("Modal element exists:", $('#editCategoryModal').length);
 
-        // Initialize the date range picker
-        try {
-          $('.flatpickr-range').flatpickr({
-            mode: 'range',
-            altInput: true,
-            altFormat: "F j, Y",
-            dateFormat: "Y-m-d"
-          });
-          console.log("Flatpickr initialized successfully");
-        } catch (e) {
-          console.error("Flatpickr initialization error:", e);
-          Swal.fire({
-            ...swalConfig,
-            icon: 'error',
-            title: 'Initialization Error',
-            html: 'Failed to initialize date picker:<br>' + e.message,
-            showConfirmButton: true
-          });
-        }
-
-        // Handle edit coupon button clicks
-        $('.edit-coupon').on('click', function() {
+        // Handle edit category button clicks
+        $('.edit-category').on('click', function() {
           try {
-            const couponCode = $(this).data('coupon-code');
-            const discountName = $(this).data('discount-name');
-            const discountValue = $(this).data('discount-value');
-            const discountType = $(this).data('discount-type');
-            const applicableService = $(this).data('applicable-service');
+            const categoryId = $(this).data('category-id');
+            const categoryName = $(this).data('category-name');
+            const description = $(this).data('description');
             
-            console.log("Edit button clicked for coupon:", couponCode);
+            console.log("Edit button clicked for category:", categoryId);
             console.log("Button data attributes:", {
-              couponCode,
-              discountName,
-              discountValue,
-              discountType,
-              applicableService
+              categoryId,
+              categoryName,
+              description
             });
             
-            // Directly populate known fields without AJAX
-            $('#edit_coupon_code').val(couponCode);
-            $('#edit_discount_name').val(discountName);
-            $('#edit_discount_value').val(discountValue);
-            $('#edit_discount_type').val(discountType);
-            $('#edit_applicable_service').val(applicableService);
+            // Populate the form fields and set the correct ID
+            $('#edit_category_id').val(categoryId);
+            $('#edit_category_name').val(categoryName);
+            $('#edit_description').val(description);
             
-            // Show the modal immediately with known data
-            $('#editCouponModal').modal('show');
+            // Set the form action dynamically with the category ID
+            $('#editCategoryForm').attr('action', `/category_expense/update/${categoryId}`);
             
-            // Fetch additional data via AJAX
-            $.ajax({
-              url: "/coupon/get",
-              type: "GET",
-              data: { coupon_code: couponCode },
-              success: function(response) {
-                console.log("AJAX success response:", response);
-                
-                // Populate the form fields with additional data
-                $('#edit_description').val(response.description || '');
-                $('#edit_start_end_date').val(response.start_end_date || '');
-                $('#edit_new_customer').val(response.new_customer || 'No');
-                $('#edit_branch_code').val(response.branch_code || '');
-                
-                // Initialize/update the flatpickr instance
-                if (response.start_end_date) {
-                  $('.flatpickr-range').flatpickr({
-                    mode: 'range',
-                    altInput: true,
-                    altFormat: "F j, Y",
-                    dateFormat: "Y-m-d",
-                    defaultDate: response.start_end_date
-                  });
-                }
-              },
-              error: function(xhr, status, error) {
-                console.error("AJAX error:", error);
-                console.log("Status:", status);
-                console.log("Response:", xhr.responseText);
-                
-                let errorMessage = 'Could not load all coupon data. Some fields may be incomplete.';
-                
-                // Show error message but keep modal open
-                Swal.fire({
-                  ...swalConfig,
-                  icon: 'warning',
-                  title: 'Warning',
-                  html: errorMessage,
-                  showConfirmButton: true
-                });
-              }
-            });
+            // Show the modal
+            $('#editCategoryModal').modal('show');
+            
           } catch (e) {
             console.error("Error in edit button click handler:", e);
             Swal.fire({
@@ -718,12 +614,12 @@
         });
 
         // Handle form submission with confirmation
-        $('#editCouponForm').on('submit', function(e) {
+        $('#editCategoryForm').on('submit', function(e) {
           e.preventDefault();
           
           // Hide the modal before showing SweetAlert
           try {
-            $('#editCouponModal').modal('hide');
+            $('#editCategoryModal').modal('hide');
           } catch (e) {
             console.error("Error hiding modal:", e);
             // Continue anyway
@@ -733,7 +629,7 @@
             Swal.fire({
               ...swalConfig,
               title: 'Confirm Update',
-              text: 'Are you sure you want to update this coupon?',
+              text: 'Are you sure you want to update this category?',
               icon: 'question',
               showCancelButton: true,
               confirmButtonText: 'Yes, update it!',
@@ -758,7 +654,7 @@
               } else {
                 // If canceled, show the modal again
                 try {
-                  $('#editCouponModal').modal('show');
+                  $('#editCategoryModal').modal('show');
                 } catch (e) {
                   console.error("Error showing modal after cancellation:", e);
                   Swal.fire({
@@ -774,28 +670,33 @@
           }, 200); // Small delay to ensure modal is fully hidden
         });
 
-        // Handle delete coupon button clicks
-        $('.delete-coupon').on('click', function() {
+        // Handle delete category button clicks
+        $('.delete-category').on('click', function() {
           try {
-            const couponCode = $(this).data('coupon-code');
-            const discountName = $(this).data('discount-name');
+            const categoryId = $(this).data('category-id');
+            const categoryName = $(this).data('category-name');
             
-            console.log("Delete button clicked for coupon:", couponCode);
-            console.log("Button data attributes:", { couponCode, discountName });
+            console.log("Delete button clicked for category:", categoryId);
+            console.log("Button data attributes:", { categoryId, categoryName });
             
-            if (!couponCode) {
-              throw new Error("Coupon code not found in data attributes");
+            if (!categoryId) {
+              throw new Error("Category ID not found in data attributes");
             }
             
-            // Set the coupon code in the hidden delete form
-            $('#delete_coupon_code').val(couponCode);
-            console.log("Delete form coupon_code set to:", $('#delete_coupon_code').val());
+            // Set the category ID in the hidden delete form
+            $('#delete_category_id').val(categoryId);
+            
+            // Set the form action dynamically with the category ID
+            $('#deleteCategoryForm').attr('action', `/category_expense/delete/${categoryId}`);
+            
+            console.log("Delete form category_id set to:", $('#delete_category_id').val());
+            console.log("Delete form action set to:", $('#deleteCategoryForm').attr('action'));
             
             // Show delete confirmation
             Swal.fire({
               ...swalConfig,
               title: 'Confirm Delete',
-              html: `Are you sure you want to delete coupon <strong>${discountName}</strong>?<br>This action cannot be undone.`,
+              html: `Are you sure you want to delete category <strong>${categoryName}</strong>?<br>This action cannot be undone.`,
               icon: 'warning',
               showCancelButton: true,
               confirmButtonText: 'Yes, delete it!',
@@ -806,9 +707,10 @@
               if (result.isConfirmed) {
                 // Submit the delete form
                 try {
-                  console.log("Submitting delete form for coupon code:", couponCode);
-                  console.log("Delete form action:", $('#deleteCouponForm').attr('action'));
-                  $('#deleteCouponForm').submit();
+                  console.log("Submitting delete form for category ID:", categoryId);
+                  console.log("Delete form action:", $('#deleteCategoryForm').attr('action'));
+                  console.log("Delete form method:", $('#deleteCategoryForm').attr('method'));
+                  $('#deleteCategoryForm').submit();
                 } catch (e) {
                   console.error("Error submitting delete form:", e);
                   Swal.fire({
@@ -816,7 +718,7 @@
                     icon: 'error',
                     title: 'Delete Error',
                     html: 'Error submitting delete form:<br>' + e.message +
-                          '<br>Form action: ' + $('#deleteCouponForm').attr('action'),
+                          '<br>Form action: ' + $('#deleteCategoryForm').attr('action'),
                     showConfirmButton: true
                   });
                 }
@@ -848,7 +750,7 @@
           console.log("Bootstrap modal plugin is available");
           // Force initialize the modal
           try {
-            $('#editCouponModal').modal({
+            $('#editCategoryModal').modal({
               backdrop: true,
               keyboard: true,
               focus: true,

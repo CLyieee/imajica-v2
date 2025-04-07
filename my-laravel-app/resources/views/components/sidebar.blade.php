@@ -380,64 +380,38 @@
         });
         
         // Ensure menu links don't lose their text when clicked
-        const menuLinks = document.querySelectorAll('.menu-link');
+        const menuLinks = document.querySelectorAll('.menu-link:not(.menu-toggle)');
         menuLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 // Only prevent default for javascript:void(0) links
                 if (this.getAttribute('href') === 'javascript:void(0);') {
                     e.preventDefault();
                 }
+                
+                // Don't remove any content - just let the link work normally
+                // This preserves the menu item text
             });
         });
         
         // Add CSS to fix menu transitions and styling
         const style = document.createElement('style');
         style.textContent = `
-            /* Core fix to prevent text disappearing */
-            [data-i18n] {
-                display: inline-block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                position: static !important;
-                height: auto !important;
-                width: auto !important;
-                overflow: visible !important;
-                pointer-events: auto !important;
-                clip: auto !important;
-                clip-path: none !important;
-                z-index: auto !important;
-                transform: none !important;
+            .menu-item .menu-sub {
+                transition: none !important;
             }
-            
-            /* Disable all animations on menu elements */
-            .menu-item, .menu-link, .menu-toggle, .menu-sub, [data-i18n] {
+            .menu-item.open > .menu-sub {
+                max-height: 2000px !important;
                 transition: none !important;
                 animation: none !important;
             }
-            
-            /* Override any theme styles that might hide content */
-            .layout-menu .menu-inner .menu-item .menu-link div[data-i18n] {
-                position: static !important;
-                opacity: 1 !important;
-                visibility: visible !important;
+            /* Ensure menu text doesn't disappear */
+            .menu-link div[data-i18n] {
                 display: block !important;
+                visibility: visible !important;
             }
-            
-            /* Remove any transforms that might affect visibility */
-            .menu-item, .menu-link, .menu-sub {
-                transform: none !important;
-            }
-            
             /* Remove arrow icons from menu toggles */
             .menu-toggle::after {
                 display: none !important;
-            }
-            
-            /* Fix submenu display */
-            .menu-item.open > .menu-sub {
-                max-height: 2000px !important;
-                height: auto !important;
-                overflow: visible !important;
             }
         `;
         document.head.appendChild(style);
@@ -451,55 +425,6 @@
                 parent.classList.add('open');
                 parent = parent.parentElement.closest('.menu-item:not(.active)');
             }
-        });
-        
-        // Apply direct inline styles to all menu text elements
-        function forceMenuTextVisibility() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                // Force element to be visible with inline styles
-                Object.assign(el.style, {
-                    display: 'block',
-                    visibility: 'visible',
-                    opacity: '1',
-                    position: 'static',
-                    height: 'auto',
-                    width: 'auto',
-                    overflow: 'visible',
-                    transform: 'none',
-                    clipPath: 'none'
-                });
-                
-                // Create a backup of the original text
-                if (!el.hasAttribute('data-original-text')) {
-                    el.setAttribute('data-original-text', el.textContent);
-                }
-                
-                // Ensure text content is present
-                if (!el.textContent.trim()) {
-                    el.textContent = el.getAttribute('data-original-text') || 
-                                    el.getAttribute('data-i18n') || 
-                                    'Menu Item';
-                }
-            });
-        }
-        
-        // Apply visibility fixes on multiple events
-        forceMenuTextVisibility();
-        window.addEventListener('load', forceMenuTextVisibility);
-        window.addEventListener('resize', forceMenuTextVisibility);
-        window.addEventListener('scroll', forceMenuTextVisibility);
-        
-        // Run visibility check periodically
-        setInterval(forceMenuTextVisibility, 500);
-        
-        // MutationObserver to ensure text remains visible if DOM changes
-        const observer = new MutationObserver(forceMenuTextVisibility);
-        
-        observer.observe(document.querySelector('.menu-inner'), {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            characterData: true
         });
     });
 </script>
