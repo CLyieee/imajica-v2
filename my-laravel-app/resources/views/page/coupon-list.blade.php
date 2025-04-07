@@ -351,9 +351,9 @@
                 <!-- Table Header with Search -->
                 <div class="d-flex justify-content-between align-items-center p-3">
                   <h5 class="card-title mb-0">Coupon List</h5>
-                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCouponModal">
+                  <a class="btn btn-primary" href="{{ route('page.new-coupon') }}">
                     <i class="ti tabler-plus me-1"></i> Add New Coupon
-                  </button>
+                  </a>
                 </div>
 
                 <!-- Success/Error Messages -->
@@ -475,7 +475,7 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="editCouponForm" method="POST" action="/coupon/update">
+            <form id="editCouponForm" method="POST" action="{{ service.update }}">
               @csrf
               @method('PUT')
               <input type="hidden" id="edit_coupon_code" name="coupon_code">

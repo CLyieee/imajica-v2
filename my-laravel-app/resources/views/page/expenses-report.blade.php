@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 <!DOCTYPE html>
 <html
   lang="en"
@@ -152,7 +154,7 @@
       }
 
       .card {
-        background: #24b364;
+        background: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(10px);
         padding: 20px;
         border-radius: 12px;

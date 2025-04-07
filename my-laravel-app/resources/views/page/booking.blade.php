@@ -511,22 +511,6 @@
         }
       }
       
-      // Add a manual init button for troubleshooting
-      function addDebugButton() {
-        const debugBtn = document.createElement('button');
-        debugBtn.textContent = 'Debug Init Pickers';
-        debugBtn.className = 'btn btn-sm btn-warning mt-2';
-        debugBtn.style.position = 'fixed';
-        debugBtn.style.bottom = '10px';
-        debugBtn.style.right = '10px';
-        debugBtn.style.zIndex = '9999';
-        debugBtn.onclick = function() {
-          initDatepickr();
-          console.log('Manual initialization triggered');
-        };
-        document.body.appendChild(debugBtn);
-      }
-      
       // Setup initialization triggers
       function setupTriggers() {
         // Initialize on modal show
@@ -536,9 +520,6 @@
             initSelects();
           }, 100);
         });
-        
-        // Add manual trigger
-        addDebugButton();
       }
       
       // Initial setup
