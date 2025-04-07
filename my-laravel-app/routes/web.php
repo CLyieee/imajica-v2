@@ -143,6 +143,10 @@ Route::get('/new-expenses', [DashboardController::class, 'new_expenses'])->name(
 
 Route::get('/expenses-list', [DashboardController::class, 'expenses_list'])->name('page.expenses-list');
 
+Route::get('/new category-expenses', [DashboardController::class, 'newcategory_expenses'])->name('page.new category-expenses');
+
+Route::get('/categoryexpenses-list', [DashboardController::class, 'categoryexpenses_list'])->name('page.categoryexpenses-list');
+
 Route::get('/expenses/view/{id}', [ExpensesController::class, 'view'])->name('expenses.view');
 
 Route::get('/category/all', [CategoryListController::class, 'getAll'])->name('category.all');
