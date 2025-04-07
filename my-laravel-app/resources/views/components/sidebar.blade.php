@@ -337,9 +337,9 @@
 
 
         <li class="menu-item">
-            <form">
-                
-                <a href="login.html" class="menu-link" onclick="event.preventDefault(); this.closest('form').submit();">
+            <form method="POST" action="">
+                @csrf
+                <a href="javascript:void(0);" class="menu-link" onclick="event.preventDefault(); this.closest('form').submit();">
                     <i class="menu-icon icon-base ti tabler-logout"></i>
                     <div data-i18n="Logout">Logout</div>
                 </a>
@@ -359,44 +359,73 @@
                 // Find the parent menu item
                 const menuItem = this.closest('.menu-item');
                 
-                // Get all open menu items at the same level
-                const siblingMenuItems = menuItem.parentElement.querySelectorAll('.menu-item.open');
+                // Toggle open class only
+                menuItem.classList.toggle('open');
                 
-                // Toggle active and open classes
-                if (menuItem.classList.contains('open')) {
-                    menuItem.classList.remove('open');
-                } else {
-                    // Close other menus at the same level for cleaner UI (optional)
-                    // siblingMenuItems.forEach(item => {
-                    //    if (item !== menuItem) item.classList.remove('open');
-                    // });
-                    menuItem.classList.add('open');
-                }
-                
-                // Stop event propagation to prevent bubbling which causes the bouncing effect
+                // Stop event propagation
                 e.stopPropagation();
-                
-                // Add a specific class to indicate this menu was toggled by user
-                menuItem.classList.add('menu-toggled-by-user');
             });
         });
         
-        // Add CSS to prevent animation conflicts and remove arrow icons
+        // Ensure menu links don't lose their text when clicked
+        const menuLinks = document.querySelectorAll('.menu-link');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Only prevent default for javascript:void(0) links
+                if (this.getAttribute('href') === 'javascript:void(0);') {
+                    e.preventDefault();
+                }
+            });
+        });
+        
+        // Add CSS to fix menu transitions and styling
         const style = document.createElement('style');
         style.textContent = `
-            .menu-item .menu-sub {
-                transition: none !important;
+            /* Core fix to prevent text disappearing */
+            [data-i18n] {
+                display: inline-block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                position: static !important;
+                height: auto !important;
+                width: auto !important;
+                overflow: visible !important;
+                pointer-events: auto !important;
+                clip: auto !important;
+                clip-path: none !important;
+                z-index: auto !important;
+                transform: none !important;
             }
-            .menu-item.open > .menu-sub {
+            
+            /* Disable all animations on menu elements */
+            .menu-item, .menu-link, .menu-toggle, .menu-sub, [data-i18n] {
                 transition: none !important;
                 animation: none !important;
             }
-            .menu-toggled-by-user .menu-sub {
-                max-height: none !important;
+            
+            /* Override any theme styles that might hide content */
+            .layout-menu .menu-inner .menu-item .menu-link div[data-i18n] {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: block !important;
             }
+            
+            /* Remove any transforms that might affect visibility */
+            .menu-item, .menu-link, .menu-sub {
+                transform: none !important;
+            }
+            
             /* Remove arrow icons from menu toggles */
             .menu-toggle::after {
                 display: none !important;
+            }
+            
+            /* Fix submenu display */
+            .menu-item.open > .menu-sub {
+                max-height: 2000px !important;
+                height: auto !important;
+                overflow: visible !important;
             }
         `;
         document.head.appendChild(style);
@@ -410,6 +439,55 @@
                 parent.classList.add('open');
                 parent = parent.parentElement.closest('.menu-item:not(.active)');
             }
+        });
+        
+        // Apply direct inline styles to all menu text elements
+        function forceMenuTextVisibility() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                // Force element to be visible with inline styles
+                Object.assign(el.style, {
+                    display: 'block',
+                    visibility: 'visible',
+                    opacity: '1',
+                    position: 'static',
+                    height: 'auto',
+                    width: 'auto',
+                    overflow: 'visible',
+                    transform: 'none',
+                    clipPath: 'none'
+                });
+                
+                // Create a backup of the original text
+                if (!el.hasAttribute('data-original-text')) {
+                    el.setAttribute('data-original-text', el.textContent);
+                }
+                
+                // Ensure text content is present
+                if (!el.textContent.trim()) {
+                    el.textContent = el.getAttribute('data-original-text') || 
+                                    el.getAttribute('data-i18n') || 
+                                    'Menu Item';
+                }
+            });
+        }
+        
+        // Apply visibility fixes on multiple events
+        forceMenuTextVisibility();
+        window.addEventListener('load', forceMenuTextVisibility);
+        window.addEventListener('resize', forceMenuTextVisibility);
+        window.addEventListener('scroll', forceMenuTextVisibility);
+        
+        // Run visibility check periodically
+        setInterval(forceMenuTextVisibility, 500);
+        
+        // MutationObserver to ensure text remains visible if DOM changes
+        const observer = new MutationObserver(forceMenuTextVisibility);
+        
+        observer.observe(document.querySelector('.menu-inner'), {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            characterData: true
         });
     });
 </script>
