@@ -238,6 +238,11 @@
                         <div data-i18n="Staff List">Staff List</div>
                     </a>
                 </li>
+                <li class="menu-item {{ request()->is('position-list') ? 'active' : '' }}">
+                    <a href="/position-list" class="menu-link">
+                        <div data-i18n="Position List">Position List</div>
+                    </a>
+                </li>
             </ul>
         </li>
 

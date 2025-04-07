@@ -453,25 +453,15 @@
                                 class="select2 form-select"
                                 data-allow-clear="true"
                            
-                                name="applicable_service"
-                                id="applicable_service"
+                                name="service_id"
+                                id="service_id"
                               >
                                 <option value="">
                                   Select Applicable Services
                                 </option>
-                                <option value="anti-aging">Anti-Aging IV Drip</option>
-                                <option value="contouring">
-                                  Body Contouring & Sculpting
-                                </option>
-                                <option value="facial">
-                                  Facial Rejuvenation Therapy
-                                </option>
-                                <option value="hydrating">
-                                  Hydrating Skin Booster
-                                </option>
-                                <option value="laser">
-                                  Laser Hair Removal (Underarm)
-                                </option>
+                                @foreach($services as $service)
+                                  <option value="{{ $service->service_id }}">{{ $service->service_name }}</option>
+                                @endforeach
                               </select>
                             </div>
 

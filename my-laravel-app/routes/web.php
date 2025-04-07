@@ -17,7 +17,7 @@ use App\Http\Controllers\tierController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\orderController;
 use App\Http\Controllers\AddProductController;
-
+use App\Http\Controllers\PositionController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -65,7 +65,6 @@ Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('page.
 Route::get('/order/order-details/{orderId}', [OrderController::class, 'getOrderDetails'])->name('api.order.details');
 Route::get('/add-product', [DashboardController::class, 'add_product'])->name('page.add-product');
 Route::post('/product/create', [AddProductController::class, 'create'])->name('product.create');
-
 
 Route::get('/category-list', [DashboardController::class, 'category_list'])->name('page.category-list');
 
@@ -172,3 +171,7 @@ Route::get('/booking/all', [BookingController::class, 'get_bookings'])->name('ge
 Route::put('/booking/update', [BookingController::class, 'update'])->name('booking.update');
 Route::delete('/booking/delete', [BookingController::class, 'delete'])->name('booking.delete');
 
+Route::get('/position-list', [DashboardController::class, 'position_list'])->name('page.position-list');
+Route::post('/position', [PositionController::class, 'create'])->name('position.create');
+Route::put('/position/update', [PositionController::class, 'update'])->name('position.update');
+Route::delete('/position/{id}', [PositionController::class, 'delete'])->name('position.delete');

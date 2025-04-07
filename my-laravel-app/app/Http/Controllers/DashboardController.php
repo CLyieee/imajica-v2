@@ -13,6 +13,7 @@ use App\Models\category;
 use Illuminate\Http\Request;
 use App\Models\service;
 use App\Models\order;
+use App\Models\positionModel;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -237,8 +238,8 @@ class DashboardController extends Controller
     public function new_coupon()
     {
         $branches = Branch::all();
-
-        return view('page.new-coupon', compact('branches')); 
+        $services = service::all();
+        return view('page.new-coupon', compact('branches', 'services')); 
 
     }
 
@@ -295,6 +296,11 @@ class DashboardController extends Controller
     {
     
         return view('page.new-expenses');
+    }
+    public function position_list(){
+       $positions = positionModel::all();
+
+        return view('page.position-list', compact('positions'));
     }
 
     public function new_staff()

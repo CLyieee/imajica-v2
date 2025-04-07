@@ -20,14 +20,21 @@ class coupon extends Model
         'description',
         'discount_type',
         'discount_value',
-        'applicable_service',
+        'service_id',
         'start_end_date',
         'new_customer',
         'branch_code'
     ];
 
-    public function coupon()
+    public function service()
     {
-        return $this->belongsTo(branch::class, 'branch_code', 'branch_code');
+        
+        return $this->belongsTo(service::class, 'service_id', 'service_id');
     }
+
+    
+        public function branch()
+        {
+            return $this->belongsTo(branch::class, 'branch_code', 'branch_code');
+        }
 }
