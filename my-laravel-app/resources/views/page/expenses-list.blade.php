@@ -374,18 +374,29 @@
                   </select>
                 </div>
 
+                <!-- Table Header with Search -->
+                <div class="d-flex justify-content-between align-items-center p-3">
+                  <h5 class="card-title mb-0">Expenses List</h5>
+                  <button class="btn btn-primary">
+                    <i class="ti tabler-plus me-1"></i> Add New Expense
+                  </button>
+                </div>
+                
+                <!-- Success/Error Messages -->
+                <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
+
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table id="servicesTable" class="table table-striped">
-                    <thead>
-                      <tr style="background-color: #1e4d2b;">
-                        <th style="color: white; font-weight: 500;" class="sorting">Expense Name</th>
-                        <th style="color: white; font-weight: 500;" class="sorting">Expense Category</th>
-                        <th style="color: white; font-weight: 500;" class="sorting">Date</th>
-                        <th style="color: white; font-weight: 500;" class="sorting">Payment Status</th>
-                        <th style="color: white; font-weight: 500;" class="sorting">Receipt/Invoice No.</th>
-                        <th style="color: white; font-weight: 500;">Branch</th>
-                        <th style="color: white; font-weight: 500;">Action</th>
+                  <table class="table table-striped" id="expensesTable">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Expense Name</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Invoice No.</th>
+                        <th>Branch</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -397,128 +408,22 @@
                         <td>INV-2024-001</td>
                         <td>Pasig City Branch</td>
                         <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
+                          <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-success view-expense">
+                              <i class="ti tabler-eye me-1"></i> View
+                            </button>
+                            <button class="btn btn-sm btn-info edit-expense">
+                              <i class="ti tabler-edit me-1"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-expense">
+                              <i class="ti tabler-trash me-1"></i> Delete
+                            </button>
+                          </div>
                         </td>
                       </tr>
-                      <tr>
-                        <td>Purchase of New Facial Equipment</td>
-                        <td>Equipment & Supplies</td>
-                        <td>2024-02-05</td>
-                        <td><span class="badge bg-label-success">Paid</span></td>
-                        <td>INV-2024-002</td>
-                        <td>San Mateo Rizal Branch</td>
-                        <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Social Media Ads Campaign</td>
-                        <td>Marketing & Advertising</td>
-                        <td>2024-02-10</td>
-                        <td>
-                          <span class="badge bg-label-success">Paid</span>
-                        </td>
-                        <td>INV-2024-003</td>
-                        <td>Cainta Rizal Branch</td>
-                        <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Staff Salary - January 2025</td>
-                        <td>Salaries & Wages</td>
-                        <td>2024-02-15</td>
-                        <td>
-                          <span class="badge bg-label-success">Paid</span>
-                        </td>
-                        <td>INV-2024-004</td>
-                        <td>Pasig City Branch</td>
-                        <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Electricity Bills</td>
-                        <td>Utilities</td>
-                        <td>2024-02-20</td>
-                        <td>
-                          <span class="badge bg-label-danger">Overdue</span>
-                        </td>
-                        <td>INV-2024-005</td>
-                        <td>San Mateo Rizal Branch</td>
-                        <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Water Bills - February</td>
-                        <td>Utilities</td>
-                        <td>2024-02-25</td>
-                        <td><span class="badge bg-label-warning">Pending</span></td>
-                        <td>INV-2024-006</td>
-                        <td>Cainta Rizal Branch</td>
-                        <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Office Supplies Restock</td>
-                        <td>Equipment & Supplies</td>
-                        <td>2024-03-01</td>
-                        <td><span class="badge bg-label-success">Paid</span></td>
-                        <td>INV-2024-007</td>
-                        <td>Pasig City Branch</td>
-                        <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Staff Training Program</td>
-                        <td>Training & Development</td>
-                        <td>2024-03-05</td>
-                        <td><span class="badge bg-label-warning">Pending</span></td>
-                        <td>INV-2024-008</td>
-                        <td>San Mateo Rizal Branch</td>
-                        <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Equipment Maintenance</td>
-                        <td>Maintenance</td>
-                        <td>2024-03-10</td>
-                        <td><span class="badge bg-label-danger">Overdue</span></td>
-                        <td>INV-2024-009</td>
-                        <td>Cainta Rizal Branch</td>
-                        <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Internet Subscription</td>
-                        <td>Utilities</td>
-                        <td>2024-03-15</td>
-                        <td><span class="badge bg-label-success">Paid</span></td>
-                        <td>INV-2024-010</td>
-                        <td>Pasig City Branch</td>
-                        <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
+                      <!-- Add more rows as needed -->
                     </tbody>
-
                   </table>
-
                   <br />
                 </div>
               </div>
@@ -585,26 +490,17 @@
     <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
     <script>
       $(document).ready(function () {
-        var table = $("#servicesTable").DataTable({
-          columns: [
-            { data: 'expense_name' },
-            { data: 'category' },
-            { data: 'date' },
-            { data: 'status' },
-            { data: 'invoice_number' },
-            { data: 'branch' },
-            { data: 'actions', orderable: false }
-          ],
-          order: [[2, 'desc']], // Sort by date column by default
+        var table = $("#expensesTable").DataTable({
+          responsive: true,
           columnDefs: [
             {
               targets: [5], // Branch column index
-              visible: false // Hide the branch column
+              visible: false // Hide the branch column initially
             }
           ]
         });
 
-        // Keep branch filter functionality
+        // Branch filter functionality
         $("#branchFilter").on("change", function () {
           var selectedBranch = $(this).val();
           table.column(5).search(selectedBranch).draw();
