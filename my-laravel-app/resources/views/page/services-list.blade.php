@@ -154,7 +154,7 @@
       <!-- Keep rest of existing content -->
       <div class="layout-page">
         <!-- Existing navbar and content sections -->
-        <nav
+        {{-- <nav
           class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
           id="layout-navbar">
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
@@ -273,7 +273,7 @@
               <!--/ User -->
             </ul>
           </div>
-        </nav>
+        </nav> --}}
 
         <!-- / Navbar -->
 
@@ -283,9 +283,9 @@
             <!-- Table Header with Search -->
             <div class="d-flex justify-content-between align-items-center p-3">
               <h5 class="card-title mb-0">Services List</h5>
-              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addServiceModal">
+              <a class="btn btn-primary" href="{{ route('page.new-services') }}">
                 <i class="ti tabler-plus me-1"></i> Add New Service
-              </button>
+              </a>
             </div>
 
             <!-- Success/Error Messages -->
@@ -355,7 +355,7 @@
                         <button class="btn btn-sm btn-info edit-service"
                           data-service-id="{{ $service->id }}"
                           data-service-name="{{ $service->service_name }}"
-                          data-service-branch="{{ $service->branch_code }}"
+                          data-service-branch="{{ $service->branch ? $service->branch->branch_name : $service->branch_code }}"
                           data-service-description="{{ $service->description }}"
                           data-service-duration="{{ $service->duration }}"
                           data-service-category="{{ $service->service_category }}"

@@ -89,9 +89,47 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
-    
-  </head>
 
+    <style>
+      .profile-upload-container {
+        width: 200px;
+        margin-bottom: 2rem;
+      }
+
+      .avatar-upload {
+        position: relative;
+        text-align: center;
+      }
+
+      .avatar-preview {
+        width: 150px;
+        height: 150px;
+        position: relative;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid #0a3622;
+        box-shadow: 0 0 20px rgba(10, 54, 34, 0.15);
+        margin: 0 auto;
+      }
+
+      .avatar-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .avatar-edit label {
+        transition: all 0.3s ease;
+      }
+
+      .avatar-edit label:hover {
+        background-color: #0a3622;
+        border-color: #0a3622;
+      }
+    </style>
+
+  </head>
+    
   <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -115,7 +153,7 @@
         <div class="layout-page">
           <!-- Navbar -->
 
-          <nav
+          {{-- <nav
             class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
             id="layout-navbar"
           >
@@ -311,7 +349,7 @@
                 <!--/ User -->
               </ul>
             </div>
-          </nav>
+          </nav> --}}
 
           <!-- / Navbar -->
 
@@ -335,10 +373,41 @@
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
                           <!-- 1. Delivery Address -->
-                            <form method="post" action="{{ route('service.create') }}">
+                            <form method="post" action="{{ route('service.create') }}" enctype="multipart/form-data">
                             @csrf
                             @method('POST')
                             <div class="row g-6">
+                              <div class="col-12 text-center mb-4">
+                                <div class="profile-upload-container mx-auto">
+                                  <div class="avatar-upload">
+                                    <div class="avatar-preview">
+                                      <img
+                                        id="imagePreview"
+                                        src="../../assets/img/services/default-service.png"
+                                        alt="Service Preview"
+                                        class="rounded-circle"
+                                        style="width: 100%; height: 100%; object-fit: cover;"
+                                      />
+                                    </div>
+                                    <div class="avatar-edit">
+                                      <input
+                                        type="file"
+                                        id="imageUpload"
+                                        name="service_image"
+                                        accept=".png, .jpg, .jpeg"
+                                        class="d-none"
+                                      />
+                                      <label
+                                        for="imageUpload"
+                                        class="btn btn-primary btn-sm mt-2"
+                                      >
+                                        <i class="ti tabler-upload me-1"></i>Upload Photo
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
                               <div class="col-md-6">
                                 <label class="form-label" for="service_name">Services Name</label>
                                 <input
@@ -581,6 +650,23 @@
             select.trigger('change');
           }
         }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const imageUpload = document.getElementById("imageUpload");
+        const imagePreview = document.getElementById("imagePreview");
+
+        // Handle photo upload
+        imageUpload.addEventListener("change", function (e) {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              imagePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
       });
     </script>
   </body>

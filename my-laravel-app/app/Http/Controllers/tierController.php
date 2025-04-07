@@ -65,7 +65,7 @@ class tierController extends Controller
                 'remarks' => 'nullable|string',
             ]);
 
-            $tier = Tier::wher('patient_tier_id', $request->patient_tier_id)->first();
+            $tier = Tier::where('patient_tier_id', $request->patient_tier_id)->first();
             if (!$tier) {
                 return redirect()->back()->with('error', 'Tier not found');
             }
@@ -78,7 +78,6 @@ class tierController extends Controller
             $tier->save();
 
             return redirect()->back()->with('success', 'Tier updated successfully');
-
     }
 
     public function delete(Request $request)

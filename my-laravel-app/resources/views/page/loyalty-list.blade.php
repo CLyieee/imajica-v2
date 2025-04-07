@@ -115,6 +115,9 @@
       href="../../assets/vendor/libs/%40form-validation/form-validation.css"
     />
 
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
+
     <!-- Helpers -->
     <script src="../../assets/vendor/js/helpers.js"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
@@ -146,7 +149,7 @@
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
-
+{{-- 
           <nav
             class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
             id="layout-navbar"
@@ -344,109 +347,63 @@
             </div>
           </nav>
 
-          <!-- / Navbar -->
+          <!-- / Navbar --> --}}
 
           <div class="content-wrapper">
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="card">
-                <!-- Branch Filter -->
+                <div class="d-flex justify-content-between align-items-center p-3">
+                  <h5 class="card-title mb-0">Loyalty Tiers</h5>
+                  <a href="{{ route('page.loyalty-list') }}" class="btn btn-primary">
+                    <i class="ti tabler-plus me-1"></i> Add New Tier
+                  </a>
+                </div>
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
                   <table id="servicesTable" class="table table-striped">
                     <thead class="table-light">
                       <tr>
-                        <th>Membership Tier Name</th>
-
-                        <th>Points Required to Acheive Tier</th>
+                        <th>Loyalty Points Name</th>
+                        <th>Points Required to Achieve Tier</th>
                         <th>Points Required to Redeem</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>BRONZE</td>
-
-                        <td>250</td>
-                        <td><span class="badge bg-label-success">500</span></td>
-                        <td>
-                          <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-info">
-                              Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger">
-                              Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>SILVER</td>
-
-                        <td>500</td>
-                        <td>
-                          <span class="badge bg-label-success">1000</span>
-                        </td>
-                        <td>
-                          <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-info">
-                              Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger">
-                              Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>GOLD</td>
-
-                        <td>850</td>
-                        <td>
-                          <span class="badge bg-label-success">1500</span>
-                        </td>
-                        <td>
-                          <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-info">
-                              Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger">
-                              Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>VIP</td>
-
-                        <td>1500</td>
-                        <td>
-                          <span class="badge bg-label-success">2000</span>
-                        </td>
-                        <td>
-                          <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-info">
-                              Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger">
-                               Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
+                      @foreach ($tiers as $tier)
+                        <tr>
+                          <td>{{ $tier->tier_name }}</td>
+                          <td>{{ $tier->points_required }}</td>
+                          <td>{{ $tier->points_to_redeem }}</td>
+                          <td>
+                            <div class="d-flex gap-2">
+                              <button type="button" class="btn btn-info btn-sm edit-tier" 
+                                data-tier-id="{{ $tier->patient_tier_id }}"
+                                data-tier-name="{{ $tier->tier_name }}"
+                                data-points-required="{{ $tier->points_required }}"
+                                data-points-to-redeem="{{ $tier->points_to_redeem }}"
+                                data-tier-length="{{ $tier->tier_lenght }}"
+                                data-remarks="{{ $tier->remarks }}">
+                                <i class="ti tabler-edit me-1"></i>Edit
+                              </button>
+                              <button type="button" class="btn btn-danger btn-sm delete-tier" 
+                                data-tier-id="{{ $tier->patient_tier_id }}"
+                                data-tier-name="{{ $tier->tier_name }}">
+                                <i class="ti tabler-trash me-1"></i>Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      @endforeach
                     </tbody>
                   </table>
-
                   <br />
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Content wrapper -->
-
           <!-- Content wrapper -->
         </div>
         <!-- / Layout page -->
@@ -454,57 +411,220 @@
 
       <!-- Overlay -->
       <div class="layout-overlay layout-menu-toggle"></div>
-
       <!-- Drag Target Area To SlideIn Menu On Small Screens -->
       <div class="drag-target"></div>
     </div>
     <!-- / Layout wrapper -->
 
+    <!-- Edit Tier Modal -->
+    <div class="modal fade" id="editTierModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #0a3622">
+            <h5 class="modal-title text-white">Edit Loyalty Tier</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editTierForm" method="POST" action="{{ route('tier.update') }}">
+              @csrf
+              @method('PUT')
+              <input type="hidden" id="edit_tier_id" name="patient_tier_id">
+              <div class="mb-3">
+                <label class="form-label" for="edit_tier_name">Loyalty Name</label>
+                <input type="text" id="edit_tier_name" name="tier_name" class="form-control" required>
+                <div class="invalid-feedback" id="edit_tier_name_error"></div>
+              </div>
+              <div class="row g-2">
+                <div class="col mb-3">
+                  <label class="form-label" for="edit_points_required">Points Required</label>
+                  <input type="number" id="edit_points_required" name="points_required" class="form-control" required>
+                  <div class="invalid-feedback" id="edit_points_required_error"></div>
+                </div>
+                <div class="col mb-3">
+                  <label class="form-label" for="edit_points_to_redeem">Points to Redeem</label>
+                  <input type="number" id="edit_points_to_redeem" name="points_to_redeem" class="form-control" required>
+                  <div class="invalid-feedback" id="edit_points_to_redeem_error"></div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="edit_tier_lenght">Tier Length</label>
+                <input type="text" id="edit_tier_lenght" name="tier_lenght" class="form-control" required>
+                <div class="invalid-feedback" id="edit_tier_lenght_error"></div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="edit_remarks">Remarks</label>
+                <textarea id="edit_remarks" name="remarks" class="form-control" rows="3"></textarea>
+                <div class="invalid-feedback" id="edit_remarks_error"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Update Tier</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Tier Form (Hidden) -->
+    <form id="deleteTierForm" method="POST" action="{{ route('tier.delete') }}" style="display: none;">
+      @csrf
+      @method('DELETE')
+      <input type="hidden" id="delete_tier_id" name="patient_tier_id">
+    </form>
+
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/theme.js -->
-
+    
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
-
     <script src="../../assets/vendor/libs/popper/popper.js"></script>
     <script src="../../assets/vendor/js/bootstrap.js"></script>
-    <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
-
-    <script src="../../assets/vendor/libs/%40algolia/autocomplete-js.js"></script>
-
-    <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
-
-    <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
-    <script src="../../assets/vendor/libs/hammer/hammer.js"></script>
-
-    <script src="../../assets/vendor/libs/i18n/i18n.js"></script>
-
-    <script src="../../assets/vendor/js/menu.js"></script>
-
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-    <script src="../../assets/vendor/libs/cleave-zen/cleave-zen.js"></script>
-    <script src="../../assets/vendor/libs/select2/select2.js"></script>
-
-    <!-- Main JS -->
-
-    <script src="../../assets/js/main.js"></script>
-
-    <!-- Page JS -->
-    <script src="../../assets/js/form-layouts.js"></script>
-
-    <!-- Vendors JS -->
-    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
-    <!-- Flat Picker -->
-    <script src="../../assets/vendor/libs/moment/moment.js"></script>
-    <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
-    <!-- Form Validation -->
-    <script src="../../assets/vendor/libs/%40form-validation/popular.js"></script>
-    <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
-    <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
+    
     <script>
-      $(document).ready(function () {
+      $(document).ready(function() {
+        // SweetAlert default configuration to appear above the modal
+        const swalConfig = {
+          customClass: {
+            container: 'swal-container-class',
+            popup: 'swal-popup-class'
+          },
+          backdrop: true,
+          allowOutsideClick: false
+        };
+        
+        // Add custom CSS to ensure SweetAlert appears above modal
+        $('<style>')
+          .prop('type', 'text/css')
+          .html(`
+            .swal-container-class {
+              z-index: 2000 !important;
+            }
+            .swal-popup-class {
+              z-index: 2001 !important;
+            }
+            .swal2-backdrop-show {
+              z-index: 1999 !important;
+            }
+          `)
+          .appendTo('head');
+
+        // Display success/error messages
+        @if(session('success'))
+          Swal.fire({
+            ...swalConfig,
+            icon: 'success',
+            title: 'Success',
+            text: "{{ session('success') }}",
+            timer: 3000,
+            showConfirmButton: false
+          });
+        @endif
+
+        @if(session('error'))
+          Swal.fire({
+            ...swalConfig,
+            icon: 'error',
+            title: 'Error',
+            text: "{{ session('error') }}",
+            timer: 3000,
+            showConfirmButton: false
+          });
+        @endif
+
+        // Display validation errors if any
+        @if($errors->any())
+          Swal.fire({
+            ...swalConfig,
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'Please check the form for errors',
+            timer: 3000,
+            showConfirmButton: false
+          });
+        @endif
+
+        // Handle edit tier button clicks
+        $('.edit-tier').on('click', function() {
+          const tierId = $(this).data('tier-id');
+          const tierName = $(this).data('tier-name');
+          const pointsRequired = $(this).data('points-required');
+          const pointsToRedeem = $(this).data('points-to-redeem');
+          const tierLength = $(this).data('tier-length');
+          const remarks = $(this).data('remarks');
+          
+          // Populate the form fields
+          $('#edit_tier_id').val(tierId);
+          $('#edit_tier_name').val(tierName);
+          $('#edit_points_required').val(pointsRequired);
+          $('#edit_points_to_redeem').val(pointsToRedeem);
+          $('#edit_tier_lenght').val(tierLength);
+          $('#edit_remarks').val(remarks);
+          
+          // Show the modal
+          $('#editTierModal').modal('show');
+        });
+
+        // Handle form submission with confirmation
+        $('#editTierForm').on('submit', function(e) {
+          e.preventDefault();
+          
+          // Hide the modal before showing SweetAlert
+          $('#editTierModal').modal('hide');
+          
+          setTimeout(() => {
+            Swal.fire({
+              ...swalConfig,
+              title: 'Confirm Update',
+              text: 'Are you sure you want to update this loyalty tier?',
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonText: 'Yes, update it!',
+              cancelButtonText: 'Cancel',
+              confirmButtonColor: '#0a3622',
+              cancelButtonColor: '#d33'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // Submit the form normally
+                this.submit();
+              } else {
+                // If canceled, show the modal again
+                $('#editTierModal').modal('show');
+              }
+            });
+          }, 200); // Small delay to ensure modal is fully hidden
+        });
+
+        // Delete tier functionality
+        $('.delete-tier').on('click', function() {
+          const tierId = $(this).data('tier-id');
+          const tierName = $(this).data('tier-name');
+          
+          // Set the tier ID in the hidden delete form
+          $('#delete_tier_id').val(tierId);
+          
+          // Show delete confirmation
+          Swal.fire({
+            ...swalConfig,
+            title: 'Confirm Delete',
+            html: `Are you sure you want to delete tier <strong>${tierName}</strong>?<br>This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Submit the delete form
+              $('#deleteTierForm').submit();
+            }
+          });
+        });
+        
+        // DataTable initialization
         var table = $("#servicesTable").DataTable();
 
         // Filter by branch
@@ -514,7 +634,33 @@
         });
       });
     </script>
+
+    <!-- Other scripts -->
+    <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
+    <script src="../../assets/vendor/libs/%40algolia/autocomplete-js.js"></script>
+    <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
+    <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../../assets/vendor/libs/hammer/hammer.js"></script>
+    <script src="../../assets/vendor/libs/i18n/i18n.js"></script>
+    <script src="../../assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src="../../assets/vendor/libs/cleave-zen/cleave-zen.js"></script>
+    <script src="../../assets/vendor/libs/select2/select2.js"></script>
+
+    <!-- Main JS -->
+    <script src="../../assets/js/main.js"></script>
+    <!-- Page JS -->
+    <script src="../../assets/js/form-layouts.js"></script>
+    <!-- Vendors JS -->
+    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+    <!-- Flat Picker -->
+    <script src="../../assets/vendor/libs/moment/moment.js"></script>
+    <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
+    <!-- Form Validation -->
+    <script src="../../assets/vendor/libs/%40form-validation/popular.js"></script>
+    <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
   </body>
 </html>
-
-<!-- beautify ignore:end -->

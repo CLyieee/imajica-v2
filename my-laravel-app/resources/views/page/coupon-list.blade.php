@@ -145,202 +145,202 @@
         <div class="layout-page">
           <!-- Navbar -->
 
-          <nav
-            class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-            id="layout-navbar"
-          >
-            <div
-              class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none"
+            {{-- <nav
+              class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
+              id="layout-navbar"
             >
-              <a
-                class="nav-item nav-link px-0 me-xl-6"
-                href="javascript:void(0)"
+              <div
+                class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none"
               >
-                <i class="icon-base ti tabler-menu-2 icon-md"></i>
-              </a>
-            </div>
-
-            <div
-              class="navbar-nav-right d-flex align-items-center justify-content-end"
-              id="navbar-collapse"
-            >
-              <!-- Search -->
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-                  <a
-                    class="nav-item nav-link search-toggler d-flex align-items-center px-0"
-                    href="javascript:void(0);"
-                  >
-                    <span
-                      class="d-inline-block text-body-secondary fw-normal"
-                      id="autocomplete"
-                    ></span>
-                  </a>
-                </div>
+                <a
+                  class="nav-item nav-link px-0 me-xl-6"
+                  href="javascript:void(0)"
+                >
+                  <i class="icon-base ti tabler-menu-2 icon-md"></i>
+                </a>
               </div>
 
-              <!-- /Search -->
-
-              <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                <!--/ Language -->
-
-                <!-- Style Switcher -->
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
-                    id="nav-theme"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <i
-                      class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"
-                    ></i>
-                    <span class="d-none ms-2" id="nav-theme-text"
-                      >Toggle theme</span
+              <div
+                class="navbar-nav-right d-flex align-items-center justify-content-end"
+                id="navbar-collapse"
+              >
+                <!-- Search -->
+                <div class="navbar-nav align-items-center">
+                  <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
+                    <a
+                      class="nav-item nav-link search-toggler d-flex align-items-center px-0"
+                      href="javascript:void(0);"
                     >
-                  </a>
-                  <ul
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="nav-theme-text"
-                  >
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center active"
-                        data-bs-theme-value="light"
-                        aria-pressed="false"
+                      <span
+                        class="d-inline-block text-body-secondary fw-normal"
+                        id="autocomplete"
+                      ></span>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- /Search -->
+
+                <ul class="navbar-nav flex-row align-items-center ms-md-auto">
+                  <!--/ Language -->
+
+                  <!-- Style Switcher -->
+                  <li class="nav-item dropdown">
+                    <a
+                      class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
+                      id="nav-theme"
+                      href="javascript:void(0);"
+                      data-bs-toggle="dropdown"
+                    >
+                      <i
+                        class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"
+                      ></i>
+                      <span class="d-none ms-2" id="nav-theme-text"
+                        >Toggle theme</span
                       >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-sun icon-22px me-3"
-                            data-icon="sun"
-                          ></i
-                          >Light</span
+                    </a>
+                    <ul
+                      class="dropdown-menu dropdown-menu-end"
+                      aria-labelledby="nav-theme-text"
+                    >
+                      <li>
+                        <button
+                          type="button"
+                          class="dropdown-item align-items-center active"
+                          data-bs-theme-value="light"
+                          aria-pressed="false"
                         >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="dark"
-                        aria-pressed="true"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-moon-stars icon-22px me-3"
-                            data-icon="moon-stars"
-                          ></i
-                          >Dark</span
+                          <span
+                            ><i
+                              class="icon-base ti tabler-sun icon-22px me-3"
+                              data-icon="sun"
+                            ></i
+                            >Light</span
+                          >
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          type="button"
+                          class="dropdown-item align-items-center"
+                          data-bs-theme-value="dark"
+                          aria-pressed="true"
                         >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="system"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-device-desktop-analytics icon-22px me-3"
-                            data-icon="device-desktop-analytics"
-                          ></i
-                          >System</span
+                          <span
+                            ><i
+                              class="icon-base ti tabler-moon-stars icon-22px me-3"
+                              data-icon="moon-stars"
+                            ></i
+                            >Dark</span
+                          >
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          type="button"
+                          class="dropdown-item align-items-center"
+                          data-bs-theme-value="system"
+                          aria-pressed="false"
                         >
-                      </button>
-                    </li>
-                  </ul>
-                </li>
-                <!-- / Style Switcher-->
+                          <span
+                            ><i
+                              class="icon-base ti tabler-device-desktop-analytics icon-22px me-3"
+                              data-icon="device-desktop-analytics"
+                            ></i
+                            >System</span
+                          >
+                        </button>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- / Style Switcher-->
 
-                <!-- Quick links  -->
+                  <!-- Quick links  -->
 
-                <!-- Quick links -->
+                  <!-- Quick links -->
 
-                <!-- Notification -->
+                  <!-- Notification -->
 
-                <!--/ Notification -->
+                  <!--/ Notification -->
 
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow p-0"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <div class="avatar avatar-online">
-                      <img
-                        src="{{ asset('assets/img/avatars/1.png') }}"
-                        alt
-                        class="rounded-circle"
-                      />
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a
-                        class="dropdown-item mt-0"
-                        href="pages-account-settings-account.html"
-                      >
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0 me-2">
-                            <div class="avatar avatar-online">
-                              <img
-                                src="{{ asset('assets/img/avatars/1.png') }}"
-                                alt
-                                class="rounded-circle"
-                              />
+                  <!-- User -->
+                  <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                    <a
+                      class="nav-link dropdown-toggle hide-arrow p-0"
+                      href="javascript:void(0);"
+                      data-bs-toggle="dropdown"
+                    >
+                      <div class="avatar avatar-online">
+                        <img
+                          src="{{ asset('assets/img/avatars/1.png') }}"
+                          alt
+                          class="rounded-circle"
+                        />
+                      </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li>
+                        <a
+                          class="dropdown-item mt-0"
+                          href="pages-account-settings-account.html"
+                        >
+                          <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 me-2">
+                              <div class="avatar avatar-online">
+                                <img
+                                  src="{{ asset('assets/img/avatars/1.png') }}"
+                                  alt
+                                  class="rounded-circle"
+                                />
+                              </div>
+                            </div>
+                            <div class="flex-grow-1">
+                              <h6 class="mb-0">Rommel Lacap</h6>
+                              <small class="text-body-secondary">Admin</small>
                             </div>
                           </div>
-                          <div class="flex-grow-1">
-                            <h6 class="mb-0">Rommel Lacap</h6>
-                            <small class="text-body-secondary">Admin</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-user me-3 icon-md"></i
-                        ><span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-settings me-3 icon-md"></i
-                        ><span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-
-                    <li>
-                      <div class="d-grid px-2 pt-2 pb-1">
-                        <a
-                          class="btn btn-sm btn-danger d-flex"
-                          href="#"
-                          target="_blank"
-                        >
-                          <small class="align-middle">Logout</small>
-                          <i
-                            class="icon-base ti tabler-logout ms-2 icon-14px"
-                          ></i>
                         </a>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
-            </div>
-          </nav>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider my-1 mx-n2"></div>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">
+                          <i class="icon-base ti tabler-user me-3 icon-md"></i
+                          ><span class="align-middle">My Profile</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">
+                          <i class="icon-base ti tabler-settings me-3 icon-md"></i
+                          ><span class="align-middle">Settings</span>
+                        </a>
+                      </li>
+
+                      <li>
+                        <div class="dropdown-divider my-1 mx-n2"></div>
+                      </li>
+
+                      <li>
+                        <div class="d-grid px-2 pt-2 pb-1">
+                          <a
+                            class="btn btn-sm btn-danger d-flex"
+                            href="#"
+                            target="_blank"
+                          >
+                            <small class="align-middle">Logout</small>
+                            <i
+                              class="icon-base ti tabler-logout ms-2 icon-14px"
+                            ></i>
+                          </a>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <!--/ User -->
+                </ul>
+              </div>
+            </nav> --}}
 
           <!-- / Navbar -->
 
@@ -351,9 +351,9 @@
                 <!-- Table Header with Search -->
                 <div class="d-flex justify-content-between align-items-center p-3">
                   <h5 class="card-title mb-0">Coupon List</h5>
-                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCouponModal">
+                  <a class="btn btn-primary" href="{{ route('page.new-coupon') }}">
                     <i class="ti tabler-plus me-1"></i> Add New Coupon
-                  </button>
+                  </a>
                 </div>
 
                 <!-- Success/Error Messages -->
@@ -371,19 +371,19 @@
                 </div>
 
                 <!-- Table -->
-                <div class="table-responsive text-nowrap px-3">
+                <div class="table-responsive">
                   <table class="table table-striped" id="couponTable">
                     <thead class="table-light">
                       <tr>
                         <th>Coupon Code</th>
                         <th>Coupon Name</th>
                         <th>Branch Name</th>
-                        <th>Discount Value</th>
+                        <th>Discount Value</th> 
                         <th>Discount Type</th>
                         <th>Validity Period</th>
-                        <th>Applicable Service</th> <!-- Add this column -->
-                        <th>Status</th>            <!-- Moved to second-to-last -->
-                        <th class="text-center">Actions</th>  <!-- Moved to last -->
+                        <th>Applicable Service</th>
+                        <th>Status</th>
+                        <th style="min-width: 250px; text-align: center">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -400,9 +400,16 @@
                           @endif
                         </td>
                         <td><span class="badge bg-label-info">{{ ucfirst($coupon->discount_type) }}</span></td>
-                        <td>{{ $coupon->start_date }} - {{ $coupon->end_date }}</td>
-                        <td>{{ $coupon->applicable_service }}</td> <!-- Add this column -->
-                        <td>  <!-- Moved to second-to-last -->
+                        <td>
+                            @php
+                                $dates = explode(' to ', $coupon->start_end_date);
+                                $startDate = \Carbon\Carbon::parse($dates[0])->format('F d, Y');
+                                $endDate = isset($dates[1]) ? \Carbon\Carbon::parse($dates[1])->format('F d, Y') : '';
+                            @endphp
+                            {{ $startDate }} to {{ $endDate }}
+                        </td>
+                        <td>{{ $coupon->service ? $coupon->service->service_name : $coupon->service_id }}</td>
+                        <td>
                           @php
                             $now = \Carbon\Carbon::now();
                             $startDate = \Carbon\Carbon::parse($coupon->start_date);
@@ -414,8 +421,8 @@
                             <span class="badge bg-label-danger">Expired</span>
                           @endif
                         </td>
-                        <td class="text-center"> <!-- Moved to last -->
-                          <div class="d-flex gap-2 justify-content-center">
+                        <td>
+                          <div class="d-flex justify-content-center gap-2">
                             <button class="btn btn-sm btn-success view-coupon" 
                               data-coupon-code="{{ $coupon->coupon_code }}"
                               data-discount-name="{{ $coupon->discount_name }}"
@@ -441,7 +448,6 @@
                       @endforeach
                     </tbody>
                   </table>
-                  <br />
                 </div>
               </div>
             </div>
@@ -469,7 +475,7 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="editCouponForm" method="POST" action="/coupon/update">
+            <form id="editCouponForm" method="POST" action="{{ service.update }}">
               @csrf
               @method('PUT')
               <input type="hidden" id="edit_coupon_code" name="coupon_code">

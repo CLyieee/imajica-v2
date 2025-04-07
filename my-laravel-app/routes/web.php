@@ -17,7 +17,7 @@ use App\Http\Controllers\tierController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\orderController;
 use App\Http\Controllers\AddProductController;
-
+use App\Http\Controllers\PositionController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -65,7 +65,6 @@ Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('page.
 Route::get('/order/order-details/{orderId}', [OrderController::class, 'getOrderDetails'])->name('api.order.details');
 Route::get('/add-product', [DashboardController::class, 'add_product'])->name('page.add-product');
 Route::post('/product/create', [AddProductController::class, 'create'])->name('product.create');
-
 
 Route::get('/category-list', [DashboardController::class, 'category_list'])->name('page.category-list');
 
@@ -143,6 +142,10 @@ Route::get('/new-expenses', [DashboardController::class, 'new_expenses'])->name(
 
 Route::get('/expenses-list', [DashboardController::class, 'expenses_list'])->name('page.expenses-list');
 
+Route::get('/new category-expenses', [DashboardController::class, 'newcategory_expenses'])->name('page.new category-expenses');
+
+Route::get('/categoryexpenses-list', [DashboardController::class, 'categoryexpenses_list'])->name('page.categoryexpenses-list');
+
 Route::get('/expenses/view/{id}', [ExpensesController::class, 'view'])->name('expenses.view');
 
 Route::get('/category/all', [CategoryListController::class, 'getAll'])->name('category.all');
@@ -163,11 +166,34 @@ Route::delete('/staff/{id}', [App\Http\Controllers\staffController::class, 'dele
 Route::post('/tier/create', [App\Http\Controllers\tierController::class, 'create'])->name('tier.create');
 Route::get('/tier/all', [App\Http\Controllers\tierController::class, 'list'])->name('tier.list');
 Route::put('/tier/update', [App\Http\Controllers\tierController::class, 'update'])->name('tier.update');
-Route::delete('/tier/{id}', [App\Http\Controllers\tierController::class, 'delete'])->name('tier.delete');
+Route::delete('/tier/delete', [App\Http\Controllers\tierController::class, 'delete'])->name('tier.delete');
+
 
 //Booking Route
 Route::post('/booking/create', [BookingController::class, 'create'])->name('booking.create');
 Route::get('/booking/all', [BookingController::class, 'get_bookings'])->name('get.bookings');
 Route::put('/booking/update', [BookingController::class, 'update'])->name('booking.update');
 Route::delete('/booking/delete', [BookingController::class, 'delete'])->name('booking.delete');
+
+
+Route::get('/position-list', [DashboardController::class, 'position_list'])->name('page.position-list');
+Route::post('/position', [PositionController::class, 'create'])->name('position.create');
+Route::put('/position/update', [PositionController::class, 'update'])->name('position.update');
+Route::delete('/position/{id}', [PositionController::class, 'delete'])->name('position.delete');
+
+
+//Department Route
+Route::get('/new-department', [DashboardController::class, 'new_department'])->name('page.new-department');
+Route::post('/department/create', [App\Http\Controllers\DepartmentController::class, 'store'])->name('department.create');
+Route::get('/department-list', [DashboardController::class, 'department_list'])->name('page.department-list');
+Route::put('/department/update', [App\Http\Controllers\DepartmentController::class, 'update'])->name('department.update');
+Route::delete('/department/delete', [App\Http\Controllers\DepartmentController::class, 'delete'])->name('department.delete');
+Route::get('/departments/all', [App\Http\Controllers\DepartmentController::class, 'getAllDepartments'])->name('department.getAllDepartments');
+
+//Catehgory Route
+Route::post('/category_expense/create', [App\Http\Controllers\category_expenseController::class, 'create'])->name('category_expense.create');
+Route::get('/category_expense/all', [App\Http\Controllers\category_expenseController::class, 'get_category_expenses'])->name('get.category_expenses');
+Route::put('/category_expense/update/{id}', [App\Http\Controllers\category_expenseController::class, 'update'])->name('category_expense.update');
+Route::delete('/category_expense/delete/{id}', [App\Http\Controllers\category_expenseController::class, 'delete'])->name('category_expense.delete');
+
 

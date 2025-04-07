@@ -149,7 +149,7 @@
         <div class="layout-page">
           <!-- Navbar -->
 
-          <nav
+          {{-- <nav
             class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
             id="layout-navbar"
           >
@@ -344,7 +344,7 @@
                 <!--/ User -->
               </ul>
             </div>
-          </nav>
+          </nav> --}}
 
           <!-- / Navbar -->
 
@@ -354,9 +354,9 @@
               <div class="card">
                 <!-- Branch Filter -->
                 <div class="d-flex justify-content-between align-items-center p-3">
-                  <h5 class="card-title mb-0">Branch List</h5>
-                  <a href="{{ route('page.new-branch') }}" class="btn btn-primary">
-                    <i class="ti tabler-plus me-1"></i> Add New Branch
+                  <h5 class="card-title mb-0">Patient List</h5>
+                  <a href="{{ route('page.new-patient') }}" class="btn btn-primary">
+                    <i class="ti tabler-plus me-1"></i> Add New Patient
                   </a>
                 </div>
 
