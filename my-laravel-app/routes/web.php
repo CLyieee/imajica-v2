@@ -171,6 +171,10 @@ Route::get('/booking/all', [BookingController::class, 'get_bookings'])->name('ge
 Route::put('/booking/update', [BookingController::class, 'update'])->name('booking.update');
 Route::delete('/booking/delete', [BookingController::class, 'delete'])->name('booking.delete');
 
+
+
+
+
 Route::get('/position-list', [DashboardController::class, 'position_list'])->name('page.position-list');
 Route::post('/position', [PositionController::class, 'create'])->name('position.create');
 Route::put('/position/update', [PositionController::class, 'update'])->name('position.update');
