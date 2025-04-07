@@ -208,7 +208,7 @@
             @method('PUT')
             <input type="hidden" name="position_id" id="edit_position_id">
             
-            <div class="modal-header bg-info">
+            <div class="modal-header #144e32">
               <h5 class="modal-title text-white">
                 <i class="ti tabler-edit me-1"></i> Edit Position
               </h5>
