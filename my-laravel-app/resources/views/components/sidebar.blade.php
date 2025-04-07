@@ -283,23 +283,27 @@
             </ul>
         </li>
 
-        <li class="menu-item {{  request()->is('customer-report') || request()->is('service-product') || request()->is('employee-report') || request()->is('expenses-report') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->is('department*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-chart-pie "></i>
-                <div data-i18n="Reports">Reports</div>
+                <i class="menu-icon icon-base ti tabler-building"></i>
+                <div data-i18n="Department">Department</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('customer-report') ? 'active' : '' }}">
-                    <a href="/customer-report" class="menu-link">
-                        <div data-i18n="Customer Report">Customer Report</div>
+                <li class="menu-item {{ request()->is('new-department') ? 'active' : '' }}">
+                    <a href="{{ route('page.new-department') }}" class="menu-link">
+                        <div data-i18n="New Department">New Department</div>
                     </a>
                 </li>
 
-                <li class="menu-item {{ request()->is('service-product') ? 'active' : '' }}">
-                    <a href="/service-product" class="menu-link">
-                        <div data-i18n="Service/Product Report">Service/Product Report</div>
+                <li class="menu-item {{ request()->is('department-list') ? 'active' : '' }}">
+                    <a href="{{ route('page.department-list') }}" class="menu-link">
+                        <div data-i18n="Department List">Department List</div>
                     </a>
                 </li>
+            </ul>
+        </li>
+
+        <li class="menu-item {{  request()->is('customer-report') || request()->is('service-product') || request()->is('employee-report') || request()->is('expenses-report') ? 'active open' : '' }}">
                 <li class="menu-item {{ request()->is('employee-report') ? 'active' : '' }}">
                     <a href="/employee-report" class="menu-link">
                         <div data-i18n="Employee Report">Employee Report</div>

@@ -44,8 +44,15 @@ class Staff extends Model
         return $this->hasMany(Booking::class, 'id', 'id');
     }
 
-
+    /**
+     * Get the departments where this staff member is the head.
+     */
+    public function departments()
+    {
+        return $this->hasMany(Department::class, 'department_head');
+    }
     
+
     /**
      * Get the full name of the staff.
      */

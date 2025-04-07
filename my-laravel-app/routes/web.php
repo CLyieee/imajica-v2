@@ -172,3 +172,11 @@ Route::get('/booking/all', [BookingController::class, 'get_bookings'])->name('ge
 Route::put('/booking/update', [BookingController::class, 'update'])->name('booking.update');
 Route::delete('/booking/delete', [BookingController::class, 'delete'])->name('booking.delete');
 
+//Department Route
+Route::get('/new-department', [DashboardController::class, 'new_department'])->name('page.new-department');
+Route::post('/department/create', [App\Http\Controllers\DepartmentController::class, 'store'])->name('department.create');
+Route::get('/department-list', [DashboardController::class, 'department_list'])->name('page.department-list');
+Route::put('/department/update', [App\Http\Controllers\DepartmentController::class, 'update'])->name('department.update');
+Route::delete('/department/delete', [App\Http\Controllers\DepartmentController::class, 'delete'])->name('department.delete');
+Route::get('/departments/all', [App\Http\Controllers\DepartmentController::class, 'getAllDepartments'])->name('department.getAllDepartments');
+
