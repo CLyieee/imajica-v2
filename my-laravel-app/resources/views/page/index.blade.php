@@ -194,6 +194,181 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        .login-container {
+            display: flex;
+            width: 900px;
+            height: 500px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .login-image {
+            flex: 1;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.9) 100%);
+            z-index: 1;
+        }
+
+        .login-image > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-image h2 {
+            color: #1b392f;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-image p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .login-content {
+            flex: 1;
+            padding: 40px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .brand h2 {
+            color: #1b392f;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+        }
+
+        .form-group input:focus {
+            border-color: #1b392f;
+            box-shadow: 0 0 10px rgba(27, 57, 47, 0.1);
+            outline: none;
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: right;
+            color: #1b392f;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: #2a5747;
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #1b392f;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-btn:hover {
+            background-color: #2a5747;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(27, 57, 47, 0.2);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .logo {
+            width: 180px;
+            height: auto;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Add subtle animation for input fields */
+        @keyframes inputFocus {
+            from { transform: scale(1); }
+            to { transform: scale(1.02); }
+        }
+
+        .form-group input:focus {
+            animation: inputFocus 0.3s ease forwards;
+        }
+
+        /* Error messages styling */
+        .error-messages {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(255, 76, 81, 0.1);
+        }
+
+        .error {
+            color: #ff4c51;
+            font-size: 14px;
+            margin: 5px 0;
+        }
     </style>
 </head>
 
@@ -212,7 +387,6 @@
             <div class="login-content">
                 <div class="login-box">
                     <div class="brand">
-                        <img src="{{ asset('') }}" alt="Intracode Logo" class="logo" style="width: 150px; height: auto;">
                         <h2>Sign in</h2>
                     </div>
 
