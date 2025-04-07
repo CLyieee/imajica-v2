@@ -27,6 +27,7 @@ class PositionController extends Controller
             $validatedData['position_id'] = $nextId;
             $validatedData['status'] = $request->has('status');
 
+
             Log::info('Creating position with data:', $validatedData);
             
             $position = positionModel::create($validatedData);
@@ -85,20 +86,56 @@ class PositionController extends Controller
         }
     }
 
-public function delete ($id){
-    try {
-        $position = positionModel::findOrFail($id);
-        $position->delete();
+    public function delete(Request $request) {
+        try {
+            $request->validate([
+                'position_id' => 'required|exists:position,position_id',
+            ]);
 
-        return redirect(route('page.position-list'))
-            ->with('success', 'Position deleted successfully!');
-    } catch (\Exception $e) {
-        Log::error('Error deleting position: ' . $e->getMessage());
-        return redirect()->back()
-            ->with('error', 'Error deleting position: ' . $e->getMessage());
+            $position = positionModel::where('position_id', $request->position_id)->first();
+            
+            if (!$position) {
+                Log::error('Position not found for deletion', ['position_id' => $request->position_id]);
+                return redirect()->back()->with('error', 'Position not found');
+            }
+
+            try {
+                $position->delete();
+                Log::info('Position deleted successfully', ['position_id' => $request->position_id]);
+                
+                if ($request->wantsJson()) {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Position deleted successfully'
+                    ]);
+                }
+                
+                return redirect()->route('page.position-list')->with('success', 'Position deleted successfully');
+
+            } catch (\Exception $e) {
+                Log::error('Error deleting position', [
+                    'position_id' => $request->position_id,
+                    'error' => $e->getMessage()
+                ]);
+                throw $e;
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Error in delete method', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Failed to delete position: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()->with('error', 'Failed to delete position: ' . $e->getMessage());
+        }
     }
-}
-
 
     public function getAll()
     {
