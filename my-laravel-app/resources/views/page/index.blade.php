@@ -366,7 +366,7 @@
 
         .error {
             color: #ff4c51;
-            font-size: 14px;
+            font-size: 14px;    
             margin: 5px 0;
         }
     </style>
