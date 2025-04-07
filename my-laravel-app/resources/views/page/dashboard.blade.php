@@ -507,7 +507,7 @@
 
                       <!-- Background Decoration -->
                       <div class="position-absolute top-0 end-0 opacity-25">
-                        <i class="ti tabler-spa" style="font-size: 180px;"></i>
+                      
                       </div>
                     </div>
                   </div>
@@ -668,10 +668,10 @@
                     </div>
                     <div class="d-flex gap-2">
                       <div class="dropdown">
-                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                        <!-- <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
                           data-bs-toggle="dropdown">
                           <i class="ti tabler-filter me-1"></i>Filter
-                        </button>
+                        </button> -->
                         <ul class="dropdown-menu">
                           <li>
                             <a class="dropdown-item" href="#">All Bookings</a>
@@ -1020,21 +1020,29 @@
         );
 
         // Booking Status Donut Chart
-        const bookingStatusCtx = document
-          .getElementById("bookingStatusChart")
-          .getContext("2d");
+        const bookingStatusCtx = document.getElementById("bookingStatusChart").getContext("2d");
         const bookingStatusChart = new Chart(bookingStatusCtx, {
           type: "doughnut",
           data: {
-            labels: ["Completed", "Pending", "Cancelled", "Rescheduled"],
-            datasets: [
-              {
-                data: [45, 25, 15, 15],
-                backgroundColor: ["#28c76f", "#ffab00", "#ff3e1d", "#03c3ec"],
-                borderWidth: 0,
-                cutout: "75%",
-              },
-            ],
+            labels: ["Completed", "Pending", "Cancelled", "Paid", "No Show"],
+            datasets: [{
+              data: [
+                {{ $bookings->where('status', 'Completed')->count() }},
+                {{ $bookings->where('status', 'Pending')->count() }},
+                {{ $bookings->where('status', 'Cancelled')->count() }},
+                {{ $bookings->where('status', 'Paid')->count() }},
+                {{ $bookings->where('status', 'No Show')->count() }}
+              ],
+              backgroundColor: [
+                "#28c76f",  // Completed - Green
+                "#ffab00",  // Pending - Yellow/Orange
+                "#ff3e1d",  // Cancelled - Red
+                "#00cfe8",  // Paid - Blue
+                "#6c757d"   // No Show - Gray
+              ],
+              borderWidth: 0,
+              cutout: "75%",
+            }],
           },
           options: {
             responsive: true,
@@ -1049,13 +1057,12 @@
               },
               tooltip: {
                 callbacks: {
-                  label: function (context) {
+                  label: function(context) {
                     const label = context.label || "";
-                    const value = context.parsed || 0;
-                    const percentage = Math.round(
-                      (value / context.dataset.data.reduce((a, b) => a + b)) * 100
-                    );
-                    return `${label}: ${percentage}%`;
+                    const value = context.parsed;
+                    const total = context.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                    const percentage = ((value / total) * 100).toFixed(1);
+                    return `${label}: ${value} (${percentage}%)`;
                   },
                 },
               },
@@ -1618,9 +1625,7 @@ The Imajica Team</textarea>
                 <option value="past">Past Birthdays</option>
               </select>
             </div>
-            <!-- <div class="col-md-4">
-              <input type="text" id="birthdaySearch" class="form-control" placeholder="Search patients...">
-            </div> -->  
+           
           </div>
 
           <!-- Birthday Calendar View -->
@@ -1814,8 +1819,111 @@ The Imajica Team</textarea>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <!-- Add your booking table content here -->
+          <!-- Filters -->
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <label class="form-label">Filter by Status</label>
+              <select class="form-select" id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="paid">Paid</option>
+                <option value="unpaid">No Show</option>  
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Filter by Date</label>
+              <input type="date" class="form-control" id="dateFilter">
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+              <button class="btn btn-primary" id="exportBookings">
+                <i class="ti tabler-download me-1"></i>Export Data
+              </button>
+            </div>
+          </div>
 
+          <!-- Bookings Table -->
+          <div class="table-responsive">
+            <table class="table table-hover booking-table">
+              <thead class="table-light">
+                <tr>
+                  <th>Booking ID</th>
+                  <th>Patient</th>
+                  <th>Service</th>
+                  <th>Date & Time</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($bookings as $booking)
+                <tr>
+                  <td># {{ $booking->booking_id }}</td>
+                  <td>
+                    @if($booking->patient)
+                      {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
+                    @else
+                      <span class="text-muted">No patient data</span>
+                    @endif
+                  </td>
+                  <td>
+                    @if($booking->service)
+                      {{ $booking->service->service_name }}
+                    @else
+                      <span class="text-muted">No service data</span>
+                    @endif
+                  </td>
+                  <td>{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} at {{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</td>
+                  <td>
+                    @if($booking->service)
+                      ₱{{ number_format($booking->service->service_cost, 2) }}
+                    @else
+                      <span class="text-muted">N/A</span>
+                    @endif
+                  </td>
+                  <td>
+                    <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed' ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger') }}">
+                      {{ ucfirst($booking->status) }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                        <i class="ti tabler-dots-vertical"></i>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a class="dropdown-item" href="#">
+                            <i class="ti tabler-eye me-2"></i>View Details
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#">
+                            <i class="ti tabler-edit me-2"></i>Edit Booking
+                          </a>
+                        </li>
+                        @if($booking->status == 'Pending')
+                        <li>
+                          <a class="dropdown-item text-success" href="#">
+                            <i class="ti tabler-check me-2"></i>Mark as Completed
+                          </a>
+                        </li>
+                        @endif
+                        <li>
+                          <a class="dropdown-item text-danger" href="#">
+                            <i class="ti tabler-trash me-2"></i>Cancel Booking
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -1824,89 +1932,78 @@ The Imajica Team</textarea>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Status filter
+      // Get filter elements
       const statusFilter = document.getElementById("statusFilter");
-      if (statusFilter) {
-        statusFilter.addEventListener("change", function (e) {
-          const status = e.target.value.toLowerCase();
-          const rows = document.querySelectorAll(".booking-table tbody tr");
-
-          rows.forEach((row) => {
-            if (status === "all") {
-              row.style.display = "";
-              return;
+      const dateFilter = document.getElementById("dateFilter");
+      
+      // Function to apply both filters simultaneously
+      function applyFilters() {
+        const selectedStatus = statusFilter.value.toLowerCase();
+        const selectedDate = dateFilter.value ? new Date(dateFilter.value) : null;
+        
+        const rows = document.querySelectorAll(".booking-table tbody tr");
+        
+        rows.forEach((row) => {
+          let showRow = true;
+          
+          // Status filter
+          if (selectedStatus !== 'all') {
+            const statusCell = row.querySelector(".badge").textContent.toLowerCase().trim();
+            if (statusCell !== selectedStatus) {
+              showRow = false;
             }
-
-
-            const statusCell = row
-              .querySelector(".badge")
-              .textContent.toLowerCase();
-            row.style.display = statusCell === status ? "" : "none";
-          });
+          }
+          
+          // Date filter
+          if (selectedDate) {
+            const dateCell = row.querySelector("td:nth-child(4)").textContent; // Get the date cell
+            const bookingDate = new Date(dateCell.split(" at")[0]); // Split to remove time and convert to date
+            
+            // Compare only the date parts (ignore time)
+            if (
+              bookingDate.getFullYear() !== selectedDate.getFullYear() ||
+              bookingDate.getMonth() !== selectedDate.getMonth() ||
+              bookingDate.getDate() !== selectedDate.getDate()
+            ) {
+              showRow = false;
+            }
+          }
+          
+          // Show/hide row based on combined filter results
+          row.style.display = showRow ? "" : "none";
         });
       }
-
-      // Date filter
-      const dateFilter = document.getElementById("dateFilter");
+      
+      // Add event listeners to both filters
+      if (statusFilter) {
+        statusFilter.addEventListener("change", applyFilters);
+      }
+      
       if (dateFilter) {
-        dateFilter.addEventListener("change", function (e) {
-          const selectedDate = new Date(e.target.value);
-          const rows = document.querySelectorAll(".booking-table tbody tr");
-
-          rows.forEach((row) => {
-            const dateCell =
-              row.querySelector("td:nth-child(4) h6").textContent;
-            const bookingDate = new Date(dateCell);
-
-            if (isNaN(selectedDate.getTime())) {
-              row.style.display = "";
-              return;
-            }
-
-
-
-            row.style.display =
-              selectedDate.toDateString() === bookingDate.toDateString()
-                ? ""
-                : "none";
-          });
-        });
-
-      });
-    }
-
-    // Export functionality
-    const exportBtn = document.getElementById("exportBookings");
-    if (exportBtn) {
-      exportBtn.addEventListener("click", function() {
-        // Get visible rows
-        const visibleRows = Array.from(document.querySelectorAll(".booking-table tbody tr"))
-          .filter(row => row.style.display !== "none");
-
-        // Create CSV content
-        let csvContent = "Booking ID,Patient,Service,Date & Time,Amount,Status\n";
-        
-        visibleRows.forEach(row => {
-          const cells = row.querySelectorAll("td");
-          const rowData = Array.from(cells).map(cell => `"${cell.textContent.trim()}"`);
-          csvContent += rowData.join(",") + "\n";
-        });
-
-        // Create and trigger download
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const link = document.createElement("a");
-        const url = URL.createObjectURL(blob);
-        
-        link.setAttribute("href", url);
-        link.setAttribute("download", "bookings_export.csv");
-        link.style.visibility = "hidden";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      });
-    }
-  });
-
+        dateFilter.addEventListener("change", applyFilters);
+      }
+      
+      // Clear filters function
+      function clearFilters() {
+        statusFilter.value = "all";
+        dateFilter.value = "";
+        applyFilters();
+      }
+      
+      // Add clear filters button to the filter section
+      const filterSection = document.querySelector(".modal-body .row.mb-4");
+      if (filterSection) {
+        const clearButton = document.createElement("div");
+        clearButton.className = "col-12 mt-2";
+        clearButton.innerHTML = `
+      
+        `;
+        filterSection.appendChild(clearButton);
+      }
+      
+      // Make clearFilters function globally available
+      window.clearFilters = clearFilters;
+    });
   </script>
 
 </body>
