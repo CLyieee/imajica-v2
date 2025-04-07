@@ -381,7 +381,7 @@
                     <i class="ti tabler-plus me-1"></i> Add New Expense
                   </button>
                 </div>
-
+                
                 <!-- Success/Error Messages -->
                 <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
 
