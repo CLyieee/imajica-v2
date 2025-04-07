@@ -492,7 +492,7 @@
                       <div>
                         <h3 class="text-white fw-bold mb-2">✨ Welcome to Imajica Aesthetics</h3>
                         <p class="text-white mb-3">Experience luxury beauty and wellness treatments tailored just for you.</p>
-                        <a href="{{ route('page.booking') }}" class="btn btn-light">
+                        <a href="{{ route('page.booking') }}" class="btn btn-primary">
                           <i class="ti tabler-calendar-plus me-1"></i>
                           Book an Appointment
                         </a>
@@ -1806,6 +1806,7 @@ The Imajica Team</textarea>
 
   <!-- View All Bookings Modal -->
   <div class="modal fade" id="viewAllBookingsModal" tabindex="-1" aria-hidden="true">
+
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -1814,10 +1815,12 @@ The Imajica Team</textarea>
         </div>
         <div class="modal-body">
           <!-- Add your booking table content here -->
+
         </div>
       </div>
     </div>
   </div>
+
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -1833,6 +1836,7 @@ The Imajica Team</textarea>
               row.style.display = "";
               return;
             }
+
 
             const statusCell = row
               .querySelector(".badge")
@@ -1859,23 +1863,50 @@ The Imajica Team</textarea>
               return;
             }
 
+
+
             row.style.display =
               selectedDate.toDateString() === bookingDate.toDateString()
                 ? ""
                 : "none";
           });
         });
-      }
 
-      // Export functionality
-      const exportButton = document.getElementById("exportBookings");
-      if (exportButton) {
-        exportButton.addEventListener("click", function () {
-          // Add your export logic here
-          alert("Export functionality will be implemented here");
+      });
+    }
+
+    // Export functionality
+    const exportBtn = document.getElementById("exportBookings");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", function() {
+        // Get visible rows
+        const visibleRows = Array.from(document.querySelectorAll(".booking-table tbody tr"))
+          .filter(row => row.style.display !== "none");
+
+        // Create CSV content
+        let csvContent = "Booking ID,Patient,Service,Date & Time,Amount,Status\n";
+        
+        visibleRows.forEach(row => {
+          const cells = row.querySelectorAll("td");
+          const rowData = Array.from(cells).map(cell => `"${cell.textContent.trim()}"`);
+          csvContent += rowData.join(",") + "\n";
         });
-      }
-    });
+
+        // Create and trigger download
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute("href", url);
+        link.setAttribute("download", "bookings_export.csv");
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    }
+  });
+
   </script>
 
 </body>
