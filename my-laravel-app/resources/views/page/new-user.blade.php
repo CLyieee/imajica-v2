@@ -385,12 +385,12 @@
                                       class="select2 form-select"
                                       data-allow-clear="true"
                                     >
-                                      <option value="">Select Branch</option>
-                                      <option value="AL">Pasig City Branch</option>
-                                      <option value="AK">
-                                        San Mateo Rizal Branch
-                                      </option>
-                                      <option value="AK">Cainta Rizal Branch</option>
+                                      @foreach ($branches as $branch)
+                                        <option value="{{ $branch->branch_code }}">
+                                          {{ $branch->branch_name }}
+                                        </option>
+                                      
+                                      @endforeach
                                     </select>
                                   </div>
                                 </div>

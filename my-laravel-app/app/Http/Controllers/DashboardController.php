@@ -409,7 +409,8 @@ class DashboardController extends Controller
     }
     public function new_user()
     {
-        return view('page.new-user');
+        $branches = Branch::all();
+        return view('page.new-user', compact('branches'));
     }
     public function user_list()
     {
