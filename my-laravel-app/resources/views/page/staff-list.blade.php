@@ -366,7 +366,7 @@
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table class="table table-striped">
+                  <table class="table table-striped" id="staffTable">
                     <thead class="table-light">
                       <tr>
                         <th class="text-center">Profile</th>
@@ -1092,6 +1092,11 @@
         console.log('Staff deleted');
       }
     }
+    </script>
+    <script>
+      $document.ready(function () {
+        $('#staffTable').DataTable();
+      })
     </script>
   </body>
 </html>

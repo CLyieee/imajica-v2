@@ -371,19 +371,19 @@
                 </div>
 
                 <!-- Table -->
-                <div class="table-responsive text-nowrap px-3">
+                <div class="table-responsive">
                   <table class="table table-striped" id="couponTable">
                     <thead class="table-light">
                       <tr>
                         <th>Coupon Code</th>
                         <th>Coupon Name</th>
                         <th>Branch Name</th>
-                        <th>Discount Value</th>
+                        <th>Discount Value</th> 
                         <th>Discount Type</th>
                         <th>Validity Period</th>
-                        <th>Applicable Service</th> <!-- Add this column -->
-                        <th>Status</th>            <!-- Moved to second-to-last -->
-                        <th class="text-center">Actions</th>  <!-- Moved to last -->
+                        <th>Applicable Service</th>
+                        <th>Status</th>
+                        <th style="min-width: 250px; text-align: center">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -400,9 +400,16 @@
                           @endif
                         </td>
                         <td><span class="badge bg-label-info">{{ ucfirst($coupon->discount_type) }}</span></td>
-                        <td>{{ $coupon->start_date }} - {{ $coupon->end_date }}</td>
-                        <td>{{ $coupon->applicable_service }}</td> <!-- Add this column -->
-                        <td>  <!-- Moved to second-to-last -->
+                        <td>
+                            @php
+                                $dates = explode(' to ', $coupon->start_end_date);
+                                $startDate = \Carbon\Carbon::parse($dates[0])->format('F d, Y');
+                                $endDate = isset($dates[1]) ? \Carbon\Carbon::parse($dates[1])->format('F d, Y') : '';
+                            @endphp
+                            {{ $startDate }} to {{ $endDate }}
+                        </td>
+                        <td>{{ $coupon->service ? $coupon->service->service_name : $coupon->service_id }}</td>
+                        <td>
                           @php
                             $now = \Carbon\Carbon::now();
                             $startDate = \Carbon\Carbon::parse($coupon->start_date);
@@ -414,8 +421,8 @@
                             <span class="badge bg-label-danger">Expired</span>
                           @endif
                         </td>
-                        <td class="text-center"> <!-- Moved to last -->
-                          <div class="d-flex gap-2 justify-content-center">
+                        <td>
+                          <div class="d-flex justify-content-center gap-2">
                             <button class="btn btn-sm btn-success view-coupon" 
                               data-coupon-code="{{ $coupon->coupon_code }}"
                               data-discount-name="{{ $coupon->discount_name }}"
@@ -441,7 +448,6 @@
                       @endforeach
                     </tbody>
                   </table>
-                  <br />
                 </div>
               </div>
             </div>

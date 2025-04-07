@@ -17,7 +17,7 @@ use App\Http\Controllers\tierController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\orderController;
 use App\Http\Controllers\AddProductController;
-
+use App\Http\Controllers\PositionController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -65,7 +65,6 @@ Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('page.
 Route::get('/order/order-details/{orderId}', [OrderController::class, 'getOrderDetails'])->name('api.order.details');
 Route::get('/add-product', [DashboardController::class, 'add_product'])->name('page.add-product');
 Route::post('/product/create', [AddProductController::class, 'create'])->name('product.create');
-
 
 Route::get('/category-list', [DashboardController::class, 'category_list'])->name('page.category-list');
 
@@ -177,6 +176,12 @@ Route::put('/booking/update', [BookingController::class, 'update'])->name('booki
 Route::delete('/booking/delete', [BookingController::class, 'delete'])->name('booking.delete');
 
 
+Route::get('/position-list', [DashboardController::class, 'position_list'])->name('page.position-list');
+Route::post('/position', [PositionController::class, 'create'])->name('position.create');
+Route::put('/position/update', [PositionController::class, 'update'])->name('position.update');
+Route::delete('/position/{id}', [PositionController::class, 'delete'])->name('position.delete');
+
+
 //Department Route
 Route::get('/new-department', [DashboardController::class, 'new_department'])->name('page.new-department');
 Route::post('/department/create', [App\Http\Controllers\DepartmentController::class, 'store'])->name('department.create');
@@ -190,4 +195,5 @@ Route::post('/category_expense/create', [App\Http\Controllers\category_expenseCo
 Route::get('/category_expense/all', [App\Http\Controllers\category_expenseController::class, 'get_category_expenses'])->name('get.category_expenses');
 Route::put('/category_expense/update/{id}', [App\Http\Controllers\category_expenseController::class, 'update'])->name('category_expense.update');
 Route::delete('/category_expense/delete/{id}', [App\Http\Controllers\category_expenseController::class, 'delete'])->name('category_expense.delete');
+
 

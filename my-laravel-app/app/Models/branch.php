@@ -35,4 +35,8 @@ class branch extends Model
     {
         return $this->hasMany(Booking::class, 'branch_code', 'branch_code');
     }
+
+    public function coupon() {
+        return $this->hasMany(coupon::class, 'branch_code', 'branch_code');
+    }
 }

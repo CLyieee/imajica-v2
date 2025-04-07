@@ -31,4 +31,8 @@ class service extends Model
     {
         return $this->hasMany(Booking::class, 'service_id', 'service_id');
     }
+    public function coupon()
+    {
+        return $this->hasMany(coupon::class, 'service_id', 'service_id');
+    }
 }
