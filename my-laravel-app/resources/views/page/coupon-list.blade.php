@@ -475,7 +475,7 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="editCouponForm" method="POST" action="{{ service.update }}">
+            <form id="editCouponForm" method="POST" action="{{ 'coupon.update' }}">
               @csrf
               @method('PUT')
               <input type="hidden" id="edit_coupon_code" name="coupon_code">

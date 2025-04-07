@@ -49,6 +49,7 @@
         @include('components.sidebar')
         <!-- / Menu -->
 
+
         <!-- Layout container -->
         <div class="layout-page">
           <div class="content-wrapper">
@@ -57,7 +58,7 @@
               <div class="card">
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center p-3">
-                  <h5 class="card-title mb-0">Position List</h5>
+                  <h5 class="card-title mb-5">Position List</h5>
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPositionModal">
                     <i class="ti tabler-plus me-1"></i> Add New Position
                   </button>
@@ -68,7 +69,7 @@
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table class="table table-striped table-bordered staffTable">
+                  <table class="table table-striped" id="positionTable">
                     <thead class="table-light">
                       <tr>
                         <th>Position Title</th>
@@ -95,15 +96,15 @@
                               <button type="button" class="btn btn-sm btn-info edit-position" 
                                 data-bs-toggle="modal"
                                 data-bs-target="#editPositionModal"
-                                data-id="{{ $position->position_id }}"
-                                data-title="{{ $position->position_name }}"
-                                data-department="{{ $position->department }}"
-                                data-description="{{ $position->description }}"
-                                data-status="{{ $position->status }}">
+                                data-position-id="{{ $position->position_id }}"
+                                data-position-title="{{ $position->position_name }}"
+                                data-position-department="{{ $position->department }}"
+                                data-position-description="{{ $position->description }}"
+                                data-position-status="{{ $position->status }}">
                                 <i class="ti tabler-edit me-1"></i> Edit
                               </button>
                               
-                              <button type="button" class="btn btn-sm btn-danger delete-position" 
+                              <button class="btn btn-sm btn-danger delete-position" 
                                 data-position-id="{{ $position->position_id }}"
                                 data-position-title="{{ $position->position_name }}">
                                 <i class="ti tabler-trash me-1"></i> Delete
@@ -201,9 +202,7 @@
     <div class="modal fade" id="editPositionModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-          <form 
-          {{-- id="editPositionForm" method="POST" action="{{ route('position.update') }}" --}}
-          >
+          <form id="editPositionForm" method="POST" action="{{ route('position.update') }}">
             @csrf
             @method('PUT')
             <input type="hidden" name="position_id" id="edit_position_id">
@@ -219,7 +218,7 @@
               <div class="row g-3">
                 <div class="col-12">
                   <label class="form-label" for="edit_position_title">Position Title</label>
-                  <input type="text" id="edit_position_title" name="title" class="form-control" required>
+                  <input type="text" id="edit_position_title" name="position_name" class="form-control" required>
                 </div>
 
                 <div class="col-12">
@@ -257,10 +256,11 @@
     </div>
 
 
-    <form id="deletePositionForm" method="POST" style="display: none;">
+    <!-- Delete Position Form (Hidden) -->
+    <form id="deletePositionForm" method="POST" action="/position/delete" style="display: none;">
       @csrf
       @method('DELETE')
-      <input type="hidden" id="delete_position_id" name="id" value="">
+      <input type="hidden" id="delete_position_id" name="position_id">
     </form>
 
 
@@ -274,23 +274,49 @@
     <!-- Add SweetAlert2 library -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
-    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
-    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
-    <link rel="stylesheet" href="../../assets/vendor/libs/select2/select2.css" />
-  
+    <link
+    rel="stylesheet"
+    href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}"
+  />
+  <link
+    rel="stylesheet"
+    href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}"
+  />
+  <link
+    rel="stylesheet"
+    href="{{ asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css') }}"
+  />
+  <link
+    rel="stylesheet"
+    href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}"
+  />
+  <!-- Row Group CSS -->
+  <link
+    rel="stylesheet"
+    href="{{ asset('assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css') }}"
+  />
+  <!-- Form Validation -->
+  <link
+    rel="stylesheet"
+    href="{{ asset('assets/vendor/libs/%40form-validation/form-validation.css') }}"
+  />
+  <link rel="stylesheet" href="../../assets/vendor/libs/select2/select2.css" />
+  <link rel="stylesheet" href="../../assets/vendor/libs/select2/select2.css" />
     <script>
       $(document).ready(function() {
         // SweetAlert default configuration
         const swalConfig = {
           customClass: {
             container: 'swal-container-class',
-            popup: 'swal-popup-class'
+            popup: 'swal-popup-class',
+            confirmButton: 'btn btn-primary me-3',
+            cancelButton: 'btn btn-label-secondary'
           },
+          buttonsStyling: false,
           backdrop: true,
           allowOutsideClick: false
         };
-        
+
         // Add custom CSS for SweetAlert z-index
         $('<style>')
           .prop('type', 'text/css')
@@ -307,9 +333,6 @@
           `)
           .appendTo('head');
 
-        // Initialize DataTable
-        $('.table').DataTable();
-
         // Setup CSRF token for AJAX requests
         $.ajaxSetup({
             headers: {
@@ -317,108 +340,188 @@
             }
         });
 
+        // Display success/error messages
+        @if(session('success'))
+            Swal.fire({
+                ...swalConfig,
+                icon: 'success',
+                title: 'Success',
+                text: "{{ session('success') }}",
+                timer: 1000,
+                showConfirmButton: false
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                ...swalConfig,
+                icon: 'error',
+                title: 'Error',
+                text: "{{ session('error') }}",
+                timer: 1000,
+                showConfirmButton: false
+            });
+        @endif
+
         // Add Position Form Submit
         $('#addPositionForm').on('submit', function(e) {
             e.preventDefault();
+            const submitBtn = $(this).find('button[type="submit"]');
+            submitBtn.prop('disabled', true);
             
             $.ajax({
                 url: '{{ route("position.create") }}',
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function(response) {
-                    if (response.status) {
+                    // Show success message before hiding modal
+                    Swal.fire({
+                        ...swalConfig,
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Position created successfully!',
+                        timer: 1500
+                    }).then(() => {
                         $('#addPositionModal').modal('hide');
-                        showAlert('success', response.message);
-                        setTimeout(() => location.reload(), 1500);
-                    } else {
-                        showAlert('error', response.message);
-                    }
+                        location.reload();
+                    });
                 },
                 error: function(xhr) {
-                    let errorMessage = 'Error creating position';
-                    
-                    if (xhr.responseJSON) {
-                        if (xhr.responseJSON.errors) {
-                            errorMessage = '<ul>';
-                            for (let field in xhr.responseJSON.errors) {
-                                errorMessage += `<li>${xhr.responseJSON.errors[field]}</li>`;
-                            }
-                            errorMessage += '</ul>';
-                        } else if (xhr.responseJSON.message) {
-                            errorMessage = xhr.responseJSON.message;
-                        }
-                    }
-                    
-                    showAlert('error', errorMessage);
-                    console.error('Position creation error:', xhr);
-                }
-            });
-        });
-
-        // Edit Position Form Submit
-        $('#editPositionForm').on('submit', function(e) {
-            e.preventDefault();
-            
-            $.ajax({
-                url: '{{ route("position.update") }}',
-                type: 'PUT',
-                data: $(this).serialize(),
-                success: function(response) {
-                    if (response.status) {
-                        $('#editPositionModal').modal('hide');
-                        showAlert('success', response.message);
-                        setTimeout(() => location.reload(), 1500);
-                    } else {
-                        showAlert('error', response.message);
-                    }
-                },
-                error: function(xhr) {
-                    showAlert('error', 'Error updating position');
+                    submitBtn.prop('disabled', false);
                 }
             });
         });
 
         // Handle delete position button clicks 
-        $(document).on('click', '.delete-position', function() {
-          const positionId = $(this).data('position-id');
-          const positionTitle = $(this).data('position-title');
-          
-          // Set the position ID in the hidden form
-          $('#delete_position_id').val(positionId);
-          
-          // Set the form action dynamically
-          $('#deletePositionForm').attr('action', `/position/${positionId}`);
-          
-          Swal.fire({
-            ...swalConfig,
-            title: 'Confirm Delete',
-            html: `Are you sure you want to delete position <strong>${positionTitle}</strong>?<br>This action cannot be undone.`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // Submit the form instead of making an AJAX call
-              $('#deletePositionForm').submit();
-            }
-          });
+        $('.delete-position').on('click', function(e) {
+            e.preventDefault();
+            
+            const positionId = $(this).data('position-id');
+            const positionTitle = $(this).data('position-title');
+            
+            // Show delete confirmation dialog
+            Swal.fire({
+                ...swalConfig,
+                title: 'Confirm Delete',
+                html: `Are you sure you want to delete position <strong>${positionTitle}</strong>?<br>This action cannot be undone.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/position/delete',
+                        type: 'POST',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            _method: 'DELETE', 
+                            position_id: positionId
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                ...swalConfig,
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Position deleted successfully!',
+                                timer: 1500
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function() {
+                            Swal.fire({
+                                ...swalConfig,
+                                icon: 'error',
+                                title: 'Delete Error',
+                                text: 'Failed to delete position'
+                            });
+                        }
+                    });
+                }
+            });
         });
 
-        // Helper function to show alerts
+        // Add position edit handler
+        $('.edit-position').on('click', function() {
+            const id = $(this).data('position-id');
+            const title = $(this).data('position-title');
+            const department = $(this).data('position-department');
+            const description = $(this).data('position-description');
+            const status = $(this).data('position-status');
+
+            $('#edit_position_id').val(id);
+            $('#edit_position_title').val(title);
+            $('#edit_department').val(department);
+            $('#edit_description').val(description);
+            $('#edit_status').prop('checked', status == 1);
+        });
+
+        // Add edit form submit handler
+        $('#editPositionForm').on('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = $(this).find('button[type="submit"]');
+            submitBtn.prop('disabled', true);
+
+            $.ajax({
+                url: '{{ route("position.update") }}',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    Swal.fire({
+                        ...swalConfig,
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Position updated successfully!',
+                        timer: 1500
+                    }).then(() => {
+                        $('#editPositionModal').modal('hide');
+                        location.reload();
+                    });
+                },
+                error: function(xhr) {
+                    submitBtn.prop('disabled', false);
+                    Swal.fire({
+                        ...swalConfig,
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update position'
+                    });
+                }
+            });
+        });
+
         function showAlert(type, message) {
-          Swal.fire({
-            ...swalConfig,
-            icon: type,
-            title: type === 'success' ? 'Success' : 'Error',
-            text: message,
-            timer: type === 'success' ? 1500 : undefined,
-            showConfirmButton: type !== 'success'
-          });
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            $('#responseMessage').removeClass('alert-success alert-danger').addClass(alertClass).html(message).fadeIn().delay(3000).fadeOut();
         }
       });
     </script>
+  <script>
+    $(document).ready(function() {
+        $('#positionTable').DataTable({
+            dom: '<"card-header pb-0"<"head-label"><"dt-action-buttons text-end"B>><"d-flex justify-content-between align-items-center row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+            '<"table-responsive"t>' +
+            '<"d-flex justify-content-between row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+            lengthMenu: [
+                [10, 25, 50, 100, -1], 
+                [10, 25, 50, 100, 'All']
+            ],
+            pageLength: 10,
+            language: {
+                search: "",
+                searchPlaceholder: "Search Positions",
+                lengthMenu: "_MENU_ entries per page"
+            },
+            order: [[0, 'asc']],
+            columnDefs: [
+                { orderable: false, targets: 4 } // Disable sorting on Actions column
+            ]
+        });
+    });
+  </script>
+
   </body>
 </html>
