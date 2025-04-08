@@ -17,6 +17,7 @@ class CreateServicesTable extends Migration
 
             $table->id();
             $table->string('service_name');
+            $table->string('service_image');
             $table->string('branch_code');
             $table->text('description');
             $table->bigInteger('duration');

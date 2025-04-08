@@ -176,10 +176,11 @@ Route::put('/booking/update', [BookingController::class, 'update'])->name('booki
 Route::delete('/booking/delete', [BookingController::class, 'delete'])->name('booking.delete');
 
 
+
 Route::get('/position-list', [DashboardController::class, 'position_list'])->name('page.position-list');
 Route::post('/position', [PositionController::class, 'create'])->name('position.create');
 Route::put('/position/update', [PositionController::class, 'update'])->name('position.update');
-Route::delete('/position/{id}', [PositionController::class, 'delete'])->name('position.delete');
+Route::delete('/position/delete', [App\Http\Controllers\PositionController::class, 'delete'])->name('position.delete');
 
 
 //Department Route

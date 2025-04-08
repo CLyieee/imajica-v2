@@ -63,6 +63,7 @@ class branchController extends Controller
         $branch->delete();
 
         return redirect()->back()->with('success', 'Branch deleted successfully');
+    
     }
 
     public function getAllBranches()

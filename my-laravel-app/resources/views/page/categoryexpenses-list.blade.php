@@ -362,14 +362,53 @@
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
                   <table class="table table-striped" id="categoryTable">
-                    <thead class="table-light">
+                    <thead style="background-color: #0a3622; color: white;">
                       <tr>
-                        <th>Category Name</th>
-                        <th>Description</th>
-                        <th class="text-center">Actions</th>
+                        <th style="color: white;">Category Name</th>
+                        <th style="color: white;">Description</th>
+                        <th class="text-center" style="color: white;">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
+                      <!-- Sample Static Data -->
+                      <tr>
+                        <td>Food & Beverages</td>
+                        <td>All food and drink related expenses</td>
+                        <td class="text-center">
+                          <button class="btn btn-sm btn-info edit-category" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="1" data-category-name="Food & Beverages" data-description="All food and drink related expenses">
+                            <i class="ti tabler-edit"></i> Edit
+                          </button>
+                          <button class="btn btn-sm btn-danger delete-category" data-category-id="1" data-category-name="Food & Beverages">
+                            <i class="ti tabler-trash"></i> Delete
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Transportation</td>
+                        <td>Vehicle maintenance and fuel expenses</td>
+                        <td class="text-center">
+                          <button class="btn btn-sm btn-info edit-category" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="2" data-category-name="Transportation" data-description="Vehicle maintenance and fuel expenses">
+                            <i class="ti tabler-edit"></i> Edit
+                          </button>
+                          <button class="btn btn-sm btn-danger delete-category" data-category-id="2" data-category-name="Transportation">
+                            <i class="ti tabler-trash"></i> Delete
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Office Supplies</td>
+                        <td>Paper, printer ink, and other office materials</td>
+                        <td class="text-center">
+                          <button class="btn btn-sm btn-info edit-category" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="3" data-category-name="Office Supplies" data-description="Paper, printer ink, and other office materials">
+                            <i class="ti tabler-edit"></i> Edit
+                          </button>
+                          <button class="btn btn-sm btn-danger delete-category" data-category-id="3" data-category-name="Office Supplies">
+                            <i class="ti tabler-trash"></i> Delete
+                          </button>
+                        </td>
+                      </tr>
+
+                      <!-- Dynamic Data from Database -->
                       @foreach ($categories as $category)
                         <tr>
                           <td>{{ $category->name }}</td>

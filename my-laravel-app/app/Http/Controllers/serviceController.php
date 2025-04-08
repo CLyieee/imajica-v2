@@ -11,6 +11,7 @@ class serviceController extends Controller
    public function create(Request $request) {
         $data = $request->validate([
             'service_name' => 'required',
+            'service_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'branch_code' => 'required',
             'description' => 'required',
             'duration' => 'required',
@@ -19,9 +20,21 @@ class serviceController extends Controller
             'loyalty_pts' => 'required',
         ]);
 
+        // Handle image upload
+        if ($request->hasFile('service_image')) {
+            $image = $request->file('service_image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/services'), $imageName);
+            $data['service_image'] = 'uploads/services/' . $imageName;
+        }
+
         $newService = service::create($data);
 
-        return redirect(route('page.new-services'));
+
+
+        
+        return redirect(route('page.new-services'))->with('success', 'Service created successfully');
+
     }
 
 public function update(Request $request) {
