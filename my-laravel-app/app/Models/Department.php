@@ -26,4 +26,10 @@ class Department extends Model
     {
         return $this->belongsTo(Department::class, 'parent_department');
     }
+    public function positions()
+    {
+        return $this->hasMany(positionModel::class, 'department_code', 'department_code');
+    }
+
+
 } 

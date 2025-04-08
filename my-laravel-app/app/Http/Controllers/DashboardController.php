@@ -252,7 +252,8 @@ class DashboardController extends Controller
     {
         $coupons = coupon::all();
         $branches = Branch::all();
-        return view('page.coupon-list', compact('coupons', 'branches'));
+        $services = service::all();
+        return view('page.coupon-list', compact('coupons', 'branches', 'services'));
     }
 
     public function new_loyalty()
@@ -304,8 +305,8 @@ class DashboardController extends Controller
     }
     public function position_list(){
        $positions = positionModel::all();
-
-        return view('page.position-list', compact('positions'));
+        $departments = Department::all();
+        return view('page.position-list', compact('positions', 'departments'));
     }
 
 

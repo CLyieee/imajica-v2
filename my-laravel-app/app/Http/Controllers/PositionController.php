@@ -15,7 +15,7 @@ class PositionController extends Controller
             
             $validatedData = $request->validate([
                 'position_name' => 'required|string|max:255',
-                'department' => 'required|string|in:Management,Operations,Services,Administration',
+                'department_code' => 'required|exists:departments,department_code',
                 'description' => 'required|string',
                 'status' => 'nullable|boolean',
             ]);
@@ -26,7 +26,6 @@ class PositionController extends Controller
             
             $validatedData['position_id'] = $nextId;
             $validatedData['status'] = $request->has('status');
-
 
             Log::info('Creating position with data:', $validatedData);
             
@@ -66,7 +65,7 @@ class PositionController extends Controller
         try {
             $validatedData = $request->validate([
                 'position_name' => 'required|string|max:255',
-                'department' => 'required|string|in:Management,Operations,Services,Administration',
+                'department_code' => 'required|exists:departments,department_code',
                 'description' => 'required|string',
                 'status' => 'nullable|boolean',
                 'position_id' => 'required|exists:position,position_id'

@@ -84,7 +84,7 @@
                         @foreach($positions as $position)
                         <tr>
                           <td>{{ $position->position_name }}</td>
-                          <td>{{ $position->department }}</td>
+                          <td>{{ $position->department ? $position->department->department_name : $position->department_id }}</td>
                           <td>{{ $position->description }}</td>
                           <td>
                             <span class="badge bg-label-{{ $position->status ? 'success' : 'danger' }}">
@@ -98,7 +98,7 @@
                                 data-bs-target="#editPositionModal"
                                 data-position-id="{{ $position->position_id }}"
                                 data-position-title="{{ $position->position_name }}"
-                                data-position-department="{{ $position->department }}"
+                                data-position-department="{{ $position->department_code }}"
                                 data-position-description="{{ $position->description }}"
                                 data-position-status="{{ $position->status }}">
                                 <i class="ti tabler-edit me-1"></i> Edit
@@ -166,12 +166,11 @@
 
                 <div class="col-12">
                   <label class="form-label" for="department">Department</label>
-                  <select class="form-select" id="department" name="department" required>
+                  <select class="form-select" id="department_code" name="department_code" required>
                     <option value="">Select Department</option>
-                    <option value="Management">Management</option>
-                    <option value="Operations">Operations</option>
-                    <option value="Services">Services</option>
-                    <option value="Administration">Administration</option>
+                    @foreach($departments as $department)
+                      <option value="{{ $department->department_code }}">{{ $department->department_name }}</option>
+                    @endforeach
                   </select>
                 </div>
 
@@ -207,7 +206,7 @@
             @method('PUT')
             <input type="hidden" name="position_id" id="edit_position_id">
             
-            <div class="modal-header #144e32">
+            <div class="modal-header " style="background-color: #0a3622">
               <h5 class="modal-title text-white">
                 <i class="ti tabler-edit me-1"></i> Edit Position
               </h5>
@@ -223,12 +222,11 @@
 
                 <div class="col-12">
                   <label class="form-label" for="edit_department">Department</label>
-                  <select class="form-select" id="edit_department" name="department" required>
+                  <select class="form-select" id="edit_department" name="department_code" required>
                     <option value="">Select Department</option>
-                    <option value="Management">Management</option>
-                    <option value="Operations">Operations</option>
-                    <option value="Services">Services</option>
-                    <option value="Administration">Administration</option>
+                    @foreach($departments as $department)
+                      <option value="{{ $department->department_code }}">{{ $department->department_name }}</option>
+                    @endforeach
                   </select>
                 </div>
 
@@ -248,7 +246,7 @@
 
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-info">Save Changes</button>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
             </div>
           </form>
         </div>
@@ -454,7 +452,7 @@
 
             $('#edit_position_id').val(id);
             $('#edit_position_title').val(title);
-            $('#edit_department').val(department);
+            $('#edit_department').val(department); // This will select the correct department
             $('#edit_description').val(description);
             $('#edit_status').prop('checked', status == 1);
         });

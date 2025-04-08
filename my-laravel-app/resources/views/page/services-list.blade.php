@@ -347,9 +347,14 @@
                         <button class="btn btn-sm btn-success view-service" 
                           data-service-id="{{ $service->id }}"
                           data-service-name="{{ $service->service_name }}"
+                          data-service-branch="{{ $service->branch ? $service->branch->branch_name : $service->branch_code }}"
                           data-service-description="{{ $service->description }}"
+                          data-service-duration="{{ $service->duration }}"
+                          data-service-category="{{ $service->service_category }}"
                           data-service-cost="{{ $service->service_cost }}"
-                          data-service-points="{{ $service->loyalty_pts }}">
+                          data-service-points="{{ $service->loyalty_pts }}"
+                          data-service-image="{{ $service->service_image }}"
+                          >
                           <i class="ti tabler-eye me-1"></i> View
                         </button>
                         <button class="btn btn-sm btn-info edit-service"
@@ -379,24 +384,65 @@
           </div>
         </div>
 
-        <!-- Add this modal after your table -->
+        <!-- Replace the existing service modal with this updated version -->
         <div class="modal fade" id="serviceModal" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content border-0">
               <div class="modal-header bg-primary text-white border-0">
                 <h5 class="modal-title text-white fs-4">
-                  <i class="ti tabler-plus me-2"></i>
+                  <i class="ti tabler-info-circle me-2"></i>
                   <span id="modalServiceName"></span>
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                  aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body p-4">
                 <div class="row g-3">
+                
+                  <!-- Image Holder -->
+                  <div class="col-12">
+                    <div class="client-detail-card text-center">
+                      <img id="modalServiceImage" src="" alt="Service Image" class="img-fluid rounded mb-4" style="max-height: 300px; object-fit: cover;">
+                    </div>
+                  </div>
+        
                   <!-- Service Details -->
                   <div class="col-md-6">
                     <div class="client-detail-card h-100">
-                      <h6 class="text-primary mb-3">Service Information</h6>
+                      <h6 class="text-primary mb-3">Service Details</h6>
+                      <div class="client-info-item">
+                        <div class="client-info-icon">
+                          <i class="ti tabler-building"></i>
+                        </div>
+                        <div>
+                          <small class="text-muted d-block">Branch</small>
+                          <span id="modalBranch" class="fw-semibold"></span>
+                        </div>
+                      </div>
+                      <div class="client-info-item">
+                        <div class="client-info-icon">
+                          <i class="ti tabler-category"></i>
+                        </div>
+                        <div>
+                          <small class="text-muted d-block">Category</small>
+                          <span id="modalCategory" class="fw-semibold"></span>
+                        </div>
+                      </div>
+                      <div class="client-info-item">
+                        <div class="client-info-icon">
+                          <i class="ti tabler-clock"></i>
+                        </div>
+                        <div>
+                          <small class="text-muted d-block">Duration</small>
+                          <span id="modalDuration" class="fw-semibold"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <!-- Costs and Points -->
+                  <div class="col-md-6">
+                    <div class="client-detail-card h-100">
+                      <h6 class="text-primary mb-3">Pricing & Rewards</h6>
                       <div class="client-info-item">
                         <div class="client-info-icon">
                           <i class="ti tabler-tag"></i>
@@ -415,22 +461,23 @@
                           <span id="modalPoints" class="fw-semibold"></span>
                         </div>
                       </div>
-                      <div class="client-info-item mb-0">
-                        <div class="client-info-icon">
-                          <i class="ti tabler-file-text"></i>
-                        </div>
-                        <div>
-                          <small class="text-muted d-block">Description</small>
-                          <span id="modalDescription" class="fw-semibold"></span>
-                        </div>
-                      </div>
                     </div>
                   </div>
+        
+                  <!-- Description -->
+                  <div class="col-12">
+                    <div class="client-detail-card">
+                      <h6 class="text-primary mb-3">Description</h6>
+                      <p id="modalDescription" class="mb-0"></p>
+                    </div>
+                  </div>
+        
                 </div>
               </div>
             </div>
           </div>
         </div>
+        
 
         <!-- Edit Service Modal -->
         <div class="modal fade" id="editServiceModal" tabindex="-1" aria-hidden="true">
@@ -572,15 +619,39 @@
       document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".view-service").forEach((button) => {
           button.addEventListener("click", function () {
+            // Format duration
+            const duration = parseInt(this.dataset.serviceDuration);
+            const hours = Math.floor(duration / 60);
+            const minutes = duration % 60;
+            let durationText = "";
+            if (hours > 0) durationText += hours + "h ";
+            if (minutes > 0) durationText += minutes + "m";
+            
+            // Format cost
+            const cost = parseFloat(this.dataset.serviceCost).toLocaleString('en-PH', {
+              style: 'currency',
+              currency: 'PHP'
+            });
+            
             // Update modal content
-            document.getElementById("modalServiceName").textContent =
-              this.dataset.name;
-            document.getElementById("modalCost").textContent =
-              this.dataset.cost;
-            document.getElementById("modalPoints").textContent =
-              this.dataset.points;
-            document.getElementById("modalDescription").textContent =
-              this.dataset.description;
+            document.getElementById("modalServiceName").textContent = this.dataset.serviceName;
+            document.getElementById("modalBranch").textContent = this.dataset.serviceBranch;
+            document.getElementById("modalCategory").textContent = this.dataset.serviceCategory;
+            document.getElementById("modalDuration").textContent = durationText;
+            document.getElementById("modalCost").textContent = cost;
+            document.getElementById("modalPoints").textContent = this.dataset.servicePoints + ' pts';
+            document.getElementById("modalDescription").textContent = this.dataset.serviceDescription;
+           // Set the image source
+      const modalImage = document.getElementById('modalServiceImage');
+      if (this.dataset.serviceImage && this.dataset.serviceImage.trim() !== '') {
+        modalImage.src = this.dataset.serviceImage;
+      } else {
+        modalImage.src = '../../assets/img/services/default-service.png'; // fallback image
+      }
+         
+
+            // Show modal
+            $('#serviceModal').modal('show');
           });
         });
       });
