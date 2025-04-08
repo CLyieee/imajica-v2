@@ -448,7 +448,9 @@ class DashboardController extends Controller
     }
     public function void_logs()
     {
-        return view('page.void-logs');
+        $voids = booking::all();
+        return view('page.void-logs' , compact('voids'));
+
     }
     public function product_list()
     {
