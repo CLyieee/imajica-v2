@@ -388,15 +388,15 @@
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
                   <table class="table table-striped" id="expensesTable">
-                    <thead class="table-light">
+                    <thead style="background-color: #0a3622; color: white;">
                       <tr>
-                        <th>Expense Name</th>
-                        <th>Category</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Invoice No.</th>
-                        <th>Branch</th>
-                        <th>Actions</th>
+                        <th style="color: white;">Expense Name</th>
+                        <th style="color: white;">Category</th>
+                        <th style="color: white;">Date</th>
+                        <th style="color: white;">Status</th>
+                        <th style="color: white;">Invoice No.</th>
+                        <th style="color: white;">Branch</th>
+                        <th style="color: white;">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
