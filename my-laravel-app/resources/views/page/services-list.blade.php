@@ -74,12 +74,12 @@
 
   <!-- Helpers -->
   <script src="../../assets/vendor/js/helpers.js"></script>
-  
+
   <script src="../../assets/js/config.js"></script>
 
 
   </script>
-  
+
   <style>
     /* Add to your existing styles */
     .client-detail-card {
@@ -365,6 +365,8 @@
                           data-service-duration="{{ $service->duration }}"
                           data-service-category="{{ $service->service_category }}"
                           data-service-cost="{{ $service->service_cost }}"
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
                           data-service-points="{{ $service->loyalty_pts }}">
                           <i class="ti tabler-edit me-1"></i> Edit
                         </button>
@@ -372,6 +374,16 @@
                           data-service-id="{{ $service->id }}"
                           data-service-name="{{ $service->service_name }}">
                           <i class="ti tabler-trash me-1"></i> Delete
+=======
+=======
+>>>>>>> Stashed changes
+                          data-service-points="{{ $service->loyalty_pts }}" data-service-id="{{ $service->service_id }}">
+                          Edit
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm delete-service"
+                          data-service-id="{{ $service->service_id }}">
+                          Delete
+>>>>>>> Stashed changes
                         </button>
                       </div>
                     </td>
@@ -500,7 +512,7 @@
                   <div class="mb-3">
                     <label class="form-label" for="edit_branch_code">Branch Code</label>
                     <input type="text" id="edit_branch_code" name="branch_code" class="form-control" required />
-                    
+
                   </div>
                   <div class="mb-3">
                     <label class="form-label" for="edit_description">Description</label>
@@ -597,17 +609,17 @@
   <script src="../../assets/vendor/libs/%40form-validation/popular.js"></script>
   <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
   <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
-  
+
 
   <script src="../../assets/js/service-management.js"></script>
   <script src="{{ asset('assets/js/service-management.js') }}" defer></script>
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
+
   <script>
     $(document).ready(function () {
       $('#servicesTable').DataTable();
-  
+
         // Filter by branch
         $("#branchFilter").on("change", function () {
           var selectedBranch = $(this).val();
@@ -666,10 +678,10 @@
         $('#edit_service_category').val($(this).data('service-category'));
         $('#edit_service_cost').val($(this).data('service-cost'));
         $('#edit_loyalty_pts').val($(this).data('service-points'));
-        
+
         // For debugging - add this temporarily
         console.log('Service ID:', $(this).data('service-id'));
-        
+
         $('#editServiceModal').modal('show');
       });
 
@@ -678,7 +690,7 @@
         e.preventDefault();
         let form = this;
         $('#editServiceModal').modal('hide');
-        
+
         Swal.fire({
           title: 'Confirm Update',
           text: "Are you sure you want to update this service?",
@@ -699,7 +711,7 @@
       // Handle Delete button with SweetAlert
       $('.delete-service').on('click', function() {
           const serviceID = $(this).data('service-id');
-          
+
           Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -717,7 +729,7 @@
             }
           });
       });
-      
+
       // Flash messages for success/error using SweetAlert
       @if(session('success'))
         Swal.fire({
@@ -727,7 +739,7 @@
           confirmButtonColor: '#0a3622'
         });
       @endif
-      
+
       @if(session('error'))
         Swal.fire({
           icon: 'error',

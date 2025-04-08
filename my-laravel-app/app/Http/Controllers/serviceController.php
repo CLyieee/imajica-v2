@@ -29,16 +29,20 @@ class serviceController extends Controller
         }
 
         $newService = service::create($data);
+
+
+
         
         return redirect(route('page.new-services'))->with('success', 'Service created successfully');
+
     }
 
 public function update(Request $request) {
     // For debugging - log the incoming data
     // Log::info('Update service request data:', $request->all());
-    
+
     $data = $request->validate([
-        'id' => 'required|exists:services,id',
+        'service_id' => 'required|exists:services,service_id',
         'service_name' => 'required',
         'branch_code' => 'required',
         'description' => 'required',
@@ -75,7 +79,7 @@ public function delete(Request $request)
 
         // Find the branch by branch_code
         $service = service::where('id', $request->id)->first();
-        
+
         if (!$service) {
             return redirect()->back()->with('error', 'Branch not found');
         }
