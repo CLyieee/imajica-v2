@@ -365,8 +365,6 @@
                           data-service-duration="{{ $service->duration }}"
                           data-service-category="{{ $service->service_category }}"
                           data-service-cost="{{ $service->service_cost }}"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                           data-service-points="{{ $service->loyalty_pts }}">
                           <i class="ti tabler-edit me-1"></i> Edit
                         </button>
@@ -374,16 +372,6 @@
                           data-service-id="{{ $service->id }}"
                           data-service-name="{{ $service->service_name }}">
                           <i class="ti tabler-trash me-1"></i> Delete
-=======
-=======
->>>>>>> Stashed changes
-                          data-service-points="{{ $service->loyalty_pts }}" data-service-id="{{ $service->service_id }}">
-                          Edit
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm delete-service"
-                          data-service-id="{{ $service->service_id }}">
-                          Delete
->>>>>>> Stashed changes
                         </button>
                       </div>
                     </td>
