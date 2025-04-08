@@ -434,7 +434,11 @@
                               data-discount-name="{{ $coupon->discount_name }}"
                               data-description="{{ $coupon->description }}"
                               data-discount-value="{{ $coupon->discount_value }}"
-                              data-discount-type="{{ $coupon->discount_type }}">
+                              data-discount-type="{{ $coupon->discount_type }}"
+                              data-applicable-service="{{ $coupon->service_id }}"
+                              data-start-end-date="{{ $coupon->start_end_date }}"
+                              data-new-customer="{{ $coupon->new_customer }}"
+                              data-branch-code="{{ $coupon->branch_code }}">
                               <i class="ti tabler-edit me-1"></i> Edit
                             </button>
                             <button class="btn btn-sm btn-danger delete-coupon" 
@@ -475,7 +479,7 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="editCouponForm" method="POST" action="{{ 'coupon.update' }}">
+            <form id="editCouponForm" method="POST" action="{{ 'coupon/update' }}">
               @csrf
               @method('PUT')
               <input type="hidden" id="edit_coupon_code" name="coupon_code">
@@ -504,11 +508,11 @@
               </div>
               <div class="mb-3">
                 <label class="form-label" for="edit_applicable_service">Applicable Service</label>
-                <select id="edit_applicable_service" name="applicable_service" class="form-select" required>
+                <select id="edit_applicable_service" name="service_id" class="form-select" required>
                   <option value="All Services">All Services</option>
-                  <option value="Spa">Spa</option>
-                  <option value="Massage">Massage</option>
-                  <option value="Facial">Facial</option>
+                  @foreach($services as $service)
+                    <option value="{{ $service->service_id }}">{{ $service->service_name }}</option>
+                  @endforeach
                 </select>
                 <div class="invalid-feedback" id="edit_applicable_service_error"></div>
               </div>
@@ -704,78 +708,46 @@
           try {
             const couponCode = $(this).data('coupon-code');
             const discountName = $(this).data('discount-name');
+            const description = $(this).data('description');
             const discountValue = $(this).data('discount-value');
             const discountType = $(this).data('discount-type');
             const applicableService = $(this).data('applicable-service');
+            const startEndDate = $(this).data('start-end-date');
+            const newCustomer = $(this).data('new-customer');
+            const branchCode = $(this).data('branch-code');
             
-            console.log("Edit button clicked for coupon:", couponCode);
-            console.log("Button data attributes:", {
-              couponCode,
-              discountName,
-              discountValue,
-              discountType,
-              applicableService
-            });
-            
-            // Directly populate known fields without AJAX
+            // Pre-fill all form fields
             $('#edit_coupon_code').val(couponCode);
             $('#edit_discount_name').val(discountName);
+            $('#edit_description').val(description);
             $('#edit_discount_value').val(discountValue);
             $('#edit_discount_type').val(discountType);
             $('#edit_applicable_service').val(applicableService);
+            $('#edit_start_end_date').val(startEndDate);
+            $('#edit_new_customer').val(newCustomer);
+            $('#edit_branch_code').val(branchCode);
             
-            // Show the modal immediately with known data
-            $('#editCouponModal').modal('show');
-            
-            // Fetch additional data via AJAX
-            $.ajax({
-              url: "/coupon/get",
-              type: "GET",
-              data: { coupon_code: couponCode },
-              success: function(response) {
-                console.log("AJAX success response:", response);
-                
-                // Populate the form fields with additional data
-                $('#edit_description').val(response.description || '');
-                $('#edit_start_end_date').val(response.start_end_date || '');
-                $('#edit_new_customer').val(response.new_customer || 'No');
-                $('#edit_branch_code').val(response.branch_code || '');
-                
-                // Initialize/update the flatpickr instance
-                if (response.start_end_date) {
-                  $('.flatpickr-range').flatpickr({
+            // Initialize flatpickr with the existing date
+            if (startEndDate) {
+                $('.flatpickr-range').flatpickr({
                     mode: 'range',
                     altInput: true,
                     altFormat: "F j, Y",
                     dateFormat: "Y-m-d",
-                    defaultDate: response.start_end_date
-                  });
-                }
-              },
-              error: function(xhr, status, error) {
-                console.error("AJAX error:", error);
-                console.log("Status:", status);
-                console.log("Response:", xhr.responseText);
-                
-                let errorMessage = 'Could not load all coupon data. Some fields may be incomplete.';
-                
-                // Show error message but keep modal open
-                Swal.fire({
-                  ...swalConfig,
-                  icon: 'warning',
-                  title: 'Warning',
-                  html: errorMessage,
-                  showConfirmButton: true
+                    defaultDate: startEndDate.split(' to ')
                 });
-              }
-            });
+            }
+            
+            // Show the modal
+            $('#editCouponModal').modal('show');
+            
           } catch (e) {
             console.error("Error in edit button click handler:", e);
             Swal.fire({
               ...swalConfig,
               icon: 'error',
               title: 'Error',
-              html: 'An error occurred while processing your request:<br>' + e.message,
+              html: 'An error occurred while loading coupon data:<br>' + e.message,
               showConfirmButton: true
             });
           }
