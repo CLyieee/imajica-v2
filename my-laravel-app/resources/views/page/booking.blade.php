@@ -57,6 +57,28 @@
   <script src="../../assets/js/config.js"></script>
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* Add these to your existing styles */
+    .table-responsive {
+      margin: 15px 0;
+    }
+    
+    .badge {
+      padding: 0.5em 0.75em;
+    }
+    
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+    
+    .table td, .table th {
+      vertical-align: middle;
+    }
+  </style>
+  <!-- Add these in your head section -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css">
 </head>
 
 <body>
@@ -355,6 +377,174 @@
                 <!-- /Calendar & Modal -->
               </div>
             </div>
+            <!-- Recent Bookings Table -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header d-flex justify-content-between align-items-center p-4">
+                    <div>
+                      <h5 class="card-title mb-1">Booking History</h5>
+                      <p class="text-muted mb-0 small">Overview of all appointments</p>
+                    </div>
+                    <!-- Update the filter dropdown in your blade file -->
+                    <div class="d-flex gap-2">
+                      <div class="dropdown">
+                          <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                              <i class="ti tabler-filter me-1"></i>All Bookings
+                          </button>
+                          <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="#">All Bookings</a></li>
+                              <li><a class="dropdown-item" href="#">Completed</a></li>
+                              <li><a class="dropdown-item" href="#">Pending</a></li>
+                              <li><a class="dropdown-item" href="#">Cancelled</a></li>
+                              <li><a class="dropdown-item" href="#">Paid</a></li>
+                              <li><a class="dropdown-item" href="#">No Show</a></li>
+                          </ul>
+                      </div>
+                      <button class="btn btn-primary btn-sm" id="exportBtn">
+                          <i class="ti tabler-download me-1"></i>Export
+                      </button>
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-hover booking-table">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Booking ID</th>
+                          <th>Patient Name</th>
+                          <th>Service</th>
+                          <th>Start Date/Time</th>
+                          <th>End Date/Time</th>
+                          <th>Staff</th>
+                          <th>Branch</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach($bookings as $booking)
+                        <tr class="booking-row">
+                          <td># {{ $booking->booking_id }}</td>
+                          <td>
+                            @if($booking->patient)
+                              {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
+                            @else
+                              <span class="text-muted">No patient data</span>
+                            @endif
+                          </td>
+                          <td>
+                            @if($booking->service)
+                              {{ $booking->service->service_name }}
+                            @else
+                              <span class="text-muted">No service data</span>
+                            @endif
+                          </td>
+                          <td>{{ \Carbon\Carbon::parse($booking->start_date)->format('M d, Y h:i A') }}</td>
+                          <td>{{ \Carbon\Carbon::parse($booking->end_date)->format('M d, Y h:i A') }}</td>
+                          <td>
+                            @if($booking->staff)
+                              {{ $booking->staff->firstname }} {{ $booking->staff->lastname }}
+                            @else
+                              <span class="text-muted">Unassigned</span>
+                            @endif
+                          </td>
+                          <td>
+                            @if($booking->branch)
+                              {{ $booking->branch->branch_name }}
+                            @else
+                              <span class="text-muted">N/A</span>
+                            @endif
+                          </td>
+                          <td>
+                            <span class="badge bg-label-{{ 
+                              $booking->status === 'Pending' ? 'warning' : 
+                              ($booking->status === 'Paid' ? 'info' : 
+                              ($booking->status === 'Completed' ? 'success' : 
+                              ($booking->status === 'Cancelled' ? 'danger' : 
+                              ($booking->status === 'No Show' ? 'secondary' : 'primary')))) 
+                            }}">
+                              {{ $booking->status }}
+                            </span>
+                          </td>
+                        </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <style>
+              /* Add these styles to match dashboard design */
+              .booking-table {
+                --bs-table-hover-bg: rgba(105, 108, 255, 0.04);
+              }
+
+              .booking-row {
+                vertical-align: middle;
+                transition: all 0.3s ease;
+              }
+
+              .booking-row:hover {
+                transform: translateX(5px);
+              }
+
+              .badge {
+                padding: 0.5em 0.9em;
+                font-weight: 500;
+              }
+
+              .table-light {
+                --bs-table-bg: rgba(105, 108, 255, 0.04);
+              }
+
+              .card-header {
+                border-bottom: 1px solid rgba(105, 108, 255, 0.1);
+              }
+
+              /* Status badge colors */
+              .bg-label-success {
+                background-color: rgba(40, 199, 111, 0.16) !important;
+                color: #28c76f !important;
+              }
+
+              .bg-label-warning {
+                background-color: rgba(255, 171, 0, 0.16) !important;
+                color: #ffab00 !important;
+              }
+
+              .bg-label-danger {
+                background-color: rgba(255, 62, 29, 0.16) !important;
+                color: #ff3e1d !important;
+              }
+
+              .bg-label-info {
+                background-color: rgba(3, 195, 236, 0.16) !important;
+                color: #03c3ec !important;
+              }
+
+              .bg-label-secondary {
+                background-color: rgba(108, 117, 125, 0.16) !important;
+                color: #6c757d !important;
+              }
+
+              .date-filter .input-group {
+                max-width: 300px;
+              }
+
+              .date-filter input[type="date"] {
+                border-radius: 0;
+              }
+
+              .date-filter input[type="date"]:first-child {
+                border-top-left-radius: 0.25rem;
+                border-bottom-left-radius: 0.25rem;
+              }
+
+              .date-filter button {
+                border-top-right-radius: 0.25rem !important;
+                border-bottom-right-radius: 0.25rem !important;
+              }
+            </style>
           </div>
           <!-- / Content -->
           <!-- Footer -->
@@ -586,6 +776,121 @@
       background-color: #fff !important;
     }
   </style>
+
+  <!-- Add this to your existing script section -->
+  <script>
+    $(document).ready(function() {
+      // Initialize DataTable
+      $('#bookingHistoryTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+          'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        order: [[3, 'desc']], // Sort by start date by default
+        pageLength: 10,
+        responsive: true
+      });
+    });
+  </script>
+  <!-- Add these before your closing body tag -->
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+
+  <!-- Add this script before the closing </body> tag -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize DataTable with filter functionality
+        const bookingTable = $('.booking-table').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            order: [[3, 'desc']], // Sort by date by default
+            pageLength: 10,
+            responsive: true
+        });
+
+        // Add filter functionality to the dropdown
+        $('.dropdown-menu .dropdown-item').on('click', function(e) {
+            e.preventDefault();
+            const filterValue = $(this).text().trim();
+            
+            // Clear previous filter
+            bookingTable.search('').draw();
+
+            // Apply new filter
+            if (filterValue !== 'All Bookings') {
+                bookingTable.column(7) // Status column index
+                    .search(filterValue)
+                    .draw();
+            }
+
+            // Update dropdown button text
+            $(this).closest('.dropdown')
+                .find('.dropdown-toggle')
+                .html(`<i class="ti tabler-filter me-1"></i>${filterValue}`);
+        });
+
+        // Add custom date range filter
+        const dateFilterHtml = `
+            <div class="date-filter ms-2" style="display: inline-block;">
+                <div class="input-group">
+                    <input type="date" class="form-control form-control-sm" id="dateFrom" placeholder="From">
+                    <input type="date" class="form-control form-control-sm" id="dateTo" placeholder="To">
+                    <button class="btn btn-sm btn-outline-secondary" id="clearDates">
+                        <i class="ti tabler-x"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // Insert date filter next to the status filter
+        $('.dropdown').after(dateFilterHtml);
+
+        // Date range filter functionality
+        $('#dateFrom, #dateTo').on('change', function() {
+            const dateFrom = $('#dateFrom').val();
+            const dateTo = $('#dateTo').val();
+
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                const bookingDate = new Date(data[3]); // Start Date/Time column
+                const start = dateFrom ? new Date(dateFrom) : null;
+                const end = dateTo ? new Date(dateTo) : null;
+
+                if (start && end) {
+                    return bookingDate >= start && bookingDate <= end;
+                } else if (start) {
+                    return bookingDate >= start;
+                } else if (end) {
+                    return bookingDate <= end;
+                }
+                return true;
+            });
+
+            bookingTable.draw();
+            
+            // Clear the custom filter after drawing
+            $.fn.dataTable.ext.search.pop();
+        });
+
+        // Clear date filters
+        $('#clearDates').on('click', function() {
+            $('#dateFrom, #dateTo').val('');
+            bookingTable.draw();
+        });
+
+        // Export filtered data only
+        bookingTable.buttons().container()
+            .appendTo('#example_wrapper .col-md-6:eq(0)');
+    });
+  </script>
 </body>
 
 </html>

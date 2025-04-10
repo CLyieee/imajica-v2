@@ -14,16 +14,13 @@ class BookingController extends Controller
 {
     public function index()
     {
-        // Get all services for the booking form
+        $bookings = Booking::with(['patient', 'service', 'staff', 'branch'])->get();
         $services = Service::all();
-        // Get all staff members
         $staffs = Staff::all();
-        // Get all branches
         $branches = Branch::all();
-        // Get all patients
         $patients = Patient::all();
-        
-        return view('page.booking', compact('services', 'staffs', 'branches', 'patients'));
+
+        return view('page.booking', compact('bookings', 'services', 'staffs', 'branches', 'patients'));
     }
 
     public function create(Request $request)
