@@ -587,7 +587,12 @@ background-color: #d1ecf1; /* Light cyan */
                     <div class="card card-custom card-monthly-voided">
                         <div class="card-body">
                             <p class="card-text"><strong>Monthly Voided Sales</strong></p>
-                            <h4 class="text-black">₱500.00</h4>
+                            <h4 class="text-black">₱{{ number_format($voids->where('status', 'Cancelled')
+                                ->filter(function($void) {
+                                    return \Carbon\Carbon::parse($void->start_date)->isCurrentMonth();
+                                })->sum(function($void) {
+                                    return $void->service ? $void->service->service_cost : $void->service_cost;
+                                }), 2) }}</h4>
                         </div>
                     </div>
                 </div>
@@ -595,7 +600,12 @@ background-color: #d1ecf1; /* Light cyan */
                     <div class="card card-custom card-weekly-voided">
                         <div class="card-body">
                             <p class="card-text"><strong>Weekly Voided Sales</strong></p>
-                            <h4 class="text-black">₱972.50</h4>
+                            <h4 class="text-black">₱{{ number_format($voids->where('status', 'Cancelled')
+                                ->filter(function($void) {
+                                    return \Carbon\Carbon::parse($void->start_date)->isCurrentWeek();
+                                })->sum(function($void) {
+                                    return $void->service ? $void->service->service_cost : $void->service_cost;
+                                }), 2) }}</h4>
                         </div>
                     </div>
                 </div>
@@ -603,7 +613,12 @@ background-color: #d1ecf1; /* Light cyan */
                     <div class="card card-custom card-daily-voided">
                         <div class="card-body">
                             <p class="card-text"><strong>Daily Voided Sales</strong></p>
-                            <h4 class="text-black">₱0.00</h4>
+                            <h4 class="text-black">₱{{ number_format($voids->where('status', 'Cancelled')
+                                ->filter(function($void) {
+                                    return \Carbon\Carbon::parse($void->start_date)->isToday();
+                                })->sum(function($void) {
+                                    return $void->service ? $void->service->service_cost : $void->service_cost;
+                                }), 2) }}</h4>
                         </div>
                     </div>
                 </div>
@@ -633,7 +648,7 @@ background-color: #d1ecf1; /* Light cyan */
                    <tbody>
                     @foreach ($voids->where('status', 'Cancelled') as $void)
                         <tr>
-                            <td>{{ $void->id }}</td>
+                            <td>{{ $void->booking_id }}</td>
                             <td>{{ $void->service ? $void->service->service_name : $void->service_name }}</td>
                             <td>{{ $void->patient ? $void->patient->firstname . ' ' . $void->patient->lastname : $void->firstname . ' ' . $void->lastname }}</td>
                             <td>{{ $void->staff ? $void->staff->firstname . ' ' . $void->staff->lastname : $void->firstname . ' ' . $void->lastname }}</td>
