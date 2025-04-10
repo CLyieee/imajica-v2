@@ -76,109 +76,7 @@
       
       <!-- Rest of the existing body content -->
       <div class="layout-page">
-        <!-- Navbar -->
-        {{-- <nav class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
-          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-            <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
-              <i class="icon-base ti tabler-menu-2 icon-md"></i>
-            </a>
-          </div>
-          <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
-            <!-- Search -->
-            <div class="navbar-nav align-items-center">
-              <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-                <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
-                  <span class="d-inline-block text-body-secondary fw-normal" id="autocomplete"></span>
-                </a>
-              </div>
-            </div>
-            <!-- /Search -->
-            <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-              <!--/ Language -->
-              <!-- Style Switcher -->
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" id="nav-theme" href="javascript:void(0);" data-bs-toggle="dropdown">
-                  <i class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"></i>
-                  <span class="d-none ms-2" id="nav-theme-text">Toggle theme</span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-theme-text">
-                  <li>
-                    <button type="button" class="dropdown-item align-items-center active" data-bs-theme-value="light" aria-pressed="false">
-                      <span><i class="icon-base ti tabler-sun icon-22px me-3" data-icon="sun"></i>Light</span>
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="dark" aria-pressed="true">
-                      <span><i class="icon-base ti tabler-moon-stars icon-22px me-3" data-icon="moon-stars"></i>Dark</span>
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="system" aria-pressed="false">
-                      <span><i class="icon-base ti tabler-device-desktop-analytics icon-22px me-3" data-icon="device-desktop-analytics"></i>System</span>
-                    </button>
-                  </li>
-                </ul>
-              </li>
-              <!-- / Style Switcher-->
-              <!-- Quick links  -->
-              <!-- Quick links -->
-              <!-- Notification -->
-              <!--/ Notification -->
-              <!-- User -->
-              <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
-                  <div class="avatar avatar-online">
-                    <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
-                  </div>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li>
-                    <a class="dropdown-item mt-0" href="pages-account-settings-account.html">
-                      <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 me-2">
-                          <div class="avatar avatar-online">
-                            <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
-                          </div>
-                        </div>
-                        <div class="flex-grow-1">
-                          <h6 class="mb-0">Rommel Lacap</h6>
-                          <small class="text-body-secondary">Admin</small>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <div class="dropdown-divider my-1 mx-n2"></div>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="icon-base ti tabler-user me-3 icon-md"></i><span class="align-middle">My Profile</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="icon-base ti tabler-settings me-3 icon-md"></i><span class="align-middle">Settings</span>
-                    </a>
-                  </li>
-                  <li>
-                    <div class="dropdown-divider my-1 mx-n2"></div>
-                  </li>
-                  <li>
-                    <div class="d-grid px-2 pt-2 pb-1">
-                      <a class="btn btn-sm btn-danger d-flex" href="#" target="_blank">
-                        <small class="align-middle">Logout</small>
-                        <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-              <!--/ User -->
-            </ul>
-          </div>
-        </nav> --}}
-        <!-- / Navbar -->
-        <!-- Content wrapper -->
+     
         <div class="content-wrapper">
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
@@ -239,12 +137,15 @@
                   <div class="app-overlay"></div>
                   <!-- FullCalendar Offcanvas -->
 
-                  <form method='post' action="{{ route('booking.create')}}">
+             <form method='post' 
+                        action="{{ route('booking.create')}}" 
+                        data-create-route="{{ route('booking.create')}}"
+                        data-update-route="{{ route('booking.update')}}">
                   @csrf
                   @method('POST')
-                  <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="addEventSidebar" aria-labelledby="addEventSidebarLabel">
+                  <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="addEventSidebar" >
                     <div class="offcanvas-header border-bottom">
-                      <h5 class="offcanvas-title" id="addEventSidebarLabel">Add Booking</h5>
+                      <h5 class="offcanvas-title">Add Bookinggg</h5>
                       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
@@ -351,6 +252,111 @@
                     </div>
                   </div>
                 </form>
+                <!-- Update Event Sidebar -->
+                <form method='post' action="{{ route('booking.update')}}" id="updateBookingForm">
+                  @csrf
+                  @method('PUT')
+                  <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="updateEventSidebar">
+                    <div class="offcanvas-header border-bottom">
+                      <h5 class="offcanvas-title">Update Bookinggg</h5>
+                      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                      <div class="event-form pt-0">
+                        <input type="hidden" id="update_booking_id" name="booking_id">
+                        <div class="mb-5">
+                          <label class="form-label" for="update_service_id">Select Services</label>
+                          <select class="select2 form-select" name="service_id" id="update_service_id">
+                            @foreach ($services as $service)
+                            <option value="{{$service->service_id}}">{{$service->service_name}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <div class="mb-5">
+                          <label class="form-label" for="update_status">Status</label>
+                          <select class="select2 form-select" name="status" id="update_status">
+                            <option>Pending</option>
+                            <option>Paid</option>
+                            <option>Cancelled</option>
+                            <option>Completed</option>
+                            <option>No Show</option>
+                          </select>
+                        </div>
+                        <div class="mb-5">
+                          <label class="form-label" for="update_start_date">Start Date and Time</label>
+                          <input type="text" class="form-control flatpickr-input" id="update_start_date" name="start_date" placeholder="YYYY-MM-DD HH:MM" />
+                        </div>
+                        <div class="mb-5">
+                          <label class="form-label" for="update_end_date">End Date and Time</label>
+                          <input type="text" class="form-control flatpickr-input" id="update_end_date" name="end_date" placeholder="YYYY-MM-DD HH:MM" />
+                        </div>
+                        <div class="mb-4">
+                          <label for="update_staff_id" class="form-label">Assigned Staff</label>
+                          <select id="update_staff_id" name="id" class="form-select select2">
+                            <option value="">Select a staff member</option>
+                            @foreach ($staffs as $staff)
+                            <option value="{{ $staff->id }}">{{ $staff->firstname }} {{ $staff->lastname }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <div class="mb-4">
+                          <label for="update_branch_code" class="form-label">Select Branch</label>
+                          <select id="update_branch_code" name="branch_code" class="form-select">
+                            @foreach ($branches as $branch)
+                            <option value="{{$branch->branch_code}}">{{$branch->branch_name}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <div class="mb-4">
+                          <label for="update_patient_id" class="form-label">Select Patient</label>
+                          <select id="update_patient_id" name="patient_id" class="form-select select2">
+                            <option value="">Select a patient</option>
+                            @foreach($patients as $patient)
+                              <option value="{{ $patient->patient_id }}">{{ $patient->firstname }} {{ $patient->lastname }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <div class="col-xl-12">
+                          <label class="form-label">Use Reward Points</label>
+                          <div class="row">
+                            <div class="col-md mb-md-0 mb-5">
+                              <div class="form-check custom-option custom-option-basic">
+                                <label class="form-check-label custom-option-content" for="updateUseRewardYes">
+                                  <input name="useReward" class="form-check-input" type="radio" value="1" id="updateUseRewardYes" />
+                                  <span class="custom-option-header">
+                                    <span class="h6 mb-0">Yes</span>
+                                  </span>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="col-md">
+                              <div class="form-check custom-option custom-option-basic">
+                                <label class="form-check-label custom-option-content" for="updateUseRewardNo">
+                                  <input name="useReward" class="form-check-input" type="radio" value="0" id="updateUseRewardNo" />
+                                  <span class="custom-option-header">
+                                    <span class="h6 mb-0">No</span>
+                                  </span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-5">
+                          <label class="form-label" for="update_remarks">Remarks</label>
+                          <textarea class="form-control" name="remarks" id="update_remarks"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-sm-between justify-content-start mt-6 gap-2">
+                          <div class="d-flex">
+                            <button type="submit" class="btn btn-primary btn-update-event me-4">Update</button>
+                            <button type="reset" class="btn btn-label-secondary btn-cancel" data-bs-dismiss="offcanvas">Cancel</button>
+                          </div>
+                          <button type="button" class="btn btn-label-danger btn-delete-event">Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <!-- /Update Event Sidebar -->
                 </div>
                 <!-- /Calendar & Modal -->
               </div>
@@ -589,3 +595,4 @@
 </body>
 
 </html>
+``` 

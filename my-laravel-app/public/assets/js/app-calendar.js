@@ -89,27 +89,33 @@ document.addEventListener("DOMContentLoaded", function () {
     if (A) {
       e = A.flatpickr({monthSelectorType: "static", static: true, inline: true});
     }
-    let S = new Calendar(w, {initialView: "dayGridMonth", events: function (e, t) {
-      let n = (() => {
-        let t = [];
-        let e = [].slice.call(document.querySelectorAll(".input-filter:checked"));
-        e.forEach(e => {
-          t.push(e.getAttribute("data-value"));
-        });
-        return t;
-      })();
-      t(b.filter(function (e) {
-        return n.includes(e.extendedProps.calendar.toLowerCase());
-      }));
-    }, plugins: [dayGridPlugin, interactionPlugin, listPlugin, timegridPlugin], editable: true, dragScroll: true, dayMaxEvents: 2, eventResizableFromStart: true, customButtons: {sidebarToggle: {text: "Sidebar"}}, headerToolbar: {start: "sidebarToggle, prev,next, title", end: "dayGridMonth,timeGridWeek,timeGridDay,listMonth"}, direction: k, initialDate: new Date, navLinks: true, eventClassNames: function ({event: e}) {
+    let S = new Calendar(w, {
+      initialView: "dayGridMonth",
+      events: {
+        url: '/get-calendar-bookings',
+        method: 'GET',
+        failure: function() {
+          console.error('Failed to load events');
+        }
+      },
+      plugins: [dayGridPlugin, interactionPlugin, listPlugin, timegridPlugin],
+      editable: true, dragScroll: true, dayMaxEvents: 2, eventResizableFromStart: true, customButtons: {sidebarToggle: {text: "Sidebar"}}, headerToolbar: {start: "sidebarToggle, prev,next, title", end: "dayGridMonth,timeGridWeek,timeGridDay,listMonth"}, direction: k, initialDate: new Date, navLinks: true, eventClassNames: function ({event: e}) {
       return ["bg-label-" + g[e._def.extendedProps.calendar]];
     }, dateClick: function (e) {
       e = moment(e.date).format("YYYY-MM-DD");
       F();
       L.show();
       if (a) {
-        a.innerHTML = "Create New Booking Event";
+        a.innerHTML = "Create Booking";
       }
+      // Update form action for create
+      const form = document.querySelector('#addEventSidebar form');
+      form.action = form.getAttribute('data-create-route');
+      form.method = 'POST';
+      // Reset method field if it exists
+      let methodField = form.querySelector('input[name="_method"]');
+      if (methodField) methodField.value = 'POST';
+
       l.innerHTML = "Add";
       l.classList.remove("btn-update-event");
       l.classList.add("btn-add-event");
@@ -126,10 +132,19 @@ document.addEventListener("DOMContentLoaded", function () {
       if (a) {
         a.innerHTML = "Update Booking";
       }
+      // Update form action for update
+      const form = document.querySelector('#addEventSidebar form');
+      form.action = form.getAttribute('data-update-route');
+      form.method = 'POST';
+      // Update method field for PUT
+      let methodField = form.querySelector('input[name="_method"]');
+      if (methodField) methodField.value = 'PUT';
+
       l.innerHTML = "Update";
       l.classList.add("btn-update-event");
       l.classList.remove("btn-add-event");
       i.classList.remove("d-none");
+
       d.value = E.title;
       D.setDate(E.start, true, "Y-m-d");
       if (E.allDay === true) {

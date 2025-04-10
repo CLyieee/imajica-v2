@@ -123,10 +123,8 @@ class BookingController extends Controller
                 // Format the booking data for FullCalendar
                 return [
                     'id' => $booking->booking_id,
-                    'title' => ($booking->patient ? $booking->patient->firstname . ' ' . $booking->patient->lastname : 'Unknown Patient') . 
-                              ' - ' . ($booking->service ? $booking->service->service_name : 'Unknown Service'),
+                    'title' => $booking->service ? $booking->service->service_name : 'Unknown Service',
                     'start' => $booking->start_date,
-                    'end' => $booking->end_date,
                     'allDay' => false,
                     'color' => $color,
                     'extendedProps' => [
@@ -152,6 +150,51 @@ class BookingController extends Controller
                 'line' => $e->getLine()
             ]);
             return response()->json(['error' => 'Failed to fetch bookings: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function getCalendarBookings()
+    {
+        try {
+            $bookings = Booking::with(['service', 'patient', 'staff', 'branch'])->get();
+            
+            $events = $bookings->map(function($booking) {
+                $statusColors = [
+                    'Pending' => 'Business',
+                    'Paid' => 'Personal',
+                    'Cancelled' => 'Holiday',
+                    'Completed' => 'Family',
+                    'No Show' => 'ETC'
+                ];
+
+                return [
+                    'id' => $booking->booking_id,
+                    'title' => 'Book ' . $booking->booking_id,  // Changed to show simple booking number
+                    'start' => $booking->start_date,
+                    'end' => $booking->end_date,
+                    'allDay' => false,
+                    'extendedProps' => [
+                        'calendar' => $statusColors[$booking->status] ?? 'Business',
+                        'service_id' => $booking->service_id,
+                        'status' => $booking->status,
+                        'staff_id' => $booking->id,
+                        'branch_code' => $booking->branch_code,
+                        'patient_id' => $booking->patient_id,
+                        'use_reward_points' => $booking->useReward,
+                        'remarks' => $booking->remarks,
+                        // Add full details for tooltip/modal
+                        'patient_name' => $booking->patient->firstname . ' ' . $booking->patient->lastname,
+                        'service_name' => $booking->service->service_name,
+                        'staff_name' => $booking->staff ? $booking->staff->firstname . ' ' . $booking->staff->lastname : 'Unassigned',
+                        'branch_name' => $booking->branch ? $booking->branch->branch_name : 'Unknown Branch'
+                    ]
+                ];
+            });
+            
+            return response()->json($events);
+        } catch (\Exception $e) {
+            Log::error('Error fetching calendar bookings: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }
