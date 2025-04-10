@@ -97,57 +97,57 @@ class supplierController extends Controller
         }
     }
 
-    public function update_supplier(Request $request, $id)
+    public function update_supplier(Request $request, $id) 
     {
-        // Validate the request data
-        $validator = Validator::make($request->all(), [
-            'supplier_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'contactNumber' => 'required|string|max:20',
-            'supplier_type' => 'required|string|max:100',
-            'address' => 'required|string',
-            'product_offered' => 'nullable|string',
-            'notes' => 'nullable|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validation Error',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
         try {
-            $supplier = supplier::find($id);
-            
-            if (!$supplier) {
+            // Find the supplier first
+            $supplier = supplier::findOrFail($id);
+
+            // Validate the request data
+            $validator = Validator::make($request->all(), [
+                'supplier_name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'contactNumber' => 'required|string|max:20',
+                'supplier_type' => 'required|string|max:100',
+                'address' => 'required|string',
+                'product_offered' => 'nullable|string',
+                'notes' => 'nullable|string',
+            ]);
+
+            if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Supplier not found'
-                ], 404);
+                    'message' => 'Validation Error',
+                    'errors' => $validator->errors()
+                ], 422);
             }
 
-            $supplier->update([
-                'supplier_name' => $request->supplier_name,
-                'email' => $request->email,
-                'contactNumber' => $request->contactNumber,
-                'supplier_type' => $request->supplier_type,
-                'address' => $request->address,
-                'product_offered' => $request->product_offered,
-                'notes' => $request->notes,
-            ]);
+            // Update the supplier
+            $supplier->update($request->only([
+                'supplier_name',
+                'email', 
+                'contactNumber',
+                'supplier_type',
+                'address',
+                'product_offered',
+                'notes'
+            ]));
 
             return response()->json([
                 'status' => true,
                 'message' => 'Supplier updated successfully',
-                'data' => $supplier
+                'data' => $supplier->fresh()
             ], 200);
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Supplier not found'
+            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Failed to update supplier',
-                'error' => $e->getMessage()
+                'message' => 'Failed to update supplier: ' . $e->getMessage()
             ], 500);
         }
     }

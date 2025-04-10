@@ -57,6 +57,7 @@ public function position()
         return $this->belongsTo(positionModel::class, 'position_id', 'position_id');
     }
 
+
     public function department()
     {
         return $this->belongsTo(Department::class, 'department_code', 'department_code');
