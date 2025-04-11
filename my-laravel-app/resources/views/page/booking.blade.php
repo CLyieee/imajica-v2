@@ -57,6 +57,48 @@
   <script src="../../assets/js/config.js"></script>
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* Add these to your existing styles */
+    .table-responsive {
+      margin: 15px 0;
+    }
+    
+    .badge {
+      padding: 0.5em 0.75em;
+    }
+    
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+    
+    .table td, .table th {
+      vertical-align: middle;
+    }
+
+    /* Add to your existing styles */
+    .form-select {
+        padding: 0.4375rem 2rem 0.4375rem 0.875rem;
+        font-size: 0.9375rem;
+        border-radius: 0.375rem;
+        border: 1px solid #d9dee3;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-select:focus {
+        border-color: #696cff;
+        box-shadow: 0 0 0.25rem rgba(105, 108, 255, 0.1);
+    }
+
+    .form-label {
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: #566a7f;
+    }
+  </style>
+  <!-- Add these in your head section -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css">
 </head>
 
 <body>
@@ -365,6 +407,214 @@
                 <!-- /Calendar & Modal -->
               </div>
             </div>
+            <!-- Recent Bookings Table -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header d-flex justify-content-between align-items-center p-4">
+                    <div>
+                      <h5 class="card-title mb-1">Booking History</h5>
+                      <p class="text-muted mb-0 small">Overview of all appointments</p>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-md-9">
+                        <!-- Empty space on the left -->
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex justify-content-end">
+                            <div class="w-100">
+                                <label class="form-label">Status Filter</label>
+                                <select class="form-select" id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="No Show">No Show</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-hover booking-table">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Booking ID</th>
+                          <th>Patient Name</th>
+                          <th>Service</th>
+                          <th>Start Date/Time</th>
+                          <th>End Date/Time</th>
+                          <th>Staff</th>
+                          <th>Branch</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach($bookings as $booking)
+                        <tr class="booking-row">
+                          <td># {{ $booking->booking_id }}</td>
+                          <td>
+                            @if($booking->patient)
+                              {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
+                            @else
+                              <span class="text-muted">No patient data</span>
+                            @endif
+                          </td>
+                          <td>
+                            @if($booking->service)
+                              {{ $booking->service->service_name }}
+                            @else
+                              <span class="text-muted">No service data</span>
+                            @endif
+                          </td>
+                          <td>{{ \Carbon\Carbon::parse($booking->start_date)->format('M d, Y h:i A') }}</td>
+                          <td>{{ \Carbon\Carbon::parse($booking->end_date)->format('M d, Y h:i A') }}</td>
+                          <td>
+                            @if($booking->staff)
+                              {{ $booking->staff->firstname }} {{ $booking->staff->lastname }}
+                            @else
+                              <span class="text-muted">Unassigned</span>
+                            @endif
+                          </td>
+                          <td>
+                            @if($booking->branch)
+                              {{ $booking->branch->branch_name }}
+                            @else
+                              <span class="text-muted">N/A</span>
+                            @endif
+                          </td>
+                          <td>
+                            <span class="badge bg-label-{{ 
+                              $booking->status === 'Pending' ? 'warning' : 
+                              ($booking->status === 'Paid' ? 'info' : 
+                              ($booking->status === 'Completed' ? 'success' : 
+                              ($booking->status === 'Cancelled' ? 'danger' : 
+                              ($booking->status === 'No Show' ? 'secondary' : 'primary')))) 
+                            }}">
+                              {{ $booking->status }}
+                            </span>
+                          </td>
+                        </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <style>
+              /* Add these styles to match dashboard design */
+              .booking-table {
+                --bs-table-hover-bg: rgba(105, 108, 255, 0.04);
+              }
+
+              .booking-row {
+                vertical-align: middle;
+                transition: all 0.3s ease;
+              }
+
+              .booking-row:hover {
+                transform: translateX(5px);
+              }
+
+              .badge {
+                padding: 0.5em 0.9em;
+                font-weight: 500;
+              }
+
+              .table-light {
+                --bs-table-bg: rgba(105, 108, 255, 0.04);
+              }
+
+              .card-header {
+                border-bottom: 1px solid rgba(105, 108, 255, 0.1);
+              }
+
+              /* Status badge colors */
+              .bg-label-success {
+                background-color: rgba(40, 199, 111, 0.16) !important;
+                color: #28c76f !important;
+              }
+
+              .bg-label-warning {
+                background-color: rgba(255, 171, 0, 0.16) !important;
+                color: #ffab00 !important;
+              }
+
+              .bg-label-danger {
+                background-color: rgba(255, 62, 29, 0.16) !important;
+                color: #ff3e1d !important;
+              }
+
+              .bg-label-info {
+                background-color: rgba(3, 195, 236, 0.16) !important;
+                color: #03c3ec !important;
+              }
+
+              .bg-label-secondary {
+                background-color: rgba(108, 117, 125, 0.16) !important;
+                color: #6c757d !important;
+              }
+
+              .date-filter .input-group {
+                max-width: 300px;
+              }
+
+              .date-filter input[type="date"] {
+                border-radius: 0;
+              }
+
+              .date-filter input[type="date"]:first-child {
+                border-top-left-radius: 0.25rem;
+                border-bottom-left-radius: 0.25rem;
+              }
+
+              .date-filter button {
+                border-top-right-radius: 0.25rem !important;
+                border-bottom-right-radius: 0.25rem !important;
+              }
+
+              .input-group .form-control {
+                border-radius: 0;
+              }
+
+              .input-group .form-control:first-child {
+                border-top-left-radius: 0.375rem;
+                border-bottom-left-radius: 0.375rem;
+              }
+
+              .input-group .form-control:last-child {
+                border-top-right-radius: 0.375rem;
+                border-bottom-right-radius: 0.375rem;
+              }
+
+              .dt-buttons {
+                margin-left: 1rem;
+              }
+
+              .dt-button {
+                transition: all 0.2s;
+              }
+
+              .dt-button:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+              }
+
+              .form-label {
+                font-weight: 500;
+                margin-bottom: 0.5rem;
+              }
+
+              .filter-section {
+                background: rgba(105, 108, 255, 0.04);
+                padding: 1rem;
+                border-radius: 0.5rem;
+                margin-bottom: 1rem;
+              }
+            </style>
           </div>
           <!-- / Content -->
 
@@ -616,6 +866,23 @@
         confirmButtonText: 'OK'
       });
     @endif
+
+    // Initialize DataTable with only status filter functionality
+    const bookingTable = $('.booking-table').DataTable({
+        order: [[3, 'desc']], // Sort by date by default
+        pageLength: 10,
+        responsive: true,
+        initComplete: function() {
+            const table = this;
+
+            // Status filter only
+            $('#statusFilter').on('change', function() {
+                table.column(7)
+                    .search(this.value)
+                    .draw();
+            });
+        }
+    });
   </script>
 
   <!-- Additional CSS for flatpickr visibility -->
