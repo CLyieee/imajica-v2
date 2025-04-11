@@ -435,7 +435,9 @@ class DashboardController extends Controller
     }
     public function employee_sales()
     {
-        return view('page.employee-sales');
+       
+        $employees = staff::all();
+        return view('page.employee-sales', compact('employees'));
     }
 
     public function commision_employee()
