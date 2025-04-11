@@ -75,6 +75,26 @@
     .table td, .table th {
       vertical-align: middle;
     }
+
+    /* Add to your existing styles */
+    .form-select {
+        padding: 0.4375rem 2rem 0.4375rem 0.875rem;
+        font-size: 0.9375rem;
+        border-radius: 0.375rem;
+        border: 1px solid #d9dee3;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-select:focus {
+        border-color: #696cff;
+        box-shadow: 0 0 0.25rem rgba(105, 108, 255, 0.1);
+    }
+
+    .form-label {
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: #566a7f;
+    }
   </style>
   <!-- Add these in your head section -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
@@ -386,24 +406,25 @@
                       <h5 class="card-title mb-1">Booking History</h5>
                       <p class="text-muted mb-0 small">Overview of all appointments</p>
                     </div>
-                    <!-- Update the filter dropdown in your blade file -->
-                    <div class="d-flex gap-2">
-                      <div class="dropdown">
-                          <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                              <i class="ti tabler-filter me-1"></i>All Bookings
-                          </button>
-                          <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#">All Bookings</a></li>
-                              <li><a class="dropdown-item" href="#">Completed</a></li>
-                              <li><a class="dropdown-item" href="#">Pending</a></li>
-                              <li><a class="dropdown-item" href="#">Cancelled</a></li>
-                              <li><a class="dropdown-item" href="#">Paid</a></li>
-                              <li><a class="dropdown-item" href="#">No Show</a></li>
-                          </ul>
-                      </div>
-                      <button class="btn btn-primary btn-sm" id="exportBtn">
-                          <i class="ti tabler-download me-1"></i>Export
-                      </button>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-md-9">
+                        <!-- Empty space on the left -->
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex justify-content-end">
+                            <div class="w-100">
+                                <label class="form-label">Status Filter</label>
+                                <select class="form-select" id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="No Show">No Show</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                   </div>
                   <div class="table-responsive">
@@ -543,6 +564,45 @@
               .date-filter button {
                 border-top-right-radius: 0.25rem !important;
                 border-bottom-right-radius: 0.25rem !important;
+              }
+
+              .input-group .form-control {
+                border-radius: 0;
+              }
+
+              .input-group .form-control:first-child {
+                border-top-left-radius: 0.375rem;
+                border-bottom-left-radius: 0.375rem;
+              }
+
+              .input-group .form-control:last-child {
+                border-top-right-radius: 0.375rem;
+                border-bottom-right-radius: 0.375rem;
+              }
+
+              .dt-buttons {
+                margin-left: 1rem;
+              }
+
+              .dt-button {
+                transition: all 0.2s;
+              }
+
+              .dt-button:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+              }
+
+              .form-label {
+                font-weight: 500;
+                margin-bottom: 0.5rem;
+              }
+
+              .filter-section {
+                background: rgba(105, 108, 255, 0.04);
+                padding: 1rem;
+                border-radius: 0.5rem;
+                margin-bottom: 1rem;
               }
             </style>
           </div>
@@ -765,6 +825,23 @@
         confirmButtonText: 'OK'
       });
     @endif
+
+    // Initialize DataTable with only status filter functionality
+    const bookingTable = $('.booking-table').DataTable({
+        order: [[3, 'desc']], // Sort by date by default
+        pageLength: 10,
+        responsive: true,
+        initComplete: function() {
+            const table = this;
+
+            // Status filter only
+            $('#statusFilter').on('change', function() {
+                table.column(7)
+                    .search(this.value)
+                    .draw();
+            });
+        }
+    });
   </script>
 
   <!-- Additional CSS for flatpickr visibility -->
@@ -776,121 +853,6 @@
       background-color: #fff !important;
     }
   </style>
-
-  <!-- Add this to your existing script section -->
-  <script>
-    $(document).ready(function() {
-      // Initialize DataTable
-      $('#bookingHistoryTable').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-          'copy', 'csv', 'excel', 'pdf', 'print'
-        ],
-        order: [[3, 'desc']], // Sort by start date by default
-        pageLength: 10,
-        responsive: true
-      });
-    });
-  </script>
-  <!-- Add these before your closing body tag -->
-  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap5.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
-
-  <!-- Add this script before the closing </body> tag -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize DataTable with filter functionality
-        const bookingTable = $('.booking-table').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ],
-            order: [[3, 'desc']], // Sort by date by default
-            pageLength: 10,
-            responsive: true
-        });
-
-        // Add filter functionality to the dropdown
-        $('.dropdown-menu .dropdown-item').on('click', function(e) {
-            e.preventDefault();
-            const filterValue = $(this).text().trim();
-            
-            // Clear previous filter
-            bookingTable.search('').draw();
-
-            // Apply new filter
-            if (filterValue !== 'All Bookings') {
-                bookingTable.column(7) // Status column index
-                    .search(filterValue)
-                    .draw();
-            }
-
-            // Update dropdown button text
-            $(this).closest('.dropdown')
-                .find('.dropdown-toggle')
-                .html(`<i class="ti tabler-filter me-1"></i>${filterValue}`);
-        });
-
-        // Add custom date range filter
-        const dateFilterHtml = `
-            <div class="date-filter ms-2" style="display: inline-block;">
-                <div class="input-group">
-                    <input type="date" class="form-control form-control-sm" id="dateFrom" placeholder="From">
-                    <input type="date" class="form-control form-control-sm" id="dateTo" placeholder="To">
-                    <button class="btn btn-sm btn-outline-secondary" id="clearDates">
-                        <i class="ti tabler-x"></i>
-                    </button>
-                </div>
-            </div>
-        `;
-
-        // Insert date filter next to the status filter
-        $('.dropdown').after(dateFilterHtml);
-
-        // Date range filter functionality
-        $('#dateFrom, #dateTo').on('change', function() {
-            const dateFrom = $('#dateFrom').val();
-            const dateTo = $('#dateTo').val();
-
-            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                const bookingDate = new Date(data[3]); // Start Date/Time column
-                const start = dateFrom ? new Date(dateFrom) : null;
-                const end = dateTo ? new Date(dateTo) : null;
-
-                if (start && end) {
-                    return bookingDate >= start && bookingDate <= end;
-                } else if (start) {
-                    return bookingDate >= start;
-                } else if (end) {
-                    return bookingDate <= end;
-                }
-                return true;
-            });
-
-            bookingTable.draw();
-            
-            // Clear the custom filter after drawing
-            $.fn.dataTable.ext.search.pop();
-        });
-
-        // Clear date filters
-        $('#clearDates').on('click', function() {
-            $('#dateFrom, #dateTo').val('');
-            bookingTable.draw();
-        });
-
-        // Export filtered data only
-        bookingTable.buttons().container()
-            .appendTo('#example_wrapper .col-md-6:eq(0)');
-    });
-  </script>
 </body>
 
 </html>
