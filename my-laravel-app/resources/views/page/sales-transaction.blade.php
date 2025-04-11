@@ -174,6 +174,7 @@
       
     
 
+
       
         <!-- Style Switcher -->
         <li class="nav-item dropdown">
@@ -595,15 +596,34 @@
                               <div class="card card-custom card-services-sales">
                                   <div class="card-body">
                                       <p class="card-text"><strong>Services Sales:</strong></p>
-                                      <h4 class="text-black">₱4,000,972.50</h4>
+                                      <h4 class="text-black">₱{{ number_format($sales->where('status', 'Completed')->sum('service.service_cost'), 2) }}</h4>
                                   </div>
                               </div>
                           </div>
                           <div class="col-md-3">
+                              @php
+                                  // Calculate total product and service sales
+                                  $totalProductSales = $sales->where('status', 'Completed')->where('type', 'product')->sum('amount');
+                                  $totalServiceSales = $sales->where('status', 'Completed')->where('type', 'service')->sum('service.service_cost');
+                                  $totalSales = $totalProductSales + $totalServiceSales;
+
+                                  // Find top selling product
+                                  $topProduct = $sales->where('status', 'Completed')
+                                      ->where('type', 'product')
+                                      ->groupBy('product_id')
+                                      ->map(function ($group) {
+                                          return [
+                                              'name' => $group->first()->product_name ?? 'Unknown Product',
+                                              'total' => $group->sum('amount')
+                                          ];
+                                      })
+                                      ->sortByDesc('total')
+                                      ->first();
+                              @endphp
                               <div class="card card-custom card-top-selling">
                                   <div class="card-body">
                                       <p class="card-text"><strong>Top Selling Product:</strong></p>
-                                      <h5 class="text-black">Niacinamide serum/IMAJICA AQUA</h5>
+                                      <h5 class="text-black">{{ $topProduct ? $topProduct['name'] : 'No products sold' }}</h5>
                                   </div>
                               </div>
                           </div>
@@ -619,18 +639,35 @@
                             <table id="servicesTable" class="table table-striped">
                               <thead class="table-light">
                                   <tr>
-                                      <th>Reciept No.</th>
-                                      <th>Customer Name</th>
-                                      <th>Service/Product</th>
-                                      <th>Payment Terms Amount</th>
+                                    
+                                      <th>Service /Product  </th>
                                       <th>Customer</th>
-                                      <th>Cashier</th>
+                                      <th>Staff</th>
                                       <th>Amount</th>
+                                      <th>Status</th>
+                                      <th>Branch</th>
                                       <th>Date</th>
-                                    <th>Action</th>
+                                      <th>Action</th>
                                   </tr>
                               </thead>
+                            <tbody>
+                              @foreach ($sales->where('status', 'Completed') as $sale)
+
+                              <tr>
                             
+                                <td>{{ $sale->service ? $sale->service->service_name : $sale->service_name }}</td>
+                                <td>{{ $sale->patient ? $sale->patient->firstname . ' ' . $sale->patient->lastname : $sale->customer }}</td>
+                                <td>{{ $sale->staff ? $sale->staff->firstname . ' ' . $sale->staff->lastname : $sale->staff }}</td>
+                                <td>₱{{ number_format($sale->service ? $sale->service->service_cost : $sale->service_cost, 2) }}</td>
+                                <td>{{ $sale->status }}</td>
+                                <td>{{ $sale->branch ? $sale->branch->branch_name : $sale->branch }}</td>
+                                <td>{{ $sale->start_date }}</td>
+                                <td>
+                                  <a href="#" class="btn btn-success "> <i class="ti tabler-eye me-1"></i>View</a>
+                              </td>
+                              </tr>
+                              @endforeach
+                            </tbody>
                           </table>
                       </div>
                     </div>
@@ -738,37 +775,7 @@
   <script>
     $(document).ready(function () {
         var table = $("#servicesTable").DataTable({
-            ajax: {
-                url: '/assets/sales-transaction.json',
-                dataSrc: ''
-            },
-            columns: [
-                { data: 'transaction_id' },
-                { data: 'client_name' },
-                { data: 'service_product' },
-                { data: 'payment_terms_amount' },
-                { data: 'customer' },
-                { data: 'cashier' },
-                { data: 'amount' },
-                { data: 'transaction_date' },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return `<div class='d-flex gap-2'>
-                            <button onclick='showViewModalll(${JSON.stringify(row)})' class='btn btn-success btn-sm'>
-                           <i class='ti tabler-eye me-1'></i>View
-                            </button>
-                            <button class='btn btn-info btn-sm'>
-                             <i class='ti tabler-edit me-1'></i> Edit
-                            </button>
-                            <button class='btn btn-danger btn-sm'>
-                             <i class='ti tabler-trash me-1'></i> Delete
-                            </button>
-                        </div>`;
-                    }
-                }
-            ],
-            responsive: true,
+          
         });
     
         // Handle view button click through event delegation

@@ -616,26 +616,50 @@
 
     <div class="card">
       <div class="card-body">
-
-       
-  
-
-        <table class="table table-striped" id = "employeeSales">
+        <table class="table table-striped" id="employeeSales">
           <thead class="table-light">
             <tr>
               <th>Employee Name</th>
               <th>No. of Service Sales</th>
-              <th>No. of Product Sales</th>
               <th>No. of Clients</th>
               <th>Total Service Sales</th>
-              <th>Total Product Sales</th>         
               <th>Total Sales</th>
               <th>Actions</th>
-          </tr>
+            </tr>
           </thead>
-         <tbody>
-
-         </tbody>
+          <tbody>
+            @php 
+                $totalServiceCount = 0;
+                $totalClientCount = 0;
+                $totalServiceSales = 0;
+                $totalSales = 0;
+            @endphp
+            
+            @foreach($employees as $employee)
+            @php
+                $totalServiceCount += $employee->service_count;
+                $totalClientCount += $employee->client_count;
+                $totalServiceSales += $employee->total_service_sales;
+                $totalSales += $employee->total_sales;
+            @endphp
+            <tr>
+                <td>{{ $employee->firstname }} {{ $employee->lastname }}</td>
+                <td class="text-center">{{ number_format($employee->service_count) }}</td>
+                <td class="text-center">{{ number_format($employee->client_count) }}</td>
+                <td class="text-end">₱{{ number_format($employee->total_service_sales, 2) }}</td>
+                <td class="text-end">₱{{ number_format($employee->total_sales, 2) }}</td>
+                <td>
+                    <div class='d-flex gap-2'>
+                        <button class='btn btn-sm btn-success'><i class="ti tabler-eye me-1"></i>View</button>
+                        <button class='btn btn-sm btn-info'><i class="ti tabler-edit me-1"></i>Edit</button>
+                        <button class='btn btn-sm btn-danger'><i class="ti tabler-trash me-1"></i>Delete</button>
+                    </div>
+                </td>
+            </tr>
+            @endforeach
+            
+         
+          </tbody>
         </table>
       </div>
     </div>
@@ -736,29 +760,7 @@
 <script>
       $(document).ready(function () {
         var table = $("#employeeSales").DataTable({
-            ajax: {
-                url: '/assets/employee-sales.json', // Adjusted relative path to your JSON
-                dataSrc: '' // Assuming the JSON is an array of objects
-            },
-            columns: [
-                { data: 'employee_name' },
-                { data: 'sales_service_no' },
-                { data: 'product_sales_no' },
-                { data: 'client_no' },
-                { data: 'total_service_sale' },
-                { data: 'total_product_sale' },
-                { data: 'total_sales' },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return `<div class='d-flex gap-2'>
-                                    <button class='btn btn-success'><i class="ti tabler-eye me-1"></i>View</button>
-                                    <button class='btn btn-info'><i class="ti tabler-edit me-1"></i>Edit</button>
-                                    <button class='btn btn-danger'><i class="ti tabler-trash me-1"></i>Delete</button>
-                                </div>`;
-                    }
-                }
-            ]
+           
         });
     });
 </script>

@@ -39,7 +39,7 @@
             <ul class="menu-sub">
                 <li class="menu-item {{ request()->is('sales-transaction') ? 'active' : '' }}">
                     <a href="/sales-transaction" class="menu-link">
-                        <div data-i18n="Sales Transaction">Sales Transaction</div>
+                        <div data-i18n="Services Transaction">Services Transaction</div>
                     </a>
                 </li>
 
