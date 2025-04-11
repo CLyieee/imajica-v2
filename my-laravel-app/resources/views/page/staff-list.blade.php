@@ -196,8 +196,8 @@
                         </td>
                         <td>{{ $staff->firstname }} {{ $staff->lastname }}</td>
                         <td>{{ $staff->email }}</td>
-                        <td>{{ $staff->position }}</td>
-                        <td>{{ $staff->department }}</td>
+                        <td>{{ $staff->position ? $staff->position->position_name : $staff->position_id }}</td>
+                        <td>{{ $staff->department ? $staff->department->department_name : $staff->department_code }}</td>
                         <td>{{ $staff->contact_number }}</td>
                         <td>
                           @if($staff->branch_code)

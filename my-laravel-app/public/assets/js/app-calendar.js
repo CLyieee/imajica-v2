@@ -89,70 +89,55 @@ document.addEventListener("DOMContentLoaded", function () {
     if (A) {
       e = A.flatpickr({monthSelectorType: "static", static: true, inline: true});
     }
-    let S = new Calendar(w, {initialView: "dayGridMonth", events: function (e, t) {
-      let n = (() => {
-        let t = [];
-        let e = [].slice.call(document.querySelectorAll(".input-filter:checked"));
-        e.forEach(e => {
-          t.push(e.getAttribute("data-value"));
-        });
-        return t;
-      })();
-      t(b.filter(function (e) {
-        return n.includes(e.extendedProps.calendar.toLowerCase());
-      }));
-    }, plugins: [dayGridPlugin, interactionPlugin, listPlugin, timegridPlugin], editable: true, dragScroll: true, dayMaxEvents: 2, eventResizableFromStart: true, customButtons: {sidebarToggle: {text: "Sidebar"}}, headerToolbar: {start: "sidebarToggle, prev,next, title", end: "dayGridMonth,timeGridWeek,timeGridDay,listMonth"}, direction: k, initialDate: new Date, navLinks: true, eventClassNames: function ({event: e}) {
+    let S = new Calendar(w, {
+      initialView: "dayGridMonth",
+      events: {
+        url: '/get-calendar-bookings',
+        method: 'GET',
+        failure: function() {
+          console.error('Failed to load events');
+        }
+      },
+      plugins: [dayGridPlugin, interactionPlugin, listPlugin, timegridPlugin],
+      editable: true, dragScroll: true, dayMaxEvents: 2, eventResizableFromStart: true, customButtons: {sidebarToggle: {text: "Sidebar"}}, headerToolbar: {start: "sidebarToggle, prev,next, title", end: "dayGridMonth,timeGridWeek,timeGridDay,listMonth"}, direction: k, initialDate: new Date, navLinks: true, eventClassNames: function ({event: e}) {
       return ["bg-label-" + g[e._def.extendedProps.calendar]];
     }, dateClick: function (e) {
       e = moment(e.date).format("YYYY-MM-DD");
       F();
       L.show();
+      
+      // Show create form
+      const addEventSidebar = document.getElementById('addEventSidebar');
+      const bsOffcanvas = new bootstrap.Offcanvas(addEventSidebar);
+      bsOffcanvas.show();
+
       if (a) {
-        a.innerHTML = "Create New Booking Event";
+        a.innerHTML = "Create Booking";
       }
-      l.innerHTML = "Add";
-      l.classList.remove("btn-update-event");
-      l.classList.add("btn-add-event");
-      i.classList.add("d-none");
-      o.value = e;
-      s.value = e;
     }, eventClick: function (e) {
       e = e;
       if ((E = e.event).url) {
         e.jsEvent.preventDefault();
         window.open(E.url, "_blank");
       }
-      L.show();
-      if (a) {
-        a.innerHTML = "Update Booking";
-      }
-      l.innerHTML = "Update";
-      l.classList.add("btn-update-event");
-      l.classList.remove("btn-add-event");
-      i.classList.remove("d-none");
-      d.value = E.title;
-      D.setDate(E.start, true, "Y-m-d");
-      if (E.allDay === true) {
-        m.checked = true;
-      } else {
-        m.checked = false;
-      }
-      if (E.end === null) {
-        P.setDate(E.start, true, "Y-m-d");
-      } else {
-        P.setDate(E.end, true, "Y-m-d");
-      }
-      f.val(E.extendedProps.calendar).trigger("change");
-      if (E.extendedProps.location !== void 0) {
-        u.value = E.extendedProps.location;
-      }
-      if (E.extendedProps.guests !== void 0) {
-        h.val(E.extendedProps.guests).trigger("change");
-      }
-      if (E.extendedProps.description !== void 0) {
-        v.value = E.extendedProps.description;
-      }
-    }, datesSet: function () {
+
+      // Show update form
+      const updateEventSidebar = document.getElementById('updateEventSidebar');
+      const bsOffcanvas = new bootstrap.Offcanvas(updateEventSidebar);
+      bsOffcanvas.show();
+
+      // Set the booking ID first
+      document.getElementById('update_booking_id').value = E.id;
+   
+      document.getElementById('update_service_id').value = E.extendedProps.service_id;
+      document.getElementById('update_status').value = E.extendedProps.status; 
+      document.getElementById('update_start_date').value = moment(E.start).format('YYYY-MM-DD HH:mm');
+      document.getElementById('update_end_date').value = moment(E.extendedProps.end_date).format('YYYY-MM-DD HH:mm');
+      document.getElementById('update_patient_id').value = E.extendedProps.patient_id;
+      document.getElementById('update_remarks').value = E.extendedProps.remarks;
+      document.getElementById('update_staff_id').value = E.extendedProps.staff_id;
+      document.getElementById('updateUseRewardYes').checked = E.extendedProps.use_reward_points === '1' || E.extendedProps.useReward === true;
+      document.getElementById('updateUseRewardNo').checked = E.extendedProps.use_reward_points === '0' || E.extendedProps.useReward === false;    }, datesSet: function () {
       I();
     }, viewDidMount: function () {
       I();
@@ -183,30 +168,111 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
     l.addEventListener("click", e => {
-      var t;
-      var n;
-      if (l.classList.contains("btn-add-event")) {
-        if (y) {
-          n = {id: S.getEvents().length + 1, title: d.value, start: o.value, end: s.value, startStr: o.value, endStr: s.value, display: "block", extendedProps: {location: u.value, guests: h.val(), calendar: f.val(), description: v.value}};
-          if (c.value) {
-            n.url = c.value;
+      e.preventDefault();
+      const form = document.querySelector('#addEventSidebar form');
+      const formData = new FormData(form);
+
+      if (l.classList.contains("btn-update-event")) {
+        // Update existing event
+        fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
           }
-          if (m.checked) {
-            n.allDay = true;
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status) {
+            // Refresh events
+            S.refetchEvents();
+            L.hide();
+          } else {
+            alert(data.message || 'Error updating booking');
           }
-          n = n;
-          b.push(n);
-          S.refetchEvents();
-          L.hide();
-        }
-      } else if (y) {
-        n = {id: E.id, title: d.value, start: o.value, end: s.value, url: c.value, extendedProps: {location: u.value, guests: h.val(), calendar: f.val(), description: v.value}, display: "block", allDay: !!m.checked};
-        (t = n).id = parseInt(t.id);
-        b[b.findIndex(e => e.id === t.id)] = t;
-        S.refetchEvents();
-        L.hide();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error updating booking');
+        });
+      } else {
+        // Add new event
+        fetch(form.action, {
+          method: 'POST', 
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status) {
+            S.refetchEvents();
+            L.hide();
+          } else {
+            alert(data.message || 'Error creating booking');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error creating booking');
+        });
       }
     });
+
+    // Handle form submissions
+    document.getElementById('addBookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+
+      fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status) {
+          S.refetchEvents();
+          bootstrap.Offcanvas.getInstance(document.getElementById('addEventSidebar')).hide();
+        } else {
+          alert(data.message || 'Error creating booking');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error creating booking');
+      });
+    });
+
+    document.getElementById('updateBookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+
+      fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status) {
+          S.refetchEvents();
+          bootstrap.Offcanvas.getInstance(document.getElementById('updateEventSidebar')).hide();
+        } else {
+          alert(data.message || 'Error updating booking');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating booking');
+      });
+    });
+
     i.addEventListener("click", e => {
       var t = parseInt(E.id);
       b = b.filter(function (e) {
