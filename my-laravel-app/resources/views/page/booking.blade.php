@@ -137,232 +137,267 @@
                   <div class="app-overlay"></div>
                   <!-- FullCalendar Offcanvas -->
 
-             <form method='post' 
+                  <!-- Create Booking Sidebar -->
+                  <form method='post' 
+                        id="addBookingForm"
                         action="{{ route('booking.create')}}" 
-                        data-create-route="{{ route('booking.create')}}"
+                        data-create-route="{{ route('booking.create')}}">
+                    @csrf
+                    @method('POST')
+                    <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="addEventSidebar">
+                      <div class="offcanvas-header border-bottom">
+                        <h5 class="offcanvas-title">Add Booking</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                      </div>
+                      <div class="offcanvas-body">
+                        <div class="event-form pt-0">
+                          <div class="mb-5">
+                            <label class="form-label" for="service_id">Select Services</label>
+                            <select class="select2 form-select" name="service_id" id="service_id">
+                              @foreach ($services as $service)
+                              <option value="{{$service->service_id}}">{{$service->service_name}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="mb-5">
+                            <label class="form-label" for="status">Status</label>
+                            <select class="select2 form-select" name="status" id="status">
+                              <option selected>Pending</option>
+                              <option>Paid</option>
+                              <option>Cancelled</option>
+                              <option>Completed</option>
+                              <option>No Show</option>
+                            </select>
+                          </div>
+                          <div class="mb-5 form-control-validation">
+                            <label class="form-label" for="start_date">Start Date and Time</label>
+                            <input type="text" class="form-control flatpickr-input" id="start_date" name="start_date" placeholder="YYYY-MM-DD HH:MM" />
+                          </div>
+                          <div class="mb-5 form-control-validation">
+                            <label class="form-label" for="end_date">End Date and Time</label>
+                            <input type="text" class="form-control flatpickr-input" id="end_date" name="end_date" placeholder="YYYY-MM-DD HH:MM" />
+                          </div>
+                          <div class="mb-4">
+                            <label for="id" class="form-label">Assigned Staff</label>
+                            <select id="id" name="id" class="form-select select2">
+                              <option value="">Select a staff member</option>
+                              @foreach ($staffs as $staff)
+                              <option value="{{ $staff->id }}">{{ $staff->firstname }} {{ $staff->lastname }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="mb-4">
+                            <label for="branch_code" class="form-label">Select Branch</label>
+                            <select id="branch_code" name="branch_code" class="form-select">
+                              @foreach ($branches as $branch)
+                              <option value="{{$branch->branch_code}}">{{$branch->branch_name}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <!-- Display validation errors with SweetAlert -->
+                          @if ($errors->any())
+                          <div class="alert alert-danger d-none" id="error-list">
+                            <ul>
+                              @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                              @endforeach
+                            </ul>
+                          </div>
+                          @endif
+                          <div class="mb-4">
+                            <label for="patient_id" class="form-label">Select Patient</label>
+                            <select id="patient_id" name="patient_id" class="form-select select2">
+                              <option value="">Select a patient</option>
+                              @foreach($patients as $patient)
+                                <option value="{{ $patient->patient_id }}">{{ $patient->firstname }} {{ $patient->lastname }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="col-xl-12">
+                            <label class="form-label">Use Reward Points</label>
+                            <div class="row">
+                              <div class="col-md mb-md-0 mb-5">
+                                <div class="form-check custom-option custom-option-basic">
+                                  <label class="form-check-label custom-option-content" for="useRewardYes">
+                                    <input name="useReward" class="form-check-input" type="radio" value="1" id="useRewardYes" checked />
+                                    <span class="custom-option-header">
+                                      <span class="h6 mb-0">Yes</span>
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                              <div class="col-md">
+                                <div class="form-check custom-option custom-option-basic">
+                                  <label class="form-check-label custom-option-content" for="useRewardNo">
+                                    <input name="useReward" class="form-check-input" type="radio" value="0" id="useRewardNo" />
+                                    <span class="custom-option-header">
+                                      <span class="h6 mb-0">No</span>
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-5">
+                            <label class="form-label" for="remarks">Remarks</label>
+                            <textarea class="form-control" name="remarks" id="remarks"></textarea>
+                          </div>
+                          <div class="d-flex justify-content-sm-between justify-content-start mt-6 gap-2">
+                            <div class="d-flex">
+                              <button type="submit" class="btn btn-primary btn-add-event me-4">Saveee</button>
+                              <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1" data-bs-dismiss="offcanvas">Cancel</button>
+                            </div>
+                            <button class="btn btn-label-danger btn-delete-event d-none">Delete</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+
+                  <!-- Update Booking Sidebar -->
+                  <form method='post' 
+                        id="updateBookingForm"
+                        action="{{ route('booking.update')}}"
                         data-update-route="{{ route('booking.update')}}">
-                  @csrf
-                  @method('POST')
-                  <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="addEventSidebar" >
-                    <div class="offcanvas-header border-bottom">
-                      <h5 class="offcanvas-title">Add Bookinggg</h5>
-                      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                      <div class="event-form pt-0">
-                        <div class="mb-5">
-                          <label class="form-label" for="service_id">Select Services</label>
-                          <select class="select2 form-select" name="service_id" id="service_id">
-                            @foreach ($services as $service)
-                            <option value="{{$service->service_id}}">{{$service->service_name}}</option>
-                            @endforeach
-                          </select>
-                        </div>
-                        <div class="mb-5">
-                          <label class="form-label" for="status">Status</label>
-                          <select class="select2 form-select" name="status" id="status">
-                            <option selected>Pending</option>
-                            <option>Paid</option>
-                            <option>Cancelled</option>
-                            <option>Completed</option>
-                            <option>No Show</option>
-                          </select>
-                        </div>
-                        <div class="mb-5 form-control-validation">
-                          <label class="form-label" for="start_date">Start Date and Time</label>
-                          <input type="text" class="form-control flatpickr-input" id="start_date" name="start_date" placeholder="YYYY-MM-DD HH:MM" />
-                        </div>
-                        <div class="mb-5 form-control-validation">
-                          <label class="form-label" for="end_date">End Date and Time</label>
-                          <input type="text" class="form-control flatpickr-input" id="end_date" name="end_date" placeholder="YYYY-MM-DD HH:MM" />
-                        </div>
-                        <div class="mb-4">
-                          <label for="id" class="form-label">Assigned Staff</label>
-                          <select id="id" name="id" class="form-select select2">
-                            <option value="">Select a staff member</option>
-                            @foreach ($staffs as $staff)
-                            <option value="{{ $staff->id }}">{{ $staff->firstname }} {{ $staff->lastname }}</option>
-                            @endforeach
-                          </select>
-                        </div>
-                        <div class="mb-4">
-                          <label for="branch_code" class="form-label">Select Branch</label>
-                          <select id="branch_code" name="branch_code" class="form-select">
-                            @foreach ($branches as $branch)
-                            <option value="{{$branch->branch_code}}">{{$branch->branch_name}}</option>
-                            @endforeach
-                          </select>
-                        </div>
-                        <!-- Display validation errors with SweetAlert -->
-                        @if ($errors->any())
-                        <div class="alert alert-danger d-none" id="error-list">
-                          <ul>
-                            @foreach ($errors->all() as $error)
-                              <li>{{ $error }}</li>
-                            @endforeach
-                          </ul>
-                        </div>
-                        @endif
-                        <div class="mb-4">
-                          <label for="patient_id" class="form-label">Select Patient</label>
-                          <select id="patient_id" name="patient_id" class="form-select select2">
-                            <option value="">Select a patient</option>
-                            @foreach($patients as $patient)
-                              <option value="{{ $patient->patient_id }}">{{ $patient->firstname }} {{ $patient->lastname }}</option>
-                            @endforeach
-                          </select>
-                        </div>
-                        <div class="col-xl-12">
-                          <label class="form-label">Use Reward Points</label>
-                          <div class="row">
-                            <div class="col-md mb-md-0 mb-5">
-                              <div class="form-check custom-option custom-option-basic">
-                                <label class="form-check-label custom-option-content" for="useRewardYes">
-                                  <input name="useReward" class="form-check-input" type="radio" value="1" id="useRewardYes" checked />
-                                  <span class="custom-option-header">
-                                    <span class="h6 mb-0">Yes</span>
-                                  </span>
-                                </label>
+                    @csrf
+                    @method('PUT')
+                    <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="updateEventSidebar">
+                      <div class="offcanvas-header border-bottom">
+                        <h5 class="offcanvas-title">Update Booking</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                      </div>
+                      <div class="offcanvas-body">
+                        <div class="event-form pt-0">
+                          <input type="hidden" id="update_booking_id" name="booking_id">
+                          <div class="mb-5">
+                            <label class="form-label" for="update_service_id">Select Services</label>
+                            <select class="select2 form-select" name="service_id" id="update_service_id">
+                              @foreach ($services as $service)
+                              <option value="{{$service->service_id}}">{{$service->service_name}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="mb-5">
+                            <label class="form-label" for="update_status">Status</label>
+                            <select class="select2 form-select" name="status" id="update_status">
+                              <option>Pending</option>
+                              <option>Paid</option>
+                              <option>Cancelled</option>
+                              <option>Completed</option>
+                              <option>No Show</option>
+                            </select>
+                          </div>
+                          <div class="mb-5">
+                            <label class="form-label" for="update_start_date">Start Date and Time</label>
+                            <input type="text" class="form-control flatpickr-input" id="update_start_date" name="start_date" placeholder="YYYY-MM-DD HH:MM" />
+                          </div>
+                          <div class="mb-5">
+                            <label class="form-label" for="update_end_date">End Date and Time</label>
+                            <input type="text" class="form-control flatpickr-input" id="update_end_date" name="end_date" placeholder="YYYY-MM-DD HH:MM" />
+                          </div>
+                          <div class="mb-4">
+                            <label for="update_staff_id" class="form-label">Assigned Staff</label>
+                            <select id="update_staff_id" name="id" class="form-select select2">
+                              <option value="">Select a staff member</option>
+                              @foreach ($staffs as $staff)
+                              <option value="{{ $staff->id }}">{{ $staff->firstname }} {{ $staff->lastname }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="mb-4">
+                            <label for="update_branch_code" class="form-label">Select Branch</label>
+                            <select id="update_branch_code" name="branch_code" class="form-select">
+                              @foreach ($branches as $branch)
+                              <option value="{{$branch->branch_code}}">{{$branch->branch_name}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="mb-4">
+                            <label for="update_patient_id" class="form-label">Select Patient</label>
+                            <select id="update_patient_id" name="patient_id" class="form-select select2">
+                              <option value="">Select a patient</option>
+                              @foreach($patients as $patient)
+                                <option value="{{ $patient->patient_id }}">{{ $patient->firstname }} {{ $patient->lastname }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="col-xl-12">
+                            <label class="form-label">Use Reward Points</label>
+                            <div class="row">
+                              <div class="col-md mb-md-0 mb-5">
+                                <div class="form-check custom-option custom-option-basic">
+                                  <label class="form-check-label custom-option-content" for="updateUseRewardYes">
+                                    <input name="useReward" class="form-check-input" type="radio" value="1" id="updateUseRewardYes" />
+                                    <span class="custom-option-header">
+                                      <span class="h6 mb-0">Yes</span>
+                                    </span>
+                                  </label>
+                                </div>
                               </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-check custom-option custom-option-basic">
-                                <label class="form-check-label custom-option-content" for="useRewardNo">
-                                  <input name="useReward" class="form-check-input" type="radio" value="0" id="useRewardNo" />
-                                  <span class="custom-option-header">
-                                    <span class="h6 mb-0">No</span>
-                                  </span>
-                                </label>
+                              <div class="col-md">
+                                <div class="form-check custom-option custom-option-basic">
+                                  <label class="form-check-label custom-option-content" for="updateUseRewardNo">
+                                    <input name="useReward" class="form-check-input" type="radio" value="0" id="updateUseRewardNo" />
+                                    <span class="custom-option-header">
+                                      <span class="h6 mb-0">No</span>
+                                    </span>
+                                  </label>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="mb-5">
-                          <label class="form-label" for="remarks">Remarks</label>
-                          <textarea class="form-control" name="remarks" id="remarks"></textarea>
-                        </div>
-                        <div class="d-flex justify-content-sm-between justify-content-start mt-6 gap-2">
-                          <div class="d-flex">
-                            <button type="submit" class="btn btn-primary btn-add-event me-4">Save</button>
-                            <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1" data-bs-dismiss="offcanvas">Cancel</button>
+                          <div class="mb-5">
+                            <label class="form-label" for="update_remarks">Remarks</label>
+                            <textarea class="form-control" name="remarks" id="update_remarks"></textarea>
                           </div>
-                          <button class="btn btn-label-danger btn-delete-event d-none">Delete</button>
+                          <div class="d-flex justify-content-sm-between justify-content-start mt-6 gap-2">
+                            <div class="d-flex">
+                              <button type="submit" class="btn btn-primary btn-update-event me-4" onclick="return validateUpdateForm()">Update</button>
+                              <button type="reset" class="btn btn-label-secondary btn-cancel" data-bs-dismiss="offcanvas">Cancel</button>
+                            </div>
+                            <button type="button" class="btn btn-label-danger btn-delete-event">Delete</button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </form>
-                <!-- Update Event Sidebar -->
-                <form method='post' action="{{ route('booking.update')}}" id="updateBookingForm">
-                  @csrf
-                  @method('PUT')
-                  <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="updateEventSidebar">
-                    <div class="offcanvas-header border-bottom">
-                      <h5 class="offcanvas-title">Update Bookinggg</h5>
-                      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                      <div class="event-form pt-0">
-                        <input type="hidden" id="update_booking_id" name="booking_id">
-                        <div class="mb-5">
-                          <label class="form-label" for="update_service_id">Select Services</label>
-                          <select class="select2 form-select" name="service_id" id="update_service_id">
-                            @foreach ($services as $service)
-                            <option value="{{$service->service_id}}">{{$service->service_name}}</option>
-                            @endforeach
-                          </select>
-                        </div>
-                        <div class="mb-5">
-                          <label class="form-label" for="update_status">Status</label>
-                          <select class="select2 form-select" name="status" id="update_status">
-                            <option>Pending</option>
-                            <option>Paid</option>
-                            <option>Cancelled</option>
-                            <option>Completed</option>
-                            <option>No Show</option>
-                          </select>
-                        </div>
-                        <div class="mb-5">
-                          <label class="form-label" for="update_start_date">Start Date and Time</label>
-                          <input type="text" class="form-control flatpickr-input" id="update_start_date" name="start_date" placeholder="YYYY-MM-DD HH:MM" />
-                        </div>
-                        <div class="mb-5">
-                          <label class="form-label" for="update_end_date">End Date and Time</label>
-                          <input type="text" class="form-control flatpickr-input" id="update_end_date" name="end_date" placeholder="YYYY-MM-DD HH:MM" />
-                        </div>
-                        <div class="mb-4">
-                          <label for="update_staff_id" class="form-label">Assigned Staff</label>
-                          <select id="update_staff_id" name="id" class="form-select select2">
-                            <option value="">Select a staff member</option>
-                            @foreach ($staffs as $staff)
-                            <option value="{{ $staff->id }}">{{ $staff->firstname }} {{ $staff->lastname }}</option>
-                            @endforeach
-                          </select>
-                        </div>
-                        <div class="mb-4">
-                          <label for="update_branch_code" class="form-label">Select Branch</label>
-                          <select id="update_branch_code" name="branch_code" class="form-select">
-                            @foreach ($branches as $branch)
-                            <option value="{{$branch->branch_code}}">{{$branch->branch_name}}</option>
-                            @endforeach
-                          </select>
-                        </div>
-                        <div class="mb-4">
-                          <label for="update_patient_id" class="form-label">Select Patient</label>
-                          <select id="update_patient_id" name="patient_id" class="form-select select2">
-                            <option value="">Select a patient</option>
-                            @foreach($patients as $patient)
-                              <option value="{{ $patient->patient_id }}">{{ $patient->firstname }} {{ $patient->lastname }}</option>
-                            @endforeach
-                          </select>
-                        </div>
-                        <div class="col-xl-12">
-                          <label class="form-label">Use Reward Points</label>
-                          <div class="row">
-                            <div class="col-md mb-md-0 mb-5">
-                              <div class="form-check custom-option custom-option-basic">
-                                <label class="form-check-label custom-option-content" for="updateUseRewardYes">
-                                  <input name="useReward" class="form-check-input" type="radio" value="1" id="updateUseRewardYes" />
-                                  <span class="custom-option-header">
-                                    <span class="h6 mb-0">Yes</span>
-                                  </span>
-                                </label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-check custom-option custom-option-basic">
-                                <label class="form-check-label custom-option-content" for="updateUseRewardNo">
-                                  <input name="useReward" class="form-check-input" type="radio" value="0" id="updateUseRewardNo" />
-                                  <span class="custom-option-header">
-                                    <span class="h6 mb-0">No</span>
-                                  </span>
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="mb-5">
-                          <label class="form-label" for="update_remarks">Remarks</label>
-                          <textarea class="form-control" name="remarks" id="update_remarks"></textarea>
-                        </div>
-                        <div class="d-flex justify-content-sm-between justify-content-start mt-6 gap-2">
-                          <div class="d-flex">
-                            <button type="submit" class="btn btn-primary btn-update-event me-4">Update</button>
-                            <button type="reset" class="btn btn-label-secondary btn-cancel" data-bs-dismiss="offcanvas">Cancel</button>
-                          </div>
-                          <button type="button" class="btn btn-label-danger btn-delete-event">Delete</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-                <!-- /Update Event Sidebar -->
+                  </form>
                 </div>
                 <!-- /Calendar & Modal -->
               </div>
             </div>
           </div>
           <!-- / Content -->
+
+          <!-- Custom validation script --> 
+          <script>
+            function validateUpdateForm() {
+              const bookingId = document.getElementById('update_booking_id').value;
+              
+              if (!bookingId) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Form Validation Error', 
+                  text: 'Booking ID is missing. Please try again.',
+                  confirmButtonText: 'OK'
+                });
+                return false;
+              }
+
+              // Show loading state
+              Swal.fire({
+                title: 'Updating booking...',
+                text: 'Please wait',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                  Swal.showLoading();
+                }
+              });
+              
+              return true;
+            }
+          </script>
+
           <!-- Footer -->
           <footer class="content-footer footer bg-footer-theme">
             <div class="container-xxl">
