@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 
-
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CategoryListController;
 use App\Http\Controllers\ExpensesController;
@@ -51,6 +51,7 @@ Route::get('/commision-employee', [DashboardController::class, 'commision_employ
 
 
 Route::get('/purchase', [DashboardController::class, 'purchase'])->name('page.purchase');
+Route::get('/purchase', [PurchaseController::class, 'index'])->name('purchase.index');
 
 
 Route::get('/void-logs', [DashboardController::class, 'void_logs'])->name('page.void-logs');

@@ -567,51 +567,47 @@ background-color: #d1ecf1; /* Light cyan */
           <div class="container-xxl flex-grow-1 container-p-y">
    
 
-       
-
-       
-    
 
     <h4 class="fw-bold py-3 mb-4">Purchases</h4>
    
     <div class="card mb-3">
-      <div class="card-body">
-          <div class="row">
-              <div class="col-md-3">
-                  <div class="card card-custom card-total-purchase">
-                      <div class="card-body">
-                          <p class="card-text"><strong>Total Purchase</strong></p>
-                          <h4 class="text-black">₱5,071,472.50</h4>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-md-3">
-                  <div class="card card-custom card-monthly-purchase">
-                      <div class="card-body">
-                          <p class="card-text"><strong>Monthly Product Purchase</strong></p>
-                          <h4 class="text-black">₱1,070,500.00</h4>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-md-3">
-                  <div class="card card-custom card-weekly-purchase">
-                      <div class="card-body">
-                          <p class="card-text"><strong>Weekly Product Purchase</strong></p>
-                          <h4 class="text-black">₱4,000,972.50</h4>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-md-3">
-                  <div class="card card-custom card-most-ordered">
-                      <div class="card-body">
-                          <p class="card-text"><strong>Most Ordered Product</strong></p>
-                          <h5 class="text-black">Niacinamide serum/IMAJICA AQUA</h5>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card card-custom card-total-purchase">
+                        <div class="card-body">
+                            <p class="card-text"><strong>Total Purchase</strong></p>
+                            <h4 class="text-black">₱{{ number_format($stats['total_purchase'], 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-custom card-monthly-purchase">
+                        <div class="card-body">
+                            <p class="card-text"><strong>Monthly Product Purchase</strong></p>
+                            <h4 class="text-black">₱{{ number_format($stats['monthly_purchase'], 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-custom card-weekly-purchase">
+                        <div class="card-body">
+                            <p class="card-text"><strong>Weekly Product Purchase</strong></p>
+                            <h4 class="text-black">₱{{ number_format($stats['weekly_purchase'], 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-custom card-most-ordered">
+                        <div class="card-body">
+                            <p class="card-text"><strong>Most Ordered Product</strong></p>
+                            <h4 class="text-black">{{ $stats['most_ordered']->item_name ?? 'N/A' }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   
 
     <div class="card">
@@ -728,39 +724,45 @@ background-color: #d1ecf1; /* Light cyan */
 
   <script>
     $(document).ready(function() {
-        // Initialize DataTable
+        // Initialize DataTable with server-side data
         var table = $('#purchaseTablee').DataTable({
+            data: @json($purchases),
+            columns: [
+                { data: 'trans_no' },
+                { data: 'vendor_name' },
+                { data: 'product_ordered' },
+                { data: 'date_received',
+                  render: function(data) {
+                      return moment(data).format('YYYY-MM-DD');
+                  }
+                },
+                { data: 'received_by' },
+                { data: 'qty' },
+                { 
+                    data: 'amount',
+                    render: function(data) {
+                        return '₱' + parseFloat(data).toFixed(2);
+                    }
+                },
+                { data: 'payment_terms' },
+                {
+                    data: null,
+                    render: function(data) {
+                        return `<div class='d-flex gap-2'>
+                            <button class='btn btn-success'><i class="ti tabler-eye me-1"></i>View</button>
+                            <button class='btn btn-info'><i class="ti tabler-edit me-1"></i>Edit</button>
+                            <button class='btn btn-danger'><i class="ti tabler-trash me-1"></i>Delete</button>
+                        </div>`;
+                    }
+                }
+            ],
             processing: true,
             pageLength: 10,
             language: {
                 search: "",
-                searchPlaceholder: "Search."
+                searchPlaceholder: "Search..."
             }
         });
-
-        // Fetch and populate data
-        fetch('/assets/purchase.json')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(item => {
-                    table.row.add([
-                        item.trans_no,
-                        item.vendor_name,
-                        item.product_ordered,
-                        item.date_recieved,
-                        item.received_by,
-                        item.qty,
-                        item.amount,
-                        item.payment_terms,
-                        `<div class='d-flex gap-2'>
-                                    <button class='btn btn-success'><i class="ti tabler-eye me-1"></i>View</button>
-                                    <button class='btn btn-info'><i class="ti tabler-edit me-1"></i>Edit</button>
-                                    <button class='btn btn-danger'><i class="ti tabler-trash me-1"></i>Delete</button>
-                                </div>`
-                    ]).draw(false);
-                });
-            })
-            .catch(error => console.error('Error fetching the JSON data:', error));
     });
 </script>
 

@@ -430,7 +430,8 @@ class DashboardController extends Controller
 
     public function sales_transaction()
     {
-        return view('page.sales-transaction');
+            $sales = booking::all();
+        return view('page.sales-transaction', compact('sales'));
     }
     public function employee_sales()
     {
