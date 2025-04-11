@@ -577,7 +577,9 @@ background-color: #d1ecf1; /* Light cyan */
                     <div class="card card-custom card-total-voided">
                         <div class="card-body">
                             <p class="card-text"><strong>Total Voided Sales</strong></p>
-                            <h4 class="text-black">₱239,000.00</h4>
+                            <h4 class="text-black">₱{{ number_format($voids->where('status', 'Cancelled')->sum(function($void) {
+                                return $void->service ? $void->service->service_cost : $void->service_cost;
+                            }), 2) }}</h4>
                         </div>
                     </div>
                 </div>
@@ -585,7 +587,12 @@ background-color: #d1ecf1; /* Light cyan */
                     <div class="card card-custom card-monthly-voided">
                         <div class="card-body">
                             <p class="card-text"><strong>Monthly Voided Sales</strong></p>
-                            <h4 class="text-black">₱500.00</h4>
+                            <h4 class="text-black">₱{{ number_format($voids->where('status', 'Cancelled')
+                                ->filter(function($void) {
+                                    return \Carbon\Carbon::parse($void->start_date)->isCurrentMonth();
+                                })->sum(function($void) {
+                                    return $void->service ? $void->service->service_cost : $void->service_cost;
+                                }), 2) }}</h4>
                         </div>
                     </div>
                 </div>
@@ -593,7 +600,12 @@ background-color: #d1ecf1; /* Light cyan */
                     <div class="card card-custom card-weekly-voided">
                         <div class="card-body">
                             <p class="card-text"><strong>Weekly Voided Sales</strong></p>
-                            <h4 class="text-black">₱972.50</h4>
+                            <h4 class="text-black">₱{{ number_format($voids->where('status', 'Cancelled')
+                                ->filter(function($void) {
+                                    return \Carbon\Carbon::parse($void->start_date)->isCurrentWeek();
+                                })->sum(function($void) {
+                                    return $void->service ? $void->service->service_cost : $void->service_cost;
+                                }), 2) }}</h4>
                         </div>
                     </div>
                 </div>
@@ -601,7 +613,12 @@ background-color: #d1ecf1; /* Light cyan */
                     <div class="card card-custom card-daily-voided">
                         <div class="card-body">
                             <p class="card-text"><strong>Daily Voided Sales</strong></p>
-                            <h4 class="text-black">₱0.00</h4>
+                            <h4 class="text-black">₱{{ number_format($voids->where('status', 'Cancelled')
+                                ->filter(function($void) {
+                                    return \Carbon\Carbon::parse($void->start_date)->isToday();
+                                })->sum(function($void) {
+                                    return $void->service ? $void->service->service_cost : $void->service_cost;
+                                }), 2) }}</h4>
                         </div>
                     </div>
                 </div>
@@ -617,17 +634,35 @@ background-color: #d1ecf1; /* Light cyan */
                     <thead class= "table-light">
                         <tr>
                             <th>Id</th>
-                            <th>Receipt No.</th>
-                            <th>Item</th>
+                            <th>Service</th>
                             <th>Customer</th>
-                            <th>Cashier</th>
+                            <th>Staff</th>
+
                             <th>Amount Voided</th>
-                            <th>Voided By</th>
+                            <th>Status</th>
                           <th>Date Voided</th>
+                          <th>Branch</th>
                           <th>Actions</th>
                         </tr>
                     </thead>
-                   
+                   <tbody>
+                    @foreach ($voids->where('status', 'Cancelled') as $void)
+                        <tr>
+                            <td>{{ $void->booking_id }}</td>
+                            <td>{{ $void->service ? $void->service->service_name : $void->service_name }}</td>
+                            <td>{{ $void->patient ? $void->patient->firstname . ' ' . $void->patient->lastname : $void->firstname . ' ' . $void->lastname }}</td>
+                            <td>{{ $void->staff ? $void->staff->firstname . ' ' . $void->staff->lastname : $void->firstname . ' ' . $void->lastname }}</td>
+                            <td>₱{{ number_format($void->service ? $void->service->service_cost : $void->service_cost, 2) }}</td>
+                            <td>{{ $void->status }}</td>
+                            <td>{{ $void->start_date }}</td>
+                            <td>{{ $void->branch ? $void->branch->branch_name : $void->branch_name }}</td>
+                            <td>
+                                <a href="#" class="btn btn-success "> <i class="ti tabler-eye me-1"></i>View</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                   </tbody>
+                  
                 </table>
             </div>
           </div>
@@ -732,30 +767,7 @@ background-color: #d1ecf1; /* Light cyan */
   <script>
       $(document).ready(function () {
         var table = $("#voidTable").DataTable({
-            ajax: {
-                url: '/assets/void-logs.json', // Adjusted relative path to your JSON
-                dataSrc: '' // Assuming the JSON is an array of objects
-            },
-            columns: [
-                { data: 'id' },
-                { data: 'receipt_no' },
-                { data: 'item' },
-                { data: 'customer' },
-                { data: 'cashier' },
-                { data: 'amount_voided' },
-                { data: 'voided_by' },
-                { data: 'date_voided' },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return `<div class='d-flex gap-2'>
-                                    <button class='btn btn-success'><i class="ti tabler-eye me-1"></i>View</button>
-                                    <button class='btn btn-info'><i class="ti tabler-edit me-1"></i>Edit</button>
-                                    <button class='btn btn-danger'><i class="ti tabler-trash me-1"></i>Delete</button>
-                                </div>`;
-                    }
-                }
-            ]
+        
         });
     });
 </script>

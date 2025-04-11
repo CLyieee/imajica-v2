@@ -326,8 +326,10 @@ class DashboardController extends Controller
 
     public function new_staff()
     {
+        $positions = positionModel::all();
+        $departments = Department::all();
         $branches = Branch::all();
-        return view('page.new-staff', compact('branches'));
+        return view('page.new-staff', compact('branches', 'positions', 'departments'));
     }
     
 
@@ -448,7 +450,9 @@ class DashboardController extends Controller
     }
     public function void_logs()
     {
-        return view('page.void-logs');
+        $voids = booking::all();
+        return view('page.void-logs' , compact('voids'));
+
     }
     public function product_list()
     {

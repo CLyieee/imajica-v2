@@ -174,7 +174,7 @@ Route::post('/booking/create', [BookingController::class, 'create'])->name('book
 Route::get('/booking/all', [BookingController::class, 'get_bookings'])->name('get.bookings');
 Route::put('/booking/update', [BookingController::class, 'update'])->name('booking.update');
 Route::delete('/booking/delete', [BookingController::class, 'delete'])->name('booking.delete');
-
+Route::get('/get-calendar-bookings', [BookingController::class, 'getCalendarBookings']);
 
 
 Route::get('/position-list', [DashboardController::class, 'position_list'])->name('page.position-list');
