@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Patient;
+use App\Models\tier;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class patientController extends Controller
@@ -12,22 +14,14 @@ class patientController extends Controller
     public function create(Request $request)
     {
         try {
-            // Log the raw request data for debugging
-            Log::info('Patient creation request data', [
-                'all_data' => $request->all(),
-                'file' => $request->hasFile('image_path') ? 'Image file present' : 'No image file'
-            ]);
-            
-            // Validate the form data with less strict requirements
-            $data = $request->validate([
-                'image_path' => 'nullable',
+            $validatedData = $request->validate([
                 'firstname' => 'required|string|max:255',
                 'lastname' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
                 'contact_number' => 'required|string|max:20',
                 'birthdate' => 'required|date',
-                'gender' => 'required|string',
-                'patient_tier_id' => 'required|numeric|exists:tiers,patient_tier_id',
+                'gender' => 'required|in:male,female',
+                'patient_tier_id' => 'required|exists:tiers,patient_tier_id',
                 'occupation' => 'nullable|string|max:255',
                 'address' => 'required|string',
                 'emergency_contact_name' => 'nullable|string|max:255',
@@ -35,51 +29,27 @@ class patientController extends Controller
                 'medical_concerns' => 'nullable|string',
                 'current_medications' => 'nullable|string',
                 'note_from_admin' => 'nullable|string',
-
+                'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
             ]);
 
-            // Initialize data array without the image_path
-            $patientData = $request->except('image_path', '_token', '_method');
-            
-            // Handle image upload if present
+            // Handle image upload
             if ($request->hasFile('image_path')) {
-                $patientData['image_path'] = $request->file('image_path')->store('patients', 'public');
-                $patientData['created_at'] = now();
-$patientData['updated_at'] = now();
+                $image = $request->file('image_path');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('patient_images'), $imageName);
+                $validatedData['image_path'] = 'patient_images/' . $imageName;
+            } else {
+                // If no image uploaded, set to null or a default image path
+                $validatedData['image_path'] = null;
             }
-            
-            // Create the patient record
-            $newPatient = Patient::create($patientData);
-            
-            // Log success for debugging
-            Log::info('Patient created successfully', ['patient_id' => $newPatient->id]);
-            
-            return redirect()->route('page.new-patient')->with('success', 'Patient added successfully!');
-        } catch (ValidationException $e) {
-            // For validation errors, get the detailed error messages
-            $errors = $e->validator->errors()->all();
-            $errorMsg = implode(', ', $errors);
-            
-            Log::error('Validation error when creating patient', [
-                'errors' => $errors,
-                'data' => $request->all()
-            ]);
-            
-            return redirect()->back()
-                ->withErrors($e->validator)
-                ->withInput()
-                ->with('error', 'Validation error: ' . $errorMsg);
+
+            $patient = Patient::create($validatedData);
+
+            return redirect()->back()->with('success', 'Patient created successfully!');
         } catch (\Exception $e) {
-            // For other errors
-            Log::error('Error creating patient', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                'data' => $request->all()
-            ]);
-            
             return redirect()->back()
-                ->withInput()
-                ->with('error', 'Error creating patient: ' . $e->getMessage());
+                ->with('error', 'Error creating patient: ' . $e->getMessage())
+                ->withInput();
         }
     }
 
@@ -144,25 +114,40 @@ $patientData['updated_at'] = now();
     public function destroy($id)
     {
         try {
-            $patient = Patient::where('patient_id', $id)->first();
+            $patient = Patient::findOrFail($id);
             
-            if (!$patient) {
-                return redirect()->route('page.patient-list')
-                    ->with('error', 'Patient not found');
+            // Delete any associated files/images if needed
+            if ($patient->image_path) {
+                Storage::delete('public/' . $patient->image_path);
             }
-
+            
             // Delete the patient
             $patient->delete();
-
+            
+            // Return JSON response for AJAX requests
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Patient deleted successfully'
+                ]);
+            }
+            
+            // Return redirect for regular form submission
             return redirect()->route('page.patient-list')
                 ->with('success', 'Patient deleted successfully');
                 
         } catch (\Exception $e) {
             Log::error('Error deleting patient', [
                 'patient_id' => $id,
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'error' => $e->getMessage()
             ]);
+            
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to delete patient: ' . $e->getMessage()
+                ], 500);
+            }
             
             return redirect()->route('page.patient-list')
                 ->with('error', 'Failed to delete patient: ' . $e->getMessage());
@@ -171,6 +156,14 @@ $patientData['updated_at'] = now();
     
     public function index()
     {
-        return view('page.new-patient');
+        $tiers = tier::all();
+        return view('page.new-patient', compact('tiers'));
+    }
+
+
+    public function show($id)
+    {
+        $patient = Patient::findOrFail($id);
+        return view('page.patient-details', compact('patient'));
     }
 }

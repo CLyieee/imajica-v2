@@ -26,6 +26,9 @@
     <title>Imajica Booking System</title>
     <meta name="description" content="Imajica Booking System" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
     
     <!-- Include the same CSS as staff-list -->
     <link rel="stylesheet" href="../../assets/vendor/fonts/iconify-icons.css" />
@@ -58,7 +61,7 @@
               <div class="card">
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center p-3">
-                  <h5 class="card-title mb-5">Position List</h5>
+                  <h4 class="card-title mb-5">Position List</h4>
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPositionModal">
                     <i class="ti tabler-plus me-1"></i> Add New Position
                   </button>
@@ -68,8 +71,8 @@
                 <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
 
                 <!-- Table -->
-                <div class="table-responsive text-nowrap px-3">
-                  <table class="table table-striped" id="positionTable">
+                <div class="table-responsive text-nowrap px-3" >
+                  <table class="table table-striped" id="branchTable" style="width: 100%;">
                     <thead class="table-light">
                       <tr>
                         <th>Position Title</th>
@@ -268,6 +271,13 @@
     <script src="../../assets/vendor/js/bootstrap.js"></script>
     <script src="../../assets/vendor/js/menu.js"></script>
     <script src="../../assets/js/main.js"></script>
+
+    <!-- DataTables Scripts -->
+    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/datatables/jquery.dataTables.js"></script>
+    <script src="../../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/datatables-responsive/datatables.responsive.js"></script>
+    <script src="../../assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js"></script>
     
     <!-- Add SweetAlert2 library -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -367,12 +377,14 @@
             const submitBtn = $(this).find('button[type="submit"]');
             submitBtn.prop('disabled', true);
             
+            // Clear any existing error messages
+            $('.error-feedback').remove();
+            
             $.ajax({
                 url: '{{ route("position.create") }}',
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function(response) {
-                    // Show success message before hiding modal
                     Swal.fire({
                         ...swalConfig,
                         icon: 'success',
@@ -386,6 +398,29 @@
                 },
                 error: function(xhr) {
                     submitBtn.prop('disabled', false);
+                    
+                    if (xhr.status === 422) { // Validation error
+                        const errors = xhr.responseJSON.errors;
+                        Object.keys(errors).forEach(field => {
+                            const input = $(`[name="${field}"]`);
+                            input.addClass('is-invalid');
+                            input.after(`<div class="invalid-feedback error-feedback">${errors[field][0]}</div>`);
+                        });
+                        
+                        Swal.fire({
+                            ...swalConfig,
+                            icon: 'error',
+                            title: 'Validation Error',
+                            text: 'Please check the form for errors'
+                        });
+                    } else {
+                        Swal.fire({
+                            ...swalConfig,
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to create position. Please try again.'
+                        });
+                    }
                 }
             });
         });
@@ -495,31 +530,31 @@
             const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
             $('#responseMessage').removeClass('alert-success alert-danger').addClass(alertClass).html(message).fadeIn().delay(3000).fadeOut();
         }
+
+        $('#branchTable').DataTable({
+          responsive: true,
+          order: [[0, 'asc']],
+          pageLength: 10,
+          language: {
+            paginate: {
+              first: '<i class="ti tabler-chevrons-left"></i>',
+              previous: '<i class="ti tabler-chevron-left"></i>', 
+              next: '<i class="ti tabler-chevron-right"></i>',
+              last: '<i class="ti tabler-chevrons-right"></i>'
+            }
+          },
+          drawCallback: function () {
+            // Re-init tooltips after draw
+            $('.dt-buttons .btn').tooltip();
+          },
+          dom: 
+            "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        });
       });
     </script>
-  <script>
-    $(document).ready(function() {
-        $('#positionTable').DataTable({
-            dom: '<"card-header pb-0"<"head-label"><"dt-action-buttons text-end"B>><"d-flex justify-content-between align-items-center row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
-            '<"table-responsive"t>' +
-            '<"d-flex justify-content-between row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            lengthMenu: [
-                [10, 25, 50, 100, -1], 
-                [10, 25, 50, 100, 'All']
-            ],
-            pageLength: 10,
-            language: {
-                search: "",
-                searchPlaceholder: "Search Positions",
-                lengthMenu: "_MENU_ entries per page"
-            },
-            order: [[0, 'asc']],
-            columnDefs: [
-                { orderable: false, targets: 4 } // Disable sorting on Actions column
-            ]
-        });
-    });
-  </script>
 
   </body>
 </html>
+``` 

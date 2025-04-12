@@ -42,7 +42,7 @@
     <link rel="canonical" href="Imajica Booking System" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="logo.png" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -196,8 +196,8 @@
                         </td>
                         <td>{{ $staff->firstname }} {{ $staff->lastname }}</td>
                         <td>{{ $staff->email }}</td>
-                        <td>{{ $staff->position }}</td>
-                        <td>{{ $staff->department }}</td>
+                        <td>{{ $staff->position ? $staff->position->position_name : $staff->position_id }}</td>
+                        <td>{{ $staff->department ? $staff->department->department_name : $staff->department_code }}</td>
                         <td>{{ $staff->contact_number }}</td>
                         <td>
                           @if($staff->branch_code)

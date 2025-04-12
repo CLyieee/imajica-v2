@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\positionModel;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class PositionController extends Controller
 {
@@ -14,7 +15,7 @@ class PositionController extends Controller
             Log::info('Incoming position data:', $request->all());
             
             $validatedData = $request->validate([
-                'position_name' => 'required|string|max:255',
+                'position_name' => 'required|string|max:255|unique:position,position_name',
                 'department_code' => 'required|exists:departments,department_code',
                 'description' => 'required|string',
                 'status' => 'nullable|boolean',
@@ -24,39 +25,61 @@ class PositionController extends Controller
             $lastPosition = positionModel::orderBy('position_id', 'desc')->first();
             $nextId = $lastPosition ? $lastPosition->position_id + 1 : 1;
             
+            // Ensure status is properly set
             $validatedData['position_id'] = $nextId;
-            $validatedData['status'] = $request->has('status');
+            $validatedData['status'] = $request->has('status') ? 1 : 0;
 
             Log::info('Creating position with data:', $validatedData);
             
-            $position = positionModel::create($validatedData);
+            DB::beginTransaction();
+            try {
+                $position = positionModel::create($validatedData);
+                DB::commit();
+                
+                Log::info('Position created successfully:', $position->toArray());
 
-            // Return JSON response if request wants JSON
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Position created successfully',
-                    'data' => $position
-                ], 201);
+                if ($request->wantsJson()) {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Position created successfully',
+                        'data' => $position
+                    ], 201);
+                }
+
+                return redirect()->route('page.position-list')
+                                ->with('success', 'Position created successfully!');
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw $e;
             }
-
-            // Otherwise redirect back to position list with success message
-            return redirect()->route('page.position-list')
-                            ->with('success', 'Position created successfully!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation error:', ['errors' => $e->errors()]);
-            return response()->json([
-                'status' => false,
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
-            ], 422);
+            
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'The given data was invalid.',
+                    'errors' => $e->errors()
+                ], 422);
+            }
+            
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+                
         } catch (\Exception $e) {
             Log::error('Error creating position:', ['error' => $e->getMessage()]);
-            return response()->json([
-                'status' => false,
-                'message' => 'Error creating position: ' . $e->getMessage()
-            ], 500);
+            
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Error creating position',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+            
+            return redirect()->back()
+                ->with('error', 'Error creating position: ' . $e->getMessage())
+                ->withInput();
         }
     }
 

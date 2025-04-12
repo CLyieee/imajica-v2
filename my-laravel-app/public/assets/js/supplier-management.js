@@ -128,75 +128,69 @@ $(document).ready(function () {
 
     // Get supplier data for editing
     $(document).on("click", ".edit-supplier", function () {
-        const supplierId = $(this).data("id");
+        const data = $(this).data();
+        
+        // Populate form fields with data attributes
+        $("#edit_supplier_id").val(data.id);
+        $("#edit_supplier_name").val(data.name);
+        $("#edit_email").val(data.email);
+        $("#edit_contact_person").val(data.contact);
+        $("#edit_phone").val(data.phone);
+        $("#edit_address").val(data.address);
+        $("#edit_status").val(data.status);
+
+        // Show modal
+        $("#editSupplierModal").modal("show");
+    });
+
+    // Form submission for updating a supplier
+    $("#editSupplierForm").on("submit", function (e) {
+        e.preventDefault();
+        const supplierId = $("#edit_supplier_id").val();
+
+        // Disable submit button 
+        $("#updateSupplierBtn").prop("disabled", true).html("Processing...");
+        
+        // Get form data
+        const formData = $(this).serialize();
 
         $.ajax({
-            url: supplierRoutes.get.replace("__ID__", supplierId),
-            type: "GET",
+            url: supplierRoutes.update.replace("__ID__", supplierId),
+            type: "POST", // Change to POST since we're using @method('PUT') in form
+            data: formData,
             dataType: "json",
             success: function (response) {
                 if (response.status) {
-                    const supplier = response.data;
-
-                    // Populate form fields
-                    $("#edit_supplier_id").val(supplier.id);
-                    $("#edit_supplier_name").val(supplier.supplier_name);
-                    $("#edit_email").val(supplier.email);
-                    $("#edit_contactNumber").val(supplier.contactNumber);
-                    $("#edit_supplier_type").val(supplier.supplier_type);
-                    $("#edit_address").val(supplier.address);
-                    $("#edit_product_offered").val(supplier.product_offered);
-                    $("#edit_notes").val(supplier.notes);
-
-                    // Show modal if it exists
-                    if ($("#editSupplierModal").length) {
-                        $("#editSupplierModal").modal("show");
-                    }
+                    // Close modal
+                    $("#editSupplierModal").modal("hide");
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.reload();
+                    });
                 } else {
-                    showMessage("error", response.message);
+                    showMessage("error", response.message || "Failed to update supplier");
                 }
             },
             error: function (xhr) {
                 handleAjaxError(xhr);
+                $("#updateSupplierBtn").prop("disabled", false).html("Update Supplier");
             },
+            complete: function() {
+                $("#updateSupplierBtn").prop("disabled", false).html("Update Supplier");
+            }
         });
     });
 
-    // View supplier details
+    // View supplier details 
     $(document).on("click", ".view-supplier", function () {
-        const supplierId = $(this).data("id");
-
-        $.ajax({
-            url: supplierRoutes.get.replace("__ID__", supplierId),
-            type: "GET",
-            dataType: "json",
-            success: function (response) {
-                if (response.status) {
-                    const supplier = response.data;
-
-                    // Update modal content
-                    $("#modalSupplierName").text(supplier.supplier_name);
-                    $("#modalEmail").text(supplier.email);
-                    $("#modalContact").text(supplier.contactNumber);
-                    $("#modalType").text(supplier.supplier_type);
-                    $("#modalAddress").text(supplier.address);
-                    $("#modalProducts").text(
-                        supplier.product_offered || "Not specified"
-                    );
-                    $("#modalNotes").text(
-                        supplier.notes || "No additional notes"
-                    );
-
-                    // Show modal
-                    $("#supplierModal").modal("show");
-                } else {
-                    showMessage("error", response.message);
-                }
-            },
-            error: function (xhr) {
-                handleAjaxError(xhr);
-            },
-        });
+        // The modal will be handled by the blade template event listener
+        // This function can be removed or used for additional functionality
     });
 
     // Function to load all suppliers
@@ -241,17 +235,17 @@ $(document).ready(function () {
                     <td>
                         <div class="d-flex gap-2">
                             <button class="btn btn-sm btn-success view-supplier" data-id="${
-                                supplier.id
+                                supplier.suppler_id
                             }">
                                  View
                             </button>
                             <button class="btn btn-sm btn-info edit-supplier" data-id="${
-                                supplier.id
+                                supplier.suppler_id
                             }">
                                 <i class="ti tabler-edit me-1"></i> Edit
                             </button>
                             <button class="btn btn-sm btn-danger delete-supplier" data-id="${
-                                supplier.id
+                                supplier.suppler_id
                             }" data-name="${supplier.supplier_name}">
                                 <i class="ti tabler-trash me-1"></i> Delete
                             </button>

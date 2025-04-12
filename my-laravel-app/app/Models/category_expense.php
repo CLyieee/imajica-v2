@@ -11,7 +11,7 @@ class category_expense extends Model
 
     protected $table = 'category_expenses';
     protected $primaryKey = 'category_expense_id';
-    public $incrementing = false;
+    public $incrementing = true;
     public $timestamps = false;
     protected $fillable = [
         'name',

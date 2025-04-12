@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\category_expense;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class category_expenseController extends Controller
 {
@@ -21,11 +22,16 @@ class category_expenseController extends Controller
 
         $category = category_expense::create($data);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Category created successfully',
-            'data' => $category
-        ]);
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Category created successfully',
+                'data' => $category
+            ]);
+        }
+
+        return redirect()->route('page.categoryexpenses-list')
+            ->with('success', 'Category created successfully');
     }
 
     public function getAll()
@@ -46,8 +52,21 @@ class category_expenseController extends Controller
 
     public function update(Request $request, $id)
     {
-        $category = category_expense::find($id);
-        if ($category) {
+        try {
+            // First try to convert ID to integer to ensure we're using the correct type
+            $id = (int) $id;
+            
+            // Log the attempt to update the category
+            Log::info('Attempting to update category expense', ['id' => $id]);
+            
+            $category = category_expense::find($id);
+            
+            if (!$category) {
+                Log::warning('Category expense not found for update', ['id' => $id]);
+                return redirect()->route('page.categoryexpenses-list')
+                    ->with('error', 'Category not found with ID: ' . $id);
+            }
+            
             $data = $request->validate([
                 'name' => 'required|string|max:255|unique:category_expenses,name,' . $id . ',category_expense_id',
                 'description' => 'nullable|string',
@@ -55,31 +74,116 @@ class category_expenseController extends Controller
 
             $category->update($data);
             
-            return response()->json([
-                'success' => true,
-                'message' => 'Category updated successfully',
-                'data' => $category
+            Log::info('Category expense updated successfully', [
+                'id' => $id, 
+                'name' => $category->name
             ]);
+            
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Category updated successfully',
+                    'data' => $category
+                ]);
+            }
 
-            return redirect(route('page.categoryexpenses-list'));
-        } else {
-            return response()->json(['message' => 'Category not found'], 404);
+            return redirect()->route('page.categoryexpenses-list')
+                ->with('success', 'Category updated successfully');
+        } catch (\Exception $e) {
+            Log::error('Error updating category expense', [
+                'id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'Error updating category: ' . $e->getMessage()
+                ], 500);
+            }
+            
+            return redirect()->back()->with('error', 'Error updating category: ' . $e->getMessage());
         }
     }
 
     public function delete($id)
     {
-        $category = category_expense::find($id);
-        if ($category) {
-            $category->delete();
+        try {
+            Log::info('Attempting to delete category expense', ['id' => $id]);
+            $category = category_expense::find($id);
             
-            if (request()->wantsJson()) {
-                return response()->json(['message' => 'Category deleted successfully']);
+            if (!$category) {
+                Log::warning('Category expense not found for deletion', ['id' => $id]);
+                
+                if (request()->wantsJson()) {
+                    return response()->json(['success' => false, 'message' => 'Category not found'], 404);
+                }
+                
+                return redirect()->back()->with('error', 'Category not found');
             }
             
-            return redirect()->back()->with('success', 'Category deleted successfully');
-        } else {
-            return response()->json(['message' => 'Category not found'], 404);
+            $category->delete();
+            Log::info('Category expense deleted successfully', ['id' => $id, 'name' => $category->name]);
+            
+            if (request()->wantsJson()) {
+                return response()->json(['success' => true, 'message' => 'Category deleted successfully']);
+            }
+            
+            return redirect()->route('page.categoryexpenses-list')
+                ->with('success', 'Category deleted successfully');
+                
+        } catch (\Exception $e) {
+            Log::error('Error deleting category expense', [
+                'id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'Error deleting category: ' . $e->getMessage()
+                ], 500);
+            }
+            
+            return redirect()->back()->with('error', 'Error deleting category: ' . $e->getMessage());
+        }
+    }
+
+    public function edit($id)
+    {
+        try {
+            // First try to convert ID to integer to ensure we're using the correct type
+            $id = (int) $id;
+            
+            // Log the attempt to find the category
+            Log::info('Attempting to find category expense for editing', ['id' => $id]);
+            
+            // Use find instead of findOrFail for additional error checking
+            $category = category_expense::find($id);
+            
+            if (!$category) {
+                Log::warning('Category expense not found for editing', ['id' => $id]);
+                return redirect()->route('page.categoryexpenses-list')
+                    ->with('error', 'Category not found with ID: ' . $id);
+            }
+            
+            Log::info('Successfully found category expense for editing', [
+                'id' => $id, 
+                'name' => $category->name
+            ]);
+            
+            return view('page.edit-category-expense', compact('category'));
+        } catch (\Exception $e) {
+            Log::error('Error finding category expense for editing', [
+                'id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return redirect()->route('page.categoryexpenses-list')
+                ->with('error', 'Error occurred while editing category: ' . $e->getMessage());
         }
     }
 }

@@ -20,8 +20,8 @@ class CreateStaffTable extends Migration
             $table->string('lastname');
             $table->string('email');
             $table->string('contact_number');
-            $table->string('position');  // Changed from date to string
-            $table->string('department');
+            $table->bigInteger('position_id');  // Changed from date to string
+            $table->string('department_code');
             $table->date('join_date');
             $table->string('employment_type');
             $table->string('branch_code');

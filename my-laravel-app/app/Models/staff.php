@@ -17,8 +17,8 @@ class Staff extends Model
         'lastname',
         'email',
         'contact_number',
-        'position',
-        'department',
+        'position_id',
+        'department_code',
         'join_date',
         'employment_type',
         'branch_code',
@@ -52,10 +52,16 @@ class Staff extends Model
         return $this->hasMany(Department::class, 'department_head');
     }
     
+public function position()
+    {
+        return $this->belongsTo(positionModel::class, 'position_id', 'position_id');
+    }
 
-    /**
-     * Get the full name of the staff.
-     */
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_code', 'department_code');
+    }
     public function getFullNameAttribute()
     {
         return "{$this->firstname} {$this->lastname}";

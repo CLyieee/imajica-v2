@@ -42,7 +42,7 @@
     <link rel="canonical" href="Imajica Booking System" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="logo.png" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -351,106 +351,287 @@
           <div class="content-wrapper">
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="card">
-                <!-- Branch Filter -->
+              <!-- Header Card -->
+              <div class="card mb-4">
                 <div class="d-flex justify-content-between align-items-center p-3">
                   <h5 class="card-title mb-0">Patient List</h5>
                   <a href="{{ route('page.new-patient') }}" class="btn btn-primary">
                     <i class="ti tabler-plus me-1"></i> Add New Patient
                   </a>
                 </div>
-
-
-                <!-- Success/Error Messages -->
-                <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
-
-                <!-- Table -->
-                <div class="table-responsive text-nowrap px-3">
-                  <table class="table table-striped">
-                    <thead class="table-light">
-                      <tr>
-                        <th>Profile</th>
-                        <th>Patient Name</th>
-                        <th>Email</th>
-                        <th>Gender</th>
-                        <th>Birth Date</th>
-                        <th>Contact Number</th>
-                        <th></th>
-                        <th></th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach ($patients as $patient)
-                      <tr>
-                        <td>
-                          <div class="avatar">
-                            @if($patient->image_path)
-                              <img src="{{ asset('storage/'.$patient->image_path) }}" alt="Avatar" class="rounded-circle">
-                            @else
-                              <span class="avatar-initial rounded-circle bg-label-success">
-                                {{ strtoupper(substr($patient->firstname ?? '', 0, 1) . substr($patient->lastname ?? '', 0, 1)) }}
-                              </span>
-                            @endif
-                          </div>
-                        </td>
-                        <td>{{ $patient->firstname }} {{ $patient->lastname }}</td>
-                        <td>{{ $patient->email ?? $patient->patient_name }}</td>
-                        <td>{{ $patient->gender ?? 'N/A' }}</td>
-                        <td>{{ $patient->birthdate ?? 'N/A' }}</td>
-                        <td>{{ $patient->contact_number ?? 'N/A' }}</td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                          <div class="d-inline-block">
-                            <button type="button" class="btn btn-sm btn-success view-patient"
-                              data-bs-toggle="modal"
-                              data-bs-target="#patientModal"
-                              data-id="{{ $patient->patient_id }}"
-                              data-name="{{ $patient->firstname }} {{ $patient->lastname }}"
-                              data-email="{{ $patient->email ?? '' }}"
-                              data-contact="{{ $patient->contact_number ?? '' }}"
-                              data-gender="{{ $patient->gender ?? '' }}"
-                              data-birthdate="{{ $patient->birthdate ?? '' }}"
-                              data-address="{{ $patient->address ?? '' }}"
-                              data-occupation="{{ $patient->occupation ?? '' }}"
-                              data-emergency-contact="{{ $patient->emergency_contact_name ?? '' }}"
-                              data-emergency-number="{{ $patient->emergency_contact_number ?? '' }}"
-                              data-patient-tier="{{ $patient->patient_tier_id ?? '' }}"
-                              data-joined="{{ $patient->created_at ? \Carbon\Carbon::parse($patient->created_at)->format('Y-m-d') : '' }}"
-                              @if($patient->image_path) 
-                                data-profile-image="{{ asset('storage/'.$patient->image_path) }}" 
-                              @endif
-                              data-medical-concerns="{{ $patient->medical_concerns ?? '' }}"
-                              data-medications="{{ $patient->current_medications ?? '' }}"
-                              data-admin-notes="{{ $patient->note_from_admin ?? '' }}">
-                              <i class="ti tabler-eye me-1"></i> View
-                            </button>
-                            <button type="button" class="btn btn-sm btn-info edit-patient"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editPatientModal"
-                              data-id="{{ $patient->patient_id }}">
-                              <i class="ti tabler-edit me-1"></i> Edit
-                            </button>
-                            <button type="button" class="btn btn-sm btn-danger delete-patient" 
-                              data-id="{{ $patient->patient_id }}"
-                              data-name="{{ $patient->firstname }} {{ $patient->lastname }}">
-                              <i class="ti tabler-trash me-1"></i> Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                      @endforeach
-                      @if(count($patients) == 0)
-                      <tr>
-                        <td colspan="9" class="text-center">No patients found</td>
-                      </tr>
-                      @endif
-                    </tbody>
-                  </table>
-                  <br />
-                </div>
               </div>
+
+              <!-- Success/Error Messages -->
+              <div id="responseMessage" style="display: none;" class="alert mb-4"></div>
+
+              <!-- Patient Cards Grid -->
+              <div class="row g-4">
+                @foreach ($patients as $patient)
+                <div class="col-md-6 col-lg-4">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <!-- Patient Header -->
+                      <div class="d-flex align-items-center mb-3">
+                        <div class="avatar-wrapper me-3">
+                          @if($patient->image_path)
+                            <img src="{{ asset('storage/'.$patient->image_path) }}" alt="Avatar" class="rounded-circle avatar-img">
+                          @else
+                            <div class="avatar-placeholder">
+                              <div class="avatar-circle">
+                                <div class="avatar-silhouette">
+                                  <div class="avatar-head"></div>
+                                  <div class="avatar-body"></div>
+                                </div>
+                                <span class="initials">
+                                  {{ strtoupper(substr($patient->firstname ?? '', 0, 1) . substr($patient->lastname ?? '', 0, 1)) }}
+                                </span>
+                              </div>
+                            </div>
+                          @endif
+                        </div>
+                        <div>
+                          <h5 class="mb-1">{{ $patient->firstname }} {{ $patient->lastname }}</h5>
+                          <p class="text-muted mb-0">{{ $patient->email ?? 'No email provided' }}</p>
+                        </div>
+                      </div>
+
+                      <!-- Patient Details -->
+                      <div class="patient-details mb-3">
+                        <div class="detail-item">
+                          <span class="detail-label"><i class="ti tabler-phone text-muted me-2"></i>Contact:</span>
+                          <span class="detail-value">{{ $patient->contact_number ?? 'N/A' }}</span>
+                        </div>
+                        <div class="detail-item">
+                          <span class="detail-label"><i class="ti tabler-gender-binary text-muted me-2"></i>Gender:</span>
+                          <span class="detail-value">{{ $patient->gender ?? 'N/A' }}</span>
+                        </div>
+                        <div class="detail-item">
+                          <span class="detail-label"><i class="ti tabler-calendar text-muted me-2"></i>Birthdate:</span>
+                          <span class="detail-value">{{ $patient->birthdate ?? 'N/A' }}</span>
+                        </div>
+                      </div>
+
+                      <!-- Current Medications -->
+                      @if($patient->current_medications)
+                      <div class="medications-section mb-3">
+                        <h6 class="medications-title">
+                          <i class="ti tabler-pills text-primary me-2"></i>Current Medications
+                        </h6>
+                        <div class="medications-content">
+                          {{ $patient->current_medications }}
+                        </div>
+                      </div>
+                      @endif
+
+                      <!-- Action Buttons -->
+                      <div class="action-buttons">
+                        <a href="{{ route('patient.view', $patient->patient_id) }}" class="btn btn-sm btn-primary">
+                          <i class="ti tabler-eye me-1"></i> View
+                        </a>
+                        <button type="button" class="btn btn-sm btn-info edit-patient"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editPatientModal"
+                          data-id="{{ $patient->patient_id }}">
+                          <i class="ti tabler-edit me-1"></i> Edit
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger delete-patient" 
+                          data-id="{{ $patient->patient_id }}"
+                          data-name="{{ $patient->firstname }} {{ $patient->lastname }}">
+                          <i class="ti tabler-trash me-1"></i> Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                @endforeach
+
+                @if(count($patients) == 0)
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body text-center py-5">
+                      <i class="ti tabler-users-off fs-1 text-muted mb-2"></i>
+                      <h6 class="mb-0">No patients found</h6>
+                    </div>
+                  </div>
+                </div>
+                @endif
+              </div>
+
+              <!-- Delete Patient Form (Hidden) -->
+              <form id="deletePatientForm" method="POST" style="display: none;">
+                  @csrf
+                  @method('DELETE')
+              </form>
+
+              <style>
+                .avatar-wrapper {
+                  width: 120px;
+                  height: 120px;
+                  overflow: hidden;
+                  border-radius: 50%;
+                  border: 3px solid #FFFFFF;
+                  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                .avatar-placeholder {
+                  width: 100%;
+                  height: 100%;
+                  background: #E6EEFF;
+                  border-radius: 50%;
+                  position: relative;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                }
+
+                .avatar-circle {
+                  width: 100%;
+                  height: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  position: relative;
+                }
+
+                .avatar-silhouette {
+                  position: absolute;
+                  width: 100%;
+                  height: 100%;
+                }
+
+                .avatar-head {
+                  position: absolute;
+                  width: 60px;
+                  height: 60px;
+                  background: #1B3F8F;
+                  border-radius: 50%;
+                  top: 20%;
+                  left: 50%;
+                  transform: translateX(-50%);
+                }
+
+                .avatar-body {
+                  position: absolute;
+                  width: 90px;
+                  height: 45px;
+                  background: #1B3F8F;
+                  border-radius: 45px 45px 0 0;
+                  bottom: 10%;
+                  left: 50%;
+                  transform: translateX(-50%);
+                }
+
+                .initials {
+                  color: #FFFFFF;
+                  font-size: 2.5rem;
+                  font-weight: 600;
+                  position: relative;
+                  z-index: 2;
+                  text-transform: uppercase;
+                }
+
+                .avatar-img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                }
+
+                .card-body {
+                  text-align: center;  /* Center the content */
+                  padding: 1.5rem;
+                }
+
+                /* Update patient header layout */
+                .d-flex.align-items-center.mb-3 {
+                  flex-direction: column;  /* Stack elements vertically */
+                  text-align: center;
+                }
+
+                .d-flex.align-items-center.mb-3 > div:last-child {
+                  margin-top: 0.5rem;  /* Add space between avatar and text */
+                }
+
+                /* Optional: Adjust card width if needed */
+                .col-md-6.col-lg-4 {
+                  min-width: 300px;  /* Ensure minimum card width */
+                }
+
+                /* Update card margins */
+                .card {
+                  margin-bottom: 1.5rem;
+                }
+
+                .patient-details {
+                  background-color: #f8f9fa;
+                  border-radius: 8px;
+                  padding: 1rem;
+                }
+
+                .detail-item {
+                  display: flex;
+                  margin-bottom: 0.5rem;
+                  padding: 0.25rem 0;
+                }
+
+                .detail-label {
+                  color: #666;
+                  min-width: 100px;
+                  font-weight: 500;
+                  display: flex;
+                  align-items: center;
+                }
+
+                .detail-value {
+                  color: #333;
+                  flex: 1;
+                }
+
+                .medications-section {
+                  background-color: #f8f9fa;
+                  border-radius: 8px;
+                  padding: 1rem;
+                }
+
+                .medications-title {
+                  font-size: 0.875rem;
+                  font-weight: 600;
+                  color: #333;
+                  margin-bottom: 0.5rem;
+                  display: flex;
+                  align-items: center;
+                }
+
+                .medications-content {
+                  font-size: 0.875rem;
+                  color: #666;
+                  line-height: 1.4;
+                  white-space: pre-wrap;
+                  max-height: 80px;
+                  overflow-y: auto;
+                }
+
+                /* .card {
+                  border: 1px solid #e0e0e0;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                } */
+
+                /* .card:hover {
+                  transform: translateY(-2px);
+                  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                } */
+
+                .action-buttons {
+                  display: flex;
+                  justify-content: center;
+                  gap: 0.5rem;
+                  margin-top: 1rem;
+                  width: 100%;
+                }
+
+                .action-buttons .btn {
+                  min-width: 80px;
+                }
+              </style>
             </div>
             <!-- / Content -->
 
@@ -533,368 +714,110 @@
       });
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    $(document).ready(function() {
+        // SweetAlert default configuration
+        const swalConfig = {
+            customClass: {
+                container: 'swal-container-class',
+                popup: 'swal-popup-class'
+            },
+            backdrop: true,
+            allowOutsideClick: false
+        };
 
-    <!-- Patient Modal -->
-    <div class="modal fade" id="patientModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content border-0">
-          <div class="modal-header bg-primary text-white border-0">
-            <h5 class="modal-title text-white fs-4">
-              <i class="ti tabler-user me-2"></i>
-              <span id="modalPatientName" class="text-white"></span>
-            </h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body p-4">
-            <div class="row g-3">
-              <!-- Profile and Personal Info Column -->
-              <div class="col-md-6">
-                <div class="patient-detail-card h-100">
-                  <!-- Profile Section -->
-                  <div class="text-center mb-3">
-                    <div class="patient-profile-wrapper mx-auto">
-                      <img
-                        src="../../assets/img/avatars/default-avatar.png"
-                        alt="Patient Profile"
-                        class="patient-profile-image"
-                        id="modalProfileImage"
-                      />
-                    </div>
-                    <h5 class="mt-3 mb-1" id="modalPatientNameProfile"></h5>
-                  </div>
-                  <!-- Personal Info -->
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-phone"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Contact</small>
-                      <span id="modalContact" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-mail"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Email</small>
-                      <span id="modalEmail" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-calendar"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Date of Birth</small>
-                      <span id="modalBirthdate" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-gender-binary"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Gender</small>
-                      <span id="modalGender" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                  <div class="patient-info-item mb-0">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-map-pin"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Address</small>
-                      <span id="modalAddress" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        // Handle delete patient button clicks
+        $('.delete-patient').on('click', function() {
+            try {
+                const patientId = $(this).data('id');
+                const patientName = $(this).data('name');
+                
+                if (!patientId) {
+                    throw new Error("Patient ID not found in data attributes");
+                }
+                
+                // Set the form action dynamically
+                $('#deletePatientForm').attr('action', `/patient/${patientId}`);
+                
+                // Show delete confirmation
+                Swal.fire({
+                    ...swalConfig,
+                    title: 'Confirm Delete',
+                    html: `Are you sure you want to delete patient <strong>${patientName}</strong>?<br>This action cannot be undone.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            $('#deletePatientForm').submit();
+                        } catch (e) {
+                            console.error("Error submitting delete form:", e);
+                            Swal.fire({
+                                ...swalConfig,
+                                icon: 'error',
+                                title: 'Delete Error',
+                                html: 'Error submitting delete form:<br>' + e.message,
+                                showConfirmButton: true
+                            });
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error("Error in delete button click handler:", e);
+                Swal.fire({
+                    ...swalConfig,
+                    icon: 'error',
+                    title: 'Delete Error',
+                    html: 'An error occurred while processing your delete request:<br>' + e.message,
+                    showConfirmButton: true
+                });
+            }
+        });
 
-              <!-- Additional Information Column -->
-              <div class="col-md-6">
-                <div class="patient-detail-card h-100">
-                  <h6 class="text-primary mb-3">Additional Information</h6>
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-briefcase"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Occupation</small>
-                      <span id="modalOccupation" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                  <div class="patient-info-item">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-emergency"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Emergency Contact</small>
-                      <span id="modalEmergencyContact" class="fw-semibold"></span>
-                      <small id="modalEmergencyNumber" class="text-muted d-block mt-1"></small>
-                    </div>
-                  </div>
-                  <div class="patient-info-item mb-0">
-                    <div class="patient-info-icon">
-                      <i class="ti tabler-calendar-check"></i>
-                    </div>
-                    <div>
-                      <small class="text-muted d-block">Member Since</small>
-                      <span id="modalJoined" class="fw-semibold"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        // Display success/error messages
+        @if(session('success'))
+            Swal.fire({
+                ...swalConfig,
+                icon: 'success',
+                title: 'Success',
+                text: "{{ session('success') }}",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
 
-              <!-- Medical Concerns Section -->
-              <div class="col-12 mt-3">
-                <div class="patient-detail-card">
-                  <h6 class="text-primary d-flex align-items-center mb-3">
-                    <i class="ti tabler-stethoscope me-2"></i>
-                    Medical Information
-                  </h6>
-                  <div class="medical-concerns-content">
-                    <div class="alert alert-info-custom mb-3">
-                      <div class="d-flex align-items-start">
-                        <i class="ti tabler-alert-circle fs-5 me-2 text-primary"></i>
-                        <div class="w-100">
-                          <h6 class="alert-heading mb-2">Allergies & Medical Concerns</h6>
-                          <div id="modalMedicalConcerns" class="medical-concerns-list"></div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="alert alert-info-custom mb-0">
-                      <div class="d-flex align-items-start">
-                        <i class="ti tabler-medicine fs-5 me-2 text-primary"></i>
-                        <div class="w-100">
-                          <h6 class="alert-heading mb-2">Current Medications</h6>
-                          <div id="modalMedications" class="medical-concerns-list"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Admin Notes Section -->
-              <div class="col-12 mt-3">
-                <div class="patient-detail-card">
-                  <h6 class="text-primary d-flex align-items-center mb-3">
-                    <i class="ti tabler-notes me-2"></i>
-                    Administrative Notes
-                  </h6>
-                  <p id="modalAdminNotes" class="mb-0 text-muted"></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="editPatientLink" class="btn btn-info" data-bs-dismiss="modal">
-              <i class="ti tabler-edit me-1"></i> Edit Patient
-            </button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
+        @if(session('error'))
+            Swal.fire({
+                ...swalConfig,
+                icon: 'error',
+                title: 'Error',
+                text: "{{ session('error') }}",
+                showConfirmButton: true
+            });
+        @endif
+    });
+    </script>
 
-    <!-- Edit Patient Modal -->
-    <div class="modal fade" id="editPatientModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-          <form id="editPatientForm" method="POST" action="{{ route('patient.update') }}" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-            <input type="hidden" name="patient_id" id="edit_patient_id">
-            
-            <div class="modal-header bg-info">
-              <h5 class="modal-title text-white">
-                <i class="ti tabler-edit me-1"></i> Edit Patient
-              </h5>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <div class="modal-body">
-              <div class="row g-3">
-                <!-- Personal Information Section -->
-                <div class="col-12">
-                  <h6 class="fw-semibold">Personal Information</h6>
-                  <hr class="mt-0">
-                </div>
-                
-                <!-- Profile Image -->
-                <div class="col-12 text-center mb-3">
-                  <div class="patient-profile-wrapper mx-auto position-relative">
-                    <img id="edit_preview_image" src="../../assets/img/avatars/default-avatar.png" 
-                         class="patient-profile-image" alt="Patient Profile">
-                    <div class="profile-image-overlay">
-                      <label for="edit_image_path" class="btn btn-sm btn-primary position-absolute bottom-0 end-0 m-2">
-                        <i class="ti tabler-camera"></i>
-                      </label>
-                      <input type="file" name="image_path" id="edit_image_path" class="d-none" accept="image/*">
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- Name Fields -->
-                <div class="col-md-6">
-                  <label for="edit_firstname" class="form-label">First Name</label>
-                  <input type="text" class="form-control" id="edit_firstname" name="firstname" required>
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_lastname" class="form-label">Last Name</label>
-                  <input type="text" class="form-control" id="edit_lastname" name="lastname" required>
-                </div>
-                
-                <!-- Contact Fields -->
-                <div class="col-md-6">
-                  <label for="edit_email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="edit_email" name="email" required>
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_contact_number" class="form-label">Contact Number</label>
-                  <input type="text" class="form-control" id="edit_contact_number" name="contact_number" required>
-                </div>
-                
-                <!-- Personal Details -->
-                <div class="col-md-6">
-                  <label for="edit_birthdate" class="form-label">Date of Birth</label>
-                  <input type="date" class="form-control" id="edit_birthdate" name="birthdate" required>
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_gender" class="form-label">Gender</label>
-                  <select class="form-select" id="edit_gender" name="gender" required>
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_occupation" class="form-label">Occupation</label>
-                  <input type="text" class="form-control" id="edit_occupation" name="occupation">
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_patient_tier_id" class="form-label">Membership Tier</label>
-                  <select class="form-select" id="edit_patient_tier_id" name="patient_tier_id" required>
-                    <option value="">Select Tier</option>
-                    @foreach($tiers as $tier)
-                      <option value="{{ $tier->patient_tier_id }}">{{ $tier->tier_name }}</option>
-                    @endforeach
-                  </select>
-                </div>
-                
-                <div class="col-12">
-                  <label for="edit_address" class="form-label">Address</label>
-                  <textarea class="form-control" id="edit_address" name="address" rows="2" required></textarea>
-                </div>
-                
-                <!-- Emergency Contact Section -->
-                <div class="col-12 mt-3">
-                  <h6 class="fw-semibold">Emergency Contact</h6>
-                  <hr class="mt-0">
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_emergency_contact_name" class="form-label">Contact Name</label>
-                  <input type="text" class="form-control" id="edit_emergency_contact_name" name="emergency_contact_name">
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_emergency_contact_number" class="form-label">Contact Number</label>
-                  <input type="text" class="form-control" id="edit_emergency_contact_number" name="emergency_contact_number">
-                </div>
-                
-                <!-- Medical Information Section -->
-                <div class="col-12 mt-3">
-                  <h6 class="fw-semibold">Medical Information</h6>
-                  <hr class="mt-0">
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_medical_concerns" class="form-label">Allergies & Medical Concerns</label>
-                  <textarea class="form-control" id="edit_medical_concerns" name="medical_concerns" rows="3"></textarea>
-                  <small class="text-muted">Separate each concern with a comma</small>
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_current_medications" class="form-label">Current Medications</label>
-                  <textarea class="form-control" id="edit_current_medications" name="current_medications" rows="3"></textarea>
-                  <small class="text-muted">Separate each medication with a comma</small>
-                </div>
-                
-                <!-- Administrative Notes -->
-                <div class="col-12 mt-3">
-                  <h6 class="fw-semibold">Administrative Notes</h6>
-                  <hr class="mt-0">
-                </div>
-                
-                <div class="col-12">
-                  <label for="edit_note_from_admin" class="form-label">Notes</label>
-                  <textarea class="form-control" id="edit_note_from_admin" name="note_from_admin" rows="3"></textarea>
-                </div>
-              </div>
-            </div>
-            
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-info">Save Changes</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deletePatientModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header bg-danger">
-            <h5 class="modal-title text-white">Confirm Delete</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure you want to delete <span id="deletePatientName" class="fw-bold"></span>? This action cannot be undone.</p>
-          </div>
-          <div class="modal-footer">
-            <form id="deletePatientForm" action="" method="POST">
-              @csrf
-              @method('DELETE')
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Clean modal styles -->
     <style>
       .avatar {
-        width: 38px;
-        height: 38px;
+        width: 48px;
+        height: 48px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
       }
-      
+
       .avatar img {
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
-      
+
       .avatar-initial {
         width: 100%;
         height: 100%;
@@ -903,335 +826,23 @@
         justify-content: center;
         color: #fff;
         font-weight: 500;
-        font-size: 0.875rem;
+        font-size: 1rem;
       }
-      
-      .rounded-circle {
-        border-radius: 50% !important;
-      }
-      
-      .modal-header {
-        background: linear-gradient(135deg, #0a3622 0%, #1a5c3c 100%) !important;
-        border-top-left-radius: 1rem;
-        border-top-right-radius: 1rem;
-      }
-      
-      .patient-profile-wrapper {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 3px solid #0a3622;
-        box-shadow: 0 4px 15px rgba(10, 54, 34, 0.2);
-        margin: 0 auto 1rem;
-      }
-      
-      .patient-profile-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      
-      .patient-detail-card {
-        background: #fff;
-        border-radius: 0.75rem;
-        padding: 1.25rem;
-        height: 100%;
-        box-shadow: 0 0.125rem 0.25rem rgba(10, 54, 34, 0.075);
-      }
-      
-      .patient-info-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1rem;
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-      }
-      
-      .patient-info-icon {
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #e7efe9;
-        color: #0a3622;
-        border-radius: 0.5rem;
-        margin-right: 0.75rem;
-      }
-      
-      .medical-concerns-content {
+
+      .patient-info {
         background-color: #f8f9fa;
-        border-radius: 0.75rem;
+        border-radius: 0.5rem;
         padding: 1rem;
       }
-      
-      .alert-info-custom {
-        background-color: rgba(10, 54, 34, 0.05);
-        border: 1px solid rgba(10, 54, 34, 0.1);
-        border-radius: 0.75rem;
+
+      .card {
+        transition: transform 0.2s, box-shadow 0.2s;
       }
-      
-      .medical-concerns-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      
-      .medical-concern-item {
-        display: flex;
-        align-items: start;
-        padding: 0.5rem;
-        background: white;
-        border-radius: 0.5rem;
-        border: 1px solid rgba(10, 54, 34, 0.1);
-      }
-      
-      .medical-concern-item i {
-        color: #0a3622;
-        margin-right: 0.5rem;
-      }
-      
-      /* Profile image edit overlay */
-      .profile-image-overlay {
-        position: relative;
-        width: 100%;
-        height: 100%;
-      }
-      
-      .patient-profile-wrapper:hover .patient-profile-image {
-        opacity: 0.7;
-      }
-      
-      /* Form styling */
-      .modal-lg {
-        max-width: 900px;
-      }
-      
-      .form-label {
-        font-weight: 500;
-      }
-      
-      .modal-body hr {
-        opacity: 0.1;
+
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
       }
     </style>
-
-    <!-- JavaScript for patient modals -->
-
-    <script>
-      // Create initials avatar when no image is available
-      function createInitialsAvatar(name) {
-
-        if (!name) return '';
-        
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        canvas.width = 120;
-        canvas.height = 120;
-
-        context.fillStyle = "#0a3622";
-
-        context.beginPath();
-        context.arc(60, 60, 60, 0, Math.PI * 2);
-        context.fill();
-
-
-        const initials = name
-          .split(" ")
-          .map(word => word[0])
-          .join("")
-          .toUpperCase();
-
-        context.font = "bold 48px Arial";
-        context.fillStyle = "#FFFFFF";
-        context.textAlign = "center";
-        context.textBaseline = "middle";
-        context.fillText(initials, 60, 60);
-
-
-        return canvas.toDataURL();
-      }
-
-
-      // Format list items for medical concerns and medications
-      function formatListItems(items) {
-        if (!items || items.trim() === '')
-          return '<p class="text-muted mb-0">None reported</p>';
-
-        return items
-          .split(",")
-          .map(item => 
-            `<div class="medical-concern-item">
-              <i class="ti tabler-point text-primary"></i>
-              ${item.trim()}
-            </div>`
-          )
-          .join("");
-      }
-
-      // Format joined date to "Month Day, Year" format
-      function formatJoinedDate(dateString) {
-        if (!dateString) return 'Not available';
-        
-        try {
-          const date = new Date(dateString);
-          if (isNaN(date)) return dateString;
-          
-          const options = { year: 'numeric', month: 'long', day: 'numeric' };
-          return date.toLocaleDateString('en-US', options);
-        } catch (error) {
-          console.error('Error formatting date:', error);
-          return dateString;
-        }
-      }
-
-      // Handle patient actions
-      document.addEventListener("DOMContentLoaded", function() {
-        // Image preview for edit form
-        document.getElementById('edit_image_path').addEventListener('change', function(e) {
-          if (e.target.files && e.target.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-              document.getElementById('edit_preview_image').src = e.target.result;
-            }
-            reader.readAsDataURL(e.target.files[0]);
-          }
-        });
-
-        // View patient details
-        const viewButtons = document.querySelectorAll(".view-patient");
-viewButtons.forEach(button => {
-  button.addEventListener("click", function() {
-    const data = this.dataset;
-    
-    // Store patient ID for edit button
-    document.getElementById("editPatientLink").setAttribute('data-id', data.id);
-    
-    // Set profile image
-    const profileImage = document.getElementById("modalProfileImage");
-    profileImage.src = data.profileImage || createInitialsAvatar(data.name);
-    
-    // Basic information
-    document.getElementById("modalPatientName").textContent = data.name || '';
-    document.getElementById("modalPatientNameProfile").textContent = data.name || '';
-    document.getElementById("modalContact").textContent = data.contact || 'Not provided';
-    document.getElementById("modalEmail").textContent = data.email || 'Not provided';
-    document.getElementById("modalBirthdate").textContent = data.birthdate || 'Not provided';
-    document.getElementById("modalGender").textContent = data.gender || 'Not specified';
-    document.getElementById("modalAddress").textContent = data.address || 'Not provided';
-    
-    // Additional information
-    document.getElementById("modalOccupation").textContent = data.occupation || 'Not provided';
-    document.getElementById("modalEmergencyContact").textContent = data.emergencyContact || 'Not provided';
-    document.getElementById("modalEmergencyNumber").textContent = data.emergencyNumber || '';
-    
-    // Format joined date to "Month Day, Year"
-    const joinedDate = data.joined ? formatJoinedDate(data.joined) : 'Not available';
-    document.getElementById("modalJoined").textContent = joinedDate;
-    
-    // Medical information
-    document.getElementById("modalMedicalConcerns").innerHTML = formatListItems(data.medicalConcerns);
-    document.getElementById("modalMedications").innerHTML = formatListItems(data.medications);
-    
-    // Admin notes
-    const adminNotes = document.getElementById("modalAdminNotes");
-    if (data.adminNotes && data.adminNotes.trim()) {
-      adminNotes.textContent = data.adminNotes;
-      adminNotes.classList.remove('text-muted');
-    } else {
-      adminNotes.textContent = 'No administrative notes available';
-      adminNotes.classList.add('text-muted');
-    }
-  });
-});
-        
-        // Edit patient button click
-        document.getElementById('editPatientLink').addEventListener('click', function() {
-          const patientId = this.getAttribute('data-id');
-          // Open the edit modal programmatically after the view modal is dismissed
-          $('#patientModal').on('hidden.bs.modal', function () {
-            // Populate the edit form
-            populateEditForm(patientId);
-            // Show the edit modal
-            $('#editPatientModal').modal('show');
-            // Remove the event to prevent multiple bindings
-            $('#patientModal').off('hidden.bs.modal');
-          });
-        });
-        
-        // Direct edit button click
-        const editButtons = document.querySelectorAll(".edit-patient");
-        editButtons.forEach(button => {
-          button.addEventListener("click", function() {
-            const patientId = this.dataset.id;
-            populateEditForm(patientId);
-          });
-        });
-
-        // Function to populate edit form with patient data
-        function populateEditForm(patientId) {
-          // Find the view button for this patient to get data
-          const viewButton = document.querySelector(`.view-patient[data-id="${patientId}"]`);
-          if (!viewButton) return;
-          
-          const data = viewButton.dataset;
-          
-          // Set form action and patient ID
-          document.getElementById('edit_patient_id').value = patientId;
-          
-          // Set image preview
-          const previewImage = document.getElementById('edit_preview_image');
-          previewImage.src = data.profileImage || createInitialsAvatar(data.name);
-          
-          // Fill form fields with patient data
-          document.getElementById('edit_firstname').value = data.name.split(' ')[0] || '';
-          document.getElementById('edit_lastname').value = data.name.split(' ').slice(1).join(' ') || '';
-          document.getElementById('edit_email').value = data.email || '';
-          document.getElementById('edit_contact_number').value = data.contact || '';
-          document.getElementById('edit_birthdate').value = data.birthdate || '';
-          document.getElementById('edit_gender').value = data.gender || '';
-          document.getElementById('edit_occupation').value = data.occupation || '';
-          document.getElementById('edit_address').value = data.address || '';
-          document.getElementById('edit_emergency_contact_name').value = data.emergencyContact || '';
-          document.getElementById('edit_emergency_contact_number').value = data.emergencyNumber || '';
-          document.getElementById('edit_medical_concerns').value = data.medicalConcerns || '';
-          document.getElementById('edit_current_medications').value = data.medications || '';
-          document.getElementById('edit_note_from_admin').value = data.adminNotes || '';
-          
-          // Set patient tier if available
-          if (data.patientTier) {
-            document.getElementById('edit_patient_tier_id').value = data.patientTier;
-          }
-        }
-        
-        // Delete patient confirmation
-        const deleteButtons = document.querySelectorAll(".delete-patient");
-        const deleteModal = new bootstrap.Modal(document.getElementById('deletePatientModal'));
-        
-        deleteButtons.forEach(button => {
-          button.addEventListener("click", function() {
-            const patientId = this.dataset.id;
-            const patientName = this.dataset.name;
-            
-            document.getElementById("deletePatientName").textContent = patientName;
-            document.getElementById("deletePatientForm").action = `{{ route('patient.destroy', '') }}/${patientId}`;
-            
-            deleteModal.show();
-          });
-        });
-
-      });
-    </script>
-
-    <!-- Add this script -->
-    <script>
-    function confirmDelete() {
-      if (confirm('Are you sure you want to delete this patient? This action cannot be undone.')) {
-        // Add your delete logic here
-        console.log('Patient deleted');
-      }
-    }
-    </script>
   </body>
 </html>

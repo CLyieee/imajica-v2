@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 
-
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CategoryListController;
 use App\Http\Controllers\ExpensesController;
@@ -18,6 +18,14 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\orderController;
 use App\Http\Controllers\AddProductController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\DepartmentController;
+
+use App\Http\Controllers\category_expenseController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeReportController;
+use App\Http\Controllers\CustomerReportController;
+use App\Http\Controllers\SalesTransactionController;
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -32,6 +40,7 @@ Route::get('/', [LoginController::class, 'index'])->name('page.index');
         Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
         Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
         Route::get('/coupon/list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
+        Route::get('/coupon/edit/{coupon_code}', [CouponController::class, 'edit'])->name('coupon.edit');
         Route::put('/coupon/update', [CouponController::class, 'update'])->name('coupon.update');
         Route::delete('/coupon/delete', [CouponController::class, 'delete'])->name('coupon.delete');
 
@@ -51,6 +60,7 @@ Route::get('/commision-employee', [DashboardController::class, 'commision_employ
 
 
 Route::get('/purchase', [DashboardController::class, 'purchase'])->name('page.purchase');
+Route::get('/purchase', [PurchaseController::class, 'index'])->name('purchase.index');
 
 
 Route::get('/void-logs', [DashboardController::class, 'void_logs'])->name('page.void-logs');
@@ -94,6 +104,7 @@ Route::get('/branch-list', [DashboardController::class, 'branch_list'])->name('p
 Route::get('/new-services', [DashboardController::class, 'new_services'])->name('page.new-services');
 
 Route::get('/services-list', [DashboardController::class, 'services_list'])->name('page.services-list');
+Route::get('/service/edit/{id}', [serviceController::class, 'edit'])->name('service.edit');
 
 Route::get('/new-user', [DashboardController::class, 'new_user'])->name('page.new-user');
 
@@ -129,6 +140,9 @@ Route::delete('/supplier/{id}', [App\Http\Controllers\supplierController::class,
 // Patients Routes
 Route::put('/patient/update', [App\Http\Controllers\patientController::class, 'update'])->name('patient.update');
 Route::delete('/patient/{id}', [App\Http\Controllers\patientController::class, 'destroy'])->name('patient.destroy');
+Route::delete('/patient/delete', [PatientController::class, 'destroy'])->name('patient.delete');
+Route::get('/patients/{id}/view', [PatientController::class, 'view'])->name('patient.view');
+Route::get('/patients/{id}/view', [PatientController::class, 'show'])->name('patient.view');
 
 Route::get('/service-product', [DashboardController::class, 'service_product'])->name('page.service-product');
 
@@ -144,7 +158,7 @@ Route::get('/new category-expenses', [DashboardController::class, 'newcategory_e
 
 Route::get('/categoryexpenses-list', [DashboardController::class, 'categoryexpenses_list'])->name('page.categoryexpenses-list');
 
-Route::get('/expenses/view/{id}', [ExpensesController::class, 'view'])->name('expenses.view');
+// Route::get('/expenses/view/{id}', [ExpensesController::class, 'view'])->name('expenses.view');
 
 Route::get('/category/all', [CategoryListController::class, 'getAll'])->name('category.all');
 Route::get('/api/categories', [CategoryListController::class, 'getAll'])->name('api.categories');
@@ -172,11 +186,11 @@ Route::post('/booking/create', [BookingController::class, 'create'])->name('book
 Route::get('/booking/all', [BookingController::class, 'get_bookings'])->name('get.bookings');
 Route::put('/booking/update', [BookingController::class, 'update'])->name('booking.update');
 Route::delete('/booking/delete', [BookingController::class, 'delete'])->name('booking.delete');
-
+Route::get('/get-calendar-bookings', [BookingController::class, 'getCalendarBookings']);
 
 
 Route::get('/position-list', [DashboardController::class, 'position_list'])->name('page.position-list');
-Route::post('/position', [PositionController::class, 'create'])->name('position.create');
+Route::post('/position/create', [PositionController::class, 'create'])->name('position.create');
 Route::put('/position/update', [PositionController::class, 'update'])->name('position.update');
 Route::delete('/position/delete', [App\Http\Controllers\PositionController::class, 'delete'])->name('position.delete');
 
@@ -189,9 +203,10 @@ Route::put('/department/update', [App\Http\Controllers\DepartmentController::cla
 Route::delete('/department/delete', [App\Http\Controllers\DepartmentController::class, 'delete'])->name('department.delete');
 Route::get('/departments/all', [App\Http\Controllers\DepartmentController::class, 'getAllDepartments'])->name('department.getAllDepartments');
 
-//Catehgory Route
+//Category Expense Routes
 Route::post('/category_expense/create', [App\Http\Controllers\category_expenseController::class, 'create'])->name('category_expense.create');
-Route::get('/category_expense/all', [App\Http\Controllers\category_expenseController::class, 'get_category_expenses'])->name('get.category_expenses');
+Route::get('/category_expense/all', [App\Http\Controllers\category_expenseController::class, 'getAll'])->name('get.category_expenses');
+Route::get('/category_expense/edit/{id}', [App\Http\Controllers\category_expenseController::class, 'edit'])->name('category_expense.edit');
 Route::put('/category_expense/update/{id}', [App\Http\Controllers\category_expenseController::class, 'update'])->name('category_expense.update');
 Route::delete('/category_expense/delete/{id}', [App\Http\Controllers\category_expenseController::class, 'delete'])->name('category_expense.delete');
 
