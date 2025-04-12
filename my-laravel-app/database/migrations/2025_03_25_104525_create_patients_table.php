@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePatientsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('patients', function (Blueprint $table) {
@@ -31,21 +26,9 @@ class CreatePatientsTable extends Migration
             $table->text('current_medications');
             $table->text('note_from_admin');
             $table->timestamps();
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
-
->>>>>>> Stashed changes
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('patients');
