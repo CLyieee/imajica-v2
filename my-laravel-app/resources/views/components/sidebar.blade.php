@@ -31,42 +31,6 @@
             </a>
         </li>
 
-        <li class="menu-item {{ request()->is('sales-transaction') || request()->is('commision-employee') || request()->is('employee-sales') || request()->is('purchase') || request()->is('void-logs') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-chart-pie "></i>
-                <div data-i18n="Accounting">Accounting</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('sales-transaction') ? 'active' : '' }}">
-                    <a href="/sales-transaction" class="menu-link">
-                        <div data-i18n="Services Transaction">Services Transaction</div>
-                    </a>
-                </li>
-
-                <li class="menu-item {{ request()->is('commision-employee') ? 'active' : '' }}">
-                    <a href="/commision-employee" class="menu-link">
-                        <div data-i18n="Commision for Employee">Commision for Employee</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->is('employee-sales') ? 'active' : '' }}">
-                    <a href="/employee-sales" class="menu-link">
-                        <div data-i18n="Employee Sales">Employee Sales</div>
-                    </a>
-                </li>
-
-                <li class="menu-item {{ request()->is('purchase') ? 'active' : '' }}">
-                    <a href="/purchase" class="menu-link">
-                        <div data-i18n="Purchase">Purchase</div>
-                    </a>
-                </li>
-
-                <li class="menu-item {{ request()->is('void-logs') ? 'active' : '' }}">
-                    <a href="/void-logs" class="menu-link">
-                        <div data-i18n="Void Logs">Void Logs</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
 
         <li class="menu-item {{ request()->is('new-services') || request()->is('services-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -346,6 +310,35 @@
                 <li class="menu-item {{ request()->is('expenses-report') ? 'active' : '' }}">
                     <a href="/expenses-report" class="menu-link">
                         <div data-i18n="Expenses Report">Expenses Report</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('sales-transaction') ? 'active' : '' }}">
+                    <a href="/sales-transaction" class="menu-link">
+                        <div data-i18n="Services Transaction">Services Transaction</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('commision-employee') ? 'active' : '' }}">
+                    <a href="/commision-employee" class="menu-link">
+                        <div data-i18n="Commision for Employee">Commision for Employee</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->is('employee-sales') ? 'active' : '' }}">
+                    <a href="/employee-sales" class="menu-link">
+                        <div data-i18n="Employee Sales">Employee Sales</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('purchase') ? 'active' : '' }}">
+                    <a href="/purchase" class="menu-link">
+                        <div data-i18n="Purchase">Purchase</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('void-logs') ? 'active' : '' }}">
+                    <a href="/void-logs" class="menu-link">
+                        <div data-i18n="Void Logs">Void Logs</div>
                     </a>
                 </li>
 
