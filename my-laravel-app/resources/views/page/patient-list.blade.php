@@ -373,7 +373,7 @@
                       <!-- Patient Header -->
                       <div class="d-flex align-items-center mb-3">
                         <div class="avatar-wrapper me-3">
-                          @if($patient->image_path)
+                          @if($patient->image_path && Storage::disk('public')->exists($patient->image_path))
                             <img src="{{ asset('storage/'.$patient->image_path) }}" alt="Avatar" class="rounded-circle avatar-img">
                           @else
                             <div class="avatar-placeholder">
@@ -471,6 +471,23 @@
                   border-radius: 50%;
                   border: 3px solid #FFFFFF;
                   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                }
+
+                .avatar-img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  border-radius: 50%;
+                }
+
+                .avatar-placeholder {
+                  width: 100%;
+                  height: 100%;
+                  background: #E6EEFF;
+                  border-radius: 50%;
                 }
 
                 .avatar-placeholder {
@@ -528,12 +545,6 @@
                   position: relative;
                   z-index: 2;
                   text-transform: uppercase;
-                }
-
-                .avatar-img {
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
                 }
 
                 .card-body {
