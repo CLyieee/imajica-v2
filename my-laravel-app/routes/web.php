@@ -104,6 +104,7 @@ Route::get('/branch-list', [DashboardController::class, 'branch_list'])->name('p
 Route::get('/new-services', [DashboardController::class, 'new_services'])->name('page.new-services');
 
 Route::get('/services-list', [DashboardController::class, 'services_list'])->name('page.services-list');
+Route::get('/service/edit/{id}', [serviceController::class, 'edit'])->name('service.edit');
 
 Route::get('/new-user', [DashboardController::class, 'new_user'])->name('page.new-user');
 

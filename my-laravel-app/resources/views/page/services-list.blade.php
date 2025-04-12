@@ -221,18 +221,9 @@
                     </td>
                     <td class="text-center">
                       <div class="d-flex gap-2 justify-content-center">
-                   
-                        <button class="btn btn-sm btn-info edit-service"
-                          data-service-id="{{ $service->id }}"
-                          data-service-name="{{ $service->service_name }}"
-                          data-service-branch="{{ $service->branch ? $service->branch->branch_name : $service->branch_code }}"
-                          data-service-description="{{ $service->description }}"
-                          data-service-duration="{{ $service->duration }}"
-                          data-service-category="{{ $service->service_category }}"
-                          data-service-cost="{{ $service->service_cost }}"
-                          data-service-points="{{ $service->loyalty_pts }}">
+                        <a href="{{ route('service.edit', $service->service_id) }}" class="btn btn-sm btn-info">
                           <i class="ti tabler-edit me-1"></i> Edit
-                        </button>
+                        </a>
                         <button class="btn btn-sm btn-danger delete-service" 
                           data-service-id="{{ $service->id }}"
                           data-service-name="{{ $service->service_name }}">

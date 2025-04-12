@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\service;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use App\Models\Branch;
+
 
 class serviceController extends Controller
 {
@@ -38,11 +41,12 @@ class serviceController extends Controller
     }
 
 public function update(Request $request) {
-    // For debugging - log the incoming data
-    // Log::info('Update service request data:', $request->all());
+    // For debugging
+    Log::info('Update service request method:', ['method' => $request->method()]);
+    Log::info('Update service request data:', $request->all());
 
-    $data = $request->validate([
-        'service_id' => 'required|exists:services,service_id',
+    // Validate the basic fields
+    $validatedData = $request->validate([
         'service_name' => 'required',
         'branch_code' => 'required',
         'description' => 'required',
@@ -52,11 +56,35 @@ public function update(Request $request) {
         'loyalty_pts' => 'required',
     ]);
 
-    $service = service::find($request->id);
+    // Find the service by ID
+    $service = service::find($request->input('service_id'));
     if (!$service) {
         return redirect()->back()->with('error', 'Service not found');
     }
 
+    // Handle image upload if a new image is provided
+    if ($request->hasFile('service_image')) {
+        $validator = Validator::make($request->all(), [
+            'service_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Delete old image if it exists
+        if ($service->service_image && file_exists(public_path($service->service_image))) {
+            unlink(public_path($service->service_image));
+        }
+
+        // Upload new image
+        $image = $request->file('service_image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('uploads/services'), $imageName);
+        $service->service_image = 'uploads/services/' . $imageName;
+    }
+
+    // Update service details
     $service->service_name = $request->service_name;
     $service->branch_code = $request->branch_code;
     $service->description = $request->description;
@@ -66,7 +94,7 @@ public function update(Request $request) {
     $service->loyalty_pts = $request->loyalty_pts;
     $service->save();
 
-    return redirect()->back()->with('success', 'Service updated successfully');
+    return redirect()->route('page.services-list')->with('success', 'Service updated successfully');
 }
 
 
@@ -98,5 +126,16 @@ public function delete(Request $request)
         return view('page.services-list', compact('services'));
     }
 
+ public function edit($service_id)
+{
+    // Get the service by service_id
+    $service = service::findOrFail($service_id);
+    
+    // Get all branches for the branch select dropdown
+    $branches = Branch::all();
+    
+    // Return the edit view with service data
+    return view('page.edit-service', compact('service', 'branches'));
+}
 
 }
