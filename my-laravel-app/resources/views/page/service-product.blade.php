@@ -337,46 +337,52 @@
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h3 class="mb-0">All Sales</h3>
-              <div class="d-flex gap-2">
-              <div class="input-group" style="width: 300px;">
-                <span class="input-group-text">
-                  <i class="ti tabler-search"></i>
-                </span>
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="searchInput" 
-                  placeholder="Search items..."
-                  style="border-radius: 0 4px 4px 0;"
-                >
-
-              </div>
-                <div class="dropdown">
-                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                    Filter By Date
-                  </button>
-                  <div class="dropdown-menu p-3" style="min-width: 250px;">
-                    <select class="form-select" id="dateFilter" onchange="applyDateFilter()">
-                      <option value="">Select Date Range</option>
-                      <option value="today">Today</option>
-                      <option value="yesterday">Yesterday</option>
-                      <option value="last7">Last 7 Days</option>
-                      <option value="last30">Last 30 Days</option>
-                      <option value="thisMonth">This Month</option>
-                      <option value="lastMonth">Last Month</option>
-                      <option value="thisYear">This Year</option>
-                    </select>
+              <div class="d-flex gap-2 align-items-end">
+                <!-- Search Bar -->
+                <div class="d-flex flex-column" style="width: 180px;">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">
+                      <i class="ti tabler-search"></i>
+                    </span>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      id="searchInput" 
+                      placeholder="Search items..."
+                    >
                   </div>
                 </div>
-                <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #18332a;">
-                                Export
-                            </button>
-                  <ul class="dropdown-menu" style="min-width: 120px;">
-                    <li><a class="dropdown-item" href="#" data-export="pdf">PDF</a></li>
-                    <li><a class="dropdown-item" href="#" data-export="excel">Excel</a></li>
-                    <li><a class="dropdown-item" href="#" data-export="csv">CSV</a></li>
-                  </ul>
+
+                <!-- Date From -->
+                <div class="d-flex flex-column" style="width: 160px;">
+                  <label class="form-label text-muted small mb-1">Date From</label>
+                  <input 
+                    type="date" 
+                    class="form-control form-control-sm" 
+                    id="dateFrom"
+                  >
+                </div>
+
+                <!-- Date To -->
+                <div class="d-flex flex-column" style="width: 160px;">
+                  <label class="form-label text-muted small mb-1">Date To</label>
+                  <input 
+                    type="date" 
+                    class="form-control form-control-sm" 
+                    id="dateTo"
+                  >
+                </div>
+
+                <!-- Report Type -->
+                <div class="d-flex flex-column" style="width: 180px;">
+                  <label class="form-label text-muted small mb-1">Report Type</label>
+                  <select class="form-select form-select-sm" id="reportType">
+                    <option value="overall">Overall Sales</option>
+                    <option value="services">Services Only</option>
+                    <option value="products">Products Only</option>
+                    <option value="discounts">Discounts Report</option>
+                    <option value="giftcards">Gift Card Usage</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -384,14 +390,14 @@
               <table class="table">
                 <thead>
                   <tr style="background-color: #134013;">
-                    <th style="color: white; font-weight: 500;">NAME</th>
-                    <th style="color: white; font-weight: 500;">PRICE</th>
-                    <th style="color: white; font-weight: 500;">TOTAL QUANTITY</th>
-                    <th style="color: white; font-weight: 500;">TOTAL DISCOUNT</th>
-                    <th style="color: white; font-weight: 500;">GIFT CARD AMOUNT</th>
-                    <th style="color: white; font-weight: 500;">TOTAL SALES</th>
-                    <th style="color: white; font-weight: 500;">TYPE</th>
-                    <th style="color: white; font-weight: 500;">ACTION</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Services Name</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Branch Name</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Description</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Duration</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Service Category</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Service Cost</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Loyalty Points</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">ACTION</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -403,7 +409,12 @@
                     <td>₱5,000</td>
                     <td>₱147,000</td>
                     <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="1">VIEW</button></td>
+                    <td>
+                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
+                              style="background-color: #134013; color: white;">
+                        <i class="ti tabler-download me-1"></i>Export
+                      </button>
+                    </td>
                   </tr>
                   <tr>
                     <td>Hair Rebonding</td>
@@ -413,7 +424,12 @@
                     <td>₱3,500</td>
                     <td>₱187,500</td>
                     <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="2">VIEW</button></td>
+                    <td>
+                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
+                              style="background-color: #134013; color: white;">
+                        <i class="ti tabler-download me-1"></i>Export
+                      </button>
+                    </td>
                   </tr>
                   <tr>
                     <td>Professional Shampoo</td>
@@ -423,7 +439,12 @@
                     <td>₱2,000</td>
                     <td>₱102,000</td>
                     <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="3">VIEW</button></td>
+                    <td>
+                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
+                              style="background-color: #134013; color: white;">
+                        <i class="ti tabler-download me-1"></i>Export
+                      </button>
+                    </td>
                   </tr>
                   <tr>
                     <td>Hair Treatment Package</td>
@@ -433,7 +454,12 @@
                     <td>₱4,500</td>
                     <td>₱157,500</td>
                     <td><span class="badge" style="background-color: rgba(255,  165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="4">VIEW</button></td>
+                    <td>
+                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
+                              style="background-color: #134013; color: white;">
+                        <i class="ti tabler-download me-1"></i>Export
+                      </button>
+                    </td>
                   </tr>
                   <tr>
                     <td>Hair Styling Tools Set</td>
@@ -443,7 +469,12 @@
                     <td>₱2,500</td>
                     <td>₱78,000</td>
                     <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="5">VIEW</button></td>
+                    <td>
+                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
+                              style="background-color: #134013; color: white;">
+                        <i class="ti tabler-download me-1"></i>Export
+                      </button>
+                    </td>
                   </tr>
                   <tr>
                     <td>Hair Care Bundle</td>
@@ -453,7 +484,12 @@
                     <td>₱3,000</td>
                     <td>₱170,000</td>
                     <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="6">VIEW</button></td>
+                    <td>
+                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
+                              style="background-color: #134013; color: white;">
+                        <i class="ti tabler-download me-1"></i>Export
+                      </button>
+                    </td>
                   </tr>
                   <tr>
                     <td>Premium Hair Oil</td>
@@ -463,7 +499,12 @@
                     <td>₱2,800</td>
                     <td>₱112,500</td>
                     <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="7">VIEW</button></td>
+                    <td>
+                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
+                              style="background-color: #134013; color: white;">
+                        <i class="ti tabler-download me-1"></i>Export
+                      </button>
+                    </td>
                   </tr>
                   <tr>
                     <td>Hair Spa Treatment</td>
@@ -473,7 +514,12 @@
                     <td>₱4,200</td>
                     <td>₱154,000</td>
                     <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="8">VIEW</button></td>
+                    <td>
+                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
+                              style="background-color: #134013; color: white;">
+                        <i class="ti tabler-download me-1"></i>Export
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -975,7 +1021,7 @@
 
     </script>
 
-    <script>
+<script>
 // Customer modal functionality
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.view-customer').forEach(button => {
@@ -1046,6 +1092,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <td>${booking.id}</td>
             <td>${booking.date}</td>
             <td>${booking.eventType}</td>
+            <td>${booking.package}</td>
             <td>${booking.package}</td>
             <td><span class="badge bg-success">${booking.status}</span></td>
             <td>₱${booking.amount.toLocaleString()}</td>
@@ -1205,7 +1252,6 @@ function initializeMiniCharts() {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
 <script>
 document.querySelectorAll('.dropdown-item[data-export]').forEach(button => {
     button.addEventListener('click', function(e) {
@@ -1222,47 +1268,12 @@ document.querySelectorAll('.dropdown-item[data-export]').forEach(button => {
         });
 
         switch(exportType) {
-            case 'pdf':
-                exportToPDF(headers.slice(0, -1), data);
-                break;
             case 'excel':
                 exportToExcel(headers.slice(0, -1), data);
-                break;
-            case 'csv':
-                exportToCSV(headers.slice(0, -1), data);
                 break;
         }
     });
 });
-
-function exportToPDF(headers, data) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF('l', 'mm', 'a4'); // landscape orientation
-    
-    // Add title
-    doc.setFontSize(18);
-    doc.text('Service/Product Report', 15, 15);
-    
-    // Add date
-    doc.setFontSize(11);
-    doc.text(`Generated on: ${new Date().toLocaleString()}`, 15, 22);
-    
-    doc.autoTable({
-        head: [headers],
-        body: data,
-        startY: 25,
-        theme: 'grid',
-        styles: { fontSize: 8, cellPadding: 1 },
-        headStyles: { 
-            fillColor: [19, 64, 19],
-            textColor: [255, 255, 255],
-            fontStyle: 'bold'
-        },
-        alternateRowStyles: { fillColor: [245, 245, 245] }
-    });
-    
-    doc.save('service-product-report.pdf');
-}
 
 function exportToExcel(headers, data) {
     const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
@@ -1275,26 +1286,31 @@ function exportToExcel(headers, data) {
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Service_Product_Report');
     XLSX.writeFile(workbook, 'service-product-report.xlsx');
 }
+</script>
 
-function exportToCSV(headers, data) {
-    // Add BOM for proper Excel UTF-8 encoding
-    const BOM = "\uFEFF";
-    const csvContent = BOM + [
-        headers.join(','),
-        ...data.map(row => row.join(','))
-    ].join('\n');
+<script>
+function downloadRow(element, format) {
+    const row = element.closest('tr');
+    const cells = Array.from(row.cells);
+    const headers = Array.from(row.parentElement.parentElement.querySelector('thead tr').cells)
+                        .map(th => th.textContent.trim());
     
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
+    // Get data excluding the last column (action button)
+    const data = cells.slice(0, -1).map(cell => cell.textContent.trim());
+
+    // Create workbook
+    const worksheet = XLSX.utils.aoa_to_sheet([headers.slice(0, -1), data]);
+    const workbook = XLSX.utils.book_new();
     
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'service-product-report.csv');
-    link.style.visibility = 'hidden';
+    // Set column widths
+    const colWidths = headers.map(h => ({wch: Math.max(h.length, 15)}));
+    worksheet['!cols'] = colWidths;
     
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Service_Product_Details');
+    
+    // Generate filename from service/product name
+    const filename = `${data[0].toLowerCase().replace(/\s+/g, '-')}-details.xlsx`;
+    XLSX.writeFile(workbook, filename);
 }
 </script>
 

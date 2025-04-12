@@ -308,53 +308,52 @@
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="m-0">Expense Transactions</h3>
             <div class="d-flex gap-2">
-              <div class="input-group" style="width: 300px; position: relative;">
-                <span class="input-group-text">
-                  <i class="ti tabler-search"></i>
-                </span>
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="searchInput" 
-                  placeholder="Search by name..."
-                  style="border-radius: 0; padding-right: 30px;"
-                >
-                <button 
-                  type="button"
-                  class="btn-close clear-search"
-                  id="clearSearch"
-                  style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
-                         z-index: 5; display: none; background-size: 8px; cursor: pointer;
-                         border: none; background-color: transparent; padding: 0.75rem;"
-                  aria-label="Clear search"
-                ></button>
-              </div>
-              <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  Filter By Date
-                </button>
-                <div class="dropdown-menu p-3" style="min-width: 250px;">
-                  <select class="form-select" id="dateFilter" onchange="applyDateFilter()">
-                    <option value="">Select Date Range</option>
-                    <option value="today">Today</option>
-                    <option value="yesterday">Yesterday</option>
-                    <option value="last7">Last 7 Days</option>
-                    <option value="last30">Last 30 Days</option>
-                    <option value="thisMonth">This Month</option>
-                    <option value="lastMonth">Last Month</option>
-                    <option value="thisYear">This Year</option>
-                  </select>
+              <div class="form-group" style="width: 150px;">
+                <div style="height: 21px;"><!-- Spacer to match label height --></div>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="ti tabler-search"></i>
+                  </span>
+                  <input 
+                    type="text" 
+                    class="form-control form-control-sm" 
+                    id="searchInput" 
+                    placeholder="Search..."
+                    style="border-radius: 0; padding-right: 30px;"
+                  >
+                  <button 
+                    type="button"
+                    class="btn-close clear-search"
+                    id="clearSearch"
+                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
+                           z-index: 5; display: none; background-size: 8px; cursor: pointer;
+                           border: none; background-color: transparent; padding: 0.75rem;"
+                    aria-label="Clear search"
+                  ></button>
                 </div>
               </div>
-              <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #18332a;">
-                  Export
-                </button>
-                <ul class="dropdown-menu" style="min-width: 120px;">
-                  <li><a class="dropdown-item" href="#" data-export="pdf">PDF</a></li>
-                  <li><a class="dropdown-item" href="#" data-export="excel">Excel</a></li>
-                  <li><a class="dropdown-item" href="#" data-export="csv">CSV</a></li>
-                </ul>
+              <div class="d-flex gap-2">
+                <div class="form-group" style="width: 150px;">
+                  <label class="form-label small text-muted mb-1">Date From</label>
+                  <input type="date" class="form-control form-control-sm">
+                </div>
+                <div class="form-group" style="width: 150px;">
+                  <label class="form-label small text-muted mb-1">Date To</label>
+                  <input type="date" class="form-control form-control-sm">
+                </div>
+              </div>
+              <div class="form-group" style="width: 150px;">
+                <label class="form-label small text-muted mb-1">Filter By Date</label>
+                <select class="form-select form-select-sm" id="dateFilter" onchange="applyDateFilter()">
+                  <option value="">Select Date Range</option>
+                  <option value="today">Today</option>
+                  <option value="yesterday">Yesterday</option>
+                  <option value="last7">Last 7 Days</option>
+                  <option value="last30">Last 30 Days</option>
+                  <option value="thisMonth">This Month</option>
+                  <option value="lastMonth">Last Month</option>
+                  <option value="thisYear">This Year</option>
+                </select>
               </div>
             </div>
           </div>
@@ -377,7 +376,11 @@
                   <td>Electricity Bill Payment</td>
                   <td>Utilities</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i>Export
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-14</td>
@@ -385,7 +388,11 @@
                   <td>Office Supplies Purchase</td>
                   <td>Supplies</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i>Export
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-13</td>
@@ -393,7 +400,11 @@
                   <td>Equipment Maintenance</td>
                   <td>Maintenance</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i>Export
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-12</td>
@@ -401,7 +412,11 @@
                   <td>Marketing Campaign</td>
                   <td>Marketing</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i>Export
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-11</td>
@@ -409,7 +424,11 @@
                   <td>Monthly Payroll</td>
                   <td>Payroll</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i>Export
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-10</td>
@@ -417,7 +436,11 @@
                   <td>Internet Service</td>
                   <td>Utilities</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i>Export
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-09</td>
@@ -425,7 +448,11 @@
                   <td>Office Rent</td>
                   <td>Rent</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i>Export
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-08</td>
@@ -433,7 +460,11 @@
                   <td>Software Licenses</td>
                   <td>IT Services</td>
                   <td><span class="badge bg-label-warning">Pending</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i>Export
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-07</td>
@@ -441,7 +472,11 @@
                   <td>Water Bill</td>
                   <td>Utilities</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i>Export
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-06</td>
@@ -449,7 +484,11 @@
                   <td>Equipment Purchase</td>
                   <td>Assets</td>
                   <td><span class="badge bg-label-danger">Unpaid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i>Export
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -770,6 +809,33 @@ function exportToCSV(data) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+
+function downloadRowAsExcel(button) {
+    // Get the row data
+    const row = button.closest('tr');
+    const cells = row.querySelectorAll('td');
+    const rowData = Array.from(cells).slice(0, -1).map(cell => {
+        // For cells with badge spans, get the text content
+        const badge = cell.querySelector('.badge');
+        return badge ? badge.textContent : cell.textContent;
+    });
+    
+    // Get invoice number for the filename
+    const invoiceNo = rowData[1];
+    
+    // Create headers array
+    const headers = ['Date', 'Receipt/Invoice No.', 'Expense Name', 'Expense Category', 'Payment Status'];
+    
+    // Create workbook and worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet([headers, rowData]);
+    
+    // Add worksheet to workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Expense Details');
+    
+    // Save the file
+    XLSX.writeFile(wb, `Expense_${invoiceNo}.xlsx`);
 }
 </script>
 

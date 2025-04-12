@@ -400,7 +400,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                      <tr data-id="1">
                         <td>Monthly Clinic Rent</td>
                         <td>Rent</td>
                         <td>2024-02-01</td>
@@ -409,9 +409,6 @@
                         <td>Pasig City Branch</td>
                         <td>
                           <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-success view-expense">
-                              <i class="ti tabler-eye me-1"></i> View
-                            </button>
                             <button class="btn btn-sm btn-info edit-expense">
                               <i class="ti tabler-edit me-1"></i> Edit
                             </button>
@@ -421,7 +418,78 @@
                           </div>
                         </td>
                       </tr>
-                      <!-- Add more rows as needed -->
+                      <tr data-id="2">
+                        <td>Utility Bills</td>
+                        <td>Utilities</td>
+                        <td>2024-02-05</td>
+                        <td><span class="badge bg-label-warning">Pending</span></td>
+                        <td>INV-2024-002</td>
+                        <td>San Mateo Rizal Branch</td>
+                        <td>
+                          <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-info edit-expense">
+                              <i class="ti tabler-edit me-1"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-expense">
+                              <i class="ti tabler-trash me-1"></i> Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr data-id="3">
+                        <td>Office Supplies</td>
+                        <td>Supplies</td>
+                        <td>2024-02-03</td>
+                        <td><span class="badge bg-label-success">Paid</span></td>
+                        <td>INV-2024-003</td>
+                        <td>Cainta Rizal Branch</td>
+                        <td>
+                          <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-info edit-expense">
+                              <i class="ti tabler-edit me-1"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-expense">
+                              <i class="ti tabler-trash me-1"></i> Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr data-id="4">
+                        <td>Equipment Maintenance</td>
+                        <td>Maintenance</td>
+                        <td>2024-02-08</td>
+                        <td><span class="badge bg-label-danger">Overdue</span></td>
+                        <td>INV-2024-004</td>
+                        <td>Pasig City Branch</td>
+                        <td>
+                          <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-info edit-expense">
+                              <i class="ti tabler-edit me-1"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-expense">
+                              <i class="ti tabler-trash me-1"></i> Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr data-id="5">
+                        <td>Staff Training</td>
+                        <td>Training</td>
+                        <td>2024-02-10</td>
+                        <td><span class="badge bg-label-success">Paid</span></td>
+                        <td>INV-2024-005</td>
+                        <td>San Mateo Rizal Branch</td>
+                        <td>
+                          <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-info edit-expense">
+                              <i class="ti tabler-edit me-1"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-expense">
+                              <i class="ti tabler-trash me-1"></i> Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                   <br />
@@ -430,9 +498,155 @@
             </div>
           </div>
 
-          <!-- Content wrapper -->
+          <!-- View/Edit Modal -->
+          <div class="modal fade" id="expenseModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalTitle">Edit Expense</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="expenseForm">
+                    <div class="mb-3">
+                      <label class="form-label">Expense Name</label>
+                      <input type="text" class="form-control" id="expenseName" name="expenseName" required>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Category</label>
+                      <select class="form-select" id="expenseCategory" name="expenseCategory" required>
+                        <option value="Rent">Rent</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Supplies">Supplies</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Training">Training</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Date</label>
+                      <input type="date" class="form-control" id="expenseDate" name="expenseDate" required>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Status</label>
+                      <select class="form-select" id="expenseStatus" name="expenseStatus" required>
+                        <option value="Paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Overdue">Overdue</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Invoice No.</label>
+                      <input type="text" class="form-control" id="invoiceNo" name="invoiceNo" required>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Branch</label>
+                      <select class="form-select" id="expenseBranch" name="expenseBranch" required>
+                        <option value="Pasig City Branch">Pasig City Branch</option>
+                        <option value="San Mateo Rizal Branch">San Mateo Rizal Branch</option>
+                        <option value="Cainta Rizal Branch">Cainta Rizal Branch</option>
+                      </select>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="saveExpense">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <!-- Content wrapper -->
+          <!-- Add this before the closing body tag -->
+          <script>
+            $(document).ready(function() {
+              let isEditMode = false;
+              
+              // Sample data for demonstration
+              const sampleExpenseData = {
+                  expenseName: "Monthly Clinic Rent",
+                  category: "Rent",
+                  date: "2024-02-01",
+                  status: "Paid",
+                  invoiceNo: "INV-2024-001",
+                  branch: "Pasig City Branch",
+                  amount: "50000"
+              };
+
+              // Edit expense
+              $('.edit-expense').click(function() {
+                  const row = $(this).closest('tr');
+                  isEditMode = true;
+                  $('#modalTitle').text('Edit Expense Details');
+                  
+                  // Populate modal with sample data for editing
+                  $('#expenseName').val(sampleExpenseData.expenseName);
+                  $('#expenseCategory').val(sampleExpenseData.category);
+                  $('#expenseDate').val(sampleExpenseData.date);
+                  $('#expenseStatus').val(sampleExpenseData.status);
+                  $('#invoiceNo').val(sampleExpenseData.invoiceNo);
+                  $('#expenseBranch').val(sampleExpenseData.branch);
+                  
+                  disableFormInputs(false);
+                  $('#saveExpense').show();
+                  
+                  // Add edit confirmation handler
+                  $('#saveExpense').off('click').on('click', function() {
+                      if (!validateForm()) return;
+                      
+                      // Simulate API call with delay
+                      setTimeout(function() {
+                          showMessage('Expense updated successfully!', 'success');
+                          $('#expenseModal').modal('hide');
+                          
+                          // Update row data in table (demo only)
+                          row.find('td:eq(0)').text($('#expenseName').val());
+                          row.find('td:eq(1)').text($('#expenseCategory').val());
+                          row.find('td:eq(2)').text($('#expenseDate').val());
+                          row.find('td:eq(3)').html(`<span class="badge bg-label-${$('#expenseStatus').val() === 'Paid' ? 'success' : 'warning'}">${$('#expenseStatus').val()}</span>`);
+                          row.find('td:eq(4)').text($('#invoiceNo').val());
+                          row.find('td:eq(5)').text($('#expenseBranch').val());
+                      }, 500);
+                  });
+                  
+                  $('#expenseModal').modal('show');
+              });
+
+              // Delete expense
+              $('.delete-expense').click(function() {
+                  const row = $(this).closest('tr');
+                  
+                  // Add shake animation before delete
+                  row.addClass('animate__animated animate__shakeX');
+                  
+                  // Simulate API call with delay
+                  setTimeout(function() {
+                      row.fadeOut(400, function() {
+                          $(this).remove();
+                          showMessage('Expense deleted successfully!', 'success');
+                      });
+                  }, 500);
+              });
+
+              // Helper functions
+              function disableFormInputs(disabled) {
+                  $('#expenseForm input, #expenseForm select').prop('disabled', disabled);
+              }
+
+              function validateForm() {
+                  return document.getElementById('expenseForm').checkValidity();
+              }
+
+              function showMessage(message, type) {
+                  const alertDiv = $('#responseMessage');
+                  alertDiv.removeClass().addClass(`alert alert-${type}`);
+                  alertDiv.text(message);
+                  alertDiv.fadeIn();
+                  setTimeout(() => alertDiv.fadeOut(), 3000);
+              }
+            });
+          </script>
+
+          <!-- / Content -->
         </div>
         <!-- / Layout page -->
       </div>
@@ -451,6 +665,7 @@
     <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
 
     <script src="../../assets/vendor/libs/popper/popper.js"></script>
+
     <script src="../../assets/vendor/js/bootstrap.js"></script>
     <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
 
@@ -488,24 +703,5 @@
     <script src="../../assets/vendor/libs/%40form-validation/popular.js"></script>
     <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
     <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
-    <script>
-      // $(document).ready(function () {
-      //   var table = $("#expensesTable").DataTable({
-      //     responsive: true,
-      //     columnDefs: [
-      //       {
-      //         targets: [5], // Branch column index
-      //         visible: false // Hide the branch column initially
-      //       }
-      //     ]
-      //   });
-
-      //   // Branch filter functionality
-      //   $("#branchFilter").on("change", function () {
-      //     var selectedBranch = $(this).val();
-      //     table.column(5).search(selectedBranch).draw();
-      //   });
-      // });
-    </script>
   </body>
 </html>

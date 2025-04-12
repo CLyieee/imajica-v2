@@ -102,8 +102,6 @@ Route::get('/user-list', [DashboardController::class, 'user_list'])->name('page.
 Route::get('/booking', [BookingController::class, 'index'])->name('page.booking');
 
 
-Route::get('/customer-report', [DashboardController::class, 'customer_report'])->name('page.customer-report');
-
 // Service Routes
 Route::post('/services/create', [App\Http\Controllers\serviceController::class, 'create'])->name('service.create');
 Route::get('/services/all', [App\Http\Controllers\serviceController::class, 'get_services'])->name('get.services');
