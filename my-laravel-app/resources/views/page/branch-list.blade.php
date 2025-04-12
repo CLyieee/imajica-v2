@@ -104,10 +104,7 @@
                         <td>{{ $branch->branch_name }}</td>
                         <td>{{ $branch->address }}</td>
                         <td>
-                          <button type="button" class="btn btn-info btn-sm edit-branch" 
-                            data-branch-code="{{ $branch->branch_code }}"
-                            data-branch-name="{{ $branch->branch_name }}"
-                            data-address="{{ $branch->address }}">
+                          <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ route('branch.edit', $branch->branch_code) }}'">
                             <i class="ti tabler-edit me-1"></i> Edit
                           </button>
                           <button type="button" class="btn btn-danger btn-sm delete-branch" 

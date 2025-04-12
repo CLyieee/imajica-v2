@@ -116,6 +116,7 @@ Route::get('/customer-report', [DashboardController::class, 'customer_report'])-
 
 // Service Routes
 Route::post('/services/create', [App\Http\Controllers\serviceController::class, 'create'])->name('service.create');
+Route::get('/services/edit/{service_id}', [App\Http\Controllers\serviceController::class, 'edit'])->name('service.edit');
 Route::get('/services/all', [App\Http\Controllers\serviceController::class, 'get_services'])->name('get.services');
 Route::get('/services/branch/{branch_code}', [App\Http\Controllers\serviceController::class, 'get_services_by_branch'])->name('get.services.by.branch');
 Route::put('/services/update', [App\Http\Controllers\serviceController::class, 'update'])->name('service.update');
@@ -123,9 +124,8 @@ Route::delete('/services/delete', [App\Http\Controllers\serviceController::class
 Route::delete('/services/{id}', [App\Http\Controllers\serviceController::class, 'delete_service'])->name('delete.service');
 
 // Branch Routes
-
 Route::post('/branch/create', [App\Http\Controllers\branchController::class, 'create'])->name('branch.create');
-// Fix the update route - remove the {branch} from within the URL and make it a parameter
+Route::get('/branch/edit/{branch_code}', [App\Http\Controllers\branchController::class, 'edit'])->name('branch.edit');
 Route::put('/branch/update', [App\Http\Controllers\branchController::class, 'update'])->name('branch.update');
 Route::delete('/branch/delete', [App\Http\Controllers\branchController::class, 'delete'])->name('branch.delete');
 Route::get('/branches/all', [App\Http\Controllers\branchController::class, 'getAllBranches'])->name('branch.getAllBranches');
@@ -169,6 +169,7 @@ Route::put('/category/update', [CategoryListController::class, 'update'])->name(
 //Staff Route
 Route::post('/staff/create', [App\Http\Controllers\staffController::class, 'create'])->name('staff.create');
 Route::get('/staff/all', [App\Http\Controllers\staffController::class, 'get_staff'])->name('get.staff');
+Route::get('/staff/edit/{id}', [App\Http\Controllers\staffController::class, 'edit'])->name('staff.edit');
 Route::put('/staff/update', [staffController::class, 'update'])->name('staff.update');
 Route::delete('/staff/{id}', [App\Http\Controllers\staffController::class, 'delete'])->name('staff.delete');
 

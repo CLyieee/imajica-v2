@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\branch;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class branchController extends Controller
 {
@@ -17,7 +18,7 @@ class branchController extends Controller
 
         $newBranch = branch::create($data);
         
-        return redirect(route('page.new-branch'));
+        return redirect(route('page.new-branch'))->with('success', 'Branch added successfully!');
     }
 
 
@@ -42,7 +43,7 @@ class branchController extends Controller
         $branch->address = $request->address;
         $branch->save();
 
-        return redirect()->back()->with('success', 'Branch updated successfully');
+        return redirect()->route('page.branch-list')->with('success', 'Branch updated successfully');
     }
 
     public function delete(Request $request)
@@ -64,6 +65,37 @@ class branchController extends Controller
 
         return redirect()->back()->with('success', 'Branch deleted successfully');
     
+    }
+
+    public function edit($branch_code)
+    {
+        try {
+            Log::info('Attempting to find branch for editing', ['branch_code' => $branch_code]);
+            
+            $branch = branch::where('branch_code', $branch_code)->first();
+            
+            if (!$branch) {
+                Log::warning('Branch not found for editing', ['branch_code' => $branch_code]);
+                return redirect()->route('page.branch-list')
+                    ->with('error', 'Branch not found with code: ' . $branch_code);
+            }
+            
+            Log::info('Successfully found branch for editing', [
+                'branch_code' => $branch_code, 
+                'name' => $branch->branch_name
+            ]);
+            
+            return view('page.edit-branch', compact('branch'));
+        } catch (\Exception $e) {
+            Log::error('Error finding branch for editing', [
+                'branch_code' => $branch_code,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return redirect()->route('page.branch-list')
+                ->with('error', 'Error occurred while editing branch: ' . $e->getMessage());
+        }
     }
 
     public function getAllBranches()

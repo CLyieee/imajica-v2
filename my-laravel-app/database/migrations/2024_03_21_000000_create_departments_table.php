@@ -12,8 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('department_name');
             $table->string('department_code')->unique();
-            $table->foreignId('department_head')->nullable()->constrained('staff')->onDelete('set null');
-            $table->foreignId('parent_department')->nullable()->constrained('departments')->onDelete('set null');
+            $table->string('department_head')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->text('description')->nullable();
             $table->timestamps();

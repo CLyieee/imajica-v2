@@ -208,32 +208,9 @@
                         </td>
                         <td>
                           <div class="d-inline-block">
-                            <button type="button" class="btn btn-sm btn-success view-staff"
-                              data-bs-toggle="modal"
-                              data-bs-target="#staffModal"
-                              data-id="{{ $staff->id }}"
-                              data-name="{{ $staff->firstname }} {{ $staff->lastname }}"
-                              data-email="{{ $staff->email }}"
-                              data-contact="{{ $staff->contact_number }}"
-                              data-position="{{ $staff->position }}"
-                              data-department="{{ $staff->department }}"
-                              data-join-date="{{ $staff->join_date }}"
-                              data-employment-type="{{ $staff->employment_type }}"
-                              data-branch="{{ $staff->branch_code }}"
-                              data-address="{{ $staff->address }}"
-                              data-emergency-contact="{{ $staff->emergency_contact_name }}"
-                              data-emergency-number="{{ $staff->emergency_contact_number }}"
-                              @if($staff->image_path) 
-                                data-profile-image="{{ asset('storage/'.$staff->image_path) }}" 
-                              @endif>
-                              <i class="ti tabler-eye me-1"></i> View
-                            </button>
-                            <button type="button" class="btn btn-sm btn-info edit-staff"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editStaffModal"
-                              data-id="{{ $staff->id }}">
+                            <a href="{{ route('staff.edit', $staff->id) }}" class="btn btn-sm btn-info">
                               <i class="ti tabler-edit me-1"></i> Edit
-                            </button>
+                            </a>
                             <button type="button" class="btn btn-sm btn-danger delete-staff" 
                               data-id="{{ $staff->id }}"
                               data-name="{{ $staff->firstname }} {{ $staff->lastname }}">

@@ -423,12 +423,7 @@
                         </td>
                         <td>
                           <div class="d-flex justify-content-center gap-2">
-                            <button class="btn btn-sm btn-success view-coupon" 
-                              data-coupon-code="{{ $coupon->coupon_code }}"
-                              data-discount-name="{{ $coupon->discount_name }}"
-                              data-description="{{ $coupon->description }}">
-                              <i class="ti tabler-eye me-1"></i> View
-                            </button>
+
                             <button class="btn btn-sm btn-info" onclick="window.location.href='{{ route('coupon.edit', $coupon->coupon_code) }}'">
                               <i class="ti tabler-edit me-1"></i> Edit
                             </button>
