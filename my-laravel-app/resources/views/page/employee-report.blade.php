@@ -305,63 +305,77 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3 class="mb-0">Employee Sales</h3>
-                    <div class="d-flex gap-2">
+                    <div class="d-flex gap-2 align-items-end">
 
-              <div class="input-group" style="width: 300px;">
-                <span class="input-group-text">
-                  <i class="ti tabler-search"></i>
-                </span>
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="searchInput" 
-                  placeholder="Search by name..."
-                  style="border-radius: 0 4px 4px 0;"
-                >
+              <div class="d-flex flex-column" style="width: 150px;">
+                <div class="input-group input-group-sm h-100">
+                  <span class="input-group-text">
+                    <i class="ti tabler-search"></i>
+                  </span>
+                  <input 
+                    type="text" 
+                    class="form-control form-control-sm" 
+                    id="searchInput" 
+                    placeholder="Search by name..."
+                    style="border-radius: 0 4px 4px 0;"
+                  >
+                </div>
               </div>
 
-                        <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortByBtn" data-bs-toggle="dropdown">
-                                Sort By: Default
-                            </button>
-                            <div class="dropdown-menu p-3" style="min-width: 200px;">
-                                <select class="form-select" id="sortBy">
-                                    <option value="">Default</option>
-                                    <option value="totalSales">Total Sales (High to Low)</option>
-                                    <option value="serviceSales">Service Sales (High to Low)</option>
-                                    <option value="productSales">Product Sales (High to Low)</option>
-                                    <option value="clients">Number of Clients (High to Low)</option>
-                                    <option value="name">Employee Name (A to Z)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateFilterBtn" data-bs-toggle="dropdown">
-                                Filter By Date
-                            </button>
-                            <div class="dropdown-menu p-3" style="min-width: 250px;">
-                                <select class="form-select" id="dateFilter">
-                                    <option value="">All Time</option>
-                                    <option value="today">Today</option>
-                                    <option value="yesterday">Yesterday</option>
-                                    <option value="last7days">Last 7 Days</option>
-                                    <option value="last30days">Last 30 Days</option>
-                                    <option value="thisMonth">This Month</option>
-                                    <option value="lastMonth">Last Month</option>
-                                    <option value="thisYear">This Year</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #18332a;">
-                                Export
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" data-export="pdf">PDF</a></li>
-                                <li><a class="dropdown-item" href="#" data-export="excel">Excel</a></li>
-                                <li><a class="dropdown-item" href="#" data-export="csv">CSV</a></li>
-                            </ul>
-                        </div>
+              <div class="d-flex gap-2 align-items-end">
+                <div class="d-flex flex-column" style="width: 150px;">
+                  <label class="form-label mb-1 small">Date From</label>
+                  <div class="input-group input-group-sm">
+                    <input type="date" class="form-control form-control-sm" id="dateFrom">
+                  </div>
+                </div>
+                <div class="d-flex flex-column" style="width: 150px;">
+                  <label class="form-label mb-1 small">Date To</label>
+                  <div class="input-group input-group-sm">
+                    <input type="date" class="form-control form-control-sm" id="dateTo">
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column" style="width: 150px;">
+                <label class="form-label mb-1 small">Sort By</label>
+                <div class="dropdown w-100">
+                  <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100 py-1" type="button" id="sortByBtn" data-bs-toggle="dropdown" style="height: 31px;">
+                    Sort By: Default
+                  </button>
+                  <div class="dropdown-menu p-2" style="min-width: 150px;">
+                    <select class="form-select form-select-sm" id="sortBy">
+                      <option value="">Default</option>
+                      <option value="totalSales">Total Sales (High to Low)</option>
+                      <option value="serviceSales">Service Sales (High to Low)</option>
+                      <option value="productSales">Product Sales (High to Low)</option>
+                      <option value="clients">Number of Clients (High to Low)</option>
+                      <option value="name">Employee Name (A to Z)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column" style="width: 150px;">
+                <label class="form-label mb-1 small">Filter Date</label>
+                <div class="dropdown w-100">
+                  <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100 py-1" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" style="height: 31px;">
+                    Filter By Date
+                  </button>
+                  <div class="dropdown-menu p-2" style="min-width: 150px;">
+                    <select class="form-select form-select-sm" id="dateFilter">
+                      <option value="">All Time</option>
+                      <option value="today">Today</option>
+                      <option value="yesterday">Yesterday</option>
+                      <option value="last7days">Last 7 Days</option>
+                      <option value="last30days">Last 30 Days</option>
+                      <option value="thisMonth">This Month</option>
+                      <option value="lastMonth">Last Month</option>
+                      <option value="thisYear">This Year</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -392,7 +406,10 @@
                                 <td>₱200,000</td>
                                 <td>₱450,000</td>
                                 <td>
-                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#mariaDetails">View</button>
+                                <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
+                              style="background-color: #134013; color: white;">
+                        <i class="ti tabler-download me-1"></i>Export
+                      </button>
                                 </td>
                             </tr>
                             <tr>
@@ -406,9 +423,10 @@
                                 <td>₱180,000</td>
                                 <td>₱400,000</td>
                                 <td>
-
-                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#johnDavisDetails">View</button>
-
+                                <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
+                              style="background-color: #134013; color: white;">
+                        <i class="ti tabler-download me-1"></i>Export
+                      </button>
                                 </td>
                             </tr>
                             <tr>
@@ -422,646 +440,15 @@
                                 <td>₱150,000</td>
                                 <td>₱350,000</td>
                                 <td>
-
-                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#sarah wilsonDetails">View</button>
-
+                                <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
+                              style="background-color: #134013; color: white;">
+                        <i class="ti tabler-download me-1"></i>Export
+                      </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Employee Details Modal -->
-<div class="modal fade" id="mariaDetails" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #1e4d2b;">
-                <h4 class="modal-title text-white">Employee Details</h4>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row g-3">
-                    <!-- Employee Info Card -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100" style="background-color: #f8f9fa;">
-                            <div class="card-header d-flex align-items-center justify-content-between" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Employee Information</h5>
-                                <small class="text-muted">ID: #EMP001</small>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex flex-column gap-3">
-                                    <div class="text-center mb-3">
-                                        <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" width="100" height="100" alt="Employee Photo">
-                                        <h5 class="mb-1">Maria Garcia</h5>
-                                        <span class="badge bg-label-primary">Senior Hairstylist</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Email:</label>
-                                        <p class="mb-0">maria.garcia@imajica.com</p>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Phone:</label>
-                                        <p class="mb-0">+63 912 345 6789</p>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Joined Date:</label>
-                                        <p class="mb-0">January 15, 2022</p>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Performance Rating:</label>
-                                        <div class="d-flex align-items-center gap-1">
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star-half text-warning"></i>
-                                            <span class="ms-1">(4.5)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Transactions -->
-                    <div class="col-md-6 col-lg-8">
-                        <div class="card h-100" style="background-color: #f8f9fa;">
-                            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Recent Transactions</h5>
-                                <div class="btn-group">
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Transaction ID</th>
-                                                <th>Date</th>
-                                                <th>Service Type</th>
-                                                <th>Client</th>
-                                                <th>Status</th>
-                                                <th>Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#TRX001</td>
-                                                <td>2023-11-15</td>
-                                                <td>Hair Coloring</td>
-                                                <td>Sarah Johnson</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱5,500</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#TRX006</td>
-                                                <td>2023-11-14</td>
-                                                <td>Hair Treatment</td>
-                                                <td>Emma Thompson</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱4,800</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#TRX007</td>
-                                                <td>2023-11-13</td>
-                                                <td>Hair Styling</td>
-                                                <td>Sophia Lee</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱3,500</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#TRX008</td>
-                                                <td>2023-11-12</td>
-                                                <td>Hair Coloring</td>
-                                                <td>Olivia Wilson</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱5,200</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sales Performance Chart -->
-                    <div class="col-md-6">
-                        <div class="card" style="background-color: #f8f9fa; max-width: 500px;">
-                            <div class="card-header" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Monthly Sales Performance</h5>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="employeeChart" height="200"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Include Chart.js -->
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            var ctx = document.getElementById("employeeChart").getContext("2d");
-                            var employeeChart = new Chart(ctx, {
-                                type: "bar",
-                                data: {
-                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                                    datasets: [{
-                                        label: "Sales ($)",
-                                        data: [1200, 1500, 1100, 1800, 1700, 1900],
-                                        backgroundColor: "rgba(75, 192, 192, 0.2)",
-                                        borderColor: "rgba(54, 162, 235, 1)",
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-                        });
-                    </script>
-
-                    <!-- Service Distribution -->
-                    <div class="col-md-6">
-                        <div class="card" style="background-color: #f8f9fa;">
-                            <div class="card-header" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Service Distribution</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex flex-column gap-3" style="margin-top: 20px;">
-                                    <div class="service-item">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="fw-semibold">Hair Styling</span>
-                                            <span class="badge bg-primary">45%</span>
-                                        </div>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar" role="progressbar" style="width: 45%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="service-item" style="margin-top: 10px;">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="fw-semibold">Hair Treatment</span>
-                                            <span class="badge bg-info">30%</</span>
-                                        </div>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="service-item" style="margin-top: 10px;">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="fw-semibold">Hair Coloring</span>
-                                            <span class="badge bg-success">25%</</span>
-                                        </div>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="modal-footer bg-light" style="padding: 1rem 1.5rem;">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Employee Details Modal for John Davis -->
-<div class="modal fade" id="johnDavisDetails" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #1e4d2b;">
-                <h4 class="modal-title text-white">Employee Details</h4>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row g-3">
-                    <!-- Employee Info Card -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100" style="background-color: #f8f9fa;">
-                            <div class="card-header d-flex align-items-center justify-content-between" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Employee Information</h5>
-                                <small class="text-muted">ID: #EMP002</small>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex flex-column gap-3">
-                                    <div class="text-center mb-3">
-                                        <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" width="100" height="100" alt="Employee Photo">
-                                        <h5 class="mb-1">John Davis</h5>
-                                        <span class="badge bg-label-primary">Senior Colorist</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Email:</label>
-                                        <p class="mb-0">john.davis@imajica.com</p>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Phone:</label>
-                                        <p class="mb-0">+63 923 456 7890</p>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Joined Date:</label>
-                                        <p class="mb-0">February 1, 2022</p>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Performance Rating:</label>
-                                        <div class="d-flex align-items-center gap-1">
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star text-warning"></i>
-                                            <span class="ms-1">(4.0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Transactions -->
-                    <div class="col-md-6 col-lg-8">
-                        <div class="card h-100" style="background-color: #f8f9fa;">
-                            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Recent Transactions</h5>
-                                <div class="btn-group">
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Transaction ID</th>
-                                                <th>Date</th>
-                                                <th>Service Type</th>
-                                                <th>Client</th>
-                                                <th>Status</th>
-                                                <th>Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#TRX002</td>
-                                                <td>2023-11-16</td>
-                                                <td>Hair Treatment</td>
-                                                <td>Michael Brown</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱4,800</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#TRX009</td>
-                                                <td>2023-11-15</td>
-                                                <td>Hair Coloring</td>
-                                                <td>David Miller</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱5,300</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#TRX010</td>
-                                                <td>2023-11-14</td>
-                                                <td>Hair Styling</td>
-                                                <td>James Wilson</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱3,800</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#TRX011</td>
-                                                <td>2023-11-13</td>
-                                                <td>Hair Treatment</td>
-                                                <td>Daniel Lee</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱4,600</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sales Performance Chart -->
-                    <div class="col-md-6">
-                        <div class="card" style="background-color: #f8f9fa; max-width: 500px;">
-                            <div class="card-header" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Monthly Sales Performance</h5>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="johnDavisChart" height="200"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            var ctx = document.getElementById("johnDavisChart").getContext("2d");
-                            var johnDavisChart = new Chart(ctx, {
-                                type: "bar",
-                                data: {
-                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                                    datasets: [{
-                                        label: "Monthly Sales (₱)",
-                                        data: [35000, 42000, 38000, 45000, 40000, 43000, 41000, 44000, 38000, 42000, 45000, 47000],
-                                        backgroundColor: "rgba(75, 192, 192, 0.2)",
-                                        borderColor: "rgba(75, 192, 192, 1)",
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true,
-                                            ticks: {
-                                                callback: function(value) {
-                                                    return '₱' + value.toLocaleString();
-                                                }
-                                            }
-                                        }
-                                    },
-                                    plugins: {
-                                        tooltip: {
-                                            callbacks: {
-                                                label: function(context) {
-                                                    return '₱' + context.parsed.y.toLocaleString();
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        });
-                    </script>
-
-                    <!-- Service Distribution -->
-                    <div class="col-md-6">
-                        <div class="card" style="background-color: #f8f9fa;">
-                            <div class="card-header" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Service Distribution</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex flex-column gap-3" style="margin-top: 20px;">
-                                    <div class="service-item">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="fw-semibold">Hair Styling</span>
-                                            <span class="badge bg-primary">45%</</span>
-                                        </div>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar" role="progressbar" style="width: 45%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="service-item" style="margin-top: 10px;">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="fw-semibold">Hair Treatment</span>
-                                            <span class="badge bg-info">30%</</span>
-                                        </div>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="service-item" style="margin-top: 10px;">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="fw-semibold">Hair Coloring</span>
-                                            <span class="badge bg-success">25%</</span>
-                                        </div>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Employee Details Modal for Sarah Wilson -->
-<div class="modal fade" id="sarah wilsonDetails" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #1e4d2b;">
-                <h5 class="modal-title text-white">Employee Details</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row g-3">
-                    <!-- Employee Info Card -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100" style="background-color: #f8f9fa;">
-                            <div class="card-header d-flex align-items-center justify-content-between" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Employee Information</h5>
-                                <small class="text-muted">ID: #EMP003</small>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex flex-column gap-3">
-                                    <div class="text-center mb-3">
-                                        <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" width="100" height="100" alt="Employee Photo">
-                                        <h5 class="mb-1">Sarah Wilson</h5>
-                                        <span class="badge bg-label-primary">Hair Treatment Specialist</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Email:</label>
-                                        <p class="mb-0">sarah.wilson@imajica.com</p>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Phone:</label>
-                                        <p class="mb-0">+63 934 567 8901</p>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Joined Date:</label>
-                                        <p class="mb-0">March 1, 2022</p>
-                                    </div>
-                                    <div class="info-item">
-                                        <label class="fw-semibold">Performance Rating:</label>
-                                        <div class="d-flex align-items-center gap-1">
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star-filled text-warning"></i>
-                                            <i class="ti ti-star text-warning"></i>
-                                            <span class="ms-1">(4.0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Transactions for Sarah Wilson -->
-                    <div class="col-md-6 col-lg-8">
-                        <div class="card h-100" style="background-color: #f8f9fa;">
-                            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Recent Transactions</h5>
-                                <div class="btn-group">
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Transaction ID</th>
-                                                <th>Date</th>
-                                                <th>Service Type</th>
-                                                <th>Client</th>
-                                                <th>Status</th>
-                                                <th>Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#TRX003</td>
-                                                <td>2023-11-14</td>
-                                                <td>Hair Treatment</td>
-                                                <td>Emily Parker</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱4,800</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#TRX012</td>
-                                                <td>2023-11-13</td>
-                                                <td>Hair Styling</td>
-                                                <td>Isabella White</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱3,900</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#TRX013</td>
-                                                <td>2023-11-12</td>
-                                                <td>Hair Coloring</td>
-                                                <td>Ava Brown</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱5,100</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#TRX014</td>
-                                                <td>2023-11-11</td>
-                                                <td>Hair Treatment</td>
-                                                <td>Mia Johnson</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                                <td>₱4,700</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sales Performance Chart -->
-                    <div class="col-md-5">
-                        <div class="card" style="background-color: #f8f9fa; max-width: 500px;">
-                            <div class="card-header" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Monthly Sales Performance</h5>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="sarahWilsonChart" height="200"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            var ctx = document.getElementById("sarahWilsonChart").getContext("2d");
-                            var sarahWilsonChart = new Chart(ctx, {
-                                type: "bar",
-                                data: {
-                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                                    datasets: [{
-                                        label: "Monthly Sales (₱)",
-                                        data: [32000, 38000, 35000, 40000, 38000, 42000, 39000, 41000, 36000, 39000, 41000, 43000],
-                                        backgroundColor: "rgba(54, 162, 235, 0.6)",
-                                        borderColor: "rgba(54, 162, 235, 1)",
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true,
-                                            ticks: {
-                                                callback: function(value) {
-                                                    return '₱' + value.toLocaleString();
-                                                }
-                                            }
-                                        }
-                                    },
-                                    plugins: {
-                                        tooltip: {
-                                            callbacks: {
-                                                label: function(context) {
-                                                    return '₱' + context.parsed.y.toLocaleString();
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        });
-                    </script>
-
-                    <!-- Service Distribution -->
-                    <div class="col-md-6">
-                        <div class="card" style="background-color: #f8f9fa;">
-                            <div class="card-header" style="background-color: #e9ecef;">
-                                <h5 class="card-title mb-0">Service Distribution</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex flex-column gap-3" style="margin-top: 20px;">
-                                    <div class="service-item">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="fw-semibold">Hair Treatment</span>
-                                            <span class="badge bg-primary">50%</</span>
-                                        </div>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar" role="progressbar" style="width: 50%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="service-item" style="margin-top: 10px;">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="fw-semibold">Hair Styling</span>
-                                            <span class="badge bg-info">30%</</span>
-                                        </div>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 30%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="service-item" style="margin-top: 10px;">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="fw-semibold">Hair Coloring</span>
-                                            <span class="badge bg-success">20%</</span>
-                                        </div>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 20%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -1343,6 +730,49 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click event listeners to all download buttons
+    document.querySelectorAll('.download-row').forEach(button => {
+        button.addEventListener('click', function() {
+            const row = this.closest('tr');
+            const rowData = [];
+            const headers = [];
+            
+            // Get headers
+            row.closest('table').querySelectorAll('thead th').forEach(th => {
+                if (th.textContent !== 'Action') {
+                    headers.push(th.textContent.trim());
+                }
+            });
+            
+            // Get row data
+            row.querySelectorAll('td').forEach((td, index) => {
+                if (index < row.cells.length - 1) { // Exclude the Action column
+                    rowData.push(td.textContent.trim());
+                }
+            });
+            
+            // Create worksheet data
+            const ws_data = [headers, rowData];
+            
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(ws_data);
+            
+            // Add worksheet to workbook
+            XLSX.utils.book_append_sheet(wb, ws, "Employee Data");
+            
+            // Get employee name for filename
+            const employeeName = rowData[1].replace(/\s+/g, '_').toLowerCase();
+            
+            // Generate and download file
+            XLSX.writeFile(wb, `employee_report_${employeeName}.xlsx`);
+        });
+    });
+});
+</script>
+
 </script>
   </body>
         
@@ -1373,6 +803,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
 
   <script src="../../assets/vendor/libs/popper/popper.js"></script>
+
   <script src="../../assets/vendor/js/bootstrap.js"></script>
   <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
 
