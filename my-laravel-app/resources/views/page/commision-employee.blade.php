@@ -105,6 +105,17 @@
     
       <script src="../../assets/js/config.js"></script>
 
+    <!-- DataTables Buttons CSS -->
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
+
+    <!-- DataTables Buttons JS -->
+    <script src="../../assets/vendor/libs/datatables-buttons/datatables-buttons.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/jszip/jszip.js"></script>
+    <script src="../../assets/vendor/libs/pdfmake/pdfmake.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/buttons.html5.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/buttons.print.js"></script>
+
   </head>
 
   <body>
@@ -238,7 +249,6 @@
               <th>Total Session Commission</th>
               <th>Total Product Commission</th>
               <th>Total Commission</th>
-              <th>Action</th>
           </tr>
           </thead>
          
@@ -345,12 +355,47 @@
       $(document).ready(function () {
         var table = $("#commissionsTable").DataTable({
             ajax: {
-                url: '/assets/comissions.json', // Adjusted relative path to your JSON
-                dataSrc: '' ,
+                url: '/assets/comissions.json',
+                dataSrc: '',
                 responsive: true,
                 scrollX: true,
                 autoWidth: false
             },
+            dom: '<"row"<"col-md-6 d-flex align-items-center justify-content-start gap-2"lB><"col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12"r>><"row"<"col-sm-12"p>>',
+            buttons: [
+                {
+                    extend: 'collection',
+                    className: 'btn dropdown-toggle',
+                    text: '<i class="ti tabler-download me-1"></i> Export',
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-copy me-1"></i> Copy'
+                        },
+                        {
+                            extend: 'csv',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-text me-1"></i> CSV'
+                        },
+                        {
+                            extend: 'excel',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-spreadsheet me-1"></i> Excel'
+                        },
+                        {
+                            extend: 'pdf',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-type-pdf me-1"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-printer me-1"></i> Print'
+                        }
+                    ]
+                }
+            ],
             columns: [
                 { data: 'employee_name' },
                 { data: 'sales_service_no' },
@@ -361,25 +406,32 @@
                 { data: 'total_service_commission' },
                 { data: 'total_session_commission' },
                 { data: 'total_product_commission' },
-                { data: 'total_commision' },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return ` <div class="d-flex gap-1">
-                            <button class="btn btn-sm btn-success view-supplier" data-id="${row.id}">
-                              <i class="ti tabler-eye me-1"></i> View
-                            </button>
-                            <button class="btn btn-sm btn-info edit-supplier" data-id="${row.id}">
-                              <i class="ti tabler-edit me-1"></i> Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-supplier" data-id="${row.id}" data-name="${row.supplier_name}">
-                              <i class="ti tabler-trash me-1"></i> Delete
-                            </button>
-                          </div>`;
-                    }
-                }
+                { data: 'total_commision' }
             ]
         });
+
+        // Add custom styling for the export button
+        $('.dt-buttons .btn').css({
+            'background-color': '#1b392f',
+            'color': '#ffffff',
+            'border-color': '#1b392f'
+        });
+
+        // Optional: Add hover effect
+        $('.dt-buttons .btn').hover(
+            function() {
+                $(this).css({
+                    'background-color': '#2a5749',
+                    'border-color': '#2a5749'
+                });
+            },
+            function() {
+                $(this).css({
+                    'background-color': '#1b392f',
+                    'border-color': '#1b392f'
+                });
+            }
+        );
     });
 </script>
 
@@ -390,8 +442,50 @@
             processing: true,
             pageLength: 10,
             dom: '<"row"<"col-md-6"l><"col-md-6"f>>' +
+                 '<"row"<"col-sm-12"B>>' +  // Add the Buttons extension
                  '<"row"<"col-sm-12"tr>>' +
                  '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+            buttons: [
+                {
+                    extend: 'collection',
+                    className: 'btn btn-primary dropdown-toggle me-2',
+                    text: '<i class="ti tabler-download me-1"></i> Export',
+                    buttons: [
+                        {
+                            extend: 'print',
+                            text: '<i class="ti tabler-printer me-1"></i> Print',
+                            className: 'dropdown-item',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'csv',
+                            text: '<i class="ti tabler-file-text me-1"></i> CSV',
+                            className: 'dropdown-item',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="ti tabler-file-spreadsheet me-1"></i> Excel',
+                            className: 'dropdown-item',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            text: '<i class="ti tabler-file-type-pdf me-1"></i> PDF',
+                            className: 'dropdown-item',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        }
+                    ]
+                }
+            ],
             language: {
                 search: "",
                 searchPlaceholder: "Search..."
@@ -413,12 +507,7 @@
                         item.total_service_commission,
                         item.total_session_commission,
                         item.total_product_commission,
-                        item.total_commision,
-                        `<div class='d-flex gap-2'>
-                                  <button class='btn btn-success'>View</button>
-                                    <button class='btn btn-info'>Edit</button>
-                                    <button class='btn btn-danger'>Delete</button>
-                                </div>`
+                        item.total_commision
                     ]).draw(false);
                 });
             })

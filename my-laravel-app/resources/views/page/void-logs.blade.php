@@ -104,6 +104,17 @@
       <script src="../../assets/js/config.js"></script>
     <script src="../../assets/sales-transaction.json"></script>
     <script src="../../assets/js/sales-transaction.js"></script>
+
+    <!-- DataTables Buttons CSS -->
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
+
+    <!-- DataTables Buttons JS -->
+    <script src="../../assets/vendor/libs/datatables-buttons/datatables-buttons.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/jszip/jszip.js"></script>
+    <script src="../../assets/vendor/libs/pdfmake/pdfmake.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/buttons.html5.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/buttons.print.js"></script>
   </head>
 
   <body>
@@ -228,7 +239,7 @@
                             <th>Status</th>
                           <th>Date Voided</th>
                           <th>Branch</th>
-                          <th>Actions</th>
+                          
                         </tr>
                     </thead>
                    <tbody>
@@ -242,9 +253,7 @@
                             <td>{{ $void->status }}</td>
                             <td>{{ $void->start_date }}</td>
                             <td>{{ $void->branch ? $void->branch->branch_name : $void->branch_name }}</td>
-                            <td>
-                                <a href="#" class="btn btn-success "> <i class="ti tabler-eye me-1"></i>View</a>
-                            </td>
+                            
                         </tr>
                     @endforeach
                    </tbody>
@@ -353,8 +362,73 @@
   <script>
       $(document).ready(function () {
         var table = $("#voidTable").DataTable({
-        
+            dom: '<"row"<"col-md-6 d-flex align-items-center justify-content-start gap-2"lB><"col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12"r>><"row"<"col-sm-12"p>>',
+            buttons: [
+                {
+                    extend: 'collection',
+                    className: 'btn dropdown-toggle',
+                    text: '<i class="ti tabler-download me-1"></i> Export',
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-copy me-1"></i> Copy'
+                        },
+                        {
+                            extend: 'csv',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-text me-1"></i> CSV'
+                        },
+                        {
+                            extend: 'excel',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-spreadsheet me-1"></i> Excel'
+                        },
+                        {
+                            extend: 'pdf',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-type-pdf me-1"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-printer me-1"></i> Print'
+                        }
+                    ]
+                }
+            ],
+            columnDefs: [
+                { className: "text-center", targets: [0, 5] },
+                { className: "text-end", targets: [4] }
+            ],
+            language: {
+                search: "",
+                searchPlaceholder: "Search..."
+            }
         });
+
+        // Add custom styling for the export button
+        $('.dt-buttons .btn').css({
+            'background-color': '#1b392f',
+            'color': '#ffffff',
+            'border-color': '#1b392f'
+        });
+
+        // Optional: Add hover effect
+        $('.dt-buttons .btn').hover(
+            function() {
+                $(this).css({
+                    'background-color': '#2a5749',
+                    'border-color': '#2a5749'
+                });
+            },
+            function() {
+                $(this).css({
+                    'background-color': '#1b392f',
+                    'border-color': '#1b392f'
+                });
+            }
+        );
     });
 </script>
 

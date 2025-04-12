@@ -222,7 +222,7 @@ background-color: #d1ecf1; /* Light cyan */
                     <th>Quantity</th>
                     <th>Amount</th>
                     <th>Payment Terms</th>
-                    <th>Actions</th>
+                    
                 </tr>
             </thead>
         </table>
@@ -323,17 +323,52 @@ background-color: #d1ecf1; /* Light cyan */
 
   <script>
     $(document).ready(function() {
-        // Initialize DataTable with server-side data
         var table = $('#purchaseTablee').DataTable({
             data: @json($purchases),
+            dom: '<"row"<"col-md-6 d-flex align-items-center justify-content-start gap-2"lB><"col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12"r>><"row"<"col-sm-12"p>>',
+            buttons: [
+                {
+                    extend: 'collection',
+                    className: 'btn dropdown-toggle',
+                    text: '<i class="ti tabler-download me-1"></i> Export',
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-copy me-1"></i> Copy'
+                        },
+                        {
+                            extend: 'csv',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-text me-1"></i> CSV'
+                        },
+                        {
+                            extend: 'excel',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-spreadsheet me-1"></i> Excel'
+                        },
+                        {
+                            extend: 'pdf',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-type-pdf me-1"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-printer me-1"></i> Print'
+                        }
+                    ]
+                }
+            ],
             columns: [
                 { data: 'trans_no' },
                 { data: 'vendor_name' },
                 { data: 'product_ordered' },
-                { data: 'date_received',
-                  render: function(data) {
-                      return moment(data).format('YYYY-MM-DD');
-                  }
+                { 
+                    data: 'date_received',
+                    render: function(data) {
+                        return moment(data).format('YYYY-MM-DD');
+                    }
                 },
                 { data: 'received_by' },
                 { data: 'qty' },
@@ -343,17 +378,7 @@ background-color: #d1ecf1; /* Light cyan */
                         return '₱' + parseFloat(data).toFixed(2);
                     }
                 },
-                { data: 'payment_terms' },
-                {
-                    data: null,
-                    render: function(data) {
-                        return `<div class='d-flex gap-2'>
-                            <button class='btn btn-success'><i class="ti tabler-eye me-1"></i>View</button>
-                            <button class='btn btn-info'><i class="ti tabler-edit me-1"></i>Edit</button>
-                            <button class='btn btn-danger'><i class="ti tabler-trash me-1"></i>Delete</button>
-                        </div>`;
-                    }
-                }
+                { data: 'payment_terms' }
             ],
             processing: true,
             pageLength: 10,
@@ -362,6 +387,29 @@ background-color: #d1ecf1; /* Light cyan */
                 searchPlaceholder: "Search..."
             }
         });
+
+        // Add custom styling for the export button
+        $('.dt-buttons .btn').css({
+            'background-color': '#1b392f',
+            'color': '#ffffff',
+            'border-color': '#1b392f'
+        });
+
+        // Optional: Add hover effect
+        $('.dt-buttons .btn').hover(
+            function() {
+                $(this).css({
+                    'background-color': '#2a5749',
+                    'border-color': '#2a5749'
+                });
+            },
+            function() {
+                $(this).css({
+                    'background-color': '#1b392f',
+                    'border-color': '#1b392f'
+                });
+            }
+        );
     });
 </script>
 
@@ -390,7 +438,16 @@ background-color: #d1ecf1; /* Light cyan */
       href="../../assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css"
     />
 
+    <!-- DataTables Buttons CSS -->
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
 
+    <!-- DataTables Buttons JS -->
+    <script src="../../assets/vendor/libs/datatables-buttons/datatables-buttons.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/jszip/jszip.js"></script>
+    <script src="../../assets/vendor/libs/pdfmake/pdfmake.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/buttons.html5.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/buttons.print.js"></script>
 
   </body>
 <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/app-invoice-preview.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:26:33 GMT -->

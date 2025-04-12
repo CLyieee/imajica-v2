@@ -208,41 +208,18 @@
               <th>No. of Clients</th>
               <th>Total Service Sales</th>
               <th>Total Sales</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            @php 
-                $totalServiceCount = 0;
-                $totalClientCount = 0;
-                $totalServiceSales = 0;
-                $totalSales = 0;
-            @endphp
-            
             @foreach($employees as $employee)
-            @php
-                $totalServiceCount += $employee->service_count;
-                $totalClientCount += $employee->client_count;
-                $totalServiceSales += $employee->total_service_sales;
-                $totalSales += $employee->total_sales;
-            @endphp
             <tr>
                 <td>{{ $employee->firstname }} {{ $employee->lastname }}</td>
                 <td class="text-center">{{ number_format($employee->service_count) }}</td>
                 <td class="text-center">{{ number_format($employee->client_count) }}</td>
                 <td class="text-end">₱{{ number_format($employee->total_service_sales, 2) }}</td>
                 <td class="text-end">₱{{ number_format($employee->total_sales, 2) }}</td>
-                <td>
-                    <div class='d-flex gap-2'>
-                        <button class='btn btn-sm btn-success'><i class="ti tabler-eye me-1"></i>View</button>
-                        <button class='btn btn-sm btn-info'><i class="ti tabler-edit me-1"></i>Edit</button>
-                        <button class='btn btn-sm btn-danger'><i class="ti tabler-trash me-1"></i>Delete</button>
-                    </div>
-                </td>
             </tr>
             @endforeach
-            
-         
           </tbody>
         </table>
       </div>
@@ -342,10 +319,72 @@
  <script src="../../assets/employee-sales.json"></script>
 
 <script>
-      $(document).ready(function () {
+    $(document).ready(function () {
         var table = $("#employeeSales").DataTable({
-           
+            dom: '<"row"<"col-md-6 d-flex align-items-center justify-content-start gap-2"lB><"col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12"r>><"row"<"col-sm-12"p>>',
+            buttons: [
+                {
+                    extend: 'collection',
+                    className: 'btn dropdown-toggle',
+                    text: '<i class="ti tabler-download me-1"></i> Export',
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-copy me-1"></i> Copy'
+                        },
+                        {
+                            extend: 'csv',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-text me-1"></i> CSV'
+                        },
+                        {
+                            extend: 'excel',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-spreadsheet me-1"></i> Excel'
+                        },
+                        {
+                            extend: 'pdf',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-file-type-pdf me-1"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            className: 'dropdown-item',
+                            text: '<i class="ti tabler-printer me-1"></i> Print'
+                        }
+                    ]
+                }
+            ],
+            columnDefs: [
+                { className: "text-center", targets: [1, 2] },
+                { className: "text-end", targets: [3, 4] }
+            ],
+            // Add any other DataTable options you need
         });
+
+        // Add custom styling for the export button
+        $('.dt-buttons .btn').css({
+            'background-color': '#1b392f',
+            'color': '#ffffff',
+            'border-color': '#1b392f'
+        });
+
+        // Optional: Add hover effect
+        $('.dt-buttons .btn').hover(
+            function() {
+                $(this).css({
+                    'background-color': '#2a5749',
+                    'border-color': '#2a5749'
+                });
+            },
+            function() {
+                $(this).css({
+                    'background-color': '#1b392f',
+                    'border-color': '#1b392f'
+                });
+            }
+        );
     });
 </script>
 
@@ -373,8 +412,16 @@
       href="../../assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css"
     />
 
+<!-- DataTables Buttons CSS -->
+<link rel="stylesheet" href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
 
-
+<!-- DataTables Buttons JS -->
+<script src="../../assets/vendor/libs/datatables-buttons/datatables-buttons.js"></script>
+<script src="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js"></script>
+<script src="../../assets/vendor/libs/jszip/jszip.js"></script>
+<script src="../../assets/vendor/libs/pdfmake/pdfmake.js"></script>
+<script src="../../assets/vendor/libs/datatables-buttons/buttons.html5.js"></script>
+<script src="../../assets/vendor/libs/datatables-buttons/buttons.print.js"></script>
 
   </body>
 
