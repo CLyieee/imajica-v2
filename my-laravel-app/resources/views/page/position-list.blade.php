@@ -377,12 +377,14 @@
             const submitBtn = $(this).find('button[type="submit"]');
             submitBtn.prop('disabled', true);
             
+            // Clear any existing error messages
+            $('.error-feedback').remove();
+            
             $.ajax({
                 url: '{{ route("position.create") }}',
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function(response) {
-                    // Show success message before hiding modal
                     Swal.fire({
                         ...swalConfig,
                         icon: 'success',
@@ -396,6 +398,29 @@
                 },
                 error: function(xhr) {
                     submitBtn.prop('disabled', false);
+                    
+                    if (xhr.status === 422) { // Validation error
+                        const errors = xhr.responseJSON.errors;
+                        Object.keys(errors).forEach(field => {
+                            const input = $(`[name="${field}"]`);
+                            input.addClass('is-invalid');
+                            input.after(`<div class="invalid-feedback error-feedback">${errors[field][0]}</div>`);
+                        });
+                        
+                        Swal.fire({
+                            ...swalConfig,
+                            icon: 'error',
+                            title: 'Validation Error',
+                            text: 'Please check the form for errors'
+                        });
+                    } else {
+                        Swal.fire({
+                            ...swalConfig,
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to create position. Please try again.'
+                        });
+                    }
                 }
             });
         });
@@ -532,3 +557,4 @@
 
   </body>
 </html>
+``` 
