@@ -164,12 +164,12 @@
             <th></th>
             <th>product</th>
             <th>category</th>
-            <th>stock</th>
+          <th>status</th>
             <th>sku</th>
             <th>price</th>
             <th>qty</th>
             <th>status</th>
-            <th>actions</th>
+          
           </tr>
         </thead>
       </table>
