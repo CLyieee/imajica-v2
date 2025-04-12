@@ -133,7 +133,7 @@ t&&new DataTable(t,{
       render:function(e,t,n,a){
         return `
           <div class='d-flex gap-1'>
-            <a href="/products/${n.id}/view" class='btn btn-success'><i class='ti tabler-eye me-1'></i>View</a>
+
             <a href="/products/${n.id}/edit" class='btn btn-info'><i class='ti tabler-edit me-1'></i>Edit</a>
             <button class='btn btn-danger delete-product' data-id='${n.id}'><i class='ti tabler-trash me-1'></i>Delete</button>
           </div>

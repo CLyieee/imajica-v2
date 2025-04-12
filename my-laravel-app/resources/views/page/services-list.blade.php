@@ -221,19 +221,7 @@
                     </td>
                     <td class="text-center">
                       <div class="d-flex gap-2 justify-content-center">
-                        <button class="btn btn-sm btn-success view-service" 
-                          data-service-id="{{ $service->id }}"
-                          data-service-name="{{ $service->service_name }}"
-                          data-service-branch="{{ $service->branch ? $service->branch->branch_name : $service->branch_code }}"
-                          data-service-description="{{ $service->description }}"
-                          data-service-duration="{{ $service->duration }}"
-                          data-service-category="{{ $service->service_category }}"
-                          data-service-cost="{{ $service->service_cost }}"
-                          data-service-points="{{ $service->loyalty_pts }}"
-                          data-service-image="{{ $service->service_image }}"
-                          >
-                          <i class="ti tabler-eye me-1"></i> View
-                        </button>
+                   
                         <button class="btn btn-sm btn-info edit-service"
                           data-service-id="{{ $service->id }}"
                           data-service-name="{{ $service->service_name }}"
@@ -261,148 +249,162 @@
           </div>
         </div>
 
-        <!-- Replace the existing service modal with this updated version -->
+        <!-- View Service Modal -->
         <div class="modal fade" id="serviceModal" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content border-0">
-              <div class="modal-header bg-primary text-white border-0">
-                <h5 class="modal-title text-white fs-4">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+              <div class="modal-header sticky-element bg-primary">
+                <h5 class="card-title mb-sm-0 me-2 text-white">
                   <i class="ti tabler-info-circle me-2"></i>
                   <span id="modalServiceName"></span>
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body p-4">
+              <div class="modal-body">
                 <div class="row g-3">
-                
-                  <!-- Image Holder -->
-                  <div class="col-12">
-                    <div class="client-detail-card text-center">
-                      <img id="modalServiceImage" src="" alt="Service Image" class="img-fluid rounded mb-4" style="max-height: 300px; object-fit: cover;">
+                  <!-- Image Section -->
+                  <div class="col-12 text-center mb-4">
+                    <div class="profile-upload-container mx-auto">
+                      <div class="avatar-upload">
+                        <div class="avatar-preview">
+                          <img id="modalServiceImage" src="" alt="Service Preview" class="rounded-circle"/>
+                        </div>
+                      </div>
                     </div>
                   </div>
-        
+
                   <!-- Service Details -->
                   <div class="col-md-6">
-                    <div class="client-detail-card h-100">
-                      <h6 class="text-primary mb-3">Service Details</h6>
-                      <div class="client-info-item">
-                        <div class="client-info-icon">
-                          <i class="ti tabler-building"></i>
-                        </div>
-                        <div>
-                          <small class="text-muted d-block">Branch</small>
-                          <span id="modalBranch" class="fw-semibold"></span>
-                        </div>
-                      </div>
-                      <div class="client-info-item">
-                        <div class="client-info-icon">
-                          <i class="ti tabler-category"></i>
-                        </div>
-                        <div>
-                          <small class="text-muted d-block">Category</small>
-                          <span id="modalCategory" class="fw-semibold"></span>
-                        </div>
-                      </div>
-                      <div class="client-info-item">
-                        <div class="client-info-icon">
-                          <i class="ti tabler-clock"></i>
-                        </div>
-                        <div>
-                          <small class="text-muted d-block">Duration</small>
-                          <span id="modalDuration" class="fw-semibold"></span>
-                        </div>
-                      </div>
+                    <div class="mb-3">
+                      <label class="form-label">Branch</label>
+                      <p id="modalBranch" class="form-control-static"></p>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Category</label>
+                      <p id="modalCategory" class="form-control-static"></p>
                     </div>
                   </div>
-        
-                  <!-- Costs and Points -->
+
                   <div class="col-md-6">
-                    <div class="client-detail-card h-100">
-                      <h6 class="text-primary mb-3">Pricing & Rewards</h6>
-                      <div class="client-info-item">
-                        <div class="client-info-icon">
-                          <i class="ti tabler-tag"></i>
-                        </div>
-                        <div>
-                          <small class="text-muted d-block">Service Cost</small>
-                          <span id="modalCost" class="fw-semibold"></span>
-                        </div>
-                      </div>
-                      <div class="client-info-item">
-                        <div class="client-info-icon">
-                          <i class="ti tabler-award"></i>
-                        </div>
-                        <div>
-                          <small class="text-muted d-block">Loyalty Points</small>
-                          <span id="modalPoints" class="fw-semibold"></span>
-                        </div>
-                      </div>
+                    <div class="mb-3">
+                      <label class="form-label">Duration</label>
+                      <p id="modalDuration" class="form-control-static"></p>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Service Cost</label>
+                      <p id="modalCost" class="form-control-static"></p>
                     </div>
                   </div>
-        
-                  <!-- Description -->
+
                   <div class="col-12">
-                    <div class="client-detail-card">
-                      <h6 class="text-primary mb-3">Description</h6>
-                      <p id="modalDescription" class="mb-0"></p>
+                    <div class="mb-3">
+                      <label class="form-label">Description</label>
+                      <p id="modalDescription" class="form-control-static"></p>
                     </div>
                   </div>
-        
                 </div>
               </div>
             </div>
           </div>
         </div>
-        
 
         <!-- Edit Service Modal -->
         <div class="modal fade" id="editServiceModal" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-              <div class="modal-header" style="background-color: #0a3622">
-                <h5 class="modal-title text-white">Edit Service</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                  aria-label="Close"></button>
+              <div class="modal-header" style="background-color: #0A3622;">
+                <h5 class="modal-title text-white" id="serviceModalLabel">Edit Service</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
+
               <div class="modal-body">
-                <form id="editServiceForm" method="POST" action="{{ route('service.update') }}">
+                <form id="editServiceForm" method="POST" action="{{ route('service.update') }}" enctype="multipart/form-data">
                   @csrf
                   @method('PUT')
-                  <input type="hidden" id="edit_service_id" name="id" />
-                  <div class="mb-3">
-                    <label class="form-label" for="edit_service_name">Service Name</label>
-                    <input type="text" id="edit_service_name" name="service_name" class="form-control" required />
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label" for="edit_branch_code">Branch Code</label>
-                    <input type="text" id="edit_branch_code" name="branch_code" class="form-control" required />
+                  <input type="hidden" id="edit_service_id" name="service_id">
+                  <div class="row g-6">
+                    <div class="col-12 text-center mb-4">
+                      <div class="profile-upload-container mx-auto">
+                        <div class="avatar-upload">
+                          <div class="avatar-preview">
+                            <div class="rounded bg-label-secondary" style="width: 200px; height: 200px; overflow: hidden;">
+                              <img
+                                id="edit_imagePreview"
+                                src="../../assets/img/services/default-service.png"
+                                alt="Service Preview"
+                                style="width: 100%; height: 100%; object-fit: cover;"
+                              />
+                            </div>
+                          </div>
+                          <div class="avatar-edit text-center">
+                            <input
+                              type="file"
+                              id="edit_service_image" 
+                              name="service_image"
+                              accept=".png, .jpg, .jpeg"
+                              class="d-none"
+                              onchange="previewImage(this)"
+                            />
+                            <label for="edit_service_image" class="btn btn-primary mt-3">
+                              <i class="ti tabler-upload me-1"></i>Change Photo
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
+                    <div class="col-md-6">
+                      <label class="form-label" for="edit_service_name">Services Name</label>
+                      <input type="text" id="edit_service_name" name="service_name" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">Branch</label>
+                      <select class="select2 form-select" name="branch_code" id="edit_branch_code" required>
+                        <option value="">Select Branch</option>
+                        @foreach($branches as $branch)
+                          <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+
+                    <div class="col-12">
+                      <label class="form-label" for="edit_description">Description</label>
+                      <textarea name="description" class="form-control" id="edit_description" rows="4"></textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label" for="edit_duration">Duration (minutes)</label>
+                      <input type="number" id="edit_duration" name="duration" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">Service Category</label>
+                      <select class="select2 form-select" name="service_category" id="edit_service_category" required>
+                        <option value="">Select Service Category</option>
+                        <option value="Facials">Facials</option>
+                        <option value="Body Contouring">Body Contouring</option>
+                        <option value="Laser Treatments">Laser Treatments</option>
+                        <option value="Injectables">Injectables</option>
+                        <option value="Others">Others</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label" for="edit_service_cost">Service Cost</label>
+                      <input type="number" step="0.01" id="edit_service_cost" name="service_cost" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label" for="edit_loyalty_pts">Loyalty Reward Points</label>
+                      <input type="number" id="edit_loyalty_pts" name="loyalty_pts" class="form-control">
+                    </div>
+
+                    <div class="col-12 text-end mt-4">
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-primary ms-2" id="updateServiceBtn">Update Service</button>
+                    </div>
                   </div>
-                  <div class="mb-3">
-                    <label class="form-label" for="edit_description">Description</label>
-                    <textarea id="edit_description" name="description" class="form-control" required></textarea>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label" for="edit_duration">Duration</label>
-                    <input type="text" id="edit_duration" name="duration" class="form-control" required />
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label" for="edit_service_category">Service Category</label>
-                    <input type="text" id="edit_service_category" name="service_category" class="form-control" required />
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label" for="edit_service_cost">Service Cost</label>
-                    <input type="number" id="edit_service_cost" name="service_cost" class="form-control" required />
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label" for="edit_loyalty_pts">Loyalty Points</label>
-                    <input type="number" id="edit_loyalty_pts" name="loyalty_pts" class="form-control" required />
-                  </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Update Service</button>
                 </form>
               </div>
             </div>
