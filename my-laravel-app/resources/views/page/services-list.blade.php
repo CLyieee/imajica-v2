@@ -74,12 +74,12 @@
 
   <!-- Helpers -->
   <script src="../../assets/vendor/js/helpers.js"></script>
-  
+
   <script src="../../assets/js/config.js"></script>
 
 
   </script>
-  
+
   <style>
     /* Add to your existing styles */
     .client-detail-card {
@@ -153,139 +153,16 @@
 
       <!-- Keep rest of existing content -->
       <div class="layout-page">
-        <!-- Existing navbar and content sections -->
-        <nav
-          class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-          id="layout-navbar">
-          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-            <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
-              <i class="icon-base ti tabler-menu-2 icon-md"></i>
-            </a>
-          </div>
-
-          <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
-            <!-- Search -->
-            <div class="navbar-nav align-items-center">
-              <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-                <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
-                  <span class="d-inline-block text-body-secondary fw-normal" id="autocomplete"></span>
-                </a>
-              </div>
-            </div>
-
-            <!-- /Search -->
-
-            <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-              <!--/ Language -->
-
-              <!-- Style Switcher -->
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
-                  id="nav-theme" href="javascript:void(0);" data-bs-toggle="dropdown">
-                  <i class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"></i>
-                  <span class="d-none ms-2" id="nav-theme-text">Toggle theme</span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-theme-text">
-                  <li>
-                    <button type="button" class="dropdown-item align-items-center active" data-bs-theme-value="light"
-                      aria-pressed="false">
-                      <span><i class="icon-base ti tabler-sun icon-22px me-3" data-icon="sun"></i>Light</span>
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="dark"
-                      aria-pressed="true">
-                      <span><i class="icon-base ti tabler-moon-stars icon-22px me-3"
-                          data-icon="moon-stars"></i>Dark</span>
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="system"
-                      aria-pressed="false">
-                      <span><i class="icon-base ti tabler-device-desktop-analytics icon-22px me-3"
-                          data-icon="device-desktop-analytics"></i>System</span>
-                    </button>
-                  </li>
-                </ul>
-              </li>
-              <!-- / Style Switcher-->
-
-              <!-- Quick links  -->
-
-              <!-- Quick links -->
-
-              <!-- Notification -->
-
-              <!--/ Notification -->
-
-              <!-- User -->
-              <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
-                  <div class="avatar avatar-online">
-                    <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
-                  </div>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li>
-                    <a class="dropdown-item mt-0" href="pages-account-settings-account.html">
-                      <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 me-2">
-                          <div class="avatar avatar-online">
-                            <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
-                          </div>
-                        </div>
-                        <div class="flex-grow-1">
-                          <h6 class="mb-0">Rommel Lacap</h6>
-                          <small class="text-body-secondary">Admin</small>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <div class="dropdown-divider my-1 mx-n2"></div>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="icon-base ti tabler-user me-3 icon-md"></i><span class="align-middle">My Profile</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="icon-base ti tabler-settings me-3 icon-md"></i><span
-                        class="align-middle">Settings</span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <div class="dropdown-divider my-1 mx-n2"></div>
-                  </li>
-
-                  <li>
-                    <div class="d-grid px-2 pt-2 pb-1">
-                      <a class="btn btn-sm btn-danger d-flex" href="#" target="_blank">
-                        <small class="align-middle">Logout</small>
-                        <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-              <!--/ User -->
-            </ul>
-          </div>
-        </nav>
-
-        <!-- / Navbar -->
-
+   
         <!-- Replace the existing table section with this -->
         <div class="container-xxl flex-grow-1 container-p-y">
           <div class="card">
             <!-- Table Header with Search -->
             <div class="d-flex justify-content-between align-items-center p-3">
               <h5 class="card-title mb-0">Services List</h5>
-              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addServiceModal">
+              <a class="btn btn-primary" href="{{ route('page.new-services') }}">
                 <i class="ti tabler-plus me-1"></i> Add New Service
-              </button>
+              </a>
             </div>
 
             <!-- Success/Error Messages -->
@@ -304,7 +181,7 @@
 
             <!-- Table -->
             <div class="table-responsive text-nowrap px-3">
-              <table class="table table-striped" id="tableService">
+              <table class="table table-striped" id="servicesTable">
                 <thead class="table-light">
                   <tr>
                     <th>Services Name</th>
@@ -345,22 +222,19 @@
                     <td class="text-center">
                       <div class="d-flex gap-2 justify-content-center">
                         <button class="btn btn-sm btn-success view-service" 
-                          data-service-id="{{ $service->id }}"
+                          data-service-id="{{ $service->service_id }}"
                           data-service-name="{{ $service->service_name }}"
-                          data-service-description="{{ $service->description }}"
-                          data-service-cost="{{ $service->service_cost }}"
-                          data-service-points="{{ $service->loyalty_pts }}">
-                          <i class="ti tabler-eye me-1"></i> View
-                        </button>
-                        <button class="btn btn-sm btn-info edit-service"
-                          data-service-id="{{ $service->id }}"
-                          data-service-name="{{ $service->service_name }}"
-                          data-service-branch="{{ $service->branch_code }}"
+                          data-service-branch="{{ $service->branch ? $service->branch->branch_name : $service->branch_code }}"
                           data-service-description="{{ $service->description }}"
                           data-service-duration="{{ $service->duration }}"
                           data-service-category="{{ $service->service_category }}"
                           data-service-cost="{{ $service->service_cost }}"
-                          data-service-points="{{ $service->loyalty_pts }}">
+                          data-service-points="{{ $service->loyalty_pts }}"
+                          data-service-image="{{ $service->service_image }}"
+                          >
+                          <i class="ti tabler-eye me-1"></i> View
+                        </button>
+                        <button type="button" class="btn btn-sm btn-info" onclick="window.location.href='{{ route('service.edit', $service->service_id) }}'">
                           <i class="ti tabler-edit me-1"></i> Edit
                         </button>
                         <button class="btn btn-sm btn-danger delete-service" 
@@ -379,24 +253,65 @@
           </div>
         </div>
 
-        <!-- Add this modal after your table -->
+        <!-- Replace the existing service modal with this updated version -->
         <div class="modal fade" id="serviceModal" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content border-0">
               <div class="modal-header bg-primary text-white border-0">
                 <h5 class="modal-title text-white fs-4">
-                  <i class="ti tabler-plus me-2"></i>
+                  <i class="ti tabler-info-circle me-2"></i>
                   <span id="modalServiceName"></span>
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                  aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body p-4">
                 <div class="row g-3">
+                
+                  <!-- Image Holder -->
+                  <div class="col-12">
+                    <div class="client-detail-card text-center">
+                      <img id="modalServiceImage" src="" alt="Service Image" class="img-fluid rounded mb-4" style="max-height: 300px; object-fit: cover;">
+                    </div>
+                  </div>
+        
                   <!-- Service Details -->
                   <div class="col-md-6">
                     <div class="client-detail-card h-100">
-                      <h6 class="text-primary mb-3">Service Information</h6>
+                      <h6 class="text-primary mb-3">Service Details</h6>
+                      <div class="client-info-item">
+                        <div class="client-info-icon">
+                          <i class="ti tabler-building"></i>
+                        </div>
+                        <div>
+                          <small class="text-muted d-block">Branch</small>
+                          <span id="modalBranch" class="fw-semibold"></span>
+                        </div>
+                      </div>
+                      <div class="client-info-item">
+                        <div class="client-info-icon">
+                          <i class="ti tabler-category"></i>
+                        </div>
+                        <div>
+                          <small class="text-muted d-block">Category</small>
+                          <span id="modalCategory" class="fw-semibold"></span>
+                        </div>
+                      </div>
+                      <div class="client-info-item">
+                        <div class="client-info-icon">
+                          <i class="ti tabler-clock"></i>
+                        </div>
+                        <div>
+                          <small class="text-muted d-block">Duration</small>
+                          <span id="modalDuration" class="fw-semibold"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <!-- Costs and Points -->
+                  <div class="col-md-6">
+                    <div class="client-detail-card h-100">
+                      <h6 class="text-primary mb-3">Pricing & Rewards</h6>
                       <div class="client-info-item">
                         <div class="client-info-icon">
                           <i class="ti tabler-tag"></i>
@@ -415,22 +330,23 @@
                           <span id="modalPoints" class="fw-semibold"></span>
                         </div>
                       </div>
-                      <div class="client-info-item mb-0">
-                        <div class="client-info-icon">
-                          <i class="ti tabler-file-text"></i>
-                        </div>
-                        <div>
-                          <small class="text-muted d-block">Description</small>
-                          <span id="modalDescription" class="fw-semibold"></span>
-                        </div>
-                      </div>
                     </div>
                   </div>
+        
+                  <!-- Description -->
+                  <div class="col-12">
+                    <div class="client-detail-card">
+                      <h6 class="text-primary mb-3">Description</h6>
+                      <p id="modalDescription" class="mb-0"></p>
+                    </div>
+                  </div>
+        
                 </div>
               </div>
             </div>
           </div>
         </div>
+        
 
         <!-- Edit Service Modal -->
         <div class="modal fade" id="editServiceModal" tabindex="-1" aria-hidden="true">
@@ -453,7 +369,7 @@
                   <div class="mb-3">
                     <label class="form-label" for="edit_branch_code">Branch Code</label>
                     <input type="text" id="edit_branch_code" name="branch_code" class="form-control" required />
-                    
+
                   </div>
                   <div class="mb-3">
                     <label class="form-label" for="edit_description">Description</label>
@@ -550,17 +466,17 @@
   <script src="../../assets/vendor/libs/%40form-validation/popular.js"></script>
   <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
   <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
-  
+
 
   <script src="../../assets/js/service-management.js"></script>
   <script src="{{ asset('assets/js/service-management.js') }}" defer></script>
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
+
   <script>
     $(document).ready(function () {
       $('#servicesTable').DataTable();
-  
+
         // Filter by branch
         $("#branchFilter").on("change", function () {
           var selectedBranch = $(this).val();
@@ -572,15 +488,39 @@
       document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".view-service").forEach((button) => {
           button.addEventListener("click", function () {
+            // Format duration
+            const duration = parseInt(this.dataset.serviceDuration);
+            const hours = Math.floor(duration / 60);
+            const minutes = duration % 60;
+            let durationText = "";
+            if (hours > 0) durationText += hours + "h ";
+            if (minutes > 0) durationText += minutes + "m";
+            
+            // Format cost
+            const cost = parseFloat(this.dataset.serviceCost).toLocaleString('en-PH', {
+              style: 'currency',
+              currency: 'PHP'
+            });
+            
             // Update modal content
-            document.getElementById("modalServiceName").textContent =
-              this.dataset.name;
-            document.getElementById("modalCost").textContent =
-              this.dataset.cost;
-            document.getElementById("modalPoints").textContent =
-              this.dataset.points;
-            document.getElementById("modalDescription").textContent =
-              this.dataset.description;
+            document.getElementById("modalServiceName").textContent = this.dataset.serviceName;
+            document.getElementById("modalBranch").textContent = this.dataset.serviceBranch;
+            document.getElementById("modalCategory").textContent = this.dataset.serviceCategory;
+            document.getElementById("modalDuration").textContent = durationText;
+            document.getElementById("modalCost").textContent = cost;
+            document.getElementById("modalPoints").textContent = this.dataset.servicePoints + ' pts';
+            document.getElementById("modalDescription").textContent = this.dataset.serviceDescription;
+           // Set the image source
+      const modalImage = document.getElementById('modalServiceImage');
+      if (this.dataset.serviceImage && this.dataset.serviceImage.trim() !== '') {
+        modalImage.src = this.dataset.serviceImage;
+      } else {
+        modalImage.src = '../../assets/img/services/default-service.png'; // fallback image
+      }
+         
+
+            // Show modal
+            $('#serviceModal').modal('show');
           });
         });
       });
@@ -595,10 +535,10 @@
         $('#edit_service_category').val($(this).data('service-category'));
         $('#edit_service_cost').val($(this).data('service-cost'));
         $('#edit_loyalty_pts').val($(this).data('service-points'));
-        
+
         // For debugging - add this temporarily
         console.log('Service ID:', $(this).data('service-id'));
-        
+
         $('#editServiceModal').modal('show');
       });
 
@@ -607,7 +547,7 @@
         e.preventDefault();
         let form = this;
         $('#editServiceModal').modal('hide');
-        
+
         Swal.fire({
           title: 'Confirm Update',
           text: "Are you sure you want to update this service?",
@@ -628,7 +568,7 @@
       // Handle Delete button with SweetAlert
       $('.delete-service').on('click', function() {
           const serviceID = $(this).data('service-id');
-          
+
           Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -646,7 +586,7 @@
             }
           });
       });
-      
+
       // Flash messages for success/error using SweetAlert
       @if(session('success'))
         Swal.fire({
@@ -656,7 +596,7 @@
           confirmButtonColor: '#0a3622'
         });
       @endif
-      
+
       @if(session('error'))
         Swal.fire({
           icon: 'error',

@@ -1,77 +1,3 @@
-<html lang="en" class="layout-navbar-fixed layout-menu-fixed layout-compact" dir="ltr" data-skin="default"
-    data-assets-path="../../assets/" data-template="vertical-menu-template" data-bs-theme="light">
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
-    <title>Imajica Booking System</title>
-
-    <meta name="description" content="Imajica Booking System" />
-
-    <meta name="keywords" content="Imajica Booking System" />
-    <meta property="og:title" content="Imajica Booking System" />
-    <meta property="og:type" content="product" />
-    <meta property="og:url" content="Imajica Booking System" />
-    <meta property="og:image" content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png" />
-    <meta property="og:description" content="Imajica Booking System." />
-    <meta property="og:site_name" content="Pixinvent" />
-    <link rel="canonical" href="Imajica Booking System" />
-
-    <!-- End Google Tag Manager -->
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com/" />
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;ampdisplay=swap"
-        rel="stylesheet" />
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}" />
-
-    <!-- Core CSS -->
-    <!-- build:css assets/vendor/css/theme.css  -->
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" />
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" />
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/chartjs/chartjs.css') }}" />
-
-    <!-- Vendors CSS -->
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-
-    <!-- endbuild -->
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/apex-charts/apex-charts.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/swiper/swiper.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
-    <link rel="stylesheet"
-        href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
-    <link rel="stylesheet" href="{{ asset(path: 'assets/vendor/fonts/flag-icons.css')  }}" />
-
-    <!-- Page CSS -->
-    <link rel="stylesheet" href="{{ asset(path: 'assets/vendor/css/pages/cards-advance.css') }}" />
-    <link rel="stylesheet" href="{{ asset(path:'assets/css/demo.css') }}">
-    <!-- Helpers -->
-    <script src="{{ asset(path: 'assets/vendor/js/helpers.js') }}"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-
-    <script src="{{ asset(path: 'assets/js/config.js') }}"></script>
-</head>
-
-
 <aside id="layout-menu" class="layout-menu menu-vertical menu">
     <br />
     <br />
@@ -105,7 +31,6 @@
             </a>
         </li>
 
-
         <li class="menu-item {{ request()->is('sales-transaction') || request()->is('commision-employee') || request()->is('employee-sales') || request()->is('purchase') || request()->is('void-logs') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-chart-pie "></i>
@@ -114,7 +39,7 @@
             <ul class="menu-sub">
                 <li class="menu-item {{ request()->is('sales-transaction') ? 'active' : '' }}">
                     <a href="/sales-transaction" class="menu-link">
-                        <div data-i18n="Sales Transaction">Sales Transaction</div>
+                        <div data-i18n="Services Transaction">Services Transaction</div>
                     </a>
                 </li>
 
@@ -142,7 +67,6 @@
                 </li>
             </ul>
         </li>
-
 
         <li class="menu-item {{ request()->is('new-services') || request()->is('services-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -217,8 +141,6 @@
             </ul>
         </li>
 
-
-
         <li class="menu-item {{ request()->is('new-supplier') || request()->is('supplier-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-truck"></i>
@@ -259,7 +181,7 @@
             </ul>
         </li>
 
-        <li class="menu-item {{ request()->is('new-coupon') || request()->is('expenses-list') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->is('new-expenses') || request()->is('expenses-list') || request()->is('new category-expenses') || request()->is('categoryexpenses-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-layout-board"></i>
                 <div data-i18n="Expenses">Expenses</div>
@@ -276,10 +198,20 @@
                         <div data-i18n="Expenses List">Expenses List</div>
                     </a>
                 </li>
+
+                <li class="menu-item {{ request()->is('new category-expenses') ? 'active' : '' }}">
+                    <a href="/new category-expenses" class="menu-link">
+                        <div data-i18n="New Category Expenses">New Category Expenses</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('categoryexpenses-list') ? 'active' : '' }}">
+                    <a href="/categoryexpenses-list" class="menu-link">
+                        <div data-i18n="Category Expenses List">Category Expenses List</div>
+                    </a>
+                </li>
             </ul>
         </li>
-
-
 
         <li class="menu-item {{ request()->is('new-patient') || request()->is('patient-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -318,6 +250,11 @@
                         <div data-i18n="Staff List">Staff List</div>
                     </a>
                 </li>
+                <li class="menu-item {{ request()->is('position-list') ? 'active' : '' }}">
+                    <a href="/position-list" class="menu-link">
+                        <div data-i18n="Position List">Position List</div>
+                    </a>
+                </li>
             </ul>
         </li>
 
@@ -341,8 +278,6 @@
             </ul>
         </li>
 
-        
-
         <li class="menu-item {{ request()->is('new-loyalty') || request()->is('loyalty-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-id"></i>
@@ -360,6 +295,26 @@
                         <div data-i18n="Loyalty Rewards List">
                             Loyalty Rewards List
                         </div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-item {{ request()->is('department*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base ti tabler-building"></i>
+                <div data-i18n="Department">Department</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->is('new-department') ? 'active' : '' }}">
+                    <a href="{{ route('page.new-department') }}" class="menu-link">
+                        <div data-i18n="New Department">New Department</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('department-list') ? 'active' : '' }}">
+                    <a href="{{ route('page.department-list') }}" class="menu-link">
+                        <div data-i18n="Department List">Department List</div>
                     </a>
                 </li>
             </ul>
@@ -399,8 +354,6 @@
 
 
         <li class="menu-item">
-
-        
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-settings"></i>
                 <div data-i18n="Users">Users</div>
@@ -420,18 +373,84 @@
             </ul>
         </li>
 
-        <li class="menu-item">
-            <a href="/system-settings" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-adjustments"></i>
-                <div data-i18n="System Settings">System Settings</div>
-            </a>
-        </li>
 
         <li class="menu-item">
-            <a href="login.html" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-logout"></i>
-                <div data-i18n="Logout">Logout</div>
-            </a>
+            <form method="POST" action="">
+                @csrf
+                <a href="javascript:void(0);" class="menu-link" onclick="event.preventDefault(); this.closest('form').submit();">
+                    <i class="menu-icon icon-base ti tabler-logout"></i>
+                    <div data-i18n="Logout">Logout</div>
+                </a>
+            </form>
         </li>
     </ul>
 </aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Prevent default behavior for menu toggle links
+        const menuToggles = document.querySelectorAll('.menu-toggle');
+        menuToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Find the parent menu item
+                const menuItem = this.closest('.menu-item');
+                
+                // Toggle open class only
+                menuItem.classList.toggle('open');
+                
+                // Stop event propagation
+                e.stopPropagation();
+            });
+        });
+        
+        // Ensure menu links don't lose their text when clicked
+        const menuLinks = document.querySelectorAll('.menu-link:not(.menu-toggle)');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Only prevent default for javascript:void(0) links
+                if (this.getAttribute('href') === 'javascript:void(0);') {
+                    e.preventDefault();
+                }
+                
+                // Don't remove any content - just let the link work normally
+                // This preserves the menu item text
+            });
+        });
+        
+        // Add CSS to fix menu transitions and styling
+        const style = document.createElement('style');
+        style.textContent = `
+            .menu-item .menu-sub {
+                transition: none !important;
+            }
+            .menu-item.open > .menu-sub {
+                max-height: 2000px !important;
+                transition: none !important;
+                animation: none !important;
+            }
+            /* Ensure menu text doesn't disappear */
+            .menu-link div[data-i18n] {
+                display: block !important;
+                visibility: visible !important;
+            }
+            /* Remove arrow icons from menu toggles */
+            .menu-toggle::after {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Ensure active menu items with submenu are opened by default
+        const activeSubmenuItems = document.querySelectorAll('.menu-item.active');
+        activeSubmenuItems.forEach(item => {
+            // Find parent menu items and open them
+            let parent = item.closest('.menu-item:not(.active)');
+            while (parent) {
+                parent.classList.add('open');
+                parent = parent.parentElement.closest('.menu-item:not(.active)');
+            }
+        });
+    });
+</script>

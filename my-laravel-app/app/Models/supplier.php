@@ -10,6 +10,7 @@ class supplier extends Model
     use HasFactory;
 
     protected $table = 'suppliers';
+    protected $primaryKey = 'suppler_id';
     public $timestamps = false; // Disable timestamps
     
     protected $fillable = [

@@ -8,7 +8,6 @@
     <title>Imajica Booking System</title>
 
     <meta name="description" content="Imajica Booking System" />
-  
     <meta name="keywords" content="Imajica Booking System" />
     <meta property="og:title" content="Imajica Booking System" />
     <meta property="og:type" content="product" />
@@ -17,25 +16,28 @@
     <meta property="og:description" content="Imajica Booking System." />
     <meta property="og:site_name" content="Pixinvent" />
     <link rel="canonical" href="Imajica Booking System" />
-  
-
-
-
-
-
-
-
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/typeahead-js/typeahead.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+    
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
 
-
-
-
-
+    <!-- Page CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-ecommerce.css') }}" />
 
     <!-- Sweet Alert -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+    <!-- Helpers -->
+    <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+    <script src="{{ asset('assets/js/config.js') }}"></script>
 </head>
 
 <body>
@@ -44,276 +46,260 @@
             @include ('components.sidebar')
 
             <div class="layout-page">
-                <!-- Navbar -->
-                <nav class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
-                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-                        <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
-                            <i class="icon-base ti tabler-menu-2 icon-md"></i>
-                        </a>
-                    </div>
-
-                    <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
-                        <!-- Search -->
-                        <div class="navbar-nav align-items-center">
-                            <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-                                <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
-                                    <span class="d-inline-block text-body-secondary fw-normal" id="autocomplete"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <!-- /Search -->
-
-                        <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                           
-
-                            <!-- Notification -->
-                            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
-                                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                    <span class="position-relative">
-                                        <i class="icon-base ti tabler-bell icon-22px text-heading"></i>
-                                        <span class="badge rounded-pill bg-danger badge-dot badge-notifications border"></span>
-                                    </span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end p-0">
-                                    <!-- Notification content from add-product page -->
-                                </ul>
-                            </li>
-
-                            <!-- User -->
-                            <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                    <div class="avatar avatar-online">
-                                        <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
-                                    </div>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <!-- User dropdown content from add-product page -->
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-                <!-- / Navbar -->
-
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
-     <form id="addOrderForm">
+                    <form id="addOrderForm">
                         @csrf
-                    <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="app-ecommerce">
-                            <!-- Add Order Header -->
-                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6">
-                                <div class="d-flex flex-column justify-content-center">
-                                    <h4 class="mb-1">Add a new Order</h4>
-                                    <p class="mb-0">Create new customer order</p>
+                        <div class="container-xxl flex-grow-1 container-p-y">
+                            <div class="app-ecommerce">
+                                <!-- Add Order Header -->
+                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h4 class="mb-1">Add a new Order</h4>
+                                        <p class="mb-0">Create new customer order</p>
+                                    </div>
+                                    <div class="d-flex align-content-center flex-wrap gap-4">
+                                        <div class="d-flex gap-4">
+                                            <button type="button" class="btn btn-label-secondary" onclick="discardChanges()">Discard</button>
+                                            <button type="button" class="btn btn-label-primary" onclick="saveDraft()">Save draft</button>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Create Order</button>
+                                    </div>
                                 </div>
-                                <div class="d-flex align-content-center flex-wrap gap-4">
-                                    <div class="d-flex gap-4">
-                                        <button class="btn btn-label-secondary">Discard</button>
-                                        <button class="btn btn-label-primary">Save draft</button>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Create Order</button>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <!-- First column-->
-                                <div class="col-12 col-lg-8">
-                                    <!-- Customer Information -->
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h5 class="card-title mb-0">Customer Information</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row mb-4">
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Customer Name</label>
-                                                    <input type="text" 
-                                                    class="form-control"
-                                                     placeholder="Customer name"
-                                                     name = "customer_name"
-                                                     id="customer_name"
-                                                     >
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Email</label>
-                                                    <input type="email" class="form-control" placeholder="customer@example.com" name="customer_email" id="customer_email">
-                                                </div>
+                                <div class="row">
+                                    <!-- First column-->
+                                    <div class="col-12 col-lg-8">
+                                        <!-- Customer Information -->
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h5 class="card-title mb-0">Customer Information</h5>
                                             </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Order Details -->
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h5 class="card-title mb-0">Order Details</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row g-4">
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Order Date</label>
-                                                    <input type="date" class="form-control"
-                                                    name="order_date"
-                                                    id="order_date"
-                                                    >
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Order Time</label>
-                                                    <input type="time" class="form-control"
-                                                    name="order_time"
-                                                    id="order_time"
-                                                    >
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Order Items -->
-                                    <div class="card mb-4">
-                                       
-                                        <div class="card-header">
-                                            <h5 class="card-title mb-0">Order Items</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div id="orderItems" style="max-height: 400px; overflow-y: auto;">
-                                                <!-- Template for order items -->
-                                                <div class="order-item mb-3 border rounded p-3">
-                                                    <div class="row g-3">
-                                                        <div class="col-12 col-md-4">
-                                                            <label class="form-label">Item Name</label>
-                                                            <select class="form-select" name="items[]">
-                                                                <option value="">Select Item</option>
-                                                                @foreach($products as $product)
-                                                                <option value="{{ $product->bar_code }}" data-price="{{ $product->base_price }}">{{ $product->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-12 col-md-2">
-                                                            <label class="form-label">Quantity</label>
-                                                            <input type="number" class="form-control" name="quantities[]" min="1" value="1">
-                                                        </div>
-                                                        <div class="col-12 col-md-3">
-                                                            <label class="form-label">Unit Price</label>
-                                                            <input type="number" class="form-control" name="prices[]" readonly>
-                                                        </div>
-                                                        <div class="col-12 col-md-2">
-                                                            <label class="form-label">Total</label>
-                                                            <input type="number" class="form-control" name="totals[]" readonly>
-                                                        </div>
-                                                        <div class="col-12 col-md-1 d-flex align-items-end">
-                                                            <button type="button" class="btn btn-icon btn-label-danger" onclick="removeOrderItem(this)">
-                                                                <i class="ti ti-trash"></i>
-                                                            </button>
-                                                        </div>
+                                            <div class="card-body">
+                                                <div class="row mb-4">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Customer Name</label>
+                                                        <input type="text" 
+                                                        class="form-control"
+                                                        placeholder="Customer name"
+                                                        name="customer_name"
+                                                        id="customer_name">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Email</label>
+                                                        <input type="email" class="form-control" placeholder="customer@example.com" name="customer_email" id="customer_email">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="mt-3 d-flex justify-content-end gap-2">
-                                                <button type="button" class="btn btn-primary" id="addItemBtn" onclick="addOrderItem()">
-                                                    <i class="ti ti-plus me-1"></i> Add Item
-                                                </button>
-                                                <button type="button" class="btn btn-success" id="finalizeItemsBtn" onclick="finalizeItems()">
-                                                    <i class="ti ti-check me-1"></i> Finalize Items
-                                                </button>
-                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Payment Information -->
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h5 class="card-title mb-0">Payment Information</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row mb-4">
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Payment Method</label>
-                                                    <select class="form-select" name="payment_method" id="payment_method">
-                                                        <option value="">Select Method</option>
-                                                        <option value="Cash">Cash</option>
-                                                        <option value="Paypal">PayPal</option>
-                                                        <option value="Gcash">Gcash</option>
-                            
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Payment Status</label>
-                                                    <select class="form-select" name="payment_status" id="payment_status">
-                                                        <option value="Paid">Paid</option>
-                                                        <option value="Pending">Pending</option>
-                                                        <option value="Failed">Failed</option>
-                                                        <option value="Cancelled">Cancelled</option>
-                                                    </select>
+                                        <!-- Order Details -->
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h5 class="card-title mb-0">Order Details</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row g-4">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Order Date</label>
+                                                        <input type="date" class="form-control"
+                                                        name="order_date"
+                                                        id="order_date">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Order Time</label>
+                                                        <input type="time" class="form-control"
+                                                        name="order_time"
+                                                        id="order_time">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <!-- Second column -->
-                                <div class="col-12 col-lg-4">
-                                    <!-- Order Status -->
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h5 class="card-title mb-0">Order Status</h5>
+                                        <!-- Order Items -->
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h5 class="card-title mb-0">Order Items</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div id="orderItems" style="max-height: 400px; overflow-y: auto;">
+                                                    <!-- Template for order items -->
+                                                    <div class="order-item mb-3 border rounded p-3">
+                                                        <div class="row g-3">
+                                                            <div class="col-12 col-md-4">
+                                                                <label class="form-label">Item Name</label>
+                                                                <select class="form-select" name="items[]">
+                                                                    <option value="">Select Item</option>
+                                                                    @foreach($products as $product)
+                                                                    <option value="{{ $product->bar_code }}" data-price="{{ $product->base_price }}">{{ $product->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-12 col-md-2">
+                                                                <label class="form-label">Quantity</label>
+                                                                <input type="number" class="form-control" name="quantities[]" min="1" value="1">
+                                                            </div>
+                                                            <div class="col-12 col-md-3">
+                                                                <label class="form-label">Unit Price</label>
+                                                                <input type="number" class="form-control" name="prices[]" readonly>
+                                                            </div>
+                                                            <div class="col-12 col-md-2">
+                                                                <label class="form-label">Total</label>
+                                                                <input type="number" class="form-control" name="totals[]" readonly>
+                                                            </div>
+                                                            <div class="col-12 col-md-1 d-flex align-items-end">
+                                                                <button type="button" class="btn btn-icon btn-label-danger" onclick="removeOrderItem(this)">
+                                                                    <i class="ti ti-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-3 d-flex justify-content-end gap-2">
+                                                    <button type="button" class="btn btn-primary" id="addItemBtn" onclick="addOrderItem()">
+                                                        <i class="ti ti-plus me-1"></i> Add Item
+                                                    </button>
+                                                    <button type="button" class="btn btn-success" id="finalizeItemsBtn" onclick="finalizeItems()">
+                                                        <i class="ti ti-check me-1"></i> Finalize Items
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="card-body">
-                                            <select class="form-select mb-4" name="order_status" id="order_status">
-                                                <option value="Ordered">Ordered</option>
-                                                <option value="Delivered">Delivered</option>
-                                                <option value="Out for Delivery">Out for Delivery</option>
-                                                <option value="Ready to Pickup">Ready to Pickup</option>
-                                            </select>
+
+                                        <!-- Payment Information -->
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h5 class="card-title mb-0">Payment Information</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row mb-4">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Payment Method</label>
+                                                        <select class="form-select" name="payment_method" id="payment_method">
+                                                            <option value="">Select Method</option>
+                                                            <option value="Cash">Cash</option>
+                                                            <option value="Paypal">PayPal</option>
+                                                            <option value="Gcash">Gcash</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Payment Status</label>
+                                                        <select class="form-select" name="payment_status" id="payment_status">
+                                                            <option value="Paid">Paid</option>
+                                                            <option value="Pending">Pending</option>
+                                                            <option value="Failed">Failed</option>
+                                                            <option value="Cancelled">Cancelled</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <!-- Order Summary -->
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h5 class="card-title mb-0">Order Summary</h5>
+                                    <!-- Second column -->
+                                    <div class="col-12 col-lg-4">
+                                        <!-- Order Status -->
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h5 class="card-title mb-0">Order Status</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <select class="form-select mb-4" name="order_status" id="order_status">
+                                                    <option value="Ordered">Ordered</option>
+                                                    <option value="Delivered">Delivered</option>
+                                                    <option value="Out for Delivery">Out for Delivery</option>
+                                                    <option value="Ready to Pickup">Ready to Pickup</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="mb-3">
-                                                <label class="form-label">Subtotal</label>
-                                                <input type="number" class="form-control" name="subtotal" id="subtotal" readonly>
+
+                                        <!-- Order Summary -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title mb-0">Order Summary</h5>
                                             </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Tax</label>
-                                                <input type="number" class="form-control" name="tax" id="tax" readonly>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Total</label>
-                                                <input type="number" class="form-control" name="total" id="total" readonly>
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Subtotal</label>
+                                                    <input type="number" class="form-control" name="subtotal" id="subtotal" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tax</label>
+                                                    <input type="number" class="form-control" name="tax" id="tax" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Total</label>
+                                                    <input type="number" class="form-control" name="total" id="total" readonly>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-        </form>
+                    </form>
                     <footer class="content-footer footer bg-footer-theme">
                         <div class="container-xxl">
-                          <div class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
-                            <div class="text-body">
-                              ©
-                              <script>
-                                document.write(new Date().getFullYear());
-                              </script>
-                               Developed by <a href="https://intra-code.com/" target="_blank" class="footer-link">Intracode IT Solutions</a>
+                            <div class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
+                                <div class="text-body">
+                                    ©
+                                    <script>
+                                        document.write(new Date().getFullYear());
+                                    </script>
+                                    Developed by <a href="https://intra-code.com/" target="_blank" class="footer-link">Intracode IT Solutions</a>
+                                </div>
                             </div>
-                           
-                          </div>
                         </div>
-                      </footer>
+                    </footer>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Core JS -->
+    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/node-waves/node-waves.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+    
+    <!-- Page JS -->
+    <script src="{{ asset('assets/js/app-ecommerce.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
     <script>
+        function discardChanges() {
+            Swal.fire({
+                title: 'Discard changes?',
+                text: "You will lose all unsaved changes!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, discard!',
+                customClass: {
+                    confirmButton: 'btn btn-primary me-3',
+                    cancelButton: 'btn btn-label-secondary'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/order-list'; 
+                }
+            });
+        }
+
+        function saveDraft() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Draft Saved!',
+                text: 'Your order has been saved as draft',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+        }
+
         let orderCount = 10; // Start from 10 instead of 1
         let finalizedOrders = [];
 
@@ -335,8 +321,6 @@
 
         function finalizeItems() {
             const items = document.querySelectorAll('.order-item');
-            console.log('Current items before finalization:', items.length);
-            
             if (items.length === 0 || (items.length === 1 && !items[0].querySelector('[name="items[]"]').value)) {
                 Swal.fire({
                     icon: 'error',
@@ -347,7 +331,6 @@
                 return;
             }
 
-            // Validate all items have prices
             const invalidItems = Array.from(items).filter(item => {
                 const price = parseFloat(item.querySelector('[name="prices[]"]').value);
                 return isNaN(price) || price <= 0;
@@ -376,15 +359,12 @@
                     };
                 });
 
-                console.log('Items being finalized:', itemsData);
-
                 const currentOrder = {
                     id: orderCount,
                     items: itemsData
                 };
                 finalizedOrders.push(currentOrder);
 
-                // Clear input values but keep structure
                 document.querySelectorAll('.order-item').forEach(item => {
                     item.querySelector('[name="items[]"]').value = '';
                     item.querySelector('[name="quantities[]"]').value = '1';
@@ -404,17 +384,13 @@
             }
         }
 
-        // Add this function to set prices when items are selected
         document.addEventListener('change', function(e) {
             if (e.target.matches('[name="items[]"]')) {
                 const item = e.target.closest('.order-item');
                 const priceInput = item.querySelector('[name="prices[]"]');
                 const selectedOption = e.target.options[e.target.selectedIndex];
-                
-                // Get price from the data attribute
                 const price = selectedOption.dataset.price || 0;
                 priceInput.value = price;
-                
                 updateTotals();
             }
         });
@@ -433,7 +409,6 @@
             const tax = subtotal * taxRate;
             const total = subtotal + tax;
 
-            // Update summary fields
             document.getElementById('subtotal').value = subtotal.toFixed(2);
             document.getElementById('tax').value = tax.toFixed(2);
             document.getElementById('total').value = total.toFixed(2);
@@ -443,7 +418,6 @@
             const form = document.getElementById('addOrderForm');
             const formData = new FormData(form);
 
-            // Add finalized items to form data
             if (finalizedOrders.length === 0) {
                 Swal.fire({
                     icon: 'error',
@@ -453,16 +427,13 @@
                 return;
             }
 
-            // Get the last finalized order items
             const orderItems = finalizedOrders[finalizedOrders.length - 1].items;
             formData.append('items', JSON.stringify(orderItems));
 
-            // Validate form
             if (!validateForm()) {
                 return;
             }
 
-            // Show loading state
             Swal.fire({
                 title: 'Processing Order',
                 html: 'Please wait...',
@@ -472,7 +443,6 @@
                 }
             });
 
-            // Submit form
             fetch('/order/create', {
                 method: 'POST',  
                 headers: {
@@ -497,7 +467,6 @@
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
                 Swal.fire({
                     icon: 'error', 
                     title: 'Error',
@@ -538,15 +507,12 @@
             return true;
         }
 
-        // Update event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle form submission
             document.getElementById('addOrderForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 submitOrder();
             });
 
-            // Handle real-time total updates
             document.addEventListener('input', function(e) {
                 if (e.target.matches('[name="quantities[]"], [name="prices[]"]')) {
                     updateTotals();
@@ -554,7 +520,5 @@
             });
         });
     </script>
-
-
 </body>
 </html>

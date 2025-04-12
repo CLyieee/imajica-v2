@@ -14,16 +14,13 @@ class BookingController extends Controller
 {
     public function index()
     {
-        // Get all services for the booking form
+        $bookings = Booking::with(['patient', 'service', 'staff', 'branch'])->get();
         $services = Service::all();
-        // Get all staff members
         $staffs = Staff::all();
-        // Get all branches
         $branches = Branch::all();
-        // Get all patients
         $patients = Patient::all();
-        
-        return view('page.booking', compact('services', 'staffs', 'branches', 'patients'));
+
+        return view('page.booking', compact('bookings', 'services', 'staffs', 'branches', 'patients'));
     }
 
     public function create(Request $request)
@@ -47,39 +44,67 @@ class BookingController extends Controller
 
     public function update(Request $request)
     {
-        // Validate the request
-        $request->validate([
-            'service_id' => 'required',
-            'status' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'id' => 'required',
-            'branch_code' => 'required',
-            'patient_id' => 'required',
-            'useReward' => 'required',
-            'remarks' => 'required',
-        ]);
+        try {
+            // Validate the request
+            $validatedData = $request->validate([
+                'service_id' => 'required|exists:services,service_id',
+                'status' => 'required|in:Pending,Paid,Cancelled,Completed,No Show', 
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'id' => 'required|exists:staff,id',
+                'branch_code' => 'required|exists:branches,branch_code',
+                'patient_id' => 'required|exists:patients,patient_id',
+                'useReward' => 'required|boolean',
+                'remarks' => 'required|string',
+                'booking_id' => 'required|exists:bookings,booking_id'
+            ]);
 
-        // Find the booking by booking_id
-        $booking = Booking::where('booking_id', $request->booking_id)->first();
-        
-         if (!$booking) {
-            return redirect()->back()->with('error', 'Booking not found');
+            // Find the booking by booking_id
+            $booking = Booking::findOrFail($request->booking_id);
+            
+            try {
+                // Update the booking with validated data
+                $booking->update($validatedData);
+
+                if($request->wantsJson()) {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Booking updated successfully',
+                        'booking' => $booking,
+                        'redirect' => route('page.booking')
+                    ]);
+                }
+
+                return redirect()->route('page.booking')
+                    ->with('success', 'Booking updated successfully');
+
+            } catch (\Exception $e) {
+                Log::error('Error saving booking: ' . $e->getMessage());
+                if($request->wantsJson()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Failed to save booking: ' . $e->getMessage()
+                    ], 500);
+                }
+                return redirect()->back()
+                    ->with('error', 'Failed to save booking: ' . $e->getMessage());
+            }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation error: ', $e->errors());
+            return response()->json([
+                'status' => false,
+                'message' => 'The given data was invalid.',
+                'errors' => $e->errors()
+            ], 422);
+            
+        } catch (\Exception $e) {
+            Log::error('Error updating booking: ' . $e->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => 'Error updating booking: ' . $e->getMessage()
+            ], 500);
         }
-
-        // Update the booking
-        $booking->service_id = $request->service_id;
-        $booking->status = $request->status;
-        $booking->start_date = $request->start_date;
-        $booking->end_date = $request->end_date;
-        $booking->id = $request->id;
-        $booking->branch_code = $request->branch_code;
-        $booking->patient_id = $request->patient_id;
-        $booking->useReward = $request->useReward;
-        $booking->remarks = $request->remarks;
-        $booking->save();
-
-        return redirect()->back()->with('success', 'Booking updated successfully');
     }
 
     public function delete(Request $request)
@@ -102,56 +127,100 @@ class BookingController extends Controller
         return redirect()->back()->with('success', 'Booking deleted successfully');
     }
 
-    public function get_bookings()
+    // public function get_bookings()
+    // {
+    //     try {
+    //         // Get all bookings with related data
+    //         $bookings = Booking::with(['service', 'patient', 'staff', 'branch'])->get();
+            
+    //         $formattedBookings = $bookings->map(function($booking) {
+    //             $colorMap = [
+    //                 'Pending' => '#6610f2', // purple
+    //                 'Paid' => '#28c76f',    // green
+    //                 'Cancelled' => '#ea5455', // red
+    //                 'Completed' => '#28c76f', // green
+    //                 'No Show' => '#ff9f43'   // orange
+    //             ];
+                
+    //             // Get the default color if status doesn't match any in the map
+    //             $color = $colorMap[$booking->status] ?? '#6610f2';
+                
+    //             // Format the booking data for FullCalendar
+    //             return [
+    //                 'id' => $booking->booking_id,
+    //                 'title' => $booking->service ? $booking->service->service_name : 'Unknown Service',
+    //                 'start' => $booking->start_date,
+    //                 'allDay' => false,
+    //                 'color' => $color,
+    //                 'extendedProps' => [
+    //                     'calendar' => strtolower($booking->status),
+    //                     'description' => $booking->remarks ?? 'No description',
+    //                     'staff' => $booking->staff ? $booking->staff->firstname . ' ' . $booking->staff->lastname : 'Unassigned',
+    //                     'branch' => $booking->branch ? $booking->branch->branch_name : 'Unknown Branch',
+    //                     'status' => $booking->status,
+    //                     'patient_id' => $booking->patient_id,
+    //                     'service_id' => $booking->service_id,
+    //                     'useReward' => $booking->useReward,
+    //                     'id' => $booking->id,  // staff ID
+    //                     'branch_code' => $booking->branch_code
+    //                 ]
+    //             ];
+    //         });
+            
+    //         Log::info('Bookings fetched successfully', ['count' => count($bookings)]);
+    //         return response()->json($formattedBookings);
+    //     } catch (\Exception $e) {
+    //         Log::error('Error fetching bookings: ' . $e->getMessage(), [
+    //             'file' => $e->getFile(),
+    //             'line' => $e->getLine()
+    //         ]);
+    //         return response()->json(['error' => 'Failed to fetch bookings: ' . $e->getMessage()], 500);
+    //     }
+    // }
+
+    public function getCalendarBookings()
     {
         try {
-            // Get all bookings with related data
             $bookings = Booking::with(['service', 'patient', 'staff', 'branch'])->get();
             
-            $formattedBookings = $bookings->map(function($booking) {
-                $colorMap = [
-                    'Pending' => '#6610f2', // purple
-                    'Paid' => '#28c76f',    // green
-                    'Cancelled' => '#ea5455', // red
-                    'Completed' => '#28c76f', // green
-                    'No Show' => '#ff9f43'   // orange
+            $events = $bookings->map(function($booking) {
+                $statusColors = [
+                    'Pending' => 'Business',
+                    'Paid' => 'Personal',
+                    'Cancelled' => 'Holiday',
+                    'Completed' => 'Family',
+                    'No Show' => 'ETC'
                 ];
-                
-                // Get the default color if status doesn't match any in the map
-                $color = $colorMap[$booking->status] ?? '#6610f2';
-                
-                // Format the booking data for FullCalendar
+
                 return [
                     'id' => $booking->booking_id,
-                    'title' => ($booking->patient ? $booking->patient->firstname . ' ' . $booking->patient->lastname : 'Unknown Patient') . 
-                              ' - ' . ($booking->service ? $booking->service->service_name : 'Unknown Service'),
+                    'title' => 'Book ' . $booking->booking_id, 
                     'start' => $booking->start_date,
-                    'end' => $booking->end_date,
+                    
                     'allDay' => false,
-                    'color' => $color,
                     'extendedProps' => [
-                        'calendar' => strtolower($booking->status),
-                        'description' => $booking->remarks ?? 'No description',
-                        'staff' => $booking->staff ? $booking->staff->firstname . ' ' . $booking->staff->lastname : 'Unassigned',
-                        'branch' => $booking->branch ? $booking->branch->branch_name : 'Unknown Branch',
-                        'status' => $booking->status,
-                        'patient_id' => $booking->patient_id,
+                        'calendar' => $statusColors[$booking->status] ?? 'Business',
                         'service_id' => $booking->service_id,
-                        'useReward' => $booking->useReward,
-                        'id' => $booking->id,  // staff ID
-                        'branch_code' => $booking->branch_code
+                        'status' => $booking->status,
+                        'end_date' => $booking->end_date,
+                        'staff_id' => $booking->id,
+                        'branch_code' => $booking->branch_code,
+                        'patient_id' => $booking->patient_id,
+                        'use_reward_points' => $booking->useReward,
+                        'remarks' => $booking->remarks,
+                      
+                        'patient_name' => $booking->patient->firstname . ' ' . $booking->patient->lastname,
+                        'service_name' => $booking->service->service_name,
+                        'staff_name' => $booking->staff ? $booking->staff->firstname . ' ' . $booking->staff->lastname : 'Unassigned',
+                        'branch_name' => $booking->branch ? $booking->branch->branch_name : 'Unknown Branch'
                     ]
                 ];
             });
             
-            Log::info('Bookings fetched successfully', ['count' => count($bookings)]);
-            return response()->json($formattedBookings);
+            return response()->json($events);
         } catch (\Exception $e) {
-            Log::error('Error fetching bookings: ' . $e->getMessage(), [
-                'file' => $e->getFile(),
-                'line' => $e->getLine()
-            ]);
-            return response()->json(['error' => 'Failed to fetch bookings: ' . $e->getMessage()], 500);
+            Log::error('Error fetching calendar bookings: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }

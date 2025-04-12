@@ -89,9 +89,47 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
-    
-  </head>
 
+    <style>
+      .profile-upload-container {
+        width: 200px;
+        margin-bottom: 2rem;
+      }
+
+      .avatar-upload {
+        position: relative;
+        text-align: center;
+      }
+
+      .avatar-preview {
+        width: 150px;
+        height: 150px;
+        position: relative;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid #0a3622;
+        box-shadow: 0 0 20px rgba(10, 54, 34, 0.15);
+        margin: 0 auto;
+      }
+
+      .avatar-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .avatar-edit label {
+        transition: all 0.3s ease;
+      }
+
+      .avatar-edit label:hover {
+        background-color: #0a3622;
+        border-color: #0a3622;
+      }
+    </style>
+
+  </head>
+    
   <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -113,207 +151,7 @@
 
         <!-- Layout container -->
         <div class="layout-page">
-          <!-- Navbar -->
 
-          <nav
-            class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-            id="layout-navbar"
-          >
-            <div
-              class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none"
-            >
-              <a
-                class="nav-item nav-link px-0 me-xl-6"
-                href="javascript:void(0)"
-              >
-                <i class="icon-base ti tabler-menu-2 icon-md"></i>
-              </a>
-            </div>
-
-
-            <div
-              class="navbar-nav-right d-flex align-items-center justify-content-end"
-              id="navbar-collapse"
-            >
-              <!-- Search -->
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-                  <a
-                    class="nav-item nav-link search-toggler d-flex align-items-center px-0"
-                    href="javascript:void(0);"
-                  >
-                    <span
-                      class="d-inline-block text-body-secondary fw-normal"
-                      id="autocomplete"
-                    ></span>
-                  </a>
-                </div>
-              </div>
-
-              <!-- /Search -->
-
-              <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                <!--/ Language -->
-
-                <!-- Style Switcher -->
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
-                    id="nav-theme"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <i
-                      class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"
-                    ></i>
-                    <span class="d-none ms-2" id="nav-theme-text"
-                      >Toggle theme</span
-                    >
-                  </a>
-                  <ul
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="nav-theme-text"
-                  >
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center active"
-                        data-bs-theme-value="light"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-sun icon-22px me-3"
-                            data-icon="sun"
-                          ></i
-                          >Light</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="dark"
-                        aria-pressed="true"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-moon-stars icon-22px me-3"
-                            data-icon="moon-stars"
-                          ></i
-                          >Dark</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="system"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-device-desktop-analytics icon-22px me-3"
-                            data-icon="device-desktop-analytics"
-                          ></i
-                          >System</span
-                        >
-                      </button>
-                    </li>
-                  </ul>
-                </li>
-                <!-- / Style Switcher-->
-
-                <!-- Quick links  -->
-
-                <!-- Quick links -->
-
-                <!-- Notification -->
-
-                <!--/ Notification -->
-
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow p-0"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <div class="avatar avatar-online">
-                      <img
-                        src="../../assets/img/avatars/1.png"
-                        alt
-                        class="rounded-circle"
-                      />
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a
-                        class="dropdown-item mt-0"
-                        href="pages-account-settings-account.html"
-                      >
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0 me-2">
-                            <div class="avatar avatar-online">
-                              <img
-                                src="../../assets/img/avatars/1.png"
-                                alt
-                                class="rounded-circle"
-                              />
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="mb-0">Rommel Lacap</h6>
-                            <small class="text-body-secondary">Admin</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-user me-3 icon-md"></i
-                        ><span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-settings me-3 icon-md"></i
-                        ><span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-
-                    <li>
-                      <div class="d-grid px-2 pt-2 pb-1">
-                        <a
-                          class="btn btn-sm btn-danger d-flex"
-                          href="#"
-                          target="_blank"
-                        >
-                          <small class="align-middle">Logout</small>
-                          <i
-                            class="icon-base ti tabler-logout ms-2 icon-14px"
-                          ></i>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
-            </div>
-          </nav>
-
-          <!-- / Navbar -->
 
           <!-- Content wrapper -->
           <div class="content-wrapper">
@@ -335,10 +173,41 @@
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
                           <!-- 1. Delivery Address -->
-                            <form method="post" action="{{ route('service.create') }}">
+                            <form method="post" action="{{ route('service.create') }}" enctype="multipart/form-data">
                             @csrf
                             @method('POST')
                             <div class="row g-6">
+                              <div class="col-12 text-center mb-4">
+                                <div class="profile-upload-container mx-auto">
+                                  <div class="avatar-upload">
+                                    <div class="avatar-preview">
+                                      <img
+                                        id="imagePreview"
+                                        src="../../assets/img/services/default-service.png"
+                                        alt="Service Preview"
+                                        class="rounded-circle"
+                                        style="width: 100%; height: 100%; object-fit: cover;"
+                                      />
+                                    </div>
+                                    <div class="avatar-edit">
+                                      <input
+                                        type="file"
+                                        id="service_image"
+                                        name="service_image"
+                                        accept=".png, .jpg, .jpeg"
+                                        class="d-none"
+                                      />
+                                      <label
+                                        for="service_image"
+                                        class="btn btn-primary btn-sm mt-2"
+                                      >
+                                        <i class="ti tabler-upload me-1"></i>Upload Photo
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
                               <div class="col-md-6">
                                 <label class="form-label" for="service_name">Services Name</label>
                                 <input
@@ -581,6 +450,23 @@
             select.trigger('change');
           }
         }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const imageUpload = document.getElementById("imageUpload");
+        const imagePreview = document.getElementById("imagePreview");
+
+        // Handle photo upload
+        imageUpload.addEventListener("change", function (e) {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              imagePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
       });
     </script>
   </body>

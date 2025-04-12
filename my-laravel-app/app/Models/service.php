@@ -10,10 +10,12 @@ class service extends Model
     use HasFactory;
 
     protected $table = 'services';
+    protected $primayKey = 'service_id';
 
     
     protected $fillable = [
         'service_name',
+        'service_image',
         'branch_code',
         'description',
         'duration',
@@ -30,5 +32,9 @@ class service extends Model
     public function booking()
     {
         return $this->hasMany(Booking::class, 'service_id', 'service_id');
+    }
+    public function coupon()
+    {
+        return $this->hasMany(coupon::class, 'service_id', 'service_id');
     }
 }

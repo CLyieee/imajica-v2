@@ -26,8 +26,8 @@ class staffController extends Controller
                 'lastname' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
                 'contact_number' => 'required|string|max:20',
-                'position' => 'required|string|max:255',
-                'department' => 'required|string|max:255',
+                'position_id' => 'required|exists:position,position_id',
+                'department_code' => 'required|exists:departments,department_code',
                 'join_date' => 'required|date',
                 'employment_type' => 'required|string|max:255',
                 'branch_code' => 'required|numeric|exists:branches,branch_code',
@@ -159,6 +159,39 @@ class staffController extends Controller
             ]);
             
             return redirect()->back()->with('error', 'Error deleting staff: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Show the edit form for a staff member
+     */
+    public function edit($id)
+    {
+        try {
+            Log::info('Attempting to find staff for editing', ['id' => $id]);
+            
+            $staff = Staff::findOrFail($id);
+            
+            // Get related data for dropdowns
+            $positions = \App\Models\positionModel::all();
+            $departments = \App\Models\Department::all();
+            $branches = \App\Models\branch::all();
+            
+            Log::info('Successfully found staff for editing', [
+                'id' => $id, 
+                'name' => $staff->firstname . ' ' . $staff->lastname
+            ]);
+            
+            return view('page.edit-staff', compact('staff', 'positions', 'departments', 'branches'));
+        } catch (\Exception $e) {
+            Log::error('Error finding staff for editing', [
+                'id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return redirect()->route('page.staff-list')
+                ->with('error', 'Error occurred while editing staff: ' . $e->getMessage());
         }
     }
 }

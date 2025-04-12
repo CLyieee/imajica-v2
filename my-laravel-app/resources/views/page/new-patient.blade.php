@@ -286,7 +286,7 @@
         <div class="layout-page">
           <!-- Navbar -->
 
-          <nav
+          {{-- <nav
             class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
             id="layout-navbar"
           >
@@ -481,7 +481,7 @@
                 <!--/ User -->
               </ul>
             </div>
-          </nav>
+          </nav> --}}
 
           <!-- / Navbar -->
 
@@ -575,8 +575,7 @@
                               <select id="gender" name="gender" class="form-select" required>
                                 <option value="">Select Gender</option>
                                 <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
+                                <option value="female">Female</option
                               </select>
                             </div>
 
@@ -639,7 +638,6 @@
 
                             <div class="col-12">
                               <button type="submit" class="btn btn-primary">Add Patient</button>
-                              <button type="reset" class="btn btn-secondary">Reset Form</button>
                             </div>
                           </form>
                           </div>

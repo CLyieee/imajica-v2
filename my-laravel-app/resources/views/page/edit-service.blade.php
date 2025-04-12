@@ -1,0 +1,411 @@
+@extends('layouts.app')
+
+<!DOCTYPE html>
+
+<html
+  lang="en"
+  class="layout-navbar-fixed layout-menu-fixed layout-compact"
+  dir="ltr"
+  data-skin="default"
+  data-assets-path="{{ asset('assets/') }}"
+  data-template="vertical-menu-template"
+  data-bs-theme="light"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>Edit Service - Imajica Booking System</title>
+
+    <meta name="description" content="Imajica Booking System" />
+
+    <meta name="keywords" content="Imajica Booking System" />
+    <meta property="og:title" content="Imajica Booking System" />
+    <meta property="og:type" content="product" />
+    <meta property="og:url" content="Imajica Booking System" />
+    <meta
+      property="og:image"
+      content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png"
+    />
+    <meta property="og:description" content="Imajica Booking System." />
+    <meta property="og:site_name" content="Pixinvent" />
+    <link rel="canonical" href="Imajica Booking System" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('logo.png') }}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;ampdisplay=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}" />
+
+    <!-- Core CSS -->
+    <!-- build:css assets/vendor/css/theme.css  -->
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
+
+    <!-- Page CSS -->
+    <!-- Helpers -->
+    <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+    <script src="{{ asset('assets/js/config.js') }}"></script>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <style>
+      .profile-upload-container {
+        width: 200px;
+        margin-bottom: 2rem;
+      }
+
+      .avatar-upload {
+        position: relative;
+        text-align: center;
+      }
+
+      .avatar-preview {
+        width: 150px;
+        height: 150px;
+        position: relative;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid #0a3622;
+        box-shadow: 0 0 20px rgba(10, 54, 34, 0.15);
+        margin: 0 auto;
+      }
+
+      .avatar-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .avatar-edit label {
+        transition: all 0.3s ease;
+      }
+
+      .avatar-edit label:hover {
+        background-color: #0a3622;
+        border-color: #0a3622;
+      }
+    </style>
+  </head>
+    
+  <body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+        @include('components.sidebar')
+        <!-- / Menu -->
+
+        <div class="menu-mobile-toggler d-xl-none rounded-1">
+          <a
+            href="javascript:void(0);"
+            class="layout-menu-toggle menu-link text-large text-bg-secondary p-2 rounded-1"
+          >
+            <i class="ti tabler-menu icon-base"></i>
+            <i class="ti tabler-chevron-right icon-base"></i>
+          </a>
+        </div>
+
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <!-- Sticky Actions -->
+              <div class="row">
+                <div class="col-12">
+                  <div class="card">
+                    <div
+                      class="card-header sticky-element d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
+                      style="background-color: #0A3622;"
+                    >
+                      <h5 class="card-title mb-sm-0 me-2 text-white">
+                        Edit Service
+                      </h5>
+                      <div>
+                        <a href="{{ route('page.services-list') }}" class="btn btn-sm btn-light">
+                          <i class="ti tabler-arrow-left me-1"></i> Back to List
+                        </a>
+                      </div>
+                    </div>
+                    <div class="card-body pt-6">
+                      @if ($errors->any())
+                          <div class="alert alert-danger">
+                              <ul class="mb-0">
+                                  @foreach ($errors->all() as $error)
+                                      <li>{{ $error }}</li>
+                                  @endforeach
+                              </ul>
+                          </div>
+                      @endif
+          
+                      @if(session('success'))
+                          <div class="alert alert-success">
+                              {{ session('success') }}
+                          </div>
+                      @endif
+
+                      @if(session('error'))
+                          <div class="alert alert-danger">
+                              {{ session('error') }}
+                          </div>
+                      @endif
+                      
+                      <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                          <form method="post" action="{{ route('service.update') }}" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="id" value="{{ $service->service_id }}">
+                            <input type="hidden" name="service_id" value="{{ $service->service_id }}">
+                            
+                            <div class="row g-6">
+                              <div class="col-12 text-center mb-4">
+                                <div class="profile-upload-container mx-auto">
+                                  <div class="avatar-upload">
+                                    <div class="avatar-preview">
+                                      <img
+                                        id="imagePreview"
+                                        src="{{ asset($service->service_image ?? 'assets/img/services/default-service.png') }}"
+                                        alt="Service Preview"
+                                        class="rounded-circle"
+                                        style="width: 100%; height: 100%; object-fit: cover;"
+                                      />
+                                    </div>
+                                    <div class="avatar-edit">
+                                      <input
+                                        type="file"
+                                        id="service_image"
+                                        name="service_image"
+                                        accept=".png, .jpg, .jpeg"
+                                        class="d-none"
+                                      />
+                                      <label
+                                        for="service_image"
+                                        class="btn btn-primary btn-sm mt-2"
+                                      >
+                                        <i class="ti tabler-upload me-1"></i>Update Photo
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="service_name">Services Name</label>
+                                <input
+                                  type="text"
+                                  id="service_name"
+                                  name="service_name"
+                                  class="form-control"
+                                  placeholder="Services Name"
+                                  value="{{ $service->service_name }}"
+                                  required
+                                />
+                              </div>
+                              
+                              <div class="col-md-6">
+                                <label class="form-label">Branch</label>
+                                <select
+                                  class="select2 form-select branch-select"
+                                  name="branch_code"
+                                  id="branch_code"
+                                  data-allow-clear="true"
+                                  required
+                                >
+                                  <option value="">Select Branch</option>
+                                  @foreach($branches as $branch)
+                                    <option value="{{ $branch->branch_code }}" {{ $service->branch_code == $branch->branch_code ? 'selected' : '' }}>
+                                      {{ $branch->branch_name }}
+                                    </option>
+                                  @endforeach
+                                </select>
+                              </div>
+
+                              <div class="col-12">
+                                <label class="form-label" for="description">Description</label>
+                                <textarea
+                                  name="description"
+                                  class="form-control"
+                                  id="description"
+                                  rows="4"
+                                  placeholder="Service Description"
+                                >{{ $service->description }}</textarea>
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="duration">Duration</label>
+                                <input
+                                  type="number"
+                                  id="duration"
+                                  name="duration"
+                                  class="form-control"
+                                  placeholder="In Minutes"
+                                  value="{{ $service->duration }}"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label">Service Category</label>
+                                <select
+                                  class="select2 form-select"
+                                  name="service_category"
+                                  id="service_category"
+                                  data-allow-clear="true"
+                                  required
+                                >
+                                  <option value="">Select Service Category</option>
+                                  <option value="Facials" {{ $service->service_category == 'Facials' ? 'selected' : '' }}>Facials</option>
+                                  <option value="Body Contouring" {{ $service->service_category == 'Body Contouring' ? 'selected' : '' }}>Body Contouring</option>
+                                  <option value="Laser Treatments" {{ $service->service_category == 'Laser Treatments' ? 'selected' : '' }}>Laser Treatments</option>
+                                  <option value="Injectables" {{ $service->service_category == 'Injectables' ? 'selected' : '' }}>Injectables</option>
+                                  <option value="Others" {{ $service->service_category == 'Others' ? 'selected' : '' }}>Others</option>
+                                </select>
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="service_cost">Service Cost</label>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  id="service_cost"
+                                  name="service_cost"
+                                  class="form-control"
+                                  placeholder="Amount"
+                                  value="{{ $service->service_cost }}"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="loyalty_pts">Loyalty Reward Points</label>
+                                <input
+                                  type="number"
+                                  id="loyalty_pts"
+                                  name="loyalty_pts"
+                                  class="form-control"
+                                  placeholder="Loyalty Reward Points"
+                                  value="{{ $service->loyalty_pts }}"
+                                  required
+                                />
+                              </div>
+                            </div>
+
+                            <br />
+                            <div class="d-flex gap-3">
+                              <div class="col-sm-2 col-4 d-grid">
+                                <button type="submit" class="btn btn-primary">Update Service</button>
+                              </div>
+                              <div class="col-sm-2 col-4 d-grid">
+                                <a href="{{ route('page.services-list') }}" class="btn btn-outline-secondary">Cancel</a>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /Sticky Actions -->
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl">
+                <div
+                  class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column"
+                >
+                  <div class="text-body">
+                    ©
+                    <script>
+                      document.write(new Date().getFullYear());
+                    </script>
+                    Developed by
+                    <a
+                      href="https://intra-code.com/"
+                      target="_blank"
+                      class="footer-link"
+                      >Intracode IT Solutions</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </footer>
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+
+      <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+      <div class="drag-target"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <!-- Core JS -->
+    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/node-waves/node-waves.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/hammer/hammer.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
+
+    <!-- Vendors JS -->
+    <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
+
+    <!-- Main JS -->
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <!-- Page JS -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize select2
+        if ($.fn.select2) {
+          $('.select2').select2();
+        }
+        
+        // Handle service image preview
+        const serviceImage = document.getElementById("service_image");
+        const imagePreview = document.getElementById("imagePreview");
+
+        serviceImage.addEventListener("change", function (e) {
+          if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              imagePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(e.target.files[0]);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

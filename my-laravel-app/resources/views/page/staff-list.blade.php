@@ -147,206 +147,7 @@
 
         <!-- Layout container -->
         <div class="layout-page">
-          <!-- Navbar -->
 
-          <nav
-            class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-            id="layout-navbar"
-          >
-            <div
-              class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none"
-            >
-              <a
-                class="nav-item nav-link px-0 me-xl-6"
-                href="javascript:void(0)"
-              >
-                <i class="icon-base ti tabler-menu-2 icon-md"></i>
-              </a>
-            </div>
-
-            <div
-              class="navbar-nav-right d-flex align-items-center justify-content-end"
-              id="navbar-collapse"
-            >
-              <!-- Search -->
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-                  <a
-                    class="nav-item nav-link search-toggler d-flex align-items-center px-0"
-                    href="javascript:void(0);"
-                  >
-                    <span
-                      class="d-inline-block text-body-secondary fw-normal"
-                      id="autocomplete"
-                    ></span>
-                  </a>
-                </div>
-              </div>
-
-              <!-- /Search -->
-
-              <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                <!--/ Language -->
-
-                <!-- Style Switcher -->
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
-                    id="nav-theme"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <i
-                      class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"
-                    ></i>
-                    <span class="d-none ms-2" id="nav-theme-text"
-                      >Toggle theme</span
-                    >
-                  </a>
-                  <ul
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="nav-theme-text"
-                  >
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center active"
-                        data-bs-theme-value="light"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-sun icon-22px me-3"
-                            data-icon="sun"
-                          ></i
-                          >Light</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="dark"
-                        aria-pressed="true"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-moon-stars icon-22px me-3"
-                            data-icon="moon-stars"
-                          ></i
-                          >Dark</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="system"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-device-desktop-analytics icon-22px me-3"
-                            data-icon="device-desktop-analytics"
-                          ></i
-                          >System</span
-                        >
-                      </button>
-                    </li>
-                  </ul>
-                </li>
-                <!-- / Style Switcher-->
-
-                <!-- Quick links  -->
-
-                <!-- Quick links -->
-
-                <!-- Notification -->
-
-                <!--/ Notification -->
-
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow p-0"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <div class="avatar avatar-online">
-                      <img
-                        src="../../assets/img/avatars/1.png"
-                        alt
-                        class="rounded-circle"
-                      />
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a
-                        class="dropdown-item mt-0"
-                        href="pages-account-settings-account.html"
-                      >
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0 me-2">
-                            <div class="avatar avatar-online">
-                              <img
-                                src="../../assets/img/avatars/1.png"
-                                alt
-                                class="rounded-circle"
-                              />
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="mb-0">Rommel Lacap</h6>
-                            <small class="text-body-secondary">Admin</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-user me-3 icon-md"></i
-                        ><span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-settings me-3 icon-md"></i
-                        ><span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-
-                    <li>
-                      <div class="d-grid px-2 pt-2 pb-1">
-                        <a
-                          class="btn btn-sm btn-danger d-flex"
-                          href="#"
-                          target="_blank"
-                        >
-                          <small class="align-middle">Logout</small>
-                          <i
-                            class="icon-base ti tabler-logout ms-2 icon-14px"
-                          ></i>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
-            </div>
-          </nav>
-
-          <!-- / Navbar -->
 
           <div class="content-wrapper">
             <!-- Content -->
@@ -366,7 +167,7 @@
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table class="table table-striped">
+                  <table class="table table-striped" id="staffTable">
                     <thead class="table-light">
                       <tr>
                         <th class="text-center">Profile</th>
@@ -395,8 +196,8 @@
                         </td>
                         <td>{{ $staff->firstname }} {{ $staff->lastname }}</td>
                         <td>{{ $staff->email }}</td>
-                        <td>{{ $staff->position }}</td>
-                        <td>{{ $staff->department }}</td>
+                        <td>{{ $staff->position ? $staff->position->position_name : $staff->position_id }}</td>
+                        <td>{{ $staff->department ? $staff->department->department_name : $staff->department_code }}</td>
                         <td>{{ $staff->contact_number }}</td>
                         <td>
                           @if($staff->branch_code)
@@ -407,32 +208,9 @@
                         </td>
                         <td>
                           <div class="d-inline-block">
-                            <button type="button" class="btn btn-sm btn-success view-staff"
-                              data-bs-toggle="modal"
-                              data-bs-target="#staffModal"
-                              data-id="{{ $staff->id }}"
-                              data-name="{{ $staff->firstname }} {{ $staff->lastname }}"
-                              data-email="{{ $staff->email }}"
-                              data-contact="{{ $staff->contact_number }}"
-                              data-position="{{ $staff->position }}"
-                              data-department="{{ $staff->department }}"
-                              data-join-date="{{ $staff->join_date }}"
-                              data-employment-type="{{ $staff->employment_type }}"
-                              data-branch="{{ $staff->branch_code }}"
-                              data-address="{{ $staff->address }}"
-                              data-emergency-contact="{{ $staff->emergency_contact_name }}"
-                              data-emergency-number="{{ $staff->emergency_contact_number }}"
-                              @if($staff->image_path) 
-                                data-profile-image="{{ asset('storage/'.$staff->image_path) }}" 
-                              @endif>
-                              <i class="ti tabler-eye me-1"></i> View
-                            </button>
-                            <button type="button" class="btn btn-sm btn-info edit-staff"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editStaffModal"
-                              data-id="{{ $staff->id }}">
+                            <a href="{{ route('staff.edit', $staff->id) }}" class="btn btn-sm btn-info">
                               <i class="ti tabler-edit me-1"></i> Edit
-                            </button>
+                            </a>
                             <button type="button" class="btn btn-sm btn-danger delete-staff" 
                               data-id="{{ $staff->id }}"
                               data-name="{{ $staff->firstname }} {{ $staff->lastname }}">
@@ -1092,6 +870,11 @@
         console.log('Staff deleted');
       }
     }
+    </script>
+    <script>
+      $document.ready(function () {
+        $('#staffTable').DataTable();
+      })
     </script>
   </body>
 </html>
