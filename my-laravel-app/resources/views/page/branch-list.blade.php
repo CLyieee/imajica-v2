@@ -104,12 +104,9 @@
                         <td>{{ $branch->branch_name }}</td>
                         <td>{{ $branch->address }}</td>
                         <td>
-                          <button type="button" class="btn btn-info btn-sm edit-branch" 
-                            data-branch-code="{{ $branch->branch_code }}"
-                            data-branch-name="{{ $branch->branch_name }}"
-                            data-address="{{ $branch->address }}">
+                          <a href="{{ route('page.edit-branch', ['branch_code' => $branch->branch_code]) }}" class="btn btn-info btn-sm">
                             <i class="ti tabler-edit me-1"></i> Edit
-                          </button>
+                          </a>
                           <button type="button" class="btn btn-danger btn-sm delete-branch" 
                             data-branch-code="{{ $branch->branch_code }}"
                             data-branch-name="{{ $branch->branch_name }}">
@@ -158,39 +155,6 @@
       <div class="drag-target"></div>
     </div>
     <!-- / Layout wrapper -->
-
-    <!-- Edit Branch Modal -->
-    <div class="modal fade" id="editBranchModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header" style="background-color: #0a3622">
-            <h5 class="modal-title text-white">Edit Branch</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form id="editBranchForm" method="POST" action="{{ route('branch.update') }}">
-              @csrf
-              @method('PUT')
-              <input type="hidden" id="edit_branch_code" name="branch_code">
-              <div class="mb-3">
-                <label class="form-label" for="edit_branch_name">Branch Name</label>
-                <input type="text" id="edit_branch_name" name="branch_name" class="form-control" required>
-                <div class="invalid-feedback" id="edit_branch_name_error"></div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label" for="edit_address">Address</label>
-                <textarea id="edit_address" name="address" class="form-control" rows="3" required></textarea>
-                <div class="invalid-feedback" id="edit_address_error"></div>
-              </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Update Branch</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Delete Branch Form (Hidden) -->
     <form id="deleteBranchForm" method="POST" action="{{ route('branch.delete') }}" style="display: none;">
@@ -288,51 +252,6 @@
             showConfirmButton: false
           });
         @endif
-
-        // Handle edit branch button clicks
-        $('.edit-branch').on('click', function() {
-          const branchCode = $(this).data('branch-code');
-          const branchName = $(this).data('branch-name');
-          const address = $(this).data('address');
-          
-          // Populate the form fields
-          $('#edit_branch_code').val(branchCode);
-          $('#edit_branch_name').val(branchName);
-          $('#edit_address').val(address);
-          
-          // Show the modal
-          $('#editBranchModal').modal('show');
-        });
-
-        // Handle form submission with confirmation
-        $('#editBranchForm').on('submit', function(e) {
-          e.preventDefault();
-          
-          // Hide the modal before showing SweetAlert
-          $('#editBranchModal').modal('hide');
-          
-          setTimeout(() => {
-            Swal.fire({
-              ...swalConfig,
-              title: 'Confirm Update',
-              text: 'Are you sure you want to update this branch?',
-              icon: 'question',
-              showCancelButton: true,
-              confirmButtonText: 'Yes, update it!',
-              cancelButtonText: 'Cancel',
-              confirmButtonColor: '#0a3622',
-              cancelButtonColor: '#d33'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                // Submit the form normally
-                this.submit();
-              } else {
-                // If canceled, show the modal again
-                $('#editBranchModal').modal('show');
-              }
-            });
-          }, 200); // Small delay to ensure modal is fully hidden
-        });
 
         // Handle delete branch button clicks
         $('.delete-branch').on('click', function() {

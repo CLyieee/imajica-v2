@@ -379,15 +379,9 @@
                           <td>{{ $tier->points_to_redeem }}</td>
                           <td>
                             <div class="d-flex gap-2">
-                              <button type="button" class="btn btn-info btn-sm edit-tier" 
-                                data-tier-id="{{ $tier->patient_tier_id }}"
-                                data-tier-name="{{ $tier->tier_name }}"
-                                data-points-required="{{ $tier->points_required }}"
-                                data-points-to-redeem="{{ $tier->points_to_redeem }}"
-                                data-tier-length="{{ $tier->tier_lenght }}"
-                                data-remarks="{{ $tier->remarks }}">
+                              <a href="{{ route('tier.edit', ['patient_tier_id' => $tier->patient_tier_id]) }}" class="btn btn-info btn-sm">
                                 <i class="ti tabler-edit me-1"></i>Edit
-                              </button>
+                              </a>
                               <button type="button" class="btn btn-danger btn-sm delete-tier" 
                                 data-tier-id="{{ $tier->patient_tier_id }}"
                                 data-tier-name="{{ $tier->tier_name }}">

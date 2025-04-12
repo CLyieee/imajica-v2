@@ -39,4 +39,8 @@ class branch extends Model
     public function coupon() {
         return $this->hasMany(coupon::class, 'branch_code', 'branch_code');
     }
+
+    public function expenses() {
+        return $this->hasMany(expenses::class, 'branch_code', 'branch_code');
+    }
 }

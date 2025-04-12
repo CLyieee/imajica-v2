@@ -42,7 +42,8 @@ class branchController extends Controller
         $branch->address = $request->address;
         $branch->save();
 
-        return redirect()->back()->with('success', 'Branch updated successfully');
+        // Redirect to branch list with success message
+        return redirect()->route('page.branch-list')->with('success', 'Branch updated successfully');
     }
 
     public function delete(Request $request)
@@ -80,6 +81,25 @@ class branchController extends Controller
                 'status' => false,
                 'message' => 'Failed to retrieve branches: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function edit($branch_code)
+    {
+        try {
+            // Find the branch by branch_code
+            $branch = Branch::where('branch_code', $branch_code)->first();
+            
+            if (!$branch) {
+                return redirect()->route('page.branch-list')
+                    ->with('error', 'Branch not found with code: ' . $branch_code);
+            }
+            
+            // Return the edit view with the branch data
+            return view('page.edit-branch', compact('branch'));
+        } catch (\Exception $e) {
+            return redirect()->route('page.branch-list')
+                ->with('error', 'Error occurred while editing branch: ' . $e->getMessage());
         }
     }
 }
