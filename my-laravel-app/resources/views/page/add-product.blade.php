@@ -468,7 +468,7 @@
             <div class="card-body">
               <div class="mb-6">
                 <label class="form-label" for="ecommerce-product-name">Name</label>
-                <input type="text" class="form-control" id="ecommerce-product-name" name="name" placeholder="Product title" required />
+                <input type="text" class="form-control" id="ecommerce-product-name" name="name" placeholder="Product Name" required />
               </div>
               <div class="row mb-6">
                 <div class="col">
@@ -923,7 +923,7 @@
 
             // Validate required fields
             const requiredFields = {
-                'name': 'Product name',
+                'name': 'Name',
                 'sku': 'SKU',
                 'bar_code': 'Barcode',
                 'base_price': 'Base price',
