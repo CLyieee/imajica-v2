@@ -31,7 +31,7 @@
     <!-- End Google Tag Manager -->
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="logo.png" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />

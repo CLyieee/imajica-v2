@@ -26,6 +26,9 @@
     <title>Imajica Booking System</title>
     <meta name="description" content="Imajica Booking System" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
     
     <!-- Include the same CSS as staff-list -->
     <link rel="stylesheet" href="../../assets/vendor/fonts/iconify-icons.css" />
