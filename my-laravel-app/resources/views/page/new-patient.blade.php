@@ -494,7 +494,7 @@
                 <div class="col-12">
                   <div class="card">
                     <div
-                      class="card-header sticky-element d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
+                      class="card-header d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
                       style="background-color: #0a3622"
                     >
                       <h5 class="card-title mb-sm-0 me-2 text-white">
@@ -533,8 +533,7 @@
                                       for="imageUpload"
                                       class="btn btn-primary btn-sm mt-2"
                                     >
-                                      <i class="ti tabler-upload me-1"></i
-                                      >Upload Photo
+                                      <i class="ti tabler-upload me-1"></i>Upload Photo (Optional)
                                     </label>
                                   </div>
                                 </div>
@@ -575,7 +574,7 @@
                               <select id="gender" name="gender" class="form-select" required>
                                 <option value="">Select Gender</option>
                                 <option value="male">Male</option>
-                                <option value="female">Female</option
+                                <option value="female">Female</option>
                               </select>
                             </div>
 
@@ -583,8 +582,8 @@
                               <label class="form-label">Membership Tier</label>
                               <select class="form-select" name="patient_tier_id" id="patient_tier_id" required>
                                 <option value="">Select Membership Tier</option>
-                                @foreach ($tiers as $tier)
-                                  <option value="{{ $tier->patient_tier_id }}">{{ $tier->tier_name }}</option>
+                                @foreach($tiers as $tier)
+                                    <option value="{{ $tier->patient_tier_id }}">{{ $tier->tier_name }}</option>
                                 @endforeach
                               </select>
                             </div>
@@ -709,6 +708,7 @@
     <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
 
     <script src="../../assets/vendor/libs/popper/popper.js"></script>
+
     <script src="../../assets/vendor/js/bootstrap.js"></script>
     <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
 

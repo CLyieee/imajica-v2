@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Patient;
+use App\Models\tier;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class patientController extends Controller
@@ -144,25 +146,40 @@ $patientData['updated_at'] = now();
     public function destroy($id)
     {
         try {
-            $patient = Patient::where('patient_id', $id)->first();
+            $patient = Patient::findOrFail($id);
             
-            if (!$patient) {
-                return redirect()->route('page.patient-list')
-                    ->with('error', 'Patient not found');
+            // Delete any associated files/images if needed
+            if ($patient->image_path) {
+                Storage::delete('public/' . $patient->image_path);
             }
-
+            
             // Delete the patient
             $patient->delete();
-
+            
+            // Return JSON response for AJAX requests
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Patient deleted successfully'
+                ]);
+            }
+            
+            // Return redirect for regular form submission
             return redirect()->route('page.patient-list')
                 ->with('success', 'Patient deleted successfully');
                 
         } catch (\Exception $e) {
             Log::error('Error deleting patient', [
                 'patient_id' => $id,
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'error' => $e->getMessage()
             ]);
+            
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to delete patient: ' . $e->getMessage()
+                ], 500);
+            }
             
             return redirect()->route('page.patient-list')
                 ->with('error', 'Failed to delete patient: ' . $e->getMessage());
@@ -171,6 +188,14 @@ $patientData['updated_at'] = now();
     
     public function index()
     {
-        return view('page.new-patient');
+        $tiers = tier::all();
+        return view('page.new-patient', compact('tiers'));
+    }
+
+
+    public function show($id)
+    {
+        $patient = Patient::findOrFail($id);
+        return view('page.patient-details', compact('patient'));
     }
 }
