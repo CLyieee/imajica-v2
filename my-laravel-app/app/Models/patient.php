@@ -5,31 +5,31 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class patient extends Model
+class Patient extends Model
 {
     use HasFactory;
 
-    
-
     protected $primaryKey = 'patient_id';
     protected $fillable = [
-        'image_path',
         'firstname',
         'lastname',
         'email',
-        'gender',
-        'birthdate',
         'contact_number',
-        'emergency_contact_name',
-        'emergency_contact_number',
+        'birthdate',
+        'gender',
         'patient_tier_id',
         'occupation',
         'address',
+        'emergency_contact_name',
+        'emergency_contact_number',
         'medical_concerns',
         'current_medications',
         'note_from_admin',
-        'created_at',
-        'updated_at',
+        'image_path'  // Add this to fillable
+    ];
+
+    protected $attributes = [
+        'image_path' => null  // Set default value to null
     ];
 
     public function contact()
