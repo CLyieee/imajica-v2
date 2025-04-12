@@ -8,7 +8,7 @@
     <title>Supplier List | Imajica Booking System</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="../../assets/vendor/fonts/iconify-icons.css" />
