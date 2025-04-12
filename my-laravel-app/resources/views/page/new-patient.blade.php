@@ -505,154 +505,133 @@
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
                           <!-- Add this after the header and before the first form group -->
-                          <form method="post" action="{{ route('patient.create') }}" enctype="multipart/form-data">
+                          <form method="POST" action="{{ route('patient.create') }}" enctype="multipart/form-data" id="patientForm">
                             @csrf
-                            @method('POST')
-                          <div class="row g-6">
-                            <div class="col-12 text-center mb-4">
-                              <div class="profile-upload-container mx-auto">
-                                <div class="avatar-upload">
-                                  <div class="avatar-preview">
-                                    <img
-                                      id="imagePreview"
-                                      src="../../assets/img/avatars/default-avatar.png"
-                                      alt="Profile Preview"
-                                      class="rounded-circle"
-                                      style="width: 100%; height: 100%; object-fit: cover;"
-                                    />
-                                  </div>
-                                  <div class="avatar-edit">
-                                    <input
-                                      type="file"
-                                      id="imageUpload"
-                                      name="image_path"
-                                      accept=".png, .jpg, .jpeg"
-                                      class="d-none"
-                                    />
-                                    <label
-                                      for="imageUpload"
-                                      class="btn btn-primary btn-sm mt-2"
-                                    >
-                                      <i class="ti tabler-upload me-1"></i>Upload Photo (Optional)
-                                    </label>
+                            <div class="row g-6">
+                              <div class="col-12 text-center mb-4">
+                                <div class="profile-upload-container mx-auto">
+                                  <div class="avatar-upload">
+                                    <div class="avatar-preview">
+                                      <img
+                                        id="imagePreview"
+                                        src="../../assets/img/avatars/default-avatar.png"
+                                        alt="Profile Preview"
+                                        class="rounded-circle"
+                                        style="width: 100%; height: 100%; object-fit: cover;"
+                                      />
+                                    </div>
+                                    <div class="avatar-edit">
+                                      <input
+                                        type="file"
+                                        id="imageUpload"
+                                        name="image_path"
+                                        accept=".png, .jpg, .jpeg"
+                                        class="d-none"
+                                      />
+                                      <label
+                                        for="imageUpload"
+                                        class="btn btn-primary btn-sm mt-2"
+                                      >
+                                        <i class="ti tabler-upload me-1"></i>Upload Photo (Optional)
+                                      </label>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </div>
 
-                          <!-- 1. Delivery Address -->
+                              <div class="col-md-6">
+                                <label class="form-label" for="firstname">First Name</label>
+                                <input type="text" id="firstname" name="firstname" class="form-control" value="{{ old('firstname') }}" required />
+                              </div>
 
-                          <div class="row g-6">
-                            <div class="col-md-6">
-                              <label class="form-label" for="firstName">First Name</label>
-                              <input type="text" id="firstName" name="firstname" class="form-control" placeholder="First Name" required />
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="lastname">Last Name</label>
+                                <input type="text" id="lastname" name="lastname" class="form-control" value="{{ old('lastname') }}" required />
+                              </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label" for="lastName">Last Name</label>
-                              <input type="text" id="lastName" name="lastname" class="form-control" placeholder="Last Name" required />
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="email">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-control" value="{{ old('email') }}" required />
+                              </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label" for="email">Email Address</label>
-                              <input type="email" id="email" name="email" class="form-control" placeholder="Email Address" required />
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="phone">Contact Number</label>
+                                <input type="tel" id="phone" name="contact_number" class="form-control" value="{{ old('contact_number') }}" required />
+                              </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label" for="phone">Contact Number</label>
-                              <input type="tel" id="phone" name="contact_number" class="form-control" placeholder="Contact Number" required />
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="birthDate">Date of Birth</label>
+                                <input type="date" id="birthDate" name="birthdate" class="form-control" value="{{ old('birthdate') }}" required />
+                              </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label" for="birthDate">Date of Birth</label>
-                              <input type="date" id="birthDate" name="birthdate" class="form-control" required />
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="gender">Gender</label>
+                                <select id="gender" name="gender" class="form-select" required>
+                                  <option value="">Select Gender</option>
+                                  <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                                  <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                                </select>
+                              </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label" for="gender">Gender</label>
-                              <select id="gender" name="gender" class="form-select" required>
-                                <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                              </select>
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label">Membership Tier</label>
+                                <select class="form-select" name="patient_tier_id" id="patient_tier_id" required>
+                                  <option value="">Select Membership Tier</option>
+                                  @foreach($tiers as $tier)
+                                      <option value="{{ $tier->patient_tier_id }}" {{ old('patient_tier_id') == $tier->patient_tier_id ? 'selected' : '' }}>{{ $tier->tier_name }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label">Membership Tier</label>
-                              <select class="form-select" name="patient_tier_id" id="patient_tier_id" required>
-                                <option value="">Select Membership Tier</option>
-                                @foreach($tiers as $tier)
-                                    <option value="{{ $tier->patient_tier_id }}">{{ $tier->tier_name }}</option>
-                                @endforeach
-                              </select>
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="occupation">Occupation</label>
+                                <input type="text" id="occupation" name="occupation" class="form-control" value="{{ old('occupation') }}" />
+                              </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label" for="occupation">Occupation</label>
-                              <input type="text" id="occupation" name="occupation" class="form-control" placeholder="Occupation" />
-                            </div>
+                              <div class="col-12">
+                                <label class="form-label" for="address">Address</label>
+                                <textarea name="address" class="form-control" id="address" rows="3" required>{{ old('address') }}</textarea>
+                              </div>
 
-                            <div class="col-12">
-                              <label class="form-label" for="address">Address</label>
-                              <textarea name="address" class="form-control" id="address" rows="3" placeholder="Full Address" required></textarea>
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="emergencyContact">Emergency Contact Name</label>
+                                <input type="text" id="emergencyContact" name="emergency_contact_name" class="form-control" value="{{ old('emergency_contact_name') }}" />
+                              </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label" for="emergencyContact">Emergency Contact Name</label>
-                              <input type="text" id="emergencyContact" name="emergency_contact_name" class="form-control" placeholder="Emergency Contact Name" />
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="emergencyPhone">Emergency Contact Number</label>
+                                <input type="tel" id="emergencyPhone" name="emergency_contact_number" class="form-control" value="{{ old('emergency_contact_number') }}" />
+                              </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label" for="emergencyPhone">Emergency Contact Number</label>
-                              <input type="tel" id="emergencyPhone" name="emergency_contact_number" class="form-control" placeholder="Emergency Contact Number" />
-                            </div>
+                              <div class="col-12">
+                                <label class="form-label" for="allergies">Allergies / Medical Concerns</label>
+                                <textarea name="medical_concerns" class="form-control" id="allergies" rows="3">{{ old('medical_concerns') }}</textarea>
+                              </div>
 
-                            <div class="col-12">
-                              <label class="form-label" for="allergies">Allergies / Medical Concerns</label>
-                              <textarea name="medical_concerns" class="form-control" id="allergies" rows="3" 
-                                placeholder="Please list any allergies, medical conditions, or concerns"></textarea>
-                            </div>
+                              <div class="col-12">
+                                <label class="form-label" for="medications">Current Medications</label>
+                                <textarea name="current_medications" class="form-control" id="medications" rows="2">{{ old('current_medications') }}</textarea>
+                              </div>
 
-                            <div class="col-12">
-                              <label class="form-label" for="medications">Current Medications</label>
-                              <textarea name="current_medications" class="form-control" id="medications" rows="2" 
-                                placeholder="List any current medications"></textarea>
-                            </div>
+                              <div class="col-12">
+                                <label class="form-label" for="adminNotes">Notes From Admin</label>
+                                <textarea name="note_from_admin" class="form-control" id="adminNotes" rows="3">{{ old('note_from_admin') }}</textarea>
+                              </div>
 
-                            <div class="col-12">
-                              <label class="form-label" for="adminNotes">Notes From Admin</label>
-                              <textarea name="note_from_admin" class="form-control" id="adminNotes" rows="3" 
-                                placeholder="Administrative notes about the patient"></textarea>
-                            </div>
+                              <div class="col-12">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="terms" required />
+                                  <label class="form-check-label" for="terms">
+                                    I agree to the terms and conditions and privacy policy
+                                  </label>
+                                </div>
+                              </div>
 
-                            <div class="col-12">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="terms" required />
-                                <label class="form-check-label" for="terms">
-                                  I agree to the terms and conditions and privacy policy
-                                </label>
+                              <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-primary">Add Patient</button>
                               </div>
                             </div>
-
-                            <div class="col-12">
-                              <button type="submit" class="btn btn-primary">Add Patient</button>
-                            </div>
                           </form>
-                          </div>
-
-                          
-
-                          
-                          </div>
-
-                          <!-- 2. Delivery Type -->
-
-                          <br />
-                         
-                          <br />
-
-                          <!-- 4. Payment Method -->
                         </div>
                       </div>
                     </div>
@@ -950,6 +929,32 @@
         console.log("Form method:", formMethod ? formMethod.value : "No method override");
       });
     </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('patientForm');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Disable submit button to prevent double submission
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        
+        // Show loading indicator
+        Swal.fire({
+            title: 'Processing...',
+            text: 'Please wait while we create the patient record',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        // Submit the form
+        this.submit();
+    });
+});
+</script>
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->
