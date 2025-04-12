@@ -25,6 +25,9 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/typeahead-js/typeahead.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
     
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />

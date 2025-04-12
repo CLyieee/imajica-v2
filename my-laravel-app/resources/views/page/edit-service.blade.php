@@ -7,7 +7,7 @@
   class="layout-navbar-fixed layout-menu-fixed layout-compact"
   dir="ltr"
   data-skin="default"
-  data-assets-path="../../assets/"
+  data-assets-path="{{ asset('assets/') }}"
   data-template="vertical-menu-template"
   data-bs-theme="light"
 >
@@ -18,7 +18,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Imajica Booking System</title>
+    <title>Edit Service - Imajica Booking System</title>
 
     <meta name="description" content="Imajica Booking System" />
 
@@ -35,7 +35,7 @@
     <link rel="canonical" href="Imajica Booking System" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -45,51 +45,27 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../../assets/vendor/fonts/iconify-icons.css" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}" />
 
     <!-- Core CSS -->
     <!-- build:css assets/vendor/css/theme.css  -->
 
-    <link
-      rel="stylesheet"
-      href="../../assets/vendor/libs/node-waves/node-waves.css"
-    />
-
-    <link
-      rel="stylesheet"
-      href="../../assets/vendor/libs/pickr/pickr-themes.css"
-    />
-
-    <link rel="stylesheet" href="../../assets/vendor/css/core.css" />
-    <link rel="stylesheet" href="../../assets/css/demo.css" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
 
     <!-- Vendors CSS -->
-
-    <link
-      rel="stylesheet"
-      href="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"
-    />
-
-    <!-- endbuild -->
-
-    <link
-      rel="stylesheet"
-      href="../../assets/vendor/libs/select2/select2.css"
-    />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
 
     <!-- Page CSS -->
-
     <!-- Helpers -->
-    <script src="../../assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+    <script src="{{ asset('assets/js/config.js') }}"></script>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="../../assets/js/config.js"></script>
-
+    
     <style>
       .profile-upload-container {
         width: 200px;
@@ -127,7 +103,6 @@
         border-color: #0a3622;
       }
     </style>
-
   </head>
     
   <body>
@@ -147,12 +122,9 @@
             <i class="ti tabler-chevron-right icon-base"></i>
           </a>
         </div>
-        <!-- / Menu -->
 
         <!-- Layout container -->
         <div class="layout-page">
-
-
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
@@ -162,20 +134,29 @@
                 <div class="col-12">
                   <div class="card">
                     <div
-                      class="card-header sticky-element d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
+                      class="card-header  d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
                       style="background-color: #0A3622;"
                     >
                       <h5 class="card-title mb-sm-0 me-2 text-white">
-                        Services Management
+                        Edit Service: {{ $service->service_name }}
                       </h5>
+                      <div class="mt-3 mt-sm-0">
+                        <a href="{{ route('page.services-list') }}" class="btn btn-light">
+                          <i class="ti tabler-arrow-left me-1"></i>Back to Services List
+                        </a>
+                      </div>
                     </div>
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <!-- 1. Delivery Address -->
-                            <form method="post" action="{{ route('service.create') }}" enctype="multipart/form-data">
+                          <!-- Form -->
+                          <form id="updateServiceForm" method="POST" action="/services/update" enctype="multipart/form-data">
                             @csrf
-                            @method('POST')
+                            @method('PUT')
+                            <input type="hidden" name="service_id" value="{{ $service->service_id }}">
+                            <input type="hidden" name="id" value="{{ $service->id }}">
+                       
+                            
                             <div class="row g-6">
                               <div class="col-12 text-center mb-4">
                                 <div class="profile-upload-container mx-auto">
@@ -183,7 +164,7 @@
                                     <div class="avatar-preview">
                                       <img
                                         id="imagePreview"
-                                        src="../../assets/img/services/default-service.png"
+                                        src="{{ asset($service->service_image ?? 'assets/img/services/default-service.png') }}"
                                         alt="Service Preview"
                                         class="rounded-circle"
                                         style="width: 100%; height: 100%; object-fit: cover;"
@@ -201,7 +182,7 @@
                                         for="service_image"
                                         class="btn btn-primary btn-sm mt-2"
                                       >
-                                        <i class="ti tabler-upload me-1"></i>Upload Photo
+                                        <i class="ti tabler-upload me-1"></i>Update Photo
                                       </label>
                                     </div>
                                   </div>
@@ -216,6 +197,7 @@
                                   name="service_name"
                                   class="form-control"
                                   placeholder="Services Name"
+                                  value="{{ $service->service_name }}"
                                   required
                                 />
                               </div>
@@ -230,7 +212,9 @@
                                 >
                                   <option value="">Select Branch</option>
                                   @foreach($branches as $branch)
-                                    <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
+                                    <option value="{{ $branch->branch_code }}" {{ $service->branch_code == $branch->branch_code ? 'selected' : '' }}>
+                                      {{ $branch->branch_name }}
+                                    </option>
                                   @endforeach
                                 </select>
                               </div>
@@ -243,7 +227,7 @@
                                   id="description"
                                   rows="4"
                                   placeholder="Service Description"
-                                ></textarea>
+                                >{{ $service->description }}</textarea>
                               </div>
 
                               <div class="col-md-6">
@@ -254,6 +238,7 @@
                                   name="duration"
                                   class="form-control"
                                   placeholder="In Minutes"
+                                  value="{{ $service->duration }}"
                                   required
                                 />
                               </div>
@@ -268,11 +253,11 @@
                                   required
                                 >
                                   <option value="">Select Service Category</option>
-                                  <option value="Facials">Facials</option>
-                                  <option value="Body Contouring">Body Contouring</option>
-                                  <option value="Laser Treatments">Laser Treatments</option>
-                                  <option value="Injectables">Injectables</option>
-                                  <option value="Others">Others</option>
+                                  <option value="Facials" {{ $service->service_category == 'Facials' ? 'selected' : '' }}>Facials</option>
+                                  <option value="Body Contouring" {{ $service->service_category == 'Body Contouring' ? 'selected' : '' }}>Body Contouring</option>
+                                  <option value="Laser Treatments" {{ $service->service_category == 'Laser Treatments' ? 'selected' : '' }}>Laser Treatments</option>
+                                  <option value="Injectables" {{ $service->service_category == 'Injectables' ? 'selected' : '' }}>Injectables</option>
+                                  <option value="Others" {{ $service->service_category == 'Others' ? 'selected' : '' }}>Others</option>
                                 </select>
                               </div>
 
@@ -285,6 +270,7 @@
                                   name="service_cost"
                                   class="form-control"
                                   placeholder="Amount"
+                                  value="{{ $service->service_cost }}"
                                   required
                                 />
                               </div>
@@ -297,19 +283,31 @@
                                   name="loyalty_pts"
                                   class="form-control"
                                   placeholder="Loyalty Reward Points"
+                                  value="{{ $service->loyalty_pts }}"
                                 />
                               </div>
                             </div>
 
                             <br />
-                            <div class="col-sm-2 col-4 d-grid">
-                              <button type="submit" class="btn btn-primary" id="addServiceBtn">
-                                Add Services
-                              </button>
+                            <div class="row">
+                              <div class="col-sm-2 col-4 d-grid">
+                                <a href="{{ route('page.services-list') }}" class="btn btn-outline-secondary">Cancel</a>
+                              </div>
+                              <div class="col-sm-2 col-4 d-grid ms-2">
+                                <button type="submit" class="btn btn-primary" id="updateServiceBtn">
+                                  Update Service
+                                </button>
+                              </div>
                             </div>
                           </form>
                           <br />
                           <!-- Success/Error Messages -->
+                          @if(session('success'))
+                            <div class="alert alert-success mt-3">{{ session('success') }}</div>
+                          @endif
+                          @if(session('error'))
+                            <div class="alert alert-danger mt-3">{{ session('error') }}</div>
+                          @endif
                           <div id="responseMessage" style="display: none;" class="alert mt-3"></div>
                         </div>
                       </div>
@@ -361,38 +359,25 @@
     <!-- / Layout wrapper -->
 
     <!-- Core JS -->
-    <!-- build:js assets/vendor/js/theme.js -->
-
-    <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
-
-    <script src="../../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../../assets/vendor/js/bootstrap.js"></script>
-    <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
-
-    <script src="../../assets/vendor/libs/%40algolia/autocomplete-js.js"></script>
-
-    <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
-
-    <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
-    <script src="../../assets/vendor/libs/hammer/hammer.js"></script>
-
-    <script src="../../assets/vendor/libs/i18n/i18n.js"></script>
-
-    <script src="../../assets/vendor/js/menu.js"></script>
-
-    <!-- endbuild -->
+    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/node-waves/node-waves.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/hammer/hammer.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
 
     <!-- Vendors JS -->
-    <script src="../../assets/vendor/libs/cleave-zen/cleave-zen.js"></script>
-    <script src="../../assets/vendor/libs/select2/select2.js"></script>
+    <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
 
     <!-- Main JS -->
-
-    <script src="../../assets/js/main.js"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <!-- Page JS -->
-    <script src="../../assets/js/form-layouts.js"></script>
+    <script src="{{ asset('assets/js/form-layouts.js') }}"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
       $(document).ready(function() {
         // Define routes object for API endpoints
@@ -400,8 +385,10 @@
           getAll: "{{ route('branch.getAllBranches') }}"
         };
         
-        // Load branches for select dropdown
-        loadBranchOptions();
+        // Initialize Select2 components
+        if ($.fn.select2) {
+          $('.select2').select2();
+        }
 
         // Function to load branch options for select dropdown
         function loadBranchOptions() {
@@ -435,6 +422,7 @@
         // Function to populate branch select options
         function populateBranchOptions(branches) {
           const select = $('#branch_code');
+          const currentValue = select.val();
           
           // Clear existing options except the default one
           const defaultOption = select.find('option:first');
@@ -442,7 +430,8 @@
           
           // Add branch options
           branches.forEach(branch => {
-            select.append(`<option value="${branch.branch_code}">${branch.branch_name}</option>`);
+            const selected = branch.branch_code === currentValue ? 'selected' : '';
+            select.append(`<option value="${branch.branch_code}" ${selected}>${branch.branch_name}</option>`);
           });
           
           // Refresh Select2 if it's used
@@ -453,7 +442,7 @@
       });
 
       document.addEventListener("DOMContentLoaded", function () {
-        const imageUpload = document.getElementById("imageUpload");
+        const imageUpload = document.getElementById("service_image");
         const imagePreview = document.getElementById("imagePreview");
 
         // Handle photo upload
@@ -466,6 +455,26 @@
             };
             reader.readAsDataURL(file);
           }
+        });
+        
+        // Confirm update with SweetAlert
+        $('#updateServiceBtn').on('click', function(e) {
+          e.preventDefault();
+          
+          Swal.fire({
+            title: 'Confirm Update',
+            text: "Are you sure you want to update this service?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#0a3622',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Submit the form if confirmed
+              document.querySelector('form').submit();
+            }
+          });
         });
       });
     </script>

@@ -26,8 +26,9 @@ class CreatePatientsTable extends Migration
             $table->text('current_medications');
             $table->text('note_from_admin');
             $table->timestamps();
+
         });
-    }
+    } 
 
     public function down()
     {

@@ -14,12 +14,11 @@ class CreatePositionTable extends Migration
     public function up()
     {
         Schema::create('position', function (Blueprint $table) {
-            $table->id('position_id');
-            $table->string('position_name');    
+            $table->bigInteger('position_id')->primary();
+            $table->string('position_name');
             $table->string('department');
-            $table->string('description');
-            $table->string('status');
-         
+            $table->text('description');
+            $table->boolean('status')->default(true);
         });
     }
 

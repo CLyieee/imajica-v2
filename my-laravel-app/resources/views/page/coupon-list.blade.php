@@ -35,7 +35,8 @@
     <link rel="canonical" href="Imajica Booking System" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('logo.png') }}" />
+   <!-- Favicon -->
+   <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -429,16 +430,7 @@
                               data-description="{{ $coupon->description }}">
                               <i class="ti tabler-eye me-1"></i> View
                             </button>
-                            <button class="btn btn-sm btn-info edit-coupon"
-                              data-coupon-code="{{ $coupon->coupon_code }}"
-                              data-discount-name="{{ $coupon->discount_name }}"
-                              data-description="{{ $coupon->description }}"
-                              data-discount-value="{{ $coupon->discount_value }}"
-                              data-discount-type="{{ $coupon->discount_type }}"
-                              data-applicable-service="{{ $coupon->service_id }}"
-                              data-start-end-date="{{ $coupon->start_end_date }}"
-                              data-new-customer="{{ $coupon->new_customer }}"
-                              data-branch-code="{{ $coupon->branch_code }}">
+                            <button class="btn btn-sm btn-info" onclick="window.location.href='{{ route('coupon.edit', $coupon->coupon_code) }}'">
                               <i class="ti tabler-edit me-1"></i> Edit
                             </button>
                             <button class="btn btn-sm btn-danger delete-coupon" 

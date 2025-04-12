@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded",function(e){
     3:{title:"Inactive",class:"bg-label-danger"}
   },
   r={
-    0:{title:"Out_of_Stock"},
-    1:{title:"In_Stock"}
+    0:{title:"Out of Stock", class:"bg-label-danger"},
+    1:{title:"In Stock", class:"bg-label-success"}
   };
 
 t&&new DataTable(t,{
@@ -85,24 +85,8 @@ t&&new DataTable(t,{
       orderable:!1,
       responsivePriority:3,
       render:function(e,t,n,a){
-        n=r[n.stock_status]?.title || n.stock_status;
-        return"display"===t?`
-          <span class="text-truncate">
-            ${{Out_of_Stock:`
-            <label class="switch switch-primary switch-sm">
-            <input type="checkbox" class="switch-input" id="switch">
-              <span class="switch-toggle-slider">
-                <span class="switch-off"></span>
-              </span>
-            </label>`,In_Stock:`
-            <label class="switch switch-primary switch-sm">
-              <input type="checkbox" class="switch-input" checked>
-              <span class="switch-toggle-slider">
-                <span class="switch-on"></span>
-              </span>
-            </label>`}[n]}
-            <span class="d-none">${n}</span>
-          </span>`:n
+        const status = r[n.stock_status] || {title: 'Unknown', class: 'bg-label-secondary'};
+        return `<span class="badge ${status.class}">${status.title}</span>`;
       }
     },
     {
@@ -133,7 +117,7 @@ t&&new DataTable(t,{
       render:function(e,t,n,a){
         return `
           <div class='d-flex gap-1'>
-            <a href="/products/${n.id}/view" class='btn btn-success'><i class='ti tabler-eye me-1'></i>View</a>
+
             <a href="/products/${n.id}/edit" class='btn btn-info'><i class='ti tabler-edit me-1'></i>Edit</a>
             <button class='btn btn-danger delete-product' data-id='${n.id}'><i class='ti tabler-trash me-1'></i>Delete</button>
           </div>
@@ -154,7 +138,8 @@ t&&new DataTable(t,{
     },
     topEnd:{
       rowClass:"row m-3 my-0 justify-content-between",
-      features:[{pageLength:{menu:[7,10,25,50,100],text:"_MENU_"},buttons:[{extend:"collection",className:"btn btn-label-secondary dropdown-toggle me-4",text:'<span class="d-flex align-items-center gap-1"><i class="icon-base ti tabler-upload icon-xs"></i> <span class="d-none d-sm-inline-block">Export</span></span>',buttons:[{extend:"print",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-printer me-1"></i>Print</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0||!(-1<e.indexOf("<")))return e;{e=(new DOMParser).parseFromString(e,"text/html");let t="";var a=e.querySelectorAll(".product-name");return 0<a.length?a.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;t+=e.trim()+" "}):t=e.body.textContent||e.body.innerText,t.trim()}}}},customize:function(e){e.document.body.style.color=config.colors.headingColor,e.document.body.style.borderColor=config.colors.borderColor,e.document.body.style.backgroundColor=config.colors.bodyBg;e=e.document.body.querySelector("table");e.classList.add("compact"),e.style.color="inherit",e.style.borderColor="inherit",e.style.backgroundColor="inherit"}},{extend:"csv",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-file me-1"></i>Csv</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"excel",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-upload me-1"></i>Excel</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"pdf",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-file-text me-1"></i>Pdf</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"copy",text:'<i class="icon-base ti tabler-copy me-1"></i>Copy',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}}]},{text:'<i class="icon-base ti tabler-plus me-0 me-sm-1 icon-16px"></i><span class="d-none d-sm-inline-block">Add Product</span>',className:"add-new btn btn-primary",action:function(){window.location.href="/add-product"}}]}]},
+      features:[{pageLength:{menu:[7,10,25,50,100],text:"_MENU_"},buttons:[{extend:"collection",
+        className:"btn btn-label-secondary dropdown-toggle me-4",text:'<span class="d-flex align-items-center gap-1"><i class="icon-base ti tabler-upload icon-xs"></i> <span class="d-none d-sm-inline-block">Export</span></span>',buttons:[{extend:"print",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-printer me-1"></i>Print</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0||!(-1<e.indexOf("<")))return e;{e=(new DOMParser).parseFromString(e,"text/html");let t="";var a=e.querySelectorAll(".product-name");return 0<a.length?a.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;t+=e.trim()+" "}):t=e.body.textContent||e.body.innerText,t.trim()}}}},customize:function(e){e.document.body.style.color=config.colors.headingColor,e.document.body.style.borderColor=config.colors.borderColor,e.document.body.style.backgroundColor=config.colors.bodyBg;e=e.document.body.querySelector("table");e.classList.add("compact"),e.style.color="inherit",e.style.borderColor="inherit",e.style.backgroundColor="inherit"}},{extend:"csv",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-file me-1"></i>Csv</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"excel",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-upload me-1"></i>Excel</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"pdf",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-file-text me-1"></i>Pdf</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"copy",text:'<i class="icon-base ti tabler-copy me-1"></i>Copy',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}}]},{text:'<i class="icon-base ti tabler-plus me-0 me-sm-1 icon-16px"></i><span class="d-none d-sm-inline-block">Add Product</span>',className:"add-new btn btn-primary",action:function(){window.location.href="/add-product"}}]}]},
     bottomStart:{rowClass:"row mx-3 justify-content-between",features:["info"]},
     bottomEnd:"paging"
   },

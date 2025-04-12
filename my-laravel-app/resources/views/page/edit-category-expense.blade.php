@@ -7,7 +7,7 @@
   class="layout-navbar-fixed layout-menu-fixed layout-compact"
   dir="ltr"
   data-skin="default"
-  data-assets-path="../../assets/"
+  data-assets-path="{{ asset('assets/') }}"
   data-template="vertical-menu-template"
   data-bs-theme="light"
 >
@@ -18,7 +18,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Imajica Booking System</title>
+    <title>Edit Category Expense - Imajica Booking System</title>
 
     <meta name="description" content="Imajica Booking System" />
 
@@ -35,7 +35,8 @@
     <link rel="canonical" href="Imajica Booking System" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('logo.png') }}" />
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
@@ -110,7 +111,7 @@
       <div class="layout-container">
         <!-- Menu -->
 
-               @include('components.sidebar')
+        @include('components.sidebar')
 
         <div class="menu-mobile-toggler d-xl-none rounded-1">
           <a
@@ -127,8 +128,6 @@
         <div class="layout-page">
           <!-- Navbar -->
 
-
-
           <!-- / Navbar -->
 
           <!-- Content wrapper -->
@@ -140,45 +139,47 @@
                 <div class="col-12">
                   <div class="card">
                     <div
-                      class="card-header sticky-element bg-dark-green d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
+                      class="card-header bg-dark-green d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
                       style="background-color: #0a3622"
                     >
                       <h5 class="card-title mb-sm-0 me-2 text-white">
-                        Category Expenses
+                        Edit Category Expense
                       </h5>
+                      <div>
+                        <a href="{{ route('page.categoryexpenses-list') }}" class="btn btn-sm btn-light">
+                          <i class="ti tabler-arrow-left me-1"></i> Back to List
+                        </a>
+                      </div>
                     </div>
                     <div class="card-body pt-6">
                       @if ($errors->any())
-                          <script>
-                              document.addEventListener('DOMContentLoaded', function() {
-                                  Swal.fire({
-                                      icon: 'error',
-                                      title: 'Validation Error',
-                                      html: `@foreach ($errors->all() as $error)
-                                          - {{ $error }}<br>
-                                      @endforeach`,
-                                  });
-                              });
-                          </script>
+                          <div class="alert alert-danger">
+                              <ul class="mb-0">
+                                  @foreach ($errors->all() as $error)
+                                      <li>{{ $error }}</li>
+                                  @endforeach
+                              </ul>
+                          </div>
                       @endif
           
                       @if(session('success'))
-                          <script>
-                              document.addEventListener('DOMContentLoaded', function() {
-                                  Swal.fire({
-                                      icon: 'success',
-                                      title: 'Success',
-                                      text: '{{ session('success') }}',
-                                  });
-                              });
-                          </script>
+                          <div class="alert alert-success">
+                              {{ session('success') }}
+                          </div>
                       @endif
+
+                      @if(session('error'))
+                          <div class="alert alert-danger">
+                              {{ session('error') }}
+                          </div>
+                      @endif
+                      
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
                       
-                        <form method="POST" action="{{ route('category_expense.create') }}">
+                        <form method="POST" action="{{ route('category_expense.update', $category->category_expense_id) }}">
                             @csrf
-                            @method('POST')
+                            @method('PUT')
                           
                             <div class="row g-6">
                               <div class="col-md-8 mb-3">
@@ -190,6 +191,7 @@
                                   class="form-control"
                                   placeholder="Enter Category Name"
                                   style="width: 100%; max-width: 400px;"
+                                  value="{{ $category->name }}"
                                   required
                                 />
                               </div>
@@ -202,17 +204,19 @@
                                   id="description"
                                   rows="4"
                                   placeholder="Category Description"
-                                ></textarea>
+                                >{{ $category->description }}</textarea>
                               </div>
 
                             </div>
 
                             <br />
-                            <div class="col-sm-2 col-4 d-grid">
-                              <button type="submit" class="btn btn-primary">Add Category</button>
-                            </div>
-                            <div class="col-sm-2 col-4 d-grid">
-                             
+                            <div class="d-flex gap-3">
+                              <div class="col-sm-2 col-4 d-grid">
+                                <button type="submit" class="btn btn-primary">Update Category</button>
+                              </div>
+                              <div class="col-sm-2 col-4 d-grid">
+                                <a href="{{ route('page.categoryexpenses-list') }}" class="btn btn-outline-secondary">Cancel</a>
+                              </div>
                             </div>
                             <br />
                           </form>
@@ -321,6 +325,4 @@
       });
     </script>
   </body>
-
-  <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->
 </html>
