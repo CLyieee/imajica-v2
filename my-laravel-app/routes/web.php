@@ -67,6 +67,9 @@ Route::get('/void-logs', [DashboardController::class, 'void_logs'])->name('page.
 
 Route::get('/product-list', [DashboardController::class, 'product_list'])->name('page.product-list');
 
+// Add the edit-branch route before the ORDER ROUTES
+Route::get('/branch/edit/{branch_code}', [branchController::class, 'edit'])->name('page.edit-branch');
+
 //ORDER ROUTES
 Route::get('/order-list', [DashboardController::class, 'order_list'])->name('page.order-list');
 Route::get('/add-order', [DashboardController::class, 'add_order'])->name('page.add_order');
@@ -130,6 +133,7 @@ Route::post('/branch/create', [App\Http\Controllers\branchController::class, 'cr
 Route::put('/branch/update', [App\Http\Controllers\branchController::class, 'update'])->name('branch.update');
 Route::delete('/branch/delete', [App\Http\Controllers\branchController::class, 'delete'])->name('branch.delete');
 Route::get('/branches/all', [App\Http\Controllers\branchController::class, 'getAllBranches'])->name('branch.getAllBranches');
+Route::get('/edit-branch/{branch_code}', [App\Http\Controllers\branchController::class, 'edit'])->name('branch.edit');
 
 // Supplier Routes
 Route::post('/supplier/add', [App\Http\Controllers\supplierController::class, 'add_supplier'])->name('add.supplier');
@@ -179,6 +183,7 @@ Route::delete('/staff/{id}', [App\Http\Controllers\staffController::class, 'dele
 //Loyalty Route
 Route::post('/tier/create', [App\Http\Controllers\tierController::class, 'create'])->name('tier.create');
 Route::get('/tier/all', [App\Http\Controllers\tierController::class, 'list'])->name('tier.list');
+Route::get('/tier/edit/{patient_tier_id}', [App\Http\Controllers\tierController::class, 'edit'])->name('tier.edit');
 Route::put('/tier/update', [App\Http\Controllers\tierController::class, 'update'])->name('tier.update');
 Route::delete('/tier/delete', [App\Http\Controllers\tierController::class, 'delete'])->name('tier.delete');
 
@@ -211,5 +216,8 @@ Route::get('/category_expense/all', [App\Http\Controllers\category_expenseContro
 Route::get('/category_expense/edit/{id}', [App\Http\Controllers\category_expenseController::class, 'edit'])->name('category_expense.edit');
 Route::put('/category_expense/update/{id}', [App\Http\Controllers\category_expenseController::class, 'update'])->name('category_expense.update');
 Route::delete('/category_expense/delete/{id}', [App\Http\Controllers\category_expenseController::class, 'delete'])->name('category_expense.delete');
+
+// Expense Management Routes
+Route::resource('expenses', ExpensesController::class);
 
 

@@ -333,7 +333,7 @@
                 <div class="col-12">
                   <div class="card">
                     <div
-                      class="card-header sticky-element d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
+                      class="card-header d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
                       style="background-color: #0a3622"
                     >
                       <h5 class="card-title mb-sm-0 me-2 text-white">
@@ -343,147 +343,144 @@
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <!-- 1. Delivery Address -->
-
-                          <div class="row g-6">
-                            <div class="col-md-6">
-                              <label class="form-label" for="fullname"
-                                >Expense Name</label
-                              >
-                              <input
-                                type="text"
-                                id="fullname"
-                                class="form-control"
-                                placeholder="Expense Name"
-                              />
+                          <!-- Display validation errors if any -->
+                          @if ($errors->any())
+                            <div class="alert alert-danger">
+                              <ul>
+                                @foreach ($errors->all() as $error)
+                                  <li>{{ $error }}</li>
+                                @endforeach
+                              </ul>
                             </div>
+                          @endif
 
-                            <div class="col-md-6">
-                              <label class="form-label">Expense Category</label>
-                              <select
-                                class="select2 form-select"
-                                data-allow-clear="true"
-                              >
-                                <option value="">
-                                  Select Expense Category
-                                </option>
-                                <option value="AL">Rent</option>
-                                <option value="AK">Salaries & Wages</option>
-                                <option value="AK">Equipment & Supplies</option>
-                                <option value="AK">
-                                  Marketing & Advertising
-                                </option>
-                                <option value="AK">
-                                  Utilities (Electricity, Water, Internet)
-                                </option>
-                                <option value="AK">
-                                  Training & Certifications
-                                </option>
-                                <option value="AK">Miscellaneous</option>
-                              </select>
-                            </div>
+                          <!-- Form Start -->
+                          <form action="{{ route('expenses.store') }}" method="POST">
+                            @csrf
+                            <div class="row g-6">
+                              <div class="col-md-6">
+                                <label class="form-label" for="expense_name">Expense Name</label>
+                                <input
+                                  type="text"
+                                  id="expense_name"
+                                  name="expense_name"
+                                  class="form-control @error('expense_name') is-invalid @enderror"
+                                  placeholder="Expense Name"
+                                  value="{{ old('expense_name') }}"
+                                />
+                                @error('expense_name')
+                                  <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                              </div>
 
-                            <div class="col-md-12">
-                              <label for="flatpickr-range" class="form-label"
-                                >Date of Expense</label
-                              >
-                              <input
-                                type="text"
-                                class="form-control"
-                                placeholder="YYYY-MM-DD to YYYY-MM-DD"
-                                id="flatpickr-range"
-                              />
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label">Expense Category</label>
+                                <select
+                                  name="category_expense_id"
+                                  class="select2 form-select @error('category_expense_id') is-invalid @enderror"
+                                  data-allow-clear="true"
+                                >
+                                  <option value="">Select Expense Category</option>
+                                  @foreach($categories as $category)
+                                    <option value="{{ $category->category_expense_id }}" {{ old('category_expense_id') == $category->category_expense_id ? 'selected' : '' }}>
+                                      {{ $category->name }}
+                                    </option>
+                                  @endforeach
+                                </select>
+                                @error('category_expense_id')
+                                  <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                              </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label">Payment Status</label>
-                              <select
-                                class="select2 form-select"
-                                data-allow-clear="true"
-                              >
-                                <option value="">Select Payment Status</option>
-                                <option value="AL">Paid</option>
-                                <option value="AK">Pending</option>
-                                <option value="AK">Overdue</option>
-                              </select>
-                            </div>
+                              <div class="col-md-12">
+                                <label for="date_expense" class="form-label">Date of Expense</label>
+                                <input
+                                  type="text"
+                                  name="date_expense"
+                                  class="form-control @error('date_expense') is-invalid @enderror"
+                                  placeholder="YYYY-MM-DD"
+                                  id="flatpickr-date"
+                                  value="{{ old('date_expense') }}"
+                                />
+                                @error('date_expense')
+                                  <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                              </div>
 
-                            <div class="col-md-6">
-                              <label class="form-label" for="fullname"
-                                >Receipt / Invoice Number</label
-                              >
-                              <input
-                                type="text"
-                                id="fullname"
-                                class="form-control"
-                                placeholder="Receipt / Invoice Number"
-                              />
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label">Payment Status</label>
+                                <select
+                                  name="payment_status"
+                                  class="select2 form-select @error('payment_status') is-invalid @enderror"
+                                  data-allow-clear="true"
+                                >
+                                  <option value="">Select Payment Status</option>
+                                  <option value="Paid" {{ old('payment_status') == 'Paid' ? 'selected' : '' }}>Paid</option>
+                                  <option value="Pending" {{ old('payment_status') == 'Pending' ? 'selected' : '' }}>Pending</option>
+                                  <option value="Overdue" {{ old('payment_status') == 'Overdue' ? 'selected' : '' }}>Overdue</option>
+                                </select>
+                                @error('payment_status')
+                                  <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                              </div>
 
-                            <div class="col-12">
-                              <label class="form-label" for="address"
-                                >Remarks</label
-                              >
-                              <textarea
-                                name="address"
-                                class="form-control"
-                                id="address"
-                                rows="4"
-                                placeholder="Remarks"
-                              ></textarea>
-                            </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="invoice_number">Receipt / Invoice Number</label>
+                                <input
+                                  type="text"
+                                  id="invoice_number"
+                                  name="invoice_number"
+                                  class="form-control @error('invoice_number') is-invalid @enderror"
+                                  placeholder="Receipt / Invoice Number"
+                                  value="{{ old('invoice_number') }}"
+                                />
+                                @error('invoice_number')
+                                  <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                              </div>
 
-                            <div class="col-md-12">
-                              <label class="form-label">Branch</label>
-                              <select
-                                class="select2 form-select"
-                                data-allow-clear="true"
-                              >
-                                <option value="">Select Branch</option>
-                                <option value="AL">Pasig City Branch</option>
-                                <option value="AK">
-                                  San Mateo Rizal Branch
-                                </option>
-                                <option value="AK">Cainta Rizal Branch</option>
-                              </select>
-                            </div>
+                              <div class="col-12">
+                                <label class="form-label" for="remarks">Remarks</label>
+                                <textarea
+                                  name="remarks"
+                                  class="form-control @error('remarks') is-invalid @enderror"
+                                  id="remarks"
+                                  rows="4"
+                                  placeholder="Remarks"
+                                >{{ old('remarks') }}</textarea>
+                                @error('remarks')
+                                  <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                              </div>
 
-                            <div class="col-12">
-                              <div class="card">
-                                <h5 class="card-header">Upload Attachment</h5>
-                                <div class="card-body">
-                                  <form
-                                    action="https://demos.pixinvent.com/upload"
-                                    class="dropzone needsclick"
-                                    id="dropzone-multi"
-                                  >
-                                    <div class="dz-message needsclick">
-                                      Drop files here or click to upload
-                                      <span class="note needsclick"
-                                        >(This is just a demo dropzone. Selected
-                                        files are
-                                        <span class="fw-medium">not</span>
-                                        actually uploaded.)</span
-                                      >
-                                    </div>
-                                    <div class="fallback">
-                                      <input name="file" type="file" />
-                                    </div>
-                                  </form>
-                                </div>
+                              <div class="col-md-12">
+                                <label class="form-label">Branch</label>
+                                <select
+                                  name="branch_code"
+                                  class="select2 form-select @error('branch_code') is-invalid @enderror"
+                                  data-allow-clear="true"
+                                >
+                                  <option value="">Select Branch</option>
+                                  @foreach($branches as $branch)
+                                    <option value="{{ $branch->branch_code }}" {{ old('branch_code') == $branch->branch_code ? 'selected' : '' }}>
+                                      {{ $branch->branch_name }}
+                                    </option>
+                                  @endforeach
+                                </select>
+                                @error('branch_code')
+                                  <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                               </div>
                             </div>
-                          </div>
 
-                          <!-- 2. Delivery Type -->
-
+                            <br />
+                            <div class="col-sm-2 col-4 d-grid">
+                              <button type="submit" class="btn btn-primary">Add Expense</button>
+                            </div>
+                          </form>
+                          <!-- Form End -->
+                          
                           <br />
-                          <div class="col-sm-2 col-4 d-grid">
-                            <button class="btn btn-primary">Add Expense</button>
-                          </div>
-                          <br />
-
-                          <!-- 4. Payment Method -->
                         </div>
                       </div>
                     </div>
@@ -576,6 +573,22 @@
 
     <script src="../../assets/vendor/libs/dropzone/dropzone.js"></script>
     <script src="../../assets/js/forms-file-upload.js"></script>
+    
+    <!-- Custom script for flatpickr initialization -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize flatpickr for date input with single date format
+        if (document.getElementById('flatpickr-date')) {
+          flatpickr('#flatpickr-date', {
+            dateFormat: 'Y-m-d',
+            altInput: true,
+            altFormat: 'F j, Y',
+            enableTime: false,
+            mode: 'single' // Ensure single date selection
+          });
+        }
+      });
+    </script>
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->

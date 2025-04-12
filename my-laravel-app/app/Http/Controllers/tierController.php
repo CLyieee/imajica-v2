@@ -77,7 +77,8 @@ class tierController extends Controller
             $tier->remarks = $request->remarks;
             $tier->save();
 
-            return redirect()->back()->with('success', 'Tier updated successfully');
+            // Redirect to loyalty list with success message
+            return redirect()->route('page.loyalty-list')->with('success', 'Tier updated successfully');
     }
 
     public function delete(Request $request)
@@ -96,4 +97,23 @@ class tierController extends Controller
 
         return redirect()->back()->with('success', 'Tier deleted successfully');
     } 
+
+    public function edit($patient_tier_id)
+    {
+        try {
+            // Find the tier by patient_tier_id
+            $tier = Tier::where('patient_tier_id', $patient_tier_id)->first();
+            
+            if (!$tier) {
+                return redirect()->route('tier.list')
+                    ->with('error', 'Loyalty tier not found with ID: ' . $patient_tier_id);
+            }
+            
+            // Return the edit view with the tier data
+            return view('page.edit-loyalty', compact('tier'));
+        } catch (\Exception $e) {
+            return redirect()->route('tier.list')
+                ->with('error', 'Error occurred while editing loyalty tier: ' . $e->getMessage());
+        }
+    }
 }

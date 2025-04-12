@@ -17,4 +17,10 @@ class category_expense extends Model
         'name',
         'description',
     ];
+
+
+    public function expenses()
+    {
+        return $this->hasMany(expenses::class, 'category_expense_id', 'category_expense_id');
+    }
 }

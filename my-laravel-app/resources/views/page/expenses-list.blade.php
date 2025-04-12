@@ -149,289 +149,119 @@
 
         <!-- Layout container -->
         <div class="layout-page">
-          <!-- Navbar -->
-
-          {{-- <nav
-            class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-            id="layout-navbar"
-          >
-            <div
-              class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none"
-            >
-              <a
-                class="nav-item nav-link px-0 me-xl-6"
-                href="javascript:void(0)"
-              >
-                <i class="icon-base ti tabler-menu-2 icon-md"></i>
-              </a>
-            </div>
-
-            <div
-              class="navbar-nav-right d-flex align-items-center justify-content-end"
-              id="navbar-collapse"
-            >
-              <!-- Search -->
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-                  <a
-                    class="nav-item nav-link search-toggler d-flex align-items-center px-0"
-                    href="javascript:void(0);"
-                  >
-                    <span
-                      class="d-inline-block text-body-secondary fw-normal"
-                      id="autocomplete"
-                    ></span>
-                  </a>
-                </div>
-              </div>
-
-              <!-- /Search -->
-
-              <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                <!--/ Language -->
-
-                <!-- Style Switcher -->
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
-                    id="nav-theme"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <i
-                      class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"
-                    ></i>
-                    <span class="d-none ms-2" id="nav-theme-text"
-                      >Toggle theme</span
-                    >
-                  </a>
-                  <ul
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="nav-theme-text"
-                  >
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center active"
-                        data-bs-theme-value="light"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-sun icon-22px me-3"
-                            data-icon="sun"
-                          ></i
-                          >Light</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="dark"
-                        aria-pressed="true"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-moon-stars icon-22px me-3"
-                            data-icon="moon-stars"
-                          ></i
-                          >Dark</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="system"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-device-desktop-analytics icon-22px me-3"
-                            data-icon="device-desktop-analytics"
-                          ></i
-                          >System</span
-                        >
-                      </button>
-                    </li>
-                  </ul>
-                </li>
-                <!-- / Style Switcher-->
-
-                <!-- Quick links  -->
-
-                <!-- Quick links -->
-
-                <!-- Notification -->
-
-                <!--/ Notification -->
-
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow p-0"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <div class="avatar avatar-online">
-                      <img
-                        src="../../assets/img/avatars/1.png"
-                        alt
-                        class="rounded-circle"
-                      />
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a
-                        class="dropdown-item mt-0"
-                        href="pages-account-settings-account.html"
-                      >
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0 me-2">
-                            <div class="avatar avatar-online">
-                              <img
-                                src="../../assets/img/avatars/1.png"
-                                alt
-                                class="rounded-circle"
-                              />
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="mb-0">Rommel Lacap</h6>
-                            <small class="text-body-secondary">Admin</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-user me-3 icon-md"></i
-                        ><span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-settings me-3 icon-md"></i
-                        ><span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-
-                    <li>
-                      <div class="d-grid px-2 pt-2 pb-1">
-                        <a
-                          class="btn btn-sm btn-danger d-flex"
-                          href="#"
-                          target="_blank"
-                        >
-                          <small class="align-middle">Logout</small>
-                          <i
-                            class="icon-base ti tabler-logout ms-2 icon-14px"
-                          ></i>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
-            </div>
-          </nav> --}}
-
-          <!-- / Navbar -->
-
+          <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="card">
-                <!-- Branch Filter -->
-                {{-- <div class="px-4 py-3">
-                  <label for="branchFilter" class="fw-bold me-2"
-                    >Select Branch:</label
-                  >
-                  <select
-                    id="branchFilter"
-                    class="form-select w-auto d-inline-block"
-                  >
-                    <option value="">All Branches</option>
-                    <option value="Pasig City Branch">Pasig City Branch</option>
-                    <option value="San Mateo Rizal Branch">
-                      San Mateo Rizal Branch
-                    </option>
-                    <option value="Cainta Rizal Branch">
-                      Cainta Rizal Branch
-                    </option>
-                  </select>
-                </div> --}}
+              <!-- Success message -->
+              @if(session('success'))
+                <div class="alert alert-success alert-dismissible" role="alert">
+                  {{ session('success') }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              @endif
 
-                <!-- Table Header with Search -->
+              <!-- Expenses List -->
+              <div class="card">
                 <div class="d-flex justify-content-between align-items-center p-3">
                   <h5 class="card-title mb-0">Expenses List</h5>
-                  <button class="btn btn-primary">
+                  <a href="{{ route('expenses.create') }}" class="btn btn-primary">
                     <i class="ti tabler-plus me-1"></i> Add New Expense
-                  </button>
+                  </a>
                 </div>
-                
-                <!-- Success/Error Messages -->
-                <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
-
-                <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table class="table table-striped" id="expensesTable">
-                    <thead style="background-color: #0a3622; color: white;">
+                  <table class="datatables-expenses-list table table-striped">
+                    <thead class="table-light">
                       <tr>
-                        <th style="color: white;">Expense Name</th>
-                        <th style="color: white;">Category</th>
-                        <th style="color: white;">Date</th>
-                        <th style="color: white;">Status</th>
-                        <th style="color: white;">Invoice No.</th>
-                        <th style="color: white;">Branch</th>
-                        <th style="color: white;">Actions</th>
+                        <th>ID</th>
+                        <th>Expense Name</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Payment Status</th>
+                        <th>Invoice Number</th>
+                        <th>Branch</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
+                      @foreach($expenses as $expense)
                       <tr>
-                        <td>Monthly Clinic Rent</td>
-                        <td>Rent</td>
-                        <td>2024-02-01</td>
-                        <td><span class="badge bg-label-success">Paid</span></td>
-                        <td>INV-2024-001</td>
-                        <td>Pasig City Branch</td>
+                        <td>{{ $expense->expense_id }}</td>
+                        <td>{{ $expense->expense_name }}</td>
+                        <td>{{ $expense->category_expense->name ?? 'N/A' }}</td>
+                        <td>
+                          @php
+                            try {
+                              // Safely parse the date - if it's already a valid format, it will work
+                              $date = \Carbon\Carbon::parse($expense->date_expense);
+                              echo $date->format('M d, Y');
+                            } catch (\Exception $e) {
+                              echo $expense->date_expense; // Just output as is if we can't parse
+                            }
+                          @endphp
+                        </td>
+                        <td>
+                          @if($expense->payment_status == 'Paid')
+                            <span class="badge bg-success">Paid</span>
+                          @elseif($expense->payment_status == 'Pending')
+                            <span class="badge bg-warning">Pending</span>
+                          @elseif($expense->payment_status == 'Overdue')
+                            <span class="badge bg-danger">Overdue</span>
+                          @endif
+                        </td>
+                        <td>{{ $expense->invoice_number ?? 'N/A' }}</td>
+                        <td>{{ $expense->branch->branch_name ?? 'N/A' }}</td>
                         <td>
                           <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-success view-expense">
-                              <i class="ti tabler-eye me-1"></i> View
-                            </button>
-                            <button class="btn btn-sm btn-info edit-expense">
-                              <i class="ti tabler-edit me-1"></i> Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-expense">
-                              <i class="ti tabler-trash me-1"></i> Delete
-                            </button>
+                            <a href="{{ route('expenses.edit', $expense->expense_id) }}" class="btn btn-info btn-sm">
+                              <i class="ti tabler-edit me-1"></i>Edit
+                            </a>
+                            <form action="{{ route('expenses.destroy', $expense->expense_id) }}" method="POST" class="d-inline">
+                              @csrf
+                              @method('DELETE')
+                              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this expense?')">
+                                <i class="ti tabler-trash me-1"></i>Delete
+                              </button>
+                            </form>
                           </div>
                         </td>
                       </tr>
-                      <!-- Add more rows as needed -->
+                      @endforeach
                     </tbody>
                   </table>
                   <br />
                 </div>
               </div>
+              <!-- /Expenses List -->
             </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl">
+                <div
+                  class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column"
+                >
+                  <div class="text-body">
+                    ©
+                    <script>
+                      document.write(new Date().getFullYear());
+                    </script>
+                    Developed by
+                    <a
+                      href="https://intra-code.com/"
+                      target="_blank"
+                      class="footer-link"
+                      >Intracode IT Solutions</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </footer>
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
           </div>
-
-          <!-- Content wrapper -->
-
           <!-- Content wrapper -->
         </div>
         <!-- / Layout page -->
@@ -489,23 +319,14 @@
     <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
     <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
     <script>
-      // $(document).ready(function () {
-      //   var table = $("#expensesTable").DataTable({
-      //     responsive: true,
-      //     columnDefs: [
-      //       {
-      //         targets: [5], // Branch column index
-      //         visible: false // Hide the branch column initially
-      //       }
-      //     ]
-      //   });
-
-      //   // Branch filter functionality
-      //   $("#branchFilter").on("change", function () {
-      //     var selectedBranch = $(this).val();
-      //     table.column(5).search(selectedBranch).draw();
-      //   });
-      // });
+      // Initialize DataTables
+      $(function() {
+        $('.datatables-expenses-list').DataTable({
+          // Set up DataTable configuration
+          pageLength: 10,
+          lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'All']]
+        });
+      });
     </script>
   </body>
 </html>

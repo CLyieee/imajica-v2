@@ -300,12 +300,18 @@ class DashboardController extends Controller
 
     public function new_expenses()
     {
+        $branches = Branch::all();
+        $positions = positionModel::with('department')->get();
+        $categories = category_expense::all();
     
-        return view('page.new-expenses');
+        return view('page.new-expenses', compact('branches', 'categories'));
     }
     public function position_list(){
        $positions = positionModel::all();
         $departments = Department::all();
+        $branches = Branch::all();
+        $positions = positionModel::with('department')->get();
+        $categories = category::all();
         return view('page.position-list', compact('positions', 'departments'));
     }
 
@@ -413,6 +419,21 @@ class DashboardController extends Controller
         
         return view('page.branch-list', ['branchs'=> $branchs]);
     }
+
+    /**
+     * Show the edit branch page.
+     *
+     * @param string $branch_code
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function edit_branch($branch_code)
+    {
+        // Fetch branch details by branch_code
+        $branch = \App\Models\Branch::where('branch_code', $branch_code)->firstOrFail();
+        
+        return view('page.edit-branch', compact('branch'));
+    }
+
     public function customer_report()
     {
         return view('page.customer-report');
