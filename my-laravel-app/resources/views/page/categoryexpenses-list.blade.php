@@ -370,43 +370,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- Sample Static Data -->
-                      <tr>
-                        <td>Food & Beverages</td>
-                        <td>All food and drink related expenses</td>
-                        <td class="text-center">
-                          <button class="btn btn-sm btn-info edit-category" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="1" data-category-name="Food & Beverages" data-description="All food and drink related expenses">
-                            <i class="ti tabler-edit"></i> Edit
-                          </button>
-                          <button class="btn btn-sm btn-danger delete-category" data-category-id="1" data-category-name="Food & Beverages">
-                            <i class="ti tabler-trash"></i> Delete
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Transportation</td>
-                        <td>Vehicle maintenance and fuel expenses</td>
-                        <td class="text-center">
-                          <button class="btn btn-sm btn-info edit-category" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="2" data-category-name="Transportation" data-description="Vehicle maintenance and fuel expenses">
-                            <i class="ti tabler-edit"></i> Edit
-                          </button>
-                          <button class="btn btn-sm btn-danger delete-category" data-category-id="2" data-category-name="Transportation">
-                            <i class="ti tabler-trash"></i> Delete
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Office Supplies</td>
-                        <td>Paper, printer ink, and other office materials</td>
-                        <td class="text-center">
-                          <button class="btn btn-sm btn-info edit-category" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="3" data-category-name="Office Supplies" data-description="Paper, printer ink, and other office materials">
-                            <i class="ti tabler-edit"></i> Edit
-                          </button>
-                          <button class="btn btn-sm btn-danger delete-category" data-category-id="3" data-category-name="Office Supplies">
-                            <i class="ti tabler-trash"></i> Delete
-                          </button>
-                        </td>
-                      </tr>
+                      
 
                       <!-- Dynamic Data from Database -->
                       @foreach ($categories as $category)
@@ -414,7 +378,7 @@
                           <td>{{ $category->name }}</td>
                           <td>{{ $category->description }}</td>
                           <td class="text-center">
-                            <button class="btn btn-sm btn-info edit-category" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="{{ $category->category_expense_id }}" data-category-name="{{ $category->name }}" data-description="{{ $category->description }}">
+                            <button class="btn btn-sm btn-info edit-category" onclick="window.location.href='{{ route('category_expense.edit', $category->category_expense_id) }}'">
                               <i class="ti tabler-edit"></i> Edit
                             </button>
                             <button class="btn btn-sm btn-danger delete-category" data-category-id="{{ $category->category_expense_id }}" data-category-name="{{ $category->name }}">
@@ -444,38 +408,6 @@
       <div class="drag-target"></div>
     </div>
     <!-- / Layout wrapper -->
-
-    <!-- Edit Category Modal -->
-    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header bg-primary">
-            <h5 class="modal-title text-white">Edit Category</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form id="editCategoryForm" method="POST">
-              @csrf
-              <input type="hidden" name="_method" value="PUT">
-              <input type="hidden" id="edit_category_id" name="category_expense_id">
-              <div class="mb-3">
-                <label class="form-label">Category Name</label>
-                <input type="text" id="edit_category_name" name="name" class="form-control" required>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Description</label>
-                <textarea id="edit_description" name="description" class="form-control" rows="3"></textarea>
-              </div>
-              
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Update Category</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Delete Category Form -->
     <form id="deleteCategoryForm" method="POST" style="display: none;">
@@ -611,103 +543,7 @@
 
         // Debug information
         console.log("Document ready triggered");
-        console.log("Edit category buttons found:", $('.edit-category').length);
         console.log("Delete category buttons found:", $('.delete-category').length);
-        console.log("Modal element exists:", $('#editCategoryModal').length);
-
-        // Handle edit category button clicks
-        $('.edit-category').on('click', function() {
-          try {
-            const categoryId = $(this).data('category-id');
-            const categoryName = $(this).data('category-name');
-            const description = $(this).data('description');
-            
-            console.log("Edit button clicked for category:", categoryId);
-            console.log("Button data attributes:", {
-              categoryId,
-              categoryName,
-              description
-            });
-            
-            // Populate the form fields and set the correct ID
-            $('#edit_category_id').val(categoryId);
-            $('#edit_category_name').val(categoryName);
-            $('#edit_description').val(description);
-            
-            // Set the form action dynamically with the category ID
-            $('#editCategoryForm').attr('action', `/category_expense/update/${categoryId}`);
-            
-            // Show the modal
-            $('#editCategoryModal').modal('show');
-            
-          } catch (e) {
-            console.error("Error in edit button click handler:", e);
-            Swal.fire({
-              ...swalConfig,
-              icon: 'error',
-              title: 'Error',
-              html: 'An error occurred while processing your request:<br>' + e.message,
-              showConfirmButton: true
-            });
-          }
-        });
-
-        // Handle form submission with confirmation
-        $('#editCategoryForm').on('submit', function(e) {
-          e.preventDefault();
-          
-          // Hide the modal before showing SweetAlert
-          try {
-            $('#editCategoryModal').modal('hide');
-          } catch (e) {
-            console.error("Error hiding modal:", e);
-            // Continue anyway
-          }
-          
-          setTimeout(() => {
-            Swal.fire({
-              ...swalConfig,
-              title: 'Confirm Update',
-              text: 'Are you sure you want to update this category?',
-              icon: 'question',
-              showCancelButton: true,
-              confirmButtonText: 'Yes, update it!',
-              cancelButtonText: 'Cancel',
-              confirmButtonColor: '#0a3622',
-              cancelButtonColor: '#d33'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                // Submit the form normally
-                try {
-                  this.submit();
-                } catch (e) {
-                  console.error("Error submitting form:", e);
-                  Swal.fire({
-                    ...swalConfig,
-                    icon: 'error',
-                    title: 'Form Submission Error',
-                    html: 'Error submitting form:<br>' + e.message,
-                    showConfirmButton: true
-                  });
-                }
-              } else {
-                // If canceled, show the modal again
-                try {
-                  $('#editCategoryModal').modal('show');
-                } catch (e) {
-                  console.error("Error showing modal after cancellation:", e);
-                  Swal.fire({
-                    ...swalConfig,
-                    icon: 'error',
-                    title: 'Modal Error',
-                    html: 'Error reopening modal after cancellation:<br>' + e.message,
-                    showConfirmButton: true
-                  });
-                }
-              }
-            });
-          }, 200); // Small delay to ensure modal is fully hidden
-        });
 
         // Handle delete category button clicks
         $('.delete-category').on('click', function() {
@@ -774,32 +610,6 @@
             });
           }
         });
-        
-        // Debug: Check if Bootstrap is loaded correctly
-        if (typeof $.fn.modal === 'undefined') {
-          console.error("Bootstrap modal plugin is not loaded!");
-          Swal.fire({
-            ...swalConfig,
-            icon: 'error',
-            title: 'Bootstrap Error',
-            html: 'Bootstrap modal plugin is not loaded properly.<br>Check your console for more details.',
-            showConfirmButton: true
-          });
-        } else {
-          console.log("Bootstrap modal plugin is available");
-          // Force initialize the modal
-          try {
-            $('#editCategoryModal').modal({
-              backdrop: true,
-              keyboard: true,
-              focus: true,
-              show: false
-            });
-            console.log("Modal initialized successfully");
-          } catch (e) {
-            console.error("Error initializing modal:", e);
-          }
-        }
         
         // Verify that SweetAlert2 is loaded
         if (typeof Swal !== 'undefined') {
