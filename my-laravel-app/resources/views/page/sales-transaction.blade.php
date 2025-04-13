@@ -245,9 +245,7 @@
                                 <td>{{ $sale->status }}</td>
                                 <td>{{ $sale->branch ? $sale->branch->branch_name : $sale->branch }}</td>
                                 <td>{{ $sale->start_date }}</td>
-                                {{-- <td>
-                                  <a href="#" class="btn btn-success "> <i class="ti tabler-eye me-1"></i>View</a>
-                              </td> --}}
+                               
                               </tr>
                               @endforeach
                             </tbody>
@@ -336,7 +334,7 @@
       
       <script src="../../assets/vendor/js/menu.js"></script>
     
-    <!-- endbuild -->
+   
 
     <!-- Vendors JS -->
     <script src="../../assets/vendor/libs/moment/moment.js"></script>
@@ -350,10 +348,6 @@
 
     <!-- Page JS -->
   <script src="../../assets/js/sales-transaction.js"></script>
-
-  
- 
-
 
   <script>
     $(document).ready(function () {

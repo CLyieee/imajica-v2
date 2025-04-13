@@ -144,8 +144,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: "GET",
                 failure: function () {
                     console.error("Failed to load events");
-                },
+                }
             },
+            eventTimeFormat: {
+                hour: 'numeric',
+                minute: '2-digit',
+                meridiem: 'short'
+            },
+            displayEventTime: true,
+            displayEventEnd: true,
+            eventDisplay: 'block',
             plugins: [
                 dayGridPlugin,
                 interactionPlugin,
@@ -154,8 +162,18 @@ document.addEventListener("DOMContentLoaded", function () {
             ],
             editable: true,
             dragScroll: true,
-            dayMaxEvents: 2,
+            dayMaxEvents: 3,
             eventResizableFromStart: true,
+            eventDidMount: function(info) {
+                // Add tooltips
+                $(info.el).tooltip({
+                    title: info.event.extendedProps.description,
+                    placement: 'top',
+                    trigger: 'hover',
+                    container: 'body',
+                    html: true
+                });
+            },
             customButtons: { sidebarToggle: { text: "Sidebar" } },
             headerToolbar: {
                 start: "sidebarToggle, prev,next, title",
@@ -383,16 +401,32 @@ document.addEventListener("DOMContentLoaded", function () {
                     .then((response) => response.json())
                     .then((data) => {
                         if (data.status) {
-                            // Refresh events
-                            S.refetchEvents();
-                            L.hide();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'Booking updated successfully',
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                // Refresh events and hide sidebar
+                                S.refetchEvents();
+                                L.hide();
+                            });
                         } else {
-                            alert(data.message || "Error updating booking");
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message || 'Error updating booking'
+                            });
                         }
                     })
                     .catch((error) => {
                         console.error("Error:", error);
-                        alert("Error updating booking");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to update booking'
+                        });
                     });
             } else {
                 // Add new event
@@ -406,15 +440,33 @@ document.addEventListener("DOMContentLoaded", function () {
                     .then((response) => response.json())
                     .then((data) => {
                         if (data.status) {
-                            S.refetchEvents();
-                            L.hide();
+                            // Show success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'Booking created successfully',
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                // Refresh events and hide sidebar
+                                S.refetchEvents();
+                                L.hide();
+                            });
                         } else {
-                            alert(data.message || "Error creating booking");
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message || 'Error creating booking'
+                            });
                         }
                     })
                     .catch((error) => {
                         console.error("Error:", error);
-                        alert("Error creating booking");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to create booking'
+                        });
                     });
             }
         });

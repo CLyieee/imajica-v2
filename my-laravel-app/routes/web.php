@@ -187,6 +187,7 @@ Route::post('/staff/create', [App\Http\Controllers\staffController::class, 'crea
 Route::get('/staff/all', [App\Http\Controllers\staffController::class, 'get_staff'])->name('get.staff');
 Route::put('/staff/update', [staffController::class, 'update'])->name('staff.update');
 Route::delete('/staff/{id}', [App\Http\Controllers\staffController::class, 'delete'])->name('staff.delete');
+Route::get('/staff/edit/{id}', [staffController::class, 'edit'])->name('staff.edit');
 
 //Loyalty Route
 Route::post('/tier/create', [App\Http\Controllers\tierController::class, 'create'])->name('tier.create');
