@@ -184,4 +184,44 @@ class OrderController extends Controller
         ]);
       
     }
+
+    public function delete(Request $request)
+    {
+        try {
+            $orderId = $request->input('order_id');
+            $order = Order::findOrFail($orderId);
+            
+            // Delete related order items first 
+            $order->orderItems()->delete();
+            
+            // Then delete the order
+            $order->delete();
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Order deleted successfully'
+                ]);
+            }
+
+            return redirect()->route('page.order-list')
+                ->with('success', 'Order deleted successfully!');
+
+        } catch (\Exception $e) {
+            Log::error('Error deleting order:', [
+                'order_id' => $orderId,
+                'error' => $e->getMessage()
+            ]);
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Failed to delete order: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Failed to delete order: ' . $e->getMessage());
+        }
+    }
 }

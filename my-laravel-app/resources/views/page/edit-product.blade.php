@@ -1,0 +1,689 @@
+<!doctype html>
+
+    <!-- =========================================================
+* Vuexy - Bootstrap Dashboard PRO | v3.0.0
+==============================================================
+
+* Product Page: https://themeforest.net/item/vuexy-vuejs-html-laravel-admin-dashboard-template/23328599
+* Created by: Pixinvent
+
+      * License: You must have a valid license purchased in order to legally use the theme for your project.
+    
+* Copyright Pixinvent (https://pixinvent.com)
+
+=========================================================
+ -->
+    <!-- beautify ignore:start -->
+  
+
+
+<html
+  lang="en"
+  class=" layout-navbar-fixed layout-menu-fixed layout-compact "
+  dir="ltr"
+  data-skin="default"
+  data-assets-path="../../assets/"
+  data-template="vertical-menu-template"
+  data-bs-theme="light">
+  
+<!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/app-ecommerce-product-add.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:26:16 GMT -->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title>Imajica Booking System</title>
+
+    
+      <meta name="description" content="Vuexy is the best bootstrap 5 dashboard for responsive web apps. Streamline your app development process with ease." />
+      <!-- Canonical SEO -->
+      <meta name="keywords" content="Vuexy bootstrap dashboard, vuexy bootstrap 5 dashboard, themeselection, html dashboard, web dashboard, frontend dashboard, responsive bootstrap theme" />
+      <meta property="og:title" content="Vuexy bootstrap Dashboard by Pixinvent" />
+      <meta property="og:type" content="product" />
+      <meta property="og:url" content="https://themeforest.net/item/vuexy-vuejs-html-laravel-admin-dashboard-template/23328599" />
+      <meta property="og:image" content="../../../../pixinvent.com/wp-content/uploads/2023/06/vuexy-hero-image.png" />
+      <meta property="og:description" content="Vuexy is the best bootstrap 5 dashboard for responsive web apps. Streamline your app development process with ease." />
+      <meta property="og:site_name" content="Pixinvent" />
+      <link rel="canonical" href="https://themeforest.net/item/vuexy-vuejs-html-laravel-admin-dashboard-template/23328599" />
+    
+    
+      <!-- ? PROD Only: Google Tag Manager (Default ThemeSelection: GTM-5DDHKGP, PixInvent: GTM-5J3LMKC) -->
+      <script>
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != 'dataLayer' ? '&l=' + l : '';
+          j.async = true;
+          j.src = '../../../../www.googletagmanager.com/gtm5445.html?id=' + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-5J3LMKC');
+      </script>
+      <!-- End Google Tag Manager -->
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;ampdisplay=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../../assets/vendor/fonts/iconify-icons.css" />
+
+    <!-- Core CSS -->
+    <!-- build:css assets/vendor/css/theme.css  -->
+    
+    <link rel="stylesheet" href="../../assets/vendor/libs/node-waves/node-waves.css" />
+    
+      
+      <link rel="stylesheet" href="../../assets/vendor/libs/pickr/pickr-themes.css" />
+    
+    <link rel="stylesheet" href="../../assets/vendor/css/core.css" />
+    <link rel="stylesheet" href="../../assets/css/demo.css" />
+
+    
+    <!-- Vendors CSS -->
+    
+      <link rel="stylesheet" href="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    
+    <!-- endbuild -->
+
+    <link rel="stylesheet" href="../../assets/vendor/libs/quill/typography.css" />
+  <link rel="stylesheet" href="../../assets/vendor/libs/quill/katex.css" />
+  <link rel="stylesheet" href="../../assets/vendor/libs/quill/editor.css" />
+  <link rel="stylesheet" href="../../assets/vendor/libs/select2/select2.css" />
+  <link rel="stylesheet" href="../../assets/vendor/libs/dropzone/dropzone.css" />
+  <link rel="stylesheet" href="../../assets/vendor/libs/flatpickr/flatpickr.css" />
+  <link rel="stylesheet" href="../../assets/vendor/libs/tagify/tagify.css" />
+
+    <!-- Page CSS -->
+    
+
+    <!-- Helpers -->
+    <script src="../../assets/vendor/js/helpers.js"></script>
+  
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    
+      <script src="../../assets/js/config.js"></script>
+    
+  </head>
+
+  <body>
+    
+      <!-- ?PROD Only: Google Tag Manager (noscript) (Default ThemeSelection: GTM-5DDHKGP, PixInvent: GTM-5J3LMKC) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5J3LMKC" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+    
+    <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar  ">
+    <div class="layout-container">
+      @include ('components.sidebar')
+
+<div class="menu-mobile-toggler d-xl-none rounded-1">
+  <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large text-bg-secondary p-2 rounded-1">
+    <i class="ti tabler-menu icon-base"></i>
+    <i class="ti tabler-chevron-right icon-base"></i>
+  </a>
+</div>
+<!-- / Menu -->
+
+      
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        
+  
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <!-- Content -->
+          <div class="container-xxl flex-grow-1 container-p-y">
+  <div class="app-ecommerce">
+    <!-- Edit Product -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
+        <div class="d-flex flex-column justify-content-center">
+            <h4 class="mb-1">Edit Product</h4>
+            <p class="mb-0">Update product details</p>
+        </div>
+        <div class="d-flex align-content-center flex-wrap gap-4">
+            <div class="d-flex gap-4">
+                <button type="button" class="btn btn-label-secondary" id="discardBtn">Discard</button>
+                <button type="button" class="btn btn-primary" id="updateProductBtn">Update Product</button>
+            </div>
+        </div>
+    </div>
+
+    <form id="editProductForm" method="POST" action="{{ route('product.update', ['sku' => $product->sku]) }}" enctype="multipart/form-data" data-sku="{{ $product->sku }}">
+        @csrf
+        <input type="hidden" name="_method" value="POST">
+        <div class="row">
+            <!-- First column-->
+            <div class="col-12 col-lg-8">
+                <!-- Product Information -->
+                <div class="card mb-6">
+                    <div class="card-header">
+                        <h5 class="card-tile mb-0">Product information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-6">
+                            <label class="form-label" for="ecommerce-product-name">Name</label>
+                            <input type="text" class="form-control" id="ecommerce-product-name" name="name" value="{{ $product->name }}" required />
+                        </div>
+                        <div class="row mb-6">
+                            <div class="col">
+                                <label class="form-label" for="ecommerce-product-sku">SKU</label>
+                                <input type="text" class="form-control" id="ecommerce-product-sku" name="sku" value="{{ $product->sku }}" required />
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="ecommerce-product-barcode">Barcode</label>
+                                <input type="text" class="form-control" id="ecommerce-product-barcode" name="bar_code" value="{{ $product->bar_code }}" required />
+                            </div>
+                        </div>
+                        <!-- Description -->
+                        <div>
+                            <label class="mb-1">Description (Optional)</label>
+                            <textarea name="description" class="form-control" rows="4">{{ $product->description }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Media -->
+                <div class="card mb-6">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 card-title">Product Image</h5>
+                        <a href="javascript:void(0);" class="fw-medium">Add media from URL</a>
+                    </div>
+                    <div class="card-body">
+                        <input type="file" name="product_image" class="form-control" accept="image/*">
+                    </div>
+                </div>
+
+                <!-- Inventory -->
+                <div class="card mb-6">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Inventory</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Navigation -->
+                            <div class="col-12 col-md-4 col-xl-5 col-xxl-4 mx-auto card-separator">
+                                <div class="d-flex justify-content-between flex-column mb-4 mb-md-0 pe-md-4">
+                                    <div class="nav-align-left">
+                                        <ul class="nav nav-pills flex-column w-100">
+                                            <li class="nav-item">
+                                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
+                                                    <i class="icon-base ti tabler-box icon-sm me-1_5"></i>
+                                                    <span class="align-middle">Restock</span>
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping">
+                                                    <i class="icon-base ti tabler-car icon-sm me-1_5"></i>
+                                                    <span class="align-middle">Shipping</span>
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attributes">
+                                                    <i class="icon-base ti tabler-link icon-sm me-1_5"></i>
+                                                    <span class="align-middle">Attributes</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Navigation -->
+                            <!-- Options -->
+                            <div class="col-12 col-md-8 col-xl-7 col-xxl-8 pt-6 pt-md-0">
+                                <div class="tab-content p-0 ps-md-4">
+                                    <!-- Restock Tab -->
+                                    <div class="tab-pane fade show active" id="restock" role="tabpanel">
+                                        <h6 class="text-body">Options</h6>
+                                        <label class="form-label" for="ecommerce-product-stock">Add to Stock</label>
+                                        <div class="row mb-4 g-4 pe-md-4">
+                                            <div class="col-12 col-sm-9">
+                                                <input type="number" class="form-control" name="quantity" value="{{ $product->quantity }}" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Shipping Tab -->
+                                    <div class="tab-pane fade" id="shipping" role="tabpanel">
+                                        <h6 class="mb-3 text-body">Shipping Type</h6>
+                                        <div>
+                                            <div class="form-check mb-4">
+                                                <input class="form-check-input" type="radio" name="shipping_type" value="seller" id="seller" {{ $product->shipping_type == 'seller' ? 'checked' : '' }} />
+                                                <label class="form-check-label" for="seller">
+                                                    <span class="mb-1 h6">Fulfilled by Seller</span><br />
+                                                    <small>You'll be responsible for product delivery.<br />Any damage or delay during shipping may cost you a Damage fee.</small>
+                                                </label>
+                                            </div>
+                                            <div class="form-check mb-6">
+                                                <input class="form-check-input" type="radio" name="shipping_type" value="company" id="companyName" {{ $product->shipping_type == 'company' ? 'checked' : '' }} />
+                                                <label class="form-check-label" for="companyName">
+                                                    <span class="mb-1 h6">Fulfilled by Company name &nbsp;<span class="badge rounded-2 badge-warning bg-label-warning fs-tiny py-1">RECOMMENDED</span></span><br />
+                                                    <small>Your product, Our responsibility.<br />For a measly fee, we will handle the delivery process for you.</small>
+                                                </label>
+                                            </div>
+                                            <p class="mb-0">See our <a href="javascript:void(0);">Delivery terms and conditions</a> for details</p>
+                                        </div>
+                                    </div>
+                                    <!-- Attributes Tab -->
+                                    <div class="tab-pane fade" id="attributes" role="tabpanel">
+                                        <h6 class="mb-2 text-body">Attributes</h6>
+                                        <div>
+                                            <!-- Fragile Product -->
+                                            <div class="form-check mb-4">
+                                                <input class="form-check-input" type="checkbox" name="is_fragile" value="fragile" id="fragile" {{ $product->is_fragile ? 'checked' : '' }} />
+                                                <label class="form-check-label" for="fragile">
+                                                    <span class="fw-medium">Fragile Product</span>
+                                                </label>
+                                            </div>
+                                            <!-- Biodegradable -->
+                                            <div class="form-check mb-4">
+                                                <input class="form-check-input" type="checkbox" name="is_biodegradable" value="biodegradable" id="biodegradable" {{ $product->is_biodegradable ? 'checked' : '' }} />
+                                                <label class="form-check-label" for="biodegradable">
+                                                    <span class="fw-medium">Biodegradable</span>
+                                                </label>
+                                            </div>
+                                            <!-- Frozen Product -->
+                                            <div class="form-check mb-4">
+                                                <input class="form-check-input" type="checkbox" name="is_frozen" value="frozen" {{ $product->is_frozen ? 'checked' : '' }} />
+                                                <label class="form-check-label w-75 pe-12" for="frozen">
+                                                    <span class="mb-1 h6">Frozen Product</span>
+                                                    <input type="number" name="max_temperature" class="form-control" placeholder="Max. allowed Temperature" id="frozen" value="{{ $product->max_temperature }}" />
+                                                </label>
+                                            </div>
+                                            <!-- Exp Date -->
+                                            <div class="form-check mb-6">
+                                                <input class="form-check-input" type="checkbox" name="expiry_date" value="expDate" id="expDate" {{ $product->expiry_date ? 'checked' : '' }} />
+                                                <label class="form-check-label w-75 pe-12" for="date-input">
+                                                    <span class="mb-1 h6">Expiry Date of Product</span>
+                                                    <input type="date" name="expiry_date" class="product-date form-control" id="date-input" value="{{ $product->expiry_date }}" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Attributes Tab -->
+                                </div>
+                            </div>
+                            <!-- /Options-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /First column -->
+
+            <!-- Second column -->
+            <div class="col-12 col-lg-4">
+                <!-- Pricing Card -->
+                <div class="card mb-6">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Pricing</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Base Price -->
+                        <div class="mb-6">
+                            <label class="form-label" for="ecommerce-product-price">Base Price</label>
+                            <input type="number" step="0.01" name="base_price" class="form-control" id="ecommerce-product-price" value="{{ $product->base_price }}" required />
+                        </div>
+                        <!-- Discounted Price -->
+                        <div class="mb-6">
+                            <label class="form-label" for="ecommerce-product-discount-price">Discounted Price</label>
+                            <input type="number" step="0.01" name="discounted_price" class="form-control" id="ecommerce-product-discount-price" value="{{ $product->discounted_price }}" />
+                        </div>
+                        <!-- Charge tax check box -->
+                        <div class="form-check ms-2 mt-2 mb-4">
+                            <input class="form-check-input" type="checkbox" name="in_stock" value="" id="price-charge-tax" {{ $product->in_stock ? 'checked' : '' }} />
+                            <label class="switch-label" for="price-charge-tax"> Charge tax on this product </label>
+                        </div>
+                        <!-- Instock switch -->
+                        <div class="d-flex justify-content-between align-items-center border-top pt-2">
+                            <span class="mb-0">In stock</span>
+                            <div class="w-25 d-flex justify-content-end">
+                                <div class="form-check form-switch me-n3">
+                                    <input type="checkbox" name="in_stock" class="form-check-input" {{ $product->in_stock ? 'checked' : '' }} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Organize Card -->
+                <div class="card mb-6">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Organize</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Category -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="mb-6 col ecommerce-select2-dropdown">
+                                <label class="form-label mb-1" for="category-org">
+                                    <span>Product Category</span>
+                                </label>
+                                <select name="category_id" id="category-org" class="select2 form-select" data-placeholder="Select Category" required>
+                                    <option value="">Select Category</option>
+                                    @foreach($categories as $category)
+                                    <option value="{{ $category->category_id }}" {{ $product->category_id == $category->category_id ? 'selected' : '' }}>{{ $category->categoryTitle }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <button 
+                            class="fw-medium btn btn-icon btn-label-primary ms-4"
+                            data-bs-toggle="offcanvas" 
+                            data-bs-target="#offcanvasEcommerceCategoryList"
+                            >
+                            <i class="icon-base ti tabler-plus icon-md"></i>
+                            </button>
+                        </div>
+                        <!-- Status -->
+                        <div class="mb-6 col ecommerce-select2-dropdown">
+                            <label class="form-label mb-1" for="status-org">Status </label>
+                            <select name="status" id="status-org" class="select2 form-select" data-placeholder="Published" required>
+                                <option value="Published" {{ $product->status == 'Published' ? 'selected' : '' }}>Published</option>
+                                <option value="Scheduled" {{ $product->status == 'Scheduled' ? 'selected' : '' }}>Scheduled</option>
+                                <option value="Inactive" {{ $product->status == 'Inactive' ? 'selected' : '' }}>Inactive</option>
+                            </select>
+                        </div>
+                        <!-- Tags -->
+                        <div>
+                            <label for="ecommerce-product-tags" class="form-label mb-1">Tags</label>
+                            <input name="tags" id="ecommerce-product-tags" class="form-control" value="{{ $product->tags }}" aria-label="Product Tags" />
+                        </div>
+                        <!-- Back Button -->
+                        <div class="mt-4 pt-3 border-top">
+                            <button type="button" onclick="window.location.href='{{ route('page.product-list') }}'" class="btn btn-primary">
+                                <i class="ti tabler-arrow-left me-1"></i>Back to Product List
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Second column -->
+        </div>
+    </form>
+  </div>
+</div>
+          <!-- / Content -->
+<!-- Offcanvas for Adding New Category -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Add New Category</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form id="eCommerceCategoryListForm">
+      <div class="mb-3">
+        <label for="categoryTitle" class="form-label">Category Title</label>
+        <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" required>
+      </div>
+      <div class="mb-3">
+        <label for="slug" class="form-label">Slug</label>
+        <input type="text" class="form-control" id="slug" name="slug" required>
+        <small class="text-muted">The slug will be automatically generated from the title. Example: "Home & Garden" → "home-garden"</small>
+      </div>
+      <button type="submit" class="btn btn-primary">Save Category</button>
+    </form>
+  </div>
+</div>
+     
+<script>
+  document.getElementById('categoryTitle').addEventListener('input', function(e) {
+      const title = e.target.value;
+      const slug = title.toLowerCase()
+          .replace(/[^\w\s-]/g, '') // Remove special characters
+          .replace(/\s+/g, '-')     // Replace spaces with hyphens
+          .replace(/-+/g, '-');     // Replace multiple hyphens with single hyphen
+      
+      document.getElementById('slug').value = slug;
+  });
+
+ 
+</script>
+     
+
+<!-- Footer -->
+<footer class="content-footer footer bg-footer-theme">
+    <div class="container-xxl">
+      <div class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
+        <div class="text-body">
+          ©
+          <script>
+            document.write(new Date().getFullYear());
+          </script>
+           Developed by <a href="https://intra-code.com/" target="_blank" class="footer-link">Intracode IT Solutions</a>
+        </div>
+       
+      </div>
+    </div>
+  </footer>
+<!-- / Footer -->
+
+          
+          <div class="content-backdrop fade"></div>
+        </div>
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
+    
+      
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+    
+    
+      <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+      <div class="drag-target"></div>
+    
+  </div>
+  <!-- / Layout wrapper -->
+
+    
+   
+
+    
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/theme.js -->
+    
+    
+      <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
+    
+    <script src="../../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../../assets/vendor/js/bootstrap.js"></script>
+    <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
+
+    
+    <script src="../../assets/vendor/libs/%40algolia/autocomplete-js.js"></script>
+
+    
+      
+      <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
+    
+
+    
+      <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+      
+        
+        <script src="../../assets/vendor/libs/hammer/hammer.js"></script>
+        
+          <script src="../../assets/vendor/libs/i18n/i18n.js"></script>
+        
+      
+      <script src="../../assets/vendor/js/menu.js"></script>
+    
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src="../../assets/vendor/libs/quill/katex.js"></script>
+  <script src="../../assets/vendor/libs/quill/quill.js"></script>
+  <script src="../../assets/vendor/libs/select2/select2.js"></script>
+  <script src="../../assets/vendor/libs/dropzone/dropzone.js"></script>
+  <script src="../../assets/vendor/libs/jquery-repeater/jquery-repeater.js"></script>
+  <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/vendor/libs/tagify/tagify.js"></script>
+
+    <!-- Main JS -->
+    
+      <script src="../../assets/js/main.js"></script>
+    
+
+    <!-- Page JS -->
+    <script src="../../assets/js/add-product.js"></script>
+    
+
+    <script>
+      $(document).ready(function() {
+   // Handle variant selection change
+   $(document).on('change', '[id^=form-repeater-1-1], [id^=form-repeater-1-2]', function() {
+       const variantRow = $(this).closest('.row');
+       const variantType = variantRow.find('[id^=form-repeater-1-1]').val();
+       const variantValue = variantRow.find('[id^=form-repeater-1-2]').val();
+       
+       // Log the variant details
+       console.log({
+           type: variantType,
+           value: variantValue
+       });
+
+       // Update input placeholder based on selected variant
+       const variantInput = variantRow.find('[id^=form-repeater-1-2]');
+       const selectedVariant = variantType;
+       
+       const placeholders = {
+           'size': 'Enter size',
+           'color': 'Enter color',
+           'weight': 'Enter weight in grams',
+           'smell': 'Enter smell/fragrance'
+       };
+       
+       variantInput.attr('placeholder', placeholders[selectedVariant]);
+       
+       // Change input type for specific variants
+       if (selectedVariant === 'weight') {
+           variantInput.attr('type', 'number');
+       } else {
+           variantInput.attr('type', 'text');
+       }
+   });
+});
+     
+     </script>     
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+      $(document).ready(function() {
+        // SweetAlert default configuration
+        const swalConfig = {
+          customClass: {
+            confirmButton: 'btn btn-primary me-3',
+            cancelButton: 'btn btn-label-secondary' 
+          },
+          buttonsStyling: false
+        };
+
+        // Handle discard button
+        $('#discardBtn').on('click', function() {
+            Swal.fire({
+                ...swalConfig,
+                title: 'Discard Changes?',
+                text: 'Are you sure you want to discard all changes?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, discard',
+                cancelButtonText: 'No, keep editing'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '{{ route("page.product-list") }}';
+                }
+            });
+        });
+
+        // Handle form submission
+        $('#updateProductBtn').on('click', function(e) {
+            e.preventDefault();
+            
+            const form = $('#editProductForm');
+            const formData = new FormData(form[0]);
+            formData.set('_method', 'POST'); // Ensure POST method
+
+            // Validate required fields
+            const requiredFields = {
+                'name': 'Name',
+                'sku': 'SKU',
+                'bar_code': 'Barcode',
+                'base_price': 'Base price',
+                'category_id': 'Category',
+                'status': 'Status'
+            };
+
+            for (const [field, label] of Object.entries(requiredFields)) {
+                if (!formData.get(field)) {
+                    Swal.fire({
+                        ...swalConfig,
+                        icon: 'error',
+                        title: 'Required Field Missing',
+                        text: `${label} is required`
+                    });
+                    return;
+                }
+            }
+
+            // Show loading state
+            Swal.fire({
+                title: 'Updating Product',
+                html: 'Please wait while we update your product...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Submit form via AJAX
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST', // Use POST method
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    Swal.fire({
+                        ...swalConfig,
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Product updated successfully!',
+                        showConfirmButton: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '{{ route("page.product-list") }}';
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    let errorMessage = 'An error occurred while updating the product.';
+                    
+                    if (xhr.responseJSON) {
+                        if (xhr.responseJSON.errors) {
+                            errorMessage = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                        } else if (xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                    }
+
+                    Swal.fire({
+                        ...swalConfig,
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorMessage
+                    });
+                }
+            });
+        });
+      });
+    </script>
+  </body>
+</html>
+

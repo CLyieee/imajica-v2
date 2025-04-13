@@ -105,6 +105,8 @@
     
       <script src="../../assets/js/config.js"></script>
     
+    <!-- Add this in the <head> section -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   </head>
 
   <body>
@@ -157,24 +159,51 @@
       </div>
     </div>
     <div class="card-datatable">
-      <table class="table datatables-products table-striped">
+      <table class="table datatables-products table-striped" >
         <thead class="border-top table-light">
           <tr>
             <th></th>
             <th></th>
             <th>product</th>
             <th>category</th>
-          <th>status</th>
+            <th>status</th>
             <th>sku</th>
             <th>price</th>
             <th>qty</th>
             <th>status</th>
-          
+            <th>Actions</th>
           </tr>
         </thead>
+        {{-- <tbody>
+          @foreach ($products as $product)
+          <tr>
+            <td></td>
+            <td></td>
+            <td>{{ $product->name }}</td>
+            <td>{{ $product->bar_code }}</td>
+            <td>{{ $product->category ? $product->category->category_name : $product->category_id }}</td>
+            <td>{{ $product->status }}</td>
+            <td>{{ $product->sku }}</td>
+            <td>{{ $product->base_price }}</td>
+            <td>{{ $product->quantity }}</td>
+            <td>{{ $product->status }}</td>
+            <td>
+              
+            </td>
+          </tr>
+          @endforeach
+        </tbody> --}}
       </table>
     </div>
   </div>
+
+  <!-- Delete Product Form (Hidden) -->
+  <form id="deleteProductForm" method="POST" action="{{ route('product.delete') }}" style="display: none;">
+      @csrf
+      @method('DELETE')
+      <input type="hidden" id="delete_product_sku" name="sku">
+  </form>
+
 </div>
           <!-- / Content -->
 
@@ -270,6 +299,22 @@
 
     <script src="../../assets/img/product-8.png"></script>
     
+    <!-- Add these before closing </body> tag -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Add the delete form -->
+    <form id="deleteProductForm" method="POST" action="{{ route('product.delete') }}" style="display: none;">
+        @csrf
+        @method('DELETE')
+        <input type="hidden" id="delete_product_sku" name="sku">
+    </form>
+
+<script>
+$(document).ready(function() {
+  $('#productTable').DataTable();
+})
+</script>
+
   </body>
 
 <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/app-ecommerce-product-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:26:16 GMT -->

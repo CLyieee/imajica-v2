@@ -480,7 +480,9 @@ class DashboardController extends Controller
     }
     public function product_list()
     {
-        return view('page.product-list');
+        $products = \App\Models\Product::all();
+        $categories = category::all();
+        return view('page.product-list', compact('products', 'categories'));
     }
     public function order_list()
     {
