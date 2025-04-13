@@ -111,6 +111,7 @@ Route::get('/new-user', [DashboardController::class, 'new_user'])->name('page.ne
 Route::get('/user-list', [DashboardController::class, 'user_list'])->name('page.user-list');
 
 Route::get('/booking', [BookingController::class, 'index'])->name('page.booking');
+Route::post('/save-quick-note', [BookingController::class, 'saveQuickNote'])->name('booking.save-quick-note');
 
 
 Route::get('/customer-report', [DashboardController::class, 'customer_report'])->name('page.customer-report');
