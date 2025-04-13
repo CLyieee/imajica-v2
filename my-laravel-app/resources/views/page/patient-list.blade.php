@@ -372,7 +372,7 @@
                     <div class="card-body">
                       <!-- Patient Header -->
                       <div class="d-flex align-items-center mb-3">
-                          <div class="avatar-wrapper me-3">
+                          <div class="avatar-wrapper">
                               @if($patient->image_path && Storage::disk('public')->exists($patient->image_path))
                                   <div class="avatar-preview">
                                       <img id="imagePreview_{{ $patient->patient_id }}" 
@@ -475,7 +475,7 @@
                   display: flex;
                   align-items: center;
                   justify-content: center;
-                  margin: 0 auto;
+                  margin: 0 auto 1rem;
                 }
 
                 .avatar-preview {
@@ -566,12 +566,21 @@
                 }
 
                 .d-flex.align-items-center.mb-3 {
+                  display: flex !important;
                   flex-direction: column;
+                  align-items: center !important;
                   text-align: center;
+                  width: 100%;
                 }
 
                 .d-flex.align-items-center.mb-3 > div:last-child {
-                  margin-top: 0.5rem;
+                  margin-top: 1rem;
+                  text-align: center;
+                  width: 100%;
+                }
+
+                .avatar-wrapper.me-3 {
+                  margin-right: 0 !important;
                 }
 
                 .patient-details {
