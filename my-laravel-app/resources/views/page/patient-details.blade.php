@@ -322,180 +322,435 @@
                             </div>
                         </div>
 
-                        <!-- Main Content Cards -->
-                        <div class="row">
-                            <!-- Left Side - Personal Information -->
-                            <div class="col-md-7 mb-4">
-                                <form id="patient-info-form" method="POST" 
-                                      action="{{ route('patient.update', ['id' => $patient->id]) }}" 
-                                      enctype="multipart/form-data">
-                                    @csrf
-                                    @method('PUT')
-                                    
-                                    <!-- Full Name Card -->
-                                    <div class="card mb-3">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="card-title mb-0"><i class="ti tabler-user text-muted me-2"></i>Full Name</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="view-mode">
-                                                <span class="detail-value">{{ $patient->firstname }} {{ $patient->lastname }}</span>
+                        <!-- After the navigation tabs, add tab content containers -->
+                        <div class="tab-content">
+                            <!-- Patient Profile Tab Content -->
+                            <div class="tab-pane fade show active" id="profile">
+                                <div class="row">
+                                    <!-- Left Side - Personal Information in ONE CARD -->
+                                    <div class="col-md-7 mb-4">
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <h5 class="card-title mb-0">Personal Information</h5>
+                                                <button class="btn btn-primary edit-mode-toggle">Edit</button>
                                             </div>
-                                            <div class="edit-mode d-none">
-                                                <input type="text" class="form-control mb-2" name="firstname" value="{{ $patient->firstname }}" placeholder="First Name">
-                                                <input type="text" class="form-control" name="lastname" value="{{ $patient->lastname }}" placeholder="Last Name">
+                                            <div class="card-body">
+                                                <form id="patient-info-form" method="POST" 
+                                                      action="{{ route('patient.update', ['id' => $patient->id]) }}" 
+                                                      enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    
+                                                    <!-- Full Name -->
+                                                    <div class="mb-3 border-bottom pb-3">
+                                                        <div class="detail-label"><i class="ti tabler-user text-muted me-2"></i>Full Name:</div>
+                                                        <div class="view-mode">
+                                                            <span class="detail-value">{{ $patient->firstname }} {{ $patient->lastname }}</span>
+                                                        </div>
+                                                        <div class="edit-mode d-none">
+                                                            <input type="text" class="form-control mb-2" name="firstname" value="{{ $patient->firstname }}" placeholder="First Name">
+                                                            <input type="text" class="form-control" name="lastname" value="{{ $patient->lastname }}" placeholder="Last Name">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Email -->
+                                                    <div class="mb-3 border-bottom pb-3">
+                                                        <div class="detail-label"><i class="ti tabler-mail text-muted me-2"></i>Email:</div>
+                                                        <div class="view-mode">
+                                                            <span class="detail-value">{{ $patient->email ?? 'N/A' }}</span>
+                                                        </div>
+                                                        <div class="edit-mode d-none">
+                                                            <input type="email" class="form-control" name="email" value="{{ $patient->email }}" placeholder="Email">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Contact -->
+                                                    <div class="mb-3 border-bottom pb-3">
+                                                        <div class="detail-label"><i class="ti tabler-phone text-muted me-2"></i>Contact:</div>
+                                                        <div class="view-mode">
+                                                            <span class="detail-value">{{ $patient->contact_number ?? 'N/A' }}</span>
+                                                        </div>
+                                                        <div class="edit-mode d-none">
+                                                            <input type="text" class="form-control" name="contact_number" value="{{ $patient->contact_number }}" placeholder="Contact Number">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Address -->
+                                                    <div class="mb-3 border-bottom pb-3">
+                                                        <div class="detail-label"><i class="ti tabler-map-pin text-muted me-2"></i>Address:</div>
+                                                        <div class="view-mode">
+                                                            <span class="detail-value">{{ $patient->address ?? 'N/A' }}</span>
+                                                        </div>
+                                                        <div class="edit-mode d-none">
+                                                            <textarea class="form-control" name="address" rows="2" placeholder="Address">{{ $patient->address }}</textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Birthdate -->
+                                                    <div class="mb-3 border-bottom pb-3">
+                                                        <div class="detail-label"><i class="ti tabler-calendar text-muted me-2"></i>Birthdate:</div>
+                                                        <div class="view-mode">
+                                                            <span class="detail-value">{{ $patient->birthdate ?? 'N/A' }}</span>
+                                                        </div>
+                                                        <div class="edit-mode d-none">
+                                                            <input type="date" class="form-control" name="birthdate" value="{{ $patient->birthdate }}">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Gender -->
+                                                    <div class="mb-3">
+                                                        <div class="detail-label"><i class="ti tabler-gender-binary text-muted me-2"></i>Gender:</div>
+                                                        <div class="view-mode">
+                                                            <span class="detail-value">{{ $patient->gender ?? 'N/A' }}</span>
+                                                        </div>
+                                                        <div class="edit-mode d-none">
+                                                            <select class="form-control" name="gender">
+                                                                <option value="">Select Gender</option>
+                                                                <option value="Male" {{ $patient->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                                                                <option value="Female" {{ $patient->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                                                                <option value="Other" {{ $patient->gender == 'Other' ? 'selected' : '' }}>Other</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Email Card -->
-                                    <div class="card mb-3">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="card-title mb-0"><i class="ti tabler-mail text-muted me-2"></i>Email</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="view-mode">
-                                                <span class="detail-value">{{ $patient->email ?? 'N/A' }}</span>
+                                    <!-- Right Side Cards -->
+                                    <div class="col-md-5">
+                                        <!-- Appointments Section -->
+                                        <div class="card mb-4">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h5 class="card-title mb-0">Appointment</h5>
+                                                    <small class="text-muted">Today</small>
+                                                </div>
+                                                <button class="btn btn-primary btn-sm">Add appointment</button>
                                             </div>
-                                            <div class="edit-mode d-none">
-                                                <input type="email" class="form-control" name="email" value="{{ $patient->email }}" placeholder="Email">
+                                            <div class="card-body">
+                                                <div class="text-center py-3">
+                                                    <img src="../../assets/img/icons/unicons/calendar.png" alt="No Appointments" class="mb-2" style="width: 80px;">
+                                                    <p class="text-muted mb-0">No appointments to show today</p>
+                                                    <a href="#" class="text-primary">See all</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Contact Card -->
-                                    <div class="card mb-3">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="card-title mb-0"><i class="ti tabler-phone text-muted me-2"></i>Contact</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="view-mode">
-                                                <span class="detail-value">{{ $patient->contact_number ?? 'N/A' }}</span>
+                                        <!-- Medical Records Section -->
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <h5 class="card-title mb-0">Medical Records</h5>
+                                                <button class="btn btn-primary btn-sm">Add Record</button>
                                             </div>
-                                            <div class="edit-mode d-none">
-                                                <input type="text" class="form-control" name="contact_number" value="{{ $patient->contact_number }}" placeholder="Contact Number">
+                                            <div class="card-body">
+                                                @if(isset($medicalRecords) && count($medicalRecords) > 0)
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Date</th>
+                                                                    <th>Description</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach($medicalRecords as $record)
+                                                                <tr>
+                                                                    <td>{{ $record->date }}</td>
+                                                                    <td>{{ $record->description }}</td>
+                                                                    <td>
+                                                                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                            <i class="ti ti-download"></i>
+                                                                        </a>
+                                                                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                            <i class="ti ti-eye"></i>
+                                                                        </a>
+                                                                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                            <i class="ti ti-edit"></i>
+                                                                        </a>
+                                                                        <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record" data-id="{{ $record->id ?? '' }}">
+                                                                            <i class="ti ti-trash"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                @else
+                                                    <div class="text-center py-3">
+                                                        <img src="../../assets/img/icons/no-records.png" alt="No Records" class="mb-2" style="width: 80px;">
+                                                        <p class="text-muted">No medical records available</p>
+                                                    </div>
+                                                @endif
                                             </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Address Card -->
-                                    <div class="card mb-3">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="card-title mb-0"><i class="ti tabler-map-pin text-muted me-2"></i>Address</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="view-mode">
-                                                <span class="detail-value">{{ $patient->address ?? 'N/A' }}</span>
-                                            </div>
-                                            <div class="edit-mode d-none">
-                                                <textarea class="form-control" name="address" rows="2" placeholder="Address">{{ $patient->address }}</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Birthdate Card -->
-                                    <div class="card mb-3">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="card-title mb-0"><i class="ti tabler-calendar text-muted me-2"></i>Birthdate</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="view-mode">
-                                                <span class="detail-value">{{ $patient->birthdate ?? 'N/A' }}</span>
-                                            </div>
-                                            <div class="edit-mode d-none">
-                                                <input type="date" class="form-control" name="birthdate" value="{{ $patient->birthdate }}">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Gender Card -->
-                                    <div class="card mb-4">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="card-title mb-0"><i class="ti tabler-gender-binary text-muted me-2"></i>Gender</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="view-mode">
-                                                <span class="detail-value">{{ $patient->gender ?? 'N/A' }}</span>
-                                            </div>
-                                            <div class="edit-mode d-none">
-                                                <select class="form-control" name="gender">
-                                                    <option value="">Select Gender</option>
-                                                    <option value="Male" {{ $patient->gender == 'Male' ? 'selected' : '' }}>Male</option>
-                                                    <option value="Female" {{ $patient->gender == 'Female' ? 'selected' : '' }}>Female</option>
-                                                    <option value="Other" {{ $patient->gender == 'Other' ? 'selected' : '' }}>Other</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Edit Button -->
-                                    <div class="mb-4 text-end">
-                                        <button class="btn btn-primary edit-mode-toggle">Edit</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <!-- Right Side Cards -->
-                            <div class="col-md-5">
-                                <!-- Appointments Section -->
-                                <div class="card mb-4">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 class="card-title mb-0">Appointment</h5>
-                                            <small class="text-muted">Today</small>
-                                        </div>
-                                        <button class="btn btn-primary btn-sm">Add appointment</button>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="text-center py-3">
-                                            <img src="../../assets/img/icons/unicons/calendar.png" alt="No Appointments" class="mb-2" style="width: 80px;">
-                                            <p class="text-muted mb-0">No appointments to show today</p>
-                                            <a href="#" class="text-primary">See all</a>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Medical Records Section -->
-                                <div class="card">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="card-title mb-0">Medical Records</h5>
-                                        <button class="btn btn-primary btn-sm">Add Record</button>
+                            <!-- Allergies Tab Content -->
+                            <div class="tab-pane fade" id="allergies">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <h5 class="card-title mb-0">Allergies</h5>
+                                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAllergyModal">Add Allergy</button>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Allergen</th>
+                                                                <th>Reaction</th>
+                                                                <th>Severity</th>
+                                                                <th>Date Identified</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="5" class="text-center">No allergies recorded</td>
+                                                            </tr>
+                                                            <!-- Example row with actions that will show when data exists -->
+                                                            <tr class="d-none">
+                                                                <td>Penicillin</td>
+                                                                <td>Rash</td>
+                                                                <td>Moderate</td>
+                                                                <td>2023-01-01</td>
+                                                                <td>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                        <i class="ti ti-eye"></i>
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                        <i class="ti ti-edit"></i>
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
+                                                                        <i class="ti ti-trash"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        @if(isset($medicalRecords) && count($medicalRecords) > 0)
-                                            <div class="table-responsive">
-                                                <table class="table table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Date</th>
-                                                            <th>Description</th>
-                                                            <th>Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach($medicalRecords as $record)
-                                                        <tr>
-                                                            <td>{{ $record->date }}</td>
-                                                            <td>{{ $record->description }}</td>
-                                                            <td>
-                                                                <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                    <i class="ti ti-download"></i>
-                                                                </a>
-                                                                <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                    <i class="ti ti-eye"></i>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
+                                </div>
+                            </div>
+
+                            <!-- Medications Tab Content -->
+                            <div class="tab-pane fade" id="medications">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <h5 class="card-title mb-0">Current Medications</h5>
+                                                <button class="btn btn-primary btn-sm">Add Medication</button>
                                             </div>
-                                        @else
-                                            <div class="text-center py-3">
-                                                <img src="../../assets/img/icons/no-records.png" alt="No Records" class="mb-2" style="width: 80px;">
-                                                <p class="text-muted">No medical records available</p>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Medication Name</th>
+                                                                <th>Dosage</th>
+                                                                <th>Frequency</th>
+                                                                <th>Start Date</th>
+                                                                <th>End Date</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="6" class="text-center">No medications recorded</td>
+                                                            </tr>
+                                                            <!-- Example row with actions that will show when data exists -->
+                                                            <tr class="d-none">
+                                                                <td>Lisinopril</td>
+                                                                <td>10mg</td>
+                                                                <td>Once daily</td>
+                                                                <td>2023-01-15</td>
+                                                                <td>2023-07-15</td>
+                                                                <td>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                        <i class="ti ti-eye"></i>
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                        <i class="ti ti-edit"></i>
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
+                                                                        <i class="ti ti-trash"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
-                                        @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Health Concerns Tab Content -->
+                            <div class="tab-pane fade" id="health-concerns">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <h5 class="card-title mb-0">Health Concerns</h5>
+                                                <button class="btn btn-primary btn-sm">Add Health Concern</button>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Concern</th>
+                                                                <th>Date Reported</th>
+                                                                <th>Status</th>
+                                                                <th>Notes</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="5" class="text-center">No health concerns recorded</td>
+                                                            </tr>
+                                                            <!-- Example row with actions that will show when data exists -->
+                                                            <tr class="d-none">
+                                                                <td>Hypertension</td>
+                                                                <td>2023-02-10</td>
+                                                                <td>Active</td>
+                                                                <td>Being monitored</td>
+                                                                <td>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                        <i class="ti ti-eye"></i>
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                        <i class="ti ti-edit"></i>
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
+                                                                        <i class="ti ti-trash"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Prescriptions Tab Content -->
+                            <div class="tab-pane fade" id="prescriptions">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <h5 class="card-title mb-0">Prescriptions</h5>
+                                                <button class="btn btn-primary btn-sm">Add Prescription</button>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Prescription #</th>
+                                                                <th>Date</th>
+                                                                <th>Doctor</th>
+                                                                <th>Status</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="5" class="text-center">No prescriptions recorded</td>
+                                                            </tr>
+                                                            <!-- Example row with actions that will show when data exists -->
+                                                            <tr class="d-none">
+                                                                <td>RX2023001</td>
+                                                                <td>2023-03-15</td>
+                                                                <td>Dr. Smith</td>
+                                                                <td>Filled</td>
+                                                                <td>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                        <i class="ti ti-eye"></i>
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                        <i class="ti ti-edit"></i>
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
+                                                                        <i class="ti ti-trash"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Attachments Tab Content -->
+                            <div class="tab-pane fade" id="attachments">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <h5 class="card-title mb-0">Attachments</h5>
+                                                <button class="btn btn-primary btn-sm">Upload File</button>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>File Name</th>
+                                                                <th>Type</th>
+                                                                <th>Date Uploaded</th>
+                                                                <th>Size</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="5" class="text-center">No attachments found</td>
+                                                            </tr>
+                                                            <!-- Example row with actions that will show when data exists -->
+                                                            <tr class="d-none">
+                                                                <td>MRI_Results.pdf</td>
+                                                                <td>PDF</td>
+                                                                <td>2023-04-20</td>
+                                                                <td>2.4 MB</td>
+                                                                <td>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                        <i class="ti ti-download"></i>
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                        <i class="ti ti-eye"></i>
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                                                        <i class="ti ti-edit"></i>
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
+                                                                        <i class="ti ti-trash"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -517,6 +772,327 @@
     </div>
     <!-- / Layout wrapper -->
 
+    <!-- MODALS -->
+    <!-- Add Allergy Modal -->
+    <div class="modal fade" id="addAllergyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Allergy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="#" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="allergen" class="form-label">Allergen</label>
+                                <input type="text" id="allergen" name="allergen" class="form-control" placeholder="e.g., Penicillin, Peanuts" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="reaction" class="form-label">Reaction</label>
+                                <input type="text" id="reaction" name="reaction" class="form-control" placeholder="e.g., Rash, Swelling" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="severity" class="form-label">Severity</label>
+                                <select id="severity" name="severity" class="form-select" required>
+                                    <option value="">Select severity</option>
+                                    <option value="Mild">Mild</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Severe">Severe</option>
+                                    <option value="Life-threatening">Life-threatening</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="date_identified" class="form-label">Date Identified</label>
+                                <input type="date" id="date_identified" name="date_identified" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="notes" class="form-label">Additional Notes</label>
+                                <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Any additional information"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Medication Modal -->
+    <div class="modal fade" id="addMedicationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Medication</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="#" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="medication_name" class="form-label">Medication Name</label>
+                                <input type="text" id="medication_name" name="medication_name" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="dosage" class="form-label">Dosage</label>
+                                <input type="text" id="dosage" name="dosage" class="form-control" placeholder="e.g., 10mg" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="frequency" class="form-label">Frequency</label>
+                                <input type="text" id="frequency" name="frequency" class="form-control" placeholder="e.g., Once daily" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="start_date" class="form-label">Start Date</label>
+                                <input type="date" id="start_date" name="start_date" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="end_date" class="form-label">End Date</label>
+                                <input type="date" id="end_date" name="end_date" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <label for="medication_notes" class="form-label">Notes</label>
+                                <textarea id="medication_notes" name="notes" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Health Concern Modal -->
+    <div class="modal fade" id="addHealthConcernModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Health Concern</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="#" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="concern" class="form-label">Concern</label>
+                                <input type="text" id="concern" name="concern" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="date_reported" class="form-label">Date Reported</label>
+                                <input type="date" id="date_reported" name="date_reported" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select id="status" name="status" class="form-select" required>
+                                    <option value="">Select status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Resolved">Resolved</option>
+                                    <option value="Ongoing">Ongoing</option>
+                                    <option value="Under observation">Under observation</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="concern_notes" class="form-label">Notes</label>
+                                <textarea id="concern_notes" name="notes" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Prescription Modal -->
+    <div class="modal fade" id="addPrescriptionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Prescription</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="#" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="prescription_number" class="form-label">Prescription #</label>
+                                <input type="text" id="prescription_number" name="prescription_number" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="prescription_date" class="form-label">Date</label>
+                                <input type="date" id="prescription_date" name="date" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="doctor" class="form-label">Doctor</label>
+                                <input type="text" id="doctor" name="doctor" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="prescription_status" class="form-label">Status</label>
+                                <select id="prescription_status" name="status" class="form-select" required>
+                                    <option value="">Select status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Filled">Filled</option>
+                                    <option value="Refill required">Refill required</option>
+                                    <option value="Expired">Expired</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="prescription_notes" class="form-label">Notes</label>
+                                <textarea id="prescription_notes" name="notes" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Attachment Modal -->
+    <div class="modal fade" id="addAttachmentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload File</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="#" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="file" class="form-label">File</label>
+                                <input type="file" id="file" name="file" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="file_type" class="form-label">Type</label>
+                                <select id="file_type" name="file_type" class="form-select" required>
+                                    <option value="">Select file type</option>
+                                    <option value="Medical Report">Medical Report</option>
+                                    <option value="Lab Result">Lab Result</option>
+                                    <option value="X-Ray">X-Ray</option>
+                                    <option value="MRI">MRI</option>
+                                    <option value="CT Scan">CT Scan</option>
+                                    <option value="Prescription">Prescription</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Appointment Modal -->
+    <div class="modal fade" id="addAppointmentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Appointment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="#" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="appointment_date" class="form-label">Date</label>
+                                <input type="date" id="appointment_date" name="date" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="appointment_time" class="form-label">Time</label>
+                                <input type="time" id="appointment_time" name="time" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="purpose" class="form-label">Purpose</label>
+                                <input type="text" id="purpose" name="purpose" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="doctor_id" class="form-label">Doctor</label>
+                                <select id="doctor_id" name="doctor_id" class="form-select" required>
+                                    <option value="">Select doctor</option>
+                                    <!-- Add options dynamically from database -->
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="appointment_notes" class="form-label">Notes</label>
+                                <textarea id="appointment_notes" name="notes" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Medical Record Modal -->
+    <div class="modal fade" id="addMedicalRecordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Medical Record</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="#" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="record_date" class="form-label">Date</label>
+                                <input type="date" id="record_date" name="date" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="record_description" class="form-label">Description</label>
+                                <input type="text" id="record_description" name="description" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="record_file" class="form-label">File (optional)</label>
+                                <input type="file" id="record_file" name="file" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <label for="record_notes" class="form-label">Notes</label>
+                                <textarea id="record_notes" name="notes" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- END MODALS -->
+
     <!-- Core JS -->
     <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
     <script src="../../assets/vendor/libs/popper/popper.js"></script>
@@ -532,103 +1108,160 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Tab switching functionality
     const tabLinks = document.querySelectorAll('.nav-tabs .nav-link');
+    const tabContents = document.querySelectorAll('.tab-pane');
     
     tabLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             
+            const tabId = this.getAttribute('href').substring(1);
+            
             // Remove active class from all tabs
             tabLinks.forEach(tab => tab.classList.remove('active'));
+            
+            // Hide all tab contents
+            tabContents.forEach(content => {
+                content.classList.remove('show', 'active');
+            });
             
             // Add active class to clicked tab
             this.classList.add('active');
             
-            // In the future, this is where you'd show/hide content based on the tab
-            const tabId = this.getAttribute('data-tab');
-            console.log('Switching to tab:', tabId);
-            
-            // For now, we're just making the tabs clickable without changing content
+            // Show the corresponding tab content
+            const activeContent = document.getElementById(tabId);
+            activeContent.classList.add('show', 'active');
         });
     });
     
     // Existing edit mode code...
     const editButton = document.querySelector('.edit-mode-toggle');
-    const form = document.getElementById('patient-info-form');
-    const viewModes = document.querySelectorAll('.view-mode');
-    const editModes = document.querySelectorAll('.edit-mode');
+    if (editButton) {
+        const form = document.getElementById('patient-info-form');
+        const viewModes = document.querySelectorAll('.view-mode');
+        const editModes = document.querySelectorAll('.edit-mode');
 
-    // Initial state
-    let isEditing = false;
+        // Initial state
+        let isEditing = false;
 
-    editButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        if (!isEditing) {
-            // Switch to Edit mode
-            isEditing = true;
-            editButton.textContent = 'Save';
-            editButton.classList.replace('btn-primary', 'btn-success');
+        editButton.addEventListener('click', function(e) {
+            e.preventDefault();
             
-            // Show edit fields, hide view fields
-            viewModes.forEach(el => el.classList.add('d-none'));
-            editModes.forEach(el => el.classList.remove('d-none'));
+            if (!isEditing) {
+                // Switch to Edit mode
+                isEditing = true;
+                editButton.textContent = 'Save';
+                editButton.classList.replace('btn-primary', 'btn-success');
+                
+                // Show edit fields, hide view fields
+                viewModes.forEach(el => el.classList.add('d-none'));
+                editModes.forEach(el => el.classList.remove('d-none'));
 
-        } else {
-            // Save changes
+            } else {
+                // Save changes
+                Swal.fire({
+                    title: 'Save Changes?',
+                    text: 'Do you want to save these changes?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Save',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the form
+                        form.submit();
+                        
+                        // Show loading state
+                        editButton.disabled = true;
+                        editButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                    }
+                });
+            }
+        });
+    }
+
+    // Delete record confirmation
+    document.querySelectorAll('.delete-record').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const recordId = this.getAttribute('data-id');
+            
             Swal.fire({
-                title: 'Save Changes?',
-                text: 'Do you want to save these changes?',
-                icon: 'question',
+                title: 'Delete Record?',
+                text: 'This action cannot be undone. Are you sure?',
+                icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Save',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Submit the form
-                    form.submit();
-                    
-                    // Show loading state
-                    editButton.disabled = true;
-                    editButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
-                    
-                    // Handle the form submission response
-                    form.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        
-                        fetch(form.action, {
-                            method: 'POST',
-                            body: new FormData(form)
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                Swal.fire({
-                                    title: 'Success!',
-                                    text: 'Patient information updated successfully',
-                                    icon: 'success'
-                                }).then(() => {
-                                    // Reload page to show updated information
-                                    window.location.reload();
-                                });
-                            } else {
-                                throw new Error(data.message || 'Error updating patient information');
-                            }
-                        })
-                        .catch(error => {
-                            Swal.fire({
-                                title: 'Error!',
-                                text: error.message,
-                                icon: 'error'
-                            });
-                            // Reset button state
-                            editButton.disabled = false;
-                            editButton.textContent = 'Save';
-                        });
-                    });
+                    // Here you would typically make an AJAX call to delete the record
+                    // For now, just show a success message
+                    Swal.fire(
+                        'Deleted!',
+                        'The record has been deleted.',
+                        'success'
+                    );
                 }
             });
-        }
+        });
     });
+
+    // Add modal triggers for all remaining "Add" buttons (not needed for Allergies anymore)
+    // Medications
+    const medicationsSection = document.getElementById('medications');
+    if (medicationsSection) {
+        const addMedicationBtn = medicationsSection.querySelector('.card-header button.btn-primary');
+        if (addMedicationBtn) {
+            addMedicationBtn.setAttribute('data-bs-toggle', 'modal');
+            addMedicationBtn.setAttribute('data-bs-target', '#addMedicationModal');
+        }
+    }
+    
+    // Health Concerns
+    const healthConcernsSection = document.getElementById('health-concerns');
+    if (healthConcernsSection) {
+        const addHealthConcernBtn = healthConcernsSection.querySelector('.card-header button.btn-primary');
+        if (addHealthConcernBtn) {
+            addHealthConcernBtn.setAttribute('data-bs-toggle', 'modal');
+            addHealthConcernBtn.setAttribute('data-bs-target', '#addHealthConcernModal');
+        }
+    }
+    
+    // Prescriptions
+    const prescriptionsSection = document.getElementById('prescriptions');
+    if (prescriptionsSection) {
+        const addPrescriptionBtn = prescriptionsSection.querySelector('.card-header button.btn-primary');
+        if (addPrescriptionBtn) {
+            addPrescriptionBtn.setAttribute('data-bs-toggle', 'modal');
+            addPrescriptionBtn.setAttribute('data-bs-target', '#addPrescriptionModal');
+        }
+    }
+    
+    // Attachments
+    const attachmentsSection = document.getElementById('attachments');
+    if (attachmentsSection) {
+        const addAttachmentBtn = attachmentsSection.querySelector('.card-header button.btn-primary');
+        if (addAttachmentBtn) {
+            addAttachmentBtn.setAttribute('data-bs-toggle', 'modal');
+            addAttachmentBtn.setAttribute('data-bs-target', '#addAttachmentModal');
+        }
+    }
+    
+    // Appointment
+    const appointmentBtn = document.querySelector('.card-header button.btn-primary.btn-sm');
+    if (appointmentBtn && appointmentBtn.textContent.includes('Add appointment')) {
+        appointmentBtn.setAttribute('data-bs-toggle', 'modal');
+        appointmentBtn.setAttribute('data-bs-target', '#addAppointmentModal');
+    }
+    
+    // Medical Record
+    const medicalRecordBtn = document.querySelector('.card-header button.btn-primary.btn-sm:nth-of-type(2)');
+    if (medicalRecordBtn && medicalRecordBtn.textContent.includes('Add Record')) {
+        medicalRecordBtn.setAttribute('data-bs-toggle', 'modal');
+        medicalRecordBtn.setAttribute('data-bs-target', '#addMedicalRecordModal');
+    }
 });
 </script>
 </body>
