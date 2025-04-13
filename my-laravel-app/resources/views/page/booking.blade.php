@@ -1069,6 +1069,88 @@
     });
   </script>
 
+  <!-- Delete Booking Form (Hidden) -->
+  <form id="deleteBookingForm" method="POST" action="{{ route('booking.delete') }}" style="display: none;">
+    @csrf
+    @method('DELETE')
+    <input type="hidden" id="delete_booking_id" name="booking_id">
+  </form>
+
+  <!-- Add this script before closing body tag -->
+  <script>
+    // Add SweetAlert default configuration
+    const swalConfig = {
+      customClass: {
+        container: 'swal-container-class',
+        popup: 'swal-popup-class',
+        confirmButton: 'btn btn-danger', // Add danger class
+        cancelButton: 'btn btn-secondary'
+      },
+      backdrop: true,
+      allowOutsideClick: false,
+      buttonsStyling: false // Disable default styling
+    };
+
+    // Add custom CSS to ensure SweetAlert appears above modal
+    $('<style>')
+      .prop('type', 'text/css')
+      .html(`
+        .swal-container-class {
+          z-index: 2000 !important;
+        }
+        .swal-popup-class {
+          z-index: 2001 !important;
+        }
+        .swal2-backdrop-show {
+          z-index: 1999 !important;
+        }
+      `)
+      .appendTo('head');
+
+    // Handle delete button click
+    $(document).on('click', '.btn-delete-event', function(e) {
+      e.preventDefault();
+      const bookingId = $('#update_booking_id').val();
+      
+      if (!bookingId) {
+        Swal.fire({
+          ...swalConfig,
+          icon: 'error',
+          title: 'Error',
+          text: 'Booking ID not found'
+        });
+        return;
+      }
+
+      // Hide the modal before showing SweetAlert
+      $('#updateEventSidebar').offcanvas('hide');
+      
+      setTimeout(() => {
+        Swal.fire({
+          ...swalConfig,
+          title: 'Are you sure?',
+          text: "This booking will be permanently deleted!",
+          icon: 'warning', 
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          customClass: {
+            ...swalConfig.customClass,
+            confirmButton: 'btn btn-danger me-3', // Add margin-end
+            cancelButton: 'btn btn-secondary'
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $('#delete_booking_id').val(bookingId);
+            $('#deleteBookingForm').submit();
+          } else {
+            // If canceled, show the modal again
+            $('#updateEventSidebar').offcanvas('show');
+          }
+        });
+      }, 200); // Small delay to ensure modal is hidden
+    });
+  </script>
+
   <!-- Additional CSS for flatpickr visibility -->
   <style>
     .flatpickr-calendar {

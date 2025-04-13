@@ -118,22 +118,38 @@ class BookingController extends Controller
 
     public function delete(Request $request)
     {
-        // Validate the request
-        $request->validate([
-            'booking_id' => 'required',
-        ]);
+        try {
+            // Validate booking ID
+            $validatedData = $request->validate([
+                'booking_id' => 'required|exists:bookings,booking_id'
+            ]);
 
-        // Find the booking by booking_id
-        $booking = Booking::where('booking_id', $request->booking_id)->first();
-        
-        if (!$booking) {
-            return redirect()->back()->with('error', 'Booking not found');
+            $booking = Booking::findOrFail($validatedData['booking_id']);
+            $booking->delete();
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Booking deleted successfully'
+                ]);
+            }
+
+            return redirect()->route('page.booking')
+                ->with('success', 'Booking deleted successfully');
+
+        } catch (\Exception $e) {
+            Log::error('Error deleting booking: ' . $e->getMessage());
+            
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Error deleting booking: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Error deleting booking: ' . $e->getMessage());
         }
-
-        // Delete the booking
-        $booking->delete();
-
-        return redirect()->back()->with('success', 'Booking deleted successfully');
     }
 
     public function getCalendarBookings()
