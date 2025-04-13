@@ -294,8 +294,8 @@ class DashboardController extends Controller
     }
     public function expenses_list()
     {
-    
-        return view('page.expenses-list');
+        $expenses = \App\Models\expenses::with(['category_expense', 'branch'])->get();
+        return view('page.expenses-list', compact('expenses'));
     }
 
     public function new_expenses()

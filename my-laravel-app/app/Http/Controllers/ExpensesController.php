@@ -23,7 +23,7 @@ class ExpensesController extends Controller
      */
     public function index()
     {
-        $expenses = expenses::with(['category_expense', 'branch'])->get();
+        $expenses = \App\Models\expenses::with(['category_expense', 'branch'])->get();
         return view('page.expenses-list', compact('expenses'));
     }
 
