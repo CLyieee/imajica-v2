@@ -145,6 +145,7 @@ Route::delete('/patient/{id}', [App\Http\Controllers\patientController::class, '
 Route::delete('/patient/delete', [PatientController::class, 'destroy'])->name('patient.delete');
 Route::get('/patients/{id}/view', [PatientController::class, 'view'])->name('patient.view');
 Route::get('/patients/{id}/view', [PatientController::class, 'show'])->name('patient.view');
+Route::get('/patients', [PatientController::class, 'index'])->name('patient.list');
 
 Route::get('/service-product', [DashboardController::class, 'service_product'])->name('page.service-product');
 
