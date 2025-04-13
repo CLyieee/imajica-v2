@@ -166,4 +166,217 @@ class patientController extends Controller
         $patient = Patient::findOrFail($id);
         return view('page.patient-details', compact('patient'));
     }
+
+    public function addAllergy(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'patient_id' => 'required|exists:patients,patient_id',
+                'allergy_name' => 'required|string|max:255',
+                'severity' => 'required|string|in:Mild,Moderate,Severe',
+                'reaction' => 'required|string',
+                'notes' => 'nullable|string'
+            ]);
+
+            // Create a new record in the allergies table
+            $allergy = \App\Models\PatientAllergy::create($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Allergy added successfully',
+                'data' => $allergy
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error adding allergy: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function addMedication(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'patient_id' => 'required|exists:patients,patient_id',
+                'medication_name' => 'required|string|max:255',
+                'dosage' => 'required|string|max:100',
+                'frequency' => 'required|string|max:100',
+                'start_date' => 'required|date',
+                'end_date' => 'nullable|date|after_or_equal:start_date',
+                'notes' => 'nullable|string'
+            ]);
+
+            $medication = \App\Models\PatientMedication::create($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Medication added successfully',
+                'data' => $medication
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error adding medication: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function addHealthConcern(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'patient_id' => 'required|exists:patients,patient_id',
+                'concern_name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'date_identified' => 'required|date',
+                'status' => 'required|string|in:Active,Resolved,Ongoing',
+                'notes' => 'nullable|string'
+            ]);
+
+            $healthConcern = \App\Models\HealthConcern::create($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Health concern added successfully',
+                'data' => $healthConcern
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error adding health concern: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function addPrescription(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'patient_id' => 'required|exists:patients,patient_id',
+                'medication_name' => 'required|string|max:255',
+                'dosage' => 'required|string|max:100',
+                'frequency' => 'required|string|max:100',
+                'prescribed_date' => 'required|date',
+                'duration' => 'required|string|max:100',
+                'prescriber' => 'required|string|max:255',
+                'notes' => 'nullable|string'
+            ]);
+
+            $prescription = \App\Models\Prescription::create($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Prescription added successfully',
+                'data' => $prescription
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error adding prescription: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function addAttachment(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'patient_id' => 'required|exists:patients,patient_id',
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'file' => 'required|file|max:10240', // Max 10MB
+                'document_type' => 'required|string|in:Medical Report,Lab Result,Prescription,Other'
+            ]);
+
+            // Handle file upload
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('patient_attachments', $fileName, 'public');
+                $validatedData['file_path'] = $filePath;
+                $validatedData['file_name'] = $fileName;
+                unset($validatedData['file']); // Remove the file from the data array
+            }
+
+            $attachment = \App\Models\PatientAttachment::create($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Attachment added successfully',
+                'data' => $attachment
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error adding attachment: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function addAppointment(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'patient_id' => 'required|exists:patients,patient_id',
+                'appointment_date' => 'required|date',
+                'appointment_time' => 'required',
+                'duration' => 'required|integer|min:15',
+                'purpose' => 'required|string|max:255',
+                'staff_id' => 'nullable|exists:staff,staff_id',
+                'notes' => 'nullable|string',
+                'status' => 'required|string|in:Scheduled,Completed,Cancelled,No-Show'
+            ]);
+
+            $appointment = \App\Models\Appointment::create($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Appointment added successfully',
+                'data' => $appointment
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error adding appointment: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function addMedicalRecord(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'patient_id' => 'required|exists:patients,patient_id',
+                'record_type' => 'required|string|max:255',
+                'record_date' => 'required|date',
+                'description' => 'required|string',
+                'staff_id' => 'nullable|exists:staff,staff_id',
+                'file' => 'nullable|file|max:10240' // Max 10MB
+            ]);
+
+            // Handle file upload if present
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('medical_records', $fileName, 'public');
+                $validatedData['file_path'] = $filePath;
+                $validatedData['file_name'] = $fileName;
+                unset($validatedData['file']); // Remove the file from the data array
+            }
+
+            $medicalRecord = \App\Models\MedicalRecord::create($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Medical record added successfully',
+                'data' => $medicalRecord
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error adding medical record: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

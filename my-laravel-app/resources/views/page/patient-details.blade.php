@@ -784,6 +784,7 @@
                 <form action="#" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="allergen" class="form-label">Allergen</label>
@@ -807,10 +808,6 @@
                                 <label for="date_identified" class="form-label">Date Identified</label>
                                 <input type="date" id="date_identified" name="date_identified" class="form-control" required>
                             </div>
-                            <div class="col-12">
-                                <label for="notes" class="form-label">Additional Notes</label>
-                                <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Any additional information"></textarea>
-                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -833,6 +830,7 @@
                 <form action="#" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="medication_name" class="form-label">Medication Name</label>
@@ -853,10 +851,6 @@
                             <div class="col-md-6 mb-3">
                                 <label for="end_date" class="form-label">End Date</label>
                                 <input type="date" id="end_date" name="end_date" class="form-control">
-                            </div>
-                            <div class="col-12">
-                                <label for="medication_notes" class="form-label">Notes</label>
-                                <textarea id="medication_notes" name="notes" class="form-control" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -880,6 +874,7 @@
                 <form action="#" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="concern" class="form-label">Concern</label>
@@ -898,10 +893,6 @@
                                     <option value="Ongoing">Ongoing</option>
                                     <option value="Under observation">Under observation</option>
                                 </select>
-                            </div>
-                            <div class="col-12">
-                                <label for="concern_notes" class="form-label">Notes</label>
-                                <textarea id="concern_notes" name="notes" class="form-control" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -925,6 +916,7 @@
                 <form action="#" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="prescription_number" class="form-label">Prescription #</label>
@@ -948,10 +940,6 @@
                                     <option value="Expired">Expired</option>
                                 </select>
                             </div>
-                            <div class="col-12">
-                                <label for="prescription_notes" class="form-label">Notes</label>
-                                <textarea id="prescription_notes" name="notes" class="form-control" rows="3"></textarea>
-                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -974,6 +962,7 @@
                 <form action="#" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="file" class="form-label">File</label>
@@ -991,10 +980,6 @@
                                     <option value="Prescription">Prescription</option>
                                     <option value="Other">Other</option>
                                 </select>
-                            </div>
-                            <div class="col-12">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea id="description" name="description" class="form-control" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -1018,6 +1003,7 @@
                 <form action="#" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="appointment_date" class="form-label">Date</label>
@@ -1037,10 +1023,6 @@
                                     <option value="">Select doctor</option>
                                     <!-- Add options dynamically from database -->
                                 </select>
-                            </div>
-                            <div class="col-12">
-                                <label for="appointment_notes" class="form-label">Notes</label>
-                                <textarea id="appointment_notes" name="notes" class="form-control" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -1064,6 +1046,7 @@
                 <form action="#" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="record_date" class="form-label">Date</label>
@@ -1076,10 +1059,6 @@
                             <div class="col-12 mb-3">
                                 <label for="record_file" class="form-label">File (optional)</label>
                                 <input type="file" id="record_file" name="file" class="form-control">
-                            </div>
-                            <div class="col-12">
-                                <label for="record_notes" class="form-label">Notes</label>
-                                <textarea id="record_notes" name="notes" class="form-control" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -1179,12 +1158,260 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Delete record confirmation
-    document.querySelectorAll('.delete-record').forEach(button => {
-        button.addEventListener('click', function(e) {
+    // Function to handle modal form submissions
+    function setupModalForm(modalId, tableSelector, formData) {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+        
+        const form = modal.querySelector('form');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const tableBody = document.querySelector(`${tableSelector} tbody`);
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+            
+            // Get form data
+            const formData = new FormData(form);
+            
+            // Simulate AJAX request (replace with actual AJAX in production)
+            setTimeout(() => {
+                // Update the table with new data
+                if (tableBody) {
+                    // Remove "No data" row if it exists
+                    const noDataRow = tableBody.querySelector('tr td[colspan]');
+                    if (noDataRow) {
+                        tableBody.innerHTML = '';
+                    }
+                    
+                    // Create a new row with the form data
+                    const newRow = createTableRow(modalId, formData);
+                    tableBody.insertAdjacentHTML('afterbegin', newRow);
+                    
+                    // Add event listeners to the new action buttons
+                    const newActionButtons = tableBody.querySelector('tr:first-child').querySelectorAll('.delete-record');
+                    newActionButtons.forEach(btn => {
+                        btn.addEventListener('click', handleDeleteRecord);
+                    });
+                }
+                
+                // Reset form
+                form.reset();
+                
+                // Reset button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Save';
+                
+                // Close modal
+                const bootstrapModal = bootstrap.Modal.getInstance(modal);
+                bootstrapModal.hide();
+                
+                // Show success message
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Record has been saved successfully.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }, 1000);
+        });
+    }
+    
+    // Function to create a table row based on the form data
+    function createTableRow(modalId, formData) {
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+        
+        // Generate a random ID for the new record
+        const randomId = Math.floor(Math.random() * 10000);
+        
+        let html = '';
+        
+        switch(modalId) {
+            case 'addAllergyModal':
+                html = `
+                    <tr>
+                        <td>${data.allergen || ''}</td>
+                        <td>${data.reaction || ''}</td>
+                        <td>${data.severity || ''}</td>
+                        <td>${data.date_identified || ''}</td>
+                        <td>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-eye"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-edit"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record" data-id="${randomId}">
+                                <i class="ti ti-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+                break;
+                
+            case 'addMedicationModal':
+                html = `
+                    <tr>
+                        <td>${data.medication_name || ''}</td>
+                        <td>${data.dosage || ''}</td>
+                        <td>${data.frequency || ''}</td>
+                        <td>${data.start_date || ''}</td>
+                        <td>${data.end_date || ''}</td>
+                        <td>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-eye"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-edit"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record" data-id="${randomId}">
+                                <i class="ti ti-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+                break;
+                
+            case 'addHealthConcernModal':
+                html = `
+                    <tr>
+                        <td>${data.concern || ''}</td>
+                        <td>${data.date_reported || ''}</td>
+                        <td>${data.status || ''}</td>
+                        <td>Being monitored</td>
+                        <td>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-eye"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-edit"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record" data-id="${randomId}">
+                                <i class="ti ti-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+                break;
+                
+            case 'addPrescriptionModal':
+                html = `
+                    <tr>
+                        <td>${data.prescription_number || ''}</td>
+                        <td>${data.date || ''}</td>
+                        <td>${data.doctor || ''}</td>
+                        <td>${data.status || ''}</td>
+                        <td>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-eye"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-edit"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record" data-id="${randomId}">
+                                <i class="ti ti-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+                break;
+                
+            case 'addAttachmentModal':
+                // For file uploads, we'd normally need to process the file
+                // This is a simplified example
+                const fileName = data.file ? data.file.name : 'Document.pdf';
+                const fileType = data.file_type || 'PDF';
+                const uploadDate = new Date().toISOString().split('T')[0];
+                
+                html = `
+                    <tr>
+                        <td>${fileName}</td>
+                        <td>${fileType}</td>
+                        <td>${uploadDate}</td>
+                        <td>1.2 MB</td>
+                        <td>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-download"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-eye"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-edit"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record" data-id="${randomId}">
+                                <i class="ti ti-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+                break;
+                
+            case 'addAppointmentModal':
+                html = `
+                    <tr>
+                        <td>${data.date || ''}</td>
+                        <td>${data.time || ''}</td>
+                        <td>${data.purpose || ''}</td>
+                        <td>Scheduled</td>
+                        <td>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-eye"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-edit"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record" data-id="${randomId}">
+                                <i class="ti ti-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+                break;
+                
+            case 'addMedicalRecordModal':
+                html = `
+                    <tr>
+                        <td>${data.date || ''}</td>
+                        <td>${data.description || ''}</td>
+                        <td>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-download"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-eye"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                                <i class="ti ti-edit"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record" data-id="${randomId}">
+                                <i class="ti ti-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+                break;
+                
+            default:
+                html = '<tr><td colspan="5">Unknown record type</td></tr>';
+        }
+        
+        return html;
+    }
+    
+    // Handle delete record action
+    function handleDeleteRecord(e) {
             e.preventDefault();
             
             const recordId = this.getAttribute('data-id');
+        const row = this.closest('tr');
             
             Swal.fire({
                 title: 'Delete Record?',
@@ -1196,8 +1423,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Here you would typically make an AJAX call to delete the record
-                    // For now, just show a success message
+                // Remove the row from the table
+                row.remove();
+                
+                // Check if the table is now empty
+                const tableBody = row.closest('tbody');
+                if (tableBody && tableBody.children.length === 0) {
+                    // Add the "no data" row back
+                    const colSpan = row.cells.length;
+                    const noDataHtml = `<tr><td colspan="${colSpan}" class="text-center">No records found</td></tr>`;
+                    tableBody.innerHTML = noDataHtml;
+                }
+                
+                // Show success message
                     Swal.fire(
                         'Deleted!',
                         'The record has been deleted.',
@@ -1205,7 +1443,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     );
                 }
             });
-        });
+    }
+    
+    // Set up form submission handlers for all modals
+    setupModalForm('addAllergyModal', '#allergies table');
+    setupModalForm('addMedicationModal', '#medications table');
+    setupModalForm('addHealthConcernModal', '#health-concerns table');
+    setupModalForm('addPrescriptionModal', '#prescriptions table');
+    setupModalForm('addAttachmentModal', '#attachments table');
+    setupModalForm('addAppointmentModal', '.card-body .table'); // For appointments
+    setupModalForm('addMedicalRecordModal', '.card:has(.card-title:contains("Medical Records")) table'); // For medical records
+    
+    // Add delete handlers to existing delete buttons
+    document.querySelectorAll('.delete-record').forEach(button => {
+        button.addEventListener('click', handleDeleteRecord);
     });
 
     // Add modal triggers for all remaining "Add" buttons (not needed for Allergies anymore)

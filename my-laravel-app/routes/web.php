@@ -230,4 +230,13 @@ Route::delete('/category_expense/delete/{id}', [App\Http\Controllers\category_ex
 // Expense Management Routes
 Route::resource('expenses', ExpensesController::class);
 
+// Patient Medical Information Routes
+Route::post('/patient/allergy/add', [PatientController::class, 'addAllergy'])->name('patient.allergy.add');
+Route::post('/patient/medication/add', [PatientController::class, 'addMedication'])->name('patient.medication.add');
+Route::post('/patient/health-concern/add', [PatientController::class, 'addHealthConcern'])->name('patient.health-concern.add');
+Route::post('/patient/prescription/add', [PatientController::class, 'addPrescription'])->name('patient.prescription.add');
+Route::post('/patient/attachment/add', [PatientController::class, 'addAttachment'])->name('patient.attachment.add');
+Route::post('/patient/appointment/add', [PatientController::class, 'addAppointment'])->name('patient.appointment.add');
+Route::post('/patient/medical-record/add', [PatientController::class, 'addMedicalRecord'])->name('patient.medical-record.add');
+
 
