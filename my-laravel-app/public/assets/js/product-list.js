@@ -22,8 +22,8 @@ t&&new DataTable(t,{
     }
   },
   columns:[
-    {data:"id"},
-    {data:"id",orderable:!1,render:DataTable.render.select()},
+    {data:"bar_code"}, // Primary identifier
+    {data:"bar_code",orderable:!1,render:DataTable.render.select()},
     {data:"name"},
     {data:"category"},
     {data:"stock_status"},
@@ -110,16 +110,15 @@ t&&new DataTable(t,{
       }
     },
     {
-      targets:-1,
-      title:"Actions",
-      searchable:!1,
-      orderable:!1,
-      render:function(e,t,n,a){
+      targets: -1,
+      title: "Actions", 
+      searchable: false,
+      orderable: false,
+      render: function(data, type, row) {
         return `
-          <div class='d-flex gap-1'>
-
-            <a href="/products/${n.id}/edit" class='btn btn-info'><i class='ti tabler-edit me-1'></i>Edit</a>
-            <button class='btn btn-danger delete-product' data-id='${n.id}'><i class='ti tabler-trash me-1'></i>Delete</button>
+          <div class='d-flex gap-2'>
+              <a href="/edit-product/${row.sku}" class='btn btn-info btn-sm'><i class='ti tabler-edit me-1'></i>Edit</a>
+              <button class='btn btn-danger btn-sm delete-product' data-id="${row.sku}"><i class='ti tabler-trash me-1'></i>Delete</button>
           </div>
         `;
       }
@@ -248,21 +247,169 @@ setTimeout(()=>{
   })
 },100);
 
-// Add event handler for delete button
+// Replace the old delete handler with this new one
 $(document).on('click', '.delete-product', function() {
-  const productId = $(this).data('id');
-  if(confirm('Are you sure you want to delete this product?')) {
-    $.ajax({
-      url: `/api/products/${productId}`,
-      method: 'DELETE',
-      success: function() {
-        // Reload the DataTable
-        $('.datatables-products').DataTable().ajax.reload();
-      },
-      error: function(xhr) {
-        alert('Error deleting product');
-      }
+    try {
+        const sku = $(this).data('id');
+        const productName = $(this).closest('tr').find('.product-name h6').text();
+        
+        if (!sku) {
+            throw new Error("Product SKU not found in data attributes");
+        }
+        
+        // Set the SKU in the hidden delete form
+        $('#delete_product_sku').val(sku);
+        
+        // Show delete confirmation
+        Swal.fire({
+            customClass: {
+                confirmButton: 'btn btn-danger me-3', 
+                cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false,
+            title: 'Confirm Delete',
+            html: `Are you sure you want to delete <strong>${productName}</strong>?<br>This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit the delete form
+                $('#deleteProductForm').submit();
+                
+                // Show success message
+                Swal.fire({
+                    customClass: {
+                        confirmButton: 'btn btn-success'
+                    },
+                    buttonsStyling: false,
+                    title: 'Deleted!',
+                    text: 'Product has been deleted successfully.',
+                    icon: 'success',
+                    timer: 2000
+                }).then(() => {
+                    // Reload the page after successful deletion
+                    window.location.reload();
+                });
+            }
+        });
+    } catch (e) {
+        console.error("Error in delete button click handler:", e);
+        Swal.fire({
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false,
+            icon: 'error',
+            title: 'Delete Error',
+            html: 'An error occurred while processing your delete request:<br>' + e.message,
+            showConfirmButton: true
+        });
+    }
+});
+
+// Add edit form submission handler
+$(document).on('submit', '#editProductForm', function(e) {
+    e.preventDefault();
+    const form = $(this);
+    const barCode = form.data('bar-code');
+    const formData = new FormData(this);
+    
+    // Show loading state
+    Swal.fire({
+        title: 'Updating Product',
+        html: 'Please wait while we update the product...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
     });
-  }
+
+    // Submit form via AJAX
+    $.ajax({
+        url: `/products/${barCode}/update`,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Product updated successfully!',
+                showConfirmButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/product-list';
+                }
+            });
+        },
+        error: function(xhr) {
+            let errorMessage = 'An error occurred while updating the product.';
+            if (xhr.responseJSON?.message) {
+                errorMessage = xhr.responseJSON.message;
+            }
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage
+            });
+        }
+    });
+});
+
+// Update form submission handler
+$(document).on('click', '#updateProductBtn', function(e) {
+    e.preventDefault();
+    const form = $('#editProductForm');
+    const sku = form.data('sku');
+    const formData = new FormData(form[0]);
+    
+    // Show loading state
+    Swal.fire({
+        title: 'Updating Product',
+        html: 'Please wait while we update the product...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    // Submit form via AJAX
+    $.ajax({
+        url: form.attr('action'),
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Product updated successfully!',
+                showConfirmButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/product-list';
+                }
+            });
+        },
+        error: function(xhr) {
+            let errorMessage = 'An error occurred while updating the product.';
+            if (xhr.responseJSON?.message) {
+                errorMessage = xhr.responseJSON.message;
+            }
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage
+            });
+        }
+    });
 });
 });

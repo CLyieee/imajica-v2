@@ -52,7 +52,7 @@
             </ul>
         </li>
 
-        <li class="menu-item {{ request()->is('product-list') || request()->is('add-product') || request()->is('category-list') || request()->is('order-list') || request()->is('order-details') || request()->is('add-order') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->is('product-list') || request()->is('add-product') || request()->is('category-list') || request()->is('order-list') || request()->is('add-order') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-shopping-cart"></i>
                 <div data-i18n="Product Management">Product Management</div>
@@ -80,7 +80,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-item {{ request()->is('order-list') || request()->is('order-details') || request()->is('add-order') ? 'active open' : '' }}">
+                <li class="menu-item {{ request()->is('order-list') ||  request()->is('add-order') ? 'active open' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <div data-i18n="Order">Order</div>
                     </a>
@@ -95,11 +95,7 @@
                                 <div data-i18n="Add Order">Add Order</div>
                             </a>
                         </li>
-                        <li class="menu-item {{ request()->is('order-details') ? 'active' : '' }}">
-                            <a href="/order-details" class="menu-link">
-                                <div data-i18n="Order Details">Order Details</div>
-                            </a>
-                        </li>
+                        
                     </ul>
                 </li>
             </ul>

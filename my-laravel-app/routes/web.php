@@ -73,8 +73,15 @@ Route::get('/add-order', [DashboardController::class, 'add_order'])->name('page.
 Route::post('/order/create', [orderController::class, 'create'])->name('order.create');
 Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('page.order-details');
 Route::get('/order/order-details/{orderId}', [OrderController::class, 'getOrderDetails'])->name('api.order.details');
+Route::delete('/order/delete', [OrderController::class, 'delete'])->name('order.delete');
 Route::get('/add-product', [DashboardController::class, 'add_product'])->name('page.add-product');
 Route::post('/product/create', [AddProductController::class, 'create'])->name('product.create');
+Route::get('/edit-product/{sku}', [AddProductController::class, 'edit'])
+    ->name('product.edit')
+    ->where('sku', '.*'); // Allow any character in sku
+
+Route::post('/product/{sku}/update', [AddProductController::class, 'update'])->name('product.update');
+Route::delete('/product/delete', [AddProductController::class, 'delete'])->name('product.delete');
 
 Route::get('/category-list', [DashboardController::class, 'category_list'])->name('page.category-list');
 
