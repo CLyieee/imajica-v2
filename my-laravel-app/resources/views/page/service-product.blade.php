@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 <!DOCTYPE html>
 <html
   lang="en"
@@ -125,7 +127,7 @@
       }
 
       .container {
-        max-width: 1200px;
+        max-width: 1000px;
         margin: auto;
         flex: 1;
         padding: 2rem;
@@ -195,15 +197,17 @@
         justify-content: center;
       }
 
-      .metric-card {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(236, 239, 243, 0.9);
-        min-width: 200px;
-        max-width: 300px;
-        flex: 1;
-      }
+.metric-card {
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #2b2c2d; /* Changed 'border-color' to 'border' for better clarity */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Corrected property name and increased shadow values */
+  background: rgba(254, 255, 255, 0.9);
+  min-width: 200px;
+  max-width: 300px;
+  flex: 1;
+}
 
       .metric-card i {
         font-size: 24px;
@@ -355,7 +359,7 @@
                 </div>
 
                 <!-- Date From -->
-                <div class="d-flex flex-column" style="width: 160px;">
+                {{-- <div class="d-flex flex-column" style="width: 160px;">
                   <label class="form-label text-muted small mb-1">Date From</label>
                   <input 
                     type="date" 
@@ -372,7 +376,7 @@
                     class="form-control form-control-sm" 
                     id="dateTo"
                   >
-                </div>
+                </div> --}}
 
                 <!-- Filter by -->
                 <div class="d-flex flex-column" style="width: 160px;">

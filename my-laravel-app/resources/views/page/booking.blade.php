@@ -580,8 +580,7 @@
                     <table class="table table-hover booking-table">
                       <thead class="table-light">
                         <tr>
-                          <th>Booking ID</th>
-                          <th>Patient Name</th>
+
                           <th>Service</th>
                           <th>Start Date/Time</th>
                           <th>End Date/Time</th>
@@ -593,14 +592,7 @@
                       <tbody>
                         @foreach($bookings as $booking)
                         <tr class="booking-row">
-                          <td># {{ $booking->booking_id }}</td>
-                          <td>
-                            @if($booking->patient)
-                              {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
-                            @else
-                              <span class="text-muted">No patient data</span>
-                            @endif
-                          </td>
+                          
                           <td>
                             @if($booking->service)
                               {{ $booking->service->service_name }}

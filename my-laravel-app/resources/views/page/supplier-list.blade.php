@@ -72,8 +72,8 @@
                                                         <td class="text-center">{{ $supplier->email }}</td>
                                                         <td class="text-center">{{ $supplier->supplier_type }}</td>
                                                         <td class="text-center">
-                                                            <div class="d-inline-block">
-                                                                <button class="btn btn-sm btn-success view-supplier" 
+                                                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                                                {{-- <button class="btn btn-sm btn-success view-supplier" 
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#supplierModal"
                                                                     data-supplier-id="{{ $supplier->suppler_id }}"
@@ -86,7 +86,7 @@
                                                                     >
                                                                     
                                                                     <i class="ti tabler-eye me-1"></i> View
-                                                                </button>
+                                                                </button> --}}
                                                                 <button type="button" class="btn btn-sm btn-info edit-supplier" 
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#editSupplierModal"

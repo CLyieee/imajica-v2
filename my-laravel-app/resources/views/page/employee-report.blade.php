@@ -124,7 +124,7 @@
       }
 
       .container {
-        max-width: 1200px;
+        max-width: 1000px;
         margin: auto;
         flex: 1;
         padding: 2rem;
@@ -194,15 +194,17 @@
         justify-content: center;
       }
 
-      .metric-card {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(236, 239, 243, 0.9);
-        min-width: 200px;
-        max-width: 300px;
-        flex: 1;
-      }
+.metric-card {
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #2b2c2d; /* Changed 'border-color' to 'border' for better clarity */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Corrected property name and increased shadow values */
+  background: rgba(254, 255, 255, 0.9);
+  min-width: 200px;
+  max-width: 300px;
+  flex: 1;
+}
 
       .metric-card i {
         font-size: 24px;
@@ -325,7 +327,7 @@
                 </div>
               </div>
 
-              <div class="d-flex gap-2 align-items-end">
+              {{-- <div class="d-flex gap-2 align-items-end">
                 <div class="d-flex flex-column" style="width: 150px;">
                   <label class="form-label mb-1 small">Date From</label>
                   <div class="input-group input-group-sm">
@@ -338,7 +340,7 @@
                     <input type="date" class="form-control form-control-sm" id="dateTo">
                   </div>
                 </div>
-              </div>
+              </div> --}}
 
               <div class="d-flex flex-column" style="width: 180px;">
                 <label class="form-label mb-1 small">Sort By</label>
