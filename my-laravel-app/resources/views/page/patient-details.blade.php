@@ -301,22 +301,22 @@
                             <div class="col-12">
                                 <ul class="nav nav-tabs mb-4">
                                     <li class="nav-item">
-                                        <a class="nav-link active" href="#">Patient Profile</a>
+                                        <a class="nav-link active" href="#profile" data-tab="profile">Patient Profile</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Allergies</a>
+                                        <a class="nav-link" href="#allergies" data-tab="allergies">Allergies</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Medications</a>
+                                        <a class="nav-link" href="#medications" data-tab="medications">Medications</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Health Concerns</a>
+                                        <a class="nav-link" href="#health-concerns" data-tab="health-concerns">Health Concerns</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Prescriptions</a>
+                                        <a class="nav-link" href="#prescriptions" data-tab="prescriptions">Prescriptions</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Attachments</a>
+                                        <a class="nav-link" href="#attachments" data-tab="attachments">Attachments</a>
                                     </li>
                                 </ul>
                             </div>
@@ -324,91 +324,115 @@
 
                         <!-- Main Content Cards -->
                         <div class="row">
-                            <!-- Personal Information -->
+                            <!-- Left Side - Personal Information -->
                             <div class="col-md-7 mb-4">
-                                <div class="card">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="card-title mb-0">Personal Information</h5>
-                                        <button class="btn btn-primary btn-sm edit-mode-toggle">Edit</button>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="patient-info-form" method="POST" 
-                                              action="{{ route('patient.update', ['id' => $patient->id]) }}" 
-                                              enctype="multipart/form-data">
-                                            @csrf
-                                            @method('PUT')
-                                            
-                                            <!-- Patient Details -->
-                                            <div class="patient-details mb-3">
-                                                <div class="detail-item">
-                                                    <span class="detail-label"><i class="ti tabler-user text-muted me-2"></i>Full Name:</span>
-                                                    <div class="view-mode">
-                                                        <span class="detail-value">{{ $patient->firstname }} {{ $patient->lastname }}</span>
-                                                    </div>
-                                                    <div class="edit-mode d-none">
-                                                        <input type="text" class="form-control mb-2" name="firstname" value="{{ $patient->firstname }}" placeholder="First Name">
-                                                        <input type="text" class="form-control" name="lastname" value="{{ $patient->lastname }}" placeholder="Last Name">
-                                                    </div>
-                                                </div>
-
-                                                <div class="detail-item">
-                                                    <span class="detail-label"><i class="ti tabler-mail text-muted me-2"></i>Email:</span>
-                                                    <div class="view-mode">
-                                                        <span class="detail-value">{{ $patient->email ?? 'N/A' }}</span>
-                                                    </div>
-                                                    <div class="edit-mode d-none">
-                                                        <input type="email" class="form-control" name="email" value="{{ $patient->email }}" placeholder="Email">
-                                                    </div>
-                                                </div>
-
-                                                <div class="detail-item">
-                                                    <span class="detail-label"><i class="ti tabler-phone text-muted me-2"></i>Contact:</span>
-                                                    <div class="view-mode">
-                                                        <span class="detail-value">{{ $patient->contact_number ?? 'N/A' }}</span>
-                                                    </div>
-                                                    <div class="edit-mode d-none">
-                                                        <input type="text" class="form-control" name="contact_number" value="{{ $patient->contact_number }}" placeholder="Contact Number">
-                                                    </div>
-                                                </div>
-
-                                                <div class="detail-item">
-                                                    <span class="detail-label"><i class="ti tabler-map-pin text-muted me-2"></i>Address:</span>
-                                                    <div class="view-mode">
-                                                        <span class="detail-value">{{ $patient->address ?? 'N/A' }}</span>
-                                                    </div>
-                                                    <div class="edit-mode d-none">
-                                                        <textarea class="form-control" name="address" rows="2" placeholder="Address">{{ $patient->address }}</textarea>
-                                                    </div>
-                                                </div>
-
-                                                <div class="detail-item">
-                                                    <span class="detail-label"><i class="ti tabler-calendar text-muted me-2"></i>Birthdate:</span>
-                                                    <div class="view-mode">
-                                                        <span class="detail-value">{{ $patient->birthdate ?? 'N/A' }}</span>
-                                                    </div>
-                                                    <div class="edit-mode d-none">
-                                                        <input type="date" class="form-control" name="birthdate" value="{{ $patient->birthdate }}">
-                                                    </div>
-                                                </div>
-
-                                                <div class="detail-item">
-                                                    <span class="detail-label"><i class="ti tabler-gender-binary text-muted me-2"></i>Gender:</span>
-                                                    <div class="view-mode">
-                                                        <span class="detail-value">{{ $patient->gender ?? 'N/A' }}</span>
-                                                    </div>
-                                                    <div class="edit-mode d-none">
-                                                        <select class="form-control" name="gender">
-                                                            <option value="">Select Gender</option>
-                                                            <option value="Male" {{ $patient->gender == 'Male' ? 'selected' : '' }}>Male</option>
-                                                            <option value="Female" {{ $patient->gender == 'Female' ? 'selected' : '' }}>Female</option>
-                                                            <option value="Other" {{ $patient->gender == 'Other' ? 'selected' : '' }}>Other</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                <form id="patient-info-form" method="POST" 
+                                      action="{{ route('patient.update', ['id' => $patient->id]) }}" 
+                                      enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+                                    
+                                    <!-- Full Name Card -->
+                                    <div class="card mb-3">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0"><i class="ti tabler-user text-muted me-2"></i>Full Name</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="view-mode">
+                                                <span class="detail-value">{{ $patient->firstname }} {{ $patient->lastname }}</span>
                                             </div>
-                                        </form>
+                                            <div class="edit-mode d-none">
+                                                <input type="text" class="form-control mb-2" name="firstname" value="{{ $patient->firstname }}" placeholder="First Name">
+                                                <input type="text" class="form-control" name="lastname" value="{{ $patient->lastname }}" placeholder="Last Name">
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+
+                                    <!-- Email Card -->
+                                    <div class="card mb-3">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0"><i class="ti tabler-mail text-muted me-2"></i>Email</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="view-mode">
+                                                <span class="detail-value">{{ $patient->email ?? 'N/A' }}</span>
+                                            </div>
+                                            <div class="edit-mode d-none">
+                                                <input type="email" class="form-control" name="email" value="{{ $patient->email }}" placeholder="Email">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Contact Card -->
+                                    <div class="card mb-3">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0"><i class="ti tabler-phone text-muted me-2"></i>Contact</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="view-mode">
+                                                <span class="detail-value">{{ $patient->contact_number ?? 'N/A' }}</span>
+                                            </div>
+                                            <div class="edit-mode d-none">
+                                                <input type="text" class="form-control" name="contact_number" value="{{ $patient->contact_number }}" placeholder="Contact Number">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Address Card -->
+                                    <div class="card mb-3">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0"><i class="ti tabler-map-pin text-muted me-2"></i>Address</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="view-mode">
+                                                <span class="detail-value">{{ $patient->address ?? 'N/A' }}</span>
+                                            </div>
+                                            <div class="edit-mode d-none">
+                                                <textarea class="form-control" name="address" rows="2" placeholder="Address">{{ $patient->address }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Birthdate Card -->
+                                    <div class="card mb-3">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0"><i class="ti tabler-calendar text-muted me-2"></i>Birthdate</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="view-mode">
+                                                <span class="detail-value">{{ $patient->birthdate ?? 'N/A' }}</span>
+                                            </div>
+                                            <div class="edit-mode d-none">
+                                                <input type="date" class="form-control" name="birthdate" value="{{ $patient->birthdate }}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Gender Card -->
+                                    <div class="card mb-4">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0"><i class="ti tabler-gender-binary text-muted me-2"></i>Gender</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="view-mode">
+                                                <span class="detail-value">{{ $patient->gender ?? 'N/A' }}</span>
+                                            </div>
+                                            <div class="edit-mode d-none">
+                                                <select class="form-control" name="gender">
+                                                    <option value="">Select Gender</option>
+                                                    <option value="Male" {{ $patient->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                                                    <option value="Female" {{ $patient->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                                                    <option value="Other" {{ $patient->gender == 'Other' ? 'selected' : '' }}>Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Edit Button -->
+                                    <div class="mb-4 text-end">
+                                        <button class="btn btn-primary edit-mode-toggle">Edit</button>
+                                    </div>
+                                </form>
                             </div>
 
                             <!-- Right Side Cards -->
@@ -506,6 +530,28 @@
 
     <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching functionality
+    const tabLinks = document.querySelectorAll('.nav-tabs .nav-link');
+    
+    tabLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active class from all tabs
+            tabLinks.forEach(tab => tab.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // In the future, this is where you'd show/hide content based on the tab
+            const tabId = this.getAttribute('data-tab');
+            console.log('Switching to tab:', tabId);
+            
+            // For now, we're just making the tabs clickable without changing content
+        });
+    });
+    
+    // Existing edit mode code...
     const editButton = document.querySelector('.edit-mode-toggle');
     const form = document.getElementById('patient-info-form');
     const viewModes = document.querySelectorAll('.view-mode');
