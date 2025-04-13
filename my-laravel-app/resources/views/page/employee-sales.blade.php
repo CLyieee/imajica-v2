@@ -201,13 +201,13 @@
     <div class="card">
       <div class="card-body">
         <table class="table table-striped" id="employeeSales">
-          <thead class="table-light">
+          <thead style="background-color: #1b392f;">
             <tr>
-              <th>Employee Name</th>
-              <th>No. of Service Sales</th>
-              <th>No. of Clients</th>
-              <th>Total Service Sales</th>
-              <th>Total Sales</th>
+              <th class="text-white">Employee Name</th>
+              <th class="text-white">No. of Service Sales</th>
+              <th class="text-white">No. of Clients</th>
+              <th class="text-white">Total Service Sales</th>
+              <th class="text-white">Total Sales</th>
             </tr>
           </thead>
           <tbody>

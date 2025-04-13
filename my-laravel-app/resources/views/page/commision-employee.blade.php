@@ -168,6 +168,11 @@
           width: 100% !important; 
           min-width: 1000px;
         }
+
+        .table thead th {
+          background-color: #1b392f !important;
+          color: white !important;
+        }
         /* Responsive adjustments */
         @media (max-width: 768px) {
           .datatable-card {
@@ -237,7 +242,7 @@
       <div class="card-body datatable-container table-responsive">
      
         <table class="table table-striped table-bordered" id = "commissionsTable">
-          <thead class="table-light">
+          <thead>
             <tr>
               <th>Employee Name</th>
               <th>Service Sales no</th>
@@ -249,7 +254,7 @@
               <th>Total Session Commission</th>
               <th>Total Product Commission</th>
               <th>Total Commission</th>
-          </tr>
+            </tr>
           </thead>
          
         </table>

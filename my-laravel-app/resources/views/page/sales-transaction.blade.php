@@ -222,17 +222,15 @@
                   <div class="card-body">
                                   
                             <table id="servicesTable" class="table table-striped">
-                              <thead class="table-light">
+                              <thead style="background-color: #1b392f;">
                                   <tr>
-                                    
-                                      <th>Service /Product  </th>
-                                      <th>Customer</th>
-                                      <th>Staff</th>
-                                      <th>Amount</th>
-                                      <th>Status</th>
-                                      <th>Branch</th>
-                                      <th>Date</th>
-                                      
+                                      <th class="text-white">Service /Product</th>
+                                      <th class="text-white">Customer</th>
+                                      <th class="text-white">Staff</th>
+                                      <th class="text-white">Amount</th>
+                                      <th class="text-white">Status</th>
+                                      <th class="text-white">Branch</th>
+                                      <th class="text-white">Date</th>
                                   </tr>
                               </thead>
                             <tbody>
