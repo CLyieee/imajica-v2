@@ -512,6 +512,10 @@ class DashboardController extends Controller
         return view('page.category-list', compact('categories'));
 
     }
+    public function waste_list(){
+        $wastes = \App\Models\Waste::all();
+        return view('page.waste-list', compact('wastes'));
+    }
     public function system_settings()
     {
         return view('page.system-settings');

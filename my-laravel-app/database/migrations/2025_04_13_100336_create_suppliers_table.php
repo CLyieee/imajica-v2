@@ -13,18 +13,16 @@ class CreateSuppliersTable extends Migration
      */
     public function up()
     {
-
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id('suppler_id');
             $table->string('supplier_name');
-            $table->string('email');
-            $table->string('contactNumber');
-            $table->string('supplier_type');
+            $table->string('company');
+            $table->string('contact_person');
             $table->string('address');
-            $table->text('product_offered');
-            $table->text('notes');
+            $table->string('mobile_number');
+            $table->string('email');
+            $table->text('description')->nullable();
         });
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

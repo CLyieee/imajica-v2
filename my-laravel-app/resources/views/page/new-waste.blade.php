@@ -362,113 +362,45 @@
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <form id="addSupplierForm">
+                          <form id="addWasteForm">
                             @csrf
                             <div class="row g-6">
-                              <div class="col-md-6">
-                                <label class="form-label" for="supplier_name"
-                                  >SUPPLIER NAME</label
-                                >
-                                <input
-                                  type="text"
-                                  id="supplier_name"
-                                  name="supplier_name"
-                                  class="form-control"
-                                  placeholder="Enter supplier name"
-                                  required
-                                />
+                              <div class="col-12">
+                                <label class="form-label" for="item_name">ITEM NAME</label>
+                                <select id="item_name" name="item_name" class="form-select" required>
+                                  <option value="">Search Item</option>
+                                  <!-- Add options dynamically from your products database -->
+                                </select>
                               </div>
 
-                              <div class="col-md-6">
-                                <label class="form-label" for="company"
-                                  >COMPANY</label
-                                >
+                              <div class="col-12">
+                                <label class="form-label" for="quantity">QUANTITY</label>
                                 <input
-                                  type="text"
-                                  id="company"
-                                  name="company"
+                                  type="number"
+                                  id="quantity"
+                                  name="quantity" 
                                   class="form-control"
-                                  placeholder="Enter company name"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="contact_person"
-                                  >CONTACT PERSON</label
-                                >
-                                <input
-                                  type="text"
-                                  id="contact_person"
-                                  name="contact_person"
-                                  class="form-control"
-                                  placeholder="Enter contact person"
                                   required
                                 />
                               </div>
 
                               <div class="col-12">
-                                <label class="form-label" for="address"
-                                  >ADDRESS</label
-                                >
-                                <input
-                                  type="text"
-                                  id="address"
-                                  name="address"
-                                  class="form-control"
-                                  placeholder="Enter supplier address"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="mobile_number"
-                                  >MOBILE NUMBER</label
-                                >
-                                <input
-                                  type="text"
-                                  id="mobile_number"
-                                  name="mobile_number"
-                                  class="form-control"
-                                  placeholder="Enter mobile number"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="email"
-                                  >EMAIL</label
-                                >
-                                <input
-                                  type="email"
-                                  id="email"
-                                  name="email"
-                                  class="form-control"
-                                  placeholder="Enter email address"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-12">
-                                <label class="form-label" for="description"
-                                  >Description</label
-                                >
+                                <label class="form-label" for="reason">REASON</label>
                                 <textarea
-                                  id="description"
-                                  name="description"
+                                  id="reason"
+                                  name="reason"
                                   class="form-control"
                                   rows="4"
-                                  placeholder="Enter description"
+                                  required
                                 ></textarea>
                               </div>
-
                             </div>
 
                             <br />
                             <div class="row">
                               <div class="col-12">
-                                <button type="button" class="btn btn-secondary me-3">Cancel</button>
-                                <button type="submit" class="btn btn-primary" id="addSupplierBtn">Add Supplier</button>
+                                <button type="button" class="btn btn-secondary" id="cancelBtn">CANCEL</button>
+                                <button type="submit" class="btn btn-primary" id="addItemBtn">ADD ITEM</button>
                               </div>
                             </div>
                           </form>

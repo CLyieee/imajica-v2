@@ -143,7 +143,7 @@
   <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center py-3">
       <div class="flex-grow-1">
-        <h4 class="card-title mb-0">Category List</h4>
+        <h4 class="card-title mb-0">Product Category List</h4>
       </div>
       <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEcommerceCategoryList" id="eCommerceCategoryListForm">
         <i class="ti tabler-plus me-1"></i> Add New Category
@@ -154,7 +154,6 @@
         <thead class="table-light">
           <tr>
             <th>ID</th>
-            <th>Select</th>
             <th>Category</th>
             <th>Total Products</th>
             <th>Total Earnings</th>
@@ -165,7 +164,6 @@
           @foreach ($categories as $category)
           <tr>
             <td>{{ $category->category_id }}</td>
-            <td><input type="checkbox" class="form-check-input select-category"></td>
             <td>
               <div class="d-flex justify-content-start align-items-center">
                 <div class="avatar-wrapper me-3">

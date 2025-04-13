@@ -347,141 +347,54 @@
           <div class="content-wrapper">
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
-              <!-- Sticky Actions -->
-              <div class="row">
-                <div class="col-12">
-                  <div class="card">
-                    <div
-                      class="card-header sticky-element d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
-                      style="background-color: #0a3622"
-                    >
-                      <h5 class="card-title mb-sm-0 me-2 text-white">
-                        Supplier Management
-                      </h5>
-                    </div>
-                    <div class="card-body pt-6">
-                      <div class="row">
-                        <div class="col-lg-8 mx-auto">
-                          <form id="addSupplierForm">
-                            @csrf
-                            <div class="row g-6">
-                              <div class="col-md-6">
-                                <label class="form-label" for="supplier_name"
-                                  >SUPPLIER NAME</label
-                                >
-                                <input
-                                  type="text"
-                                  id="supplier_name"
-                                  name="supplier_name"
-                                  class="form-control"
-                                  placeholder="Enter supplier name"
-                                  required
-                                />
-                              </div>
+              <div class="card">
+                <!-- Header -->
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <h5 class="card-title mb-0">Inventory Waste List</h5>
+                  <a href="{{ route('page.new-waste') }}" class="btn btn-primary">
+                    <i class="ti tabler-plus me-1"></i> Add New Waste
+                  </a>
+                </div>
 
-                              <div class="col-md-6">
-                                <label class="form-label" for="company"
-                                  >COMPANY</label
-                                >
-                                <input
-                                  type="text"
-                                  id="company"
-                                  name="company"
-                                  class="form-control"
-                                  placeholder="Enter company name"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="contact_person"
-                                  >CONTACT PERSON</label
-                                >
-                                <input
-                                  type="text"
-                                  id="contact_person"
-                                  name="contact_person"
-                                  class="form-control"
-                                  placeholder="Enter contact person"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-12">
-                                <label class="form-label" for="address"
-                                  >ADDRESS</label
-                                >
-                                <input
-                                  type="text"
-                                  id="address"
-                                  name="address"
-                                  class="form-control"
-                                  placeholder="Enter supplier address"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="mobile_number"
-                                  >MOBILE NUMBER</label
-                                >
-                                <input
-                                  type="text"
-                                  id="mobile_number"
-                                  name="mobile_number"
-                                  class="form-control"
-                                  placeholder="Enter mobile number"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="email"
-                                  >EMAIL</label
-                                >
-                                <input
-                                  type="email"
-                                  id="email"
-                                  name="email"
-                                  class="form-control"
-                                  placeholder="Enter email address"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-12">
-                                <label class="form-label" for="description"
-                                  >Description</label
-                                >
-                                <textarea
-                                  id="description"
-                                  name="description"
-                                  class="form-control"
-                                  rows="4"
-                                  placeholder="Enter description"
-                                ></textarea>
-                              </div>
-
-                            </div>
-
-                            <br />
-                            <div class="row">
-                              <div class="col-12">
-                                <button type="button" class="btn btn-secondary me-3">Cancel</button>
-                                <button type="submit" class="btn btn-primary" id="addSupplierBtn">Add Supplier</button>
-                              </div>
-                            </div>
-                          </form>
-                          <br />
-                          <!-- Success/Error Messages -->
-                          <div id="responseMessage" style="display: none;" class="alert mt-3"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <!-- Table -->
+                <div class="table-responsive text-nowrap px-3">
+                  <table class="table table-striped" id="wasteTable">
+                    <thead class="table-light">
+                      <tr>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Reason</th>
+                        <th>Date Added</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($wastes as $waste)
+                      <tr>
+                        <td>{{ $waste->id }}</td>
+                        <td>{{ $waste->product ? $waste->product->name : 'N/A' }}</td>
+                        <td>{{ $waste->quantity }}</td>
+                        <td>{{ $waste->reason }}</td>
+                        <td>{{ $waste->created_at->format('M d, Y') }}</td>
+                        <td>
+                          <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-sm btn-info edit-waste" 
+                                    data-id="{{ $waste->id }}">
+                              <i class="ti tabler-edit me-1"></i>Edit
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger delete-waste"
+                                    data-id="{{ $waste->id }}">
+                              <i class="ti tabler-trash me-1"></i>Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
                 </div>
               </div>
-              <!-- /Sticky Actions -->
             </div>
             <!-- / Content -->
 

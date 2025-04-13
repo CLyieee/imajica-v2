@@ -146,7 +146,7 @@ class CategoryListController extends Controller
 
     public function countOrders()
     {
-        $categories = category::with('products.orderItems')
+        $categories = category::with('new_product.orderItems')
             ->get()
             ->map(function ($category) {
                 return [
