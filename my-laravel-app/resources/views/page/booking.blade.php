@@ -95,10 +95,155 @@
         font-weight: 500;
         color: #566a7f;
     }
+
+    /* Quick Note Form Styling */
+    .swal2-popup {
+      width: 32em !important;
+    }
+
+    #quickNoteForm .form-label {
+      color: #566a7f;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      margin-bottom: 0.5rem;
+    }
+
+    #quickNoteForm .form-control,
+    #quickNoteForm .form-select {
+      padding: 0.4375rem 0.875rem;
+      font-size: 0.9375rem;
+      border-radius: 0.375rem;
+      border: 1px solid #d9dee3;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    #quickNoteForm .form-control:focus,
+    #quickNoteForm .form-select:focus {
+      border-color: #696cff;
+      box-shadow: 0 0 0.25rem rgba(105, 108, 255, 0.1);
+    }
+
+    #quickNoteForm textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .swal2-styled.swal2-confirm {
+      background-color: #696cff !important;
+    }
+
+    .swal2-styled.swal2-cancel {
+      background-color: #8592a3 !important;
+    }
+
+    /* Add this CSS for Quick Note Popup */
+    .swal2-popup.quick-note-popup {
+      width: 24em !important;
+      padding: 1rem;
+    }
+
+    .quick-note-form {
+      text-align: left;
+    }
+
+    .quick-note-form .form-group {
+      margin-bottom: 0.75rem;
+    }
+
+    .quick-note-form .form-label {
+      font-size: 0.8125rem;
+      margin-bottom: 0.25rem;
+      color: #566a7f;
+    }
+
+    .quick-note-form .form-control {
+      font-size: 0.8125rem;
+      padding: 0.3rem 0.5rem;
+      line-height: 1.4;
+      min-height: auto;
+    }
+
+    .quick-note-form textarea.form-control {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    .quick-note-form .form-text {
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    .swal2-actions.quick-note-actions {
+      margin-top: 0.75rem;
+    }
+
+    .swal2-actions.quick-note-actions button {
+      font-size: 0.8125rem;
+      padding: 0.3rem 0.75rem;
+    }
+    
+
+    /* Add this to your existing styles section */
+    .quick-note-popup {
+      width: 400px !important;
+      padding: 0 !important;
+      border-radius: 4px !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+    }
+
+    .quick-note-popup .swal2-title {
+      font-size: 14px !important;
+      font-weight: normal !important;
+      color: #666 !important;
+      padding: 10px 15px !important;
+      margin: 0 !important;
+      text-align: left !important;
+    }
+
+    .quick-note-popup .swal2-content {
+      padding: 0 15px !important;
+    }
+
+    .quick-note-input {
+      border: none !important;
+      padding: 8px 0 !important;
+      font-size: 14px !important;
+      box-shadow: none !important;
+    }
+
+    .quick-note-input:focus {
+      outline: none !important;
+    }
+
+    .quick-note-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 15px;
+      border-top: 1px solid #eee;
+    }
+
+    .quick-note-epic {
+      color: #6563ff !important;
+      font-size: 13px;
+      text-decoration: none !important;
+    }
+
+    .quick-note-create {
+      background-color: #eee !important;
+      color: #666 !important;
+      font-size: 13px !important;
+      padding: 4px 12px !important;
+    }
+
+    .quick-note-create:hover {
+      background-color: #e0e0e0 !important;
+    }
   </style>
   <!-- Add these in your head section -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -883,6 +1028,45 @@
             });
         }
     });
+
+    // Update the dateClick handler in app-calendar.js or in your inline script
+    function saveQuickNote(data) {
+      console.log('Quick Note Saved:', data);
+      // Add your logic to save the quick note here
+    }
+
+    const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+      dateClick: function(info) {
+        Swal.fire({
+          title: 'What needs to be done?',
+          input: 'text',
+          inputPlaceholder: 'Enter your task...',
+          showCancelButton: true,
+          customClass: {
+            popup: 'quick-note-popup',
+            input: 'quick-note-input',
+            confirmButton: 'quick-note-confirm',
+            cancelButton: 'quick-note-cancel',
+            actions: 'quick-note-actions'
+          },
+          inputAttributes: {
+            autocomplete: 'off'
+          },
+          footer: `
+            <div class="quick-note-footer">
+              <button type="button" class="btn btn-link p-0 quick-note-epic">
+                <i class="ti ti-tag me-1"></i>Epic
+                <i class="ti ti-chevron-down ms-1"></i>
+              </button>
+              <button type="button" class="btn btn-primary btn-sm quick-note-create">Create</button>
+            </div>
+          `
+          showConfirmButton: false,
+          showCancelButton: false,
+          buttonsStyling: false
+        });
+      }
+    });
   </script>
 
   <!-- Additional CSS for flatpickr visibility -->
@@ -897,4 +1081,3 @@
 </body>
 
 </html>
-``` 
