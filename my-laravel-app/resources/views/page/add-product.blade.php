@@ -156,7 +156,7 @@
     <form id="addProductForm" method="POST" action="{{ route('product.create') }}" enctype="multipart/form-data">
       @csrf
       <div class="row">
-        <!-- First column-->
+        <!-- First column - Product Info -->
         <div class="col-12 col-lg-8">
           <!-- Product Information -->
           <div class="card mb-6">
@@ -164,293 +164,101 @@
               <h5 class="card-tile mb-0">Product information</h5>
             </div>
             <div class="card-body">
-              <div class="mb-6">
-                <label class="form-label" for="ecommerce-product-name">Name</label>
-                <input type="text" class="form-control" id="ecommerce-product-name" name="name" placeholder="Product Name" required />
+              <!-- Product Picture -->
+              <div class="mb-4">
+                <label class="form-label">PRODUCT PICTURE</label>
+                <input type="file" class="form-control" name="product_image" accept="image/*">
+                <small class="text-muted">Upload a profile picture. Max size 2MB</small>
               </div>
-              <div class="row mb-6">
-                <div class="col">
-                  <label class="form-label" for="ecommerce-product-sku">SKU</label>
-                  <input type="text" class="form-control" id="ecommerce-product-sku" name="sku" placeholder="SKU" required />
-                </div>
-                <div class="col">
-                  <label class="form-label" for="ecommerce-product-barcode">Barcode</label>
-                  <input type="text" class="form-control" id="ecommerce-product-barcode" name="bar_code" placeholder="0123-4567" required />
-                </div>
-              </div>
-              <!-- Description -->
-              <div>
-                <label class="mb-1">Description (Optional)</label>
-                <textarea name="description" class="form-control" rows="4"></textarea>
-              </div>
-            </div>
-          </div>
 
-          <!-- Media -->
-          <div class="card mb-6">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <h5 class="mb-0 card-title">Product Image</h5>
-              <a href="javascript:void(0);" class="fw-medium">Add media from URL</a>
-            </div>
-            <div class="card-body">
-              <input type="file" name="product_image" class="form-control" accept="image/*">
-            </div>
-          </div>
+              <!-- SKU -->
+              <div class="mb-4">
+                <label class="form-label">SKU</label>
+                <input type="text" class="form-control" name="sku" required>
+              </div>
 
-          <!-- Inventory -->
-          <div class="card mb-6">
-            <div class="card-header">
-              <h5 class="card-title mb-0">Inventory</h5>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <!-- Navigation -->
-                <div class="col-12 col-md-4 col-xl-5 col-xxl-4 mx-auto card-separator">
-                  <div class="d-flex justify-content-between flex-column mb-4 mb-md-0 pe-md-4">
-                    <div class="nav-align-left">
-                      <ul class="nav nav-pills flex-column w-100">
-                        <li class="nav-item">
-                          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
-                            <i class="icon-base ti tabler-box icon-sm me-1_5"></i>
-                            <span class="align-middle">Restock</span>
-                          </button>
-                        </li>
-                        <li class="nav-item">
-                          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping">
-                            <i class="icon-base ti tabler-car icon-sm me-1_5"></i>
-                            <span class="align-middle">Shipping</span>
-                          </button>
-                        </li>
-                        
-                        <li class="nav-item">
-                          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attributes">
-                            <i class="icon-base ti tabler-link icon-sm me-1_5"></i>
-                            <span class="align-middle">Attributes</span>
-                          </button>
-                        </li>
-                        
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <!-- /Navigation -->
-                <!-- Options -->
-                <div class="col-12 col-md-8 col-xl-7 col-xxl-8 pt-6 pt-md-0">
-                  <div class="tab-content p-0 ps-md-4">
-                    <!-- Restock Tab -->
-                    <div class="tab-pane fade show active" id="restock" role="tabpanel">
-                      <h6 class="text-body">Options</h6>
-                      <label class="form-label" for="ecommerce-product-stock">Add to Stock</label>
-                      <div class="row mb-4 g-4 pe-md-4">
-                        <div class="col-12 col-sm-9">
-                          <input type="number" class="form-control" name="quantity" placeholder="Quantity" required />
-                        </div>
-                      </div>
-                      <div>
-                        <h6 class="mb-2 fw-normal">Product in stock now: 54</h6>
-                        <h6 class="mb-2 fw-normal">Product in transit: 390</h6>
-                        <h6 class="mb-2 fw-normal">Last time restocked: 24th June, 2023</h6>
-                        <h6 class="mb-0 fw-normal">Total stock over lifetime: 2430</h6>
-                      </div>
-                    </div>
-                    <!-- Shipping Tab -->
-                    <div class="tab-pane fade" id="shipping" role="tabpanel">
-                      <h6 class="mb-3 text-body">Shipping Type</h6>
-                      <div>
-                        <div class="form-check mb-4">
-                          <input class="form-check-input" type="radio" name="shipping_type" value="seller" id="seller" />
-                          <label class="form-check-label" for="seller">
-                            <span class="mb-1 h6">Fulfilled by Seller</span><br />
-                            <small
-                              >You'll be responsible for product delivery.<br />
-                              Any damage or delay during shipping may cost you a Damage fee.</small
-                            >
-                          </label>
-                        </div>
-                        <div class="form-check mb-6">
-                          <input class="form-check-input" type="radio" name="shipping_type" value="company" id="companyName" checked />
-                          <label class="form-check-label" for="companyName">
-                            <span class="mb-1 h6">Fulfilled by Company name &nbsp;<span class="badge rounded-2 badge-warning bg-label-warning fs-tiny py-1">RECOMMENDED</span></span
-                            ><br />
-                            <small
-                              >Your product, Our responsibility.<br />
-                              For a measly fee, we will handle the delivery process for you.</small
-                            >
-                          </label>
-                        </div>
-                        <p class="mb-0">See our <a href="javascript:void(0);">Delivery terms and conditions</a> for details</p>
-                      </div>
-                    </div>
-              
-                    <!-- Attributes Tab -->
-                    <div class="tab-pane fade" id="attributes" role="tabpanel">
-                      <h6 class="mb-2 text-body">Attributes</h6>
-                      <div>
-                        <!-- Fragile Product -->
-                        <div class="form-check mb-4">
-                          <input class="form-check-input" type="checkbox" name="is_fragile" value="fragile" id="fragile" />
-                          <label class="form-check-label" for="fragile">
-                            <span class="fw-medium">Fragile Product</span>
-                          </label>
-                        </div>
-                        <!-- Biodegradable -->
-                        <div class="form-check mb-4">
-                          <input class="form-check-input" type="checkbox" name="is_biodegradable" value="biodegradable" id="biodegradable" />
-                          <label class="form-check-label" for="biodegradable">
-                            <span class="fw-medium">Biodegradable</span>
-                          </label>
-                        </div>
-                        <!-- Frozen Product -->
-                        <div class="form-check mb-4">
-                          <input class="form-check-input" type="checkbox" name="is_frozen" value="frozen" checked />
-                          <label class="form-check-label w-75 pe-12" for="frozen">
-                            <span class="mb-1 h6">Frozen Product</span>
-                            <input type="number" name="max_temperature" class="form-control" placeholder="Max. allowed Temperature" id="frozen" />
-                          </label>
-                        </div>
-                        <!-- Exp Date -->
-                        <div class="form-check mb-6">
-                          <input class="form-check-input" type="checkbox" name="expiry_date" value="expDate" id="expDate" checked />
-                          <label class="form-check-label w-75 pe-12" for="date-input">
-                            <span class="mb-1 h6">Expiry Date of Product</span>
-                            <input type="date" name="expiry_date" class="product-date form-control" id="date-input" />
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- /Attributes Tab -->
-                  
-                    <!-- /Advanced Tab -->
-                  </div>
-                </div>
-                <!-- /Options-->
+              <!-- Item Name -->
+              <div class="mb-4">
+                <label class="form-label">ITEM NAME</label> 
+                <input type="text" class="form-control" name="name" placeholder="Search Item Name" required>
               </div>
-            </div>
-          </div>
-        </div>
-        <!-- /First column -->
 
-        <!-- Second column -->
-        <div class="col-12 col-lg-4">
-          <!-- Pricing Card -->
-          <div class="card mb-6">
-            <div class="card-header">
-              <h5 class="card-title mb-0">Pricing</h5>
-            </div>
-            <div class="card-body">
-              <!-- Base Price -->
-              <div class="mb-6">
-                <label class="form-label" for="ecommerce-product-price">Base Price</label>
-                <input type="number" step="0.01" name="base_price" class="form-control" id="ecommerce-product-price" placeholder="Price" required />
-              </div>
-              <!-- Discounted Price -->
-              <div class="mb-6">
-                <label class="form-label" for="ecommerce-product-discount-price">Discounted Price</label>
-                <input type="number" step="0.01" name="discounted_price" class="form-control" id="ecommerce-product-discount-price" placeholder="Discounted Price" />
-              </div>
-              <!-- Charge tax check box -->
-              <div class="form-check ms-2 mt-2 mb-4">
-                <input class="form-check-input" type="checkbox" name="in_stock" value="" id="price-charge-tax" checked />
-                <label class="switch-label" for="price-charge-tax"> Charge tax on this product </label>
-              </div>
-              <!-- Instock switch -->
-              <div class="d-flex justify-content-between align-items-center border-top pt-2">
-                <span class="mb-0">In stock</span>
-                <div class="w-25 d-flex justify-content-end">
-                  <div class="form-check form-switch me-n3">
-                    <input type="checkbox" name="in_stock" class="form-check-input" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Organize Card -->
-          <div class="card mb-6">
-            <div class="card-header">
-              <h5 class="card-title mb-0">Organize</h5>
-            </div>
-            <div class="card-body">
               <!-- Category -->
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="mb-6 col ecommerce-select2-dropdown">
-                  <label class="form-label mb-1" for="category-org">
-                    <span>Product Category</span>
-                  </label>
-                  <select name="category_id" id="category-org" class="select2 form-select" data-placeholder="Select Category" required>
-                    <option value="">Select Category</option>
-                    @foreach($categories as $category)
+              <div class="mb-4">
+                <label class="form-label">CATEGORY</label>
+                <select class="form-select" name="category_id" required>
+                  <option value="">Select Category</option>
+                  @foreach($categories as $category)
                     <option value="{{ $category->category_id }}">{{ $category->categoryTitle }}</option>
-                    @endforeach
-                  </select>
-                </div>
-                <button 
-                class="fw-medium btn btn-icon btn-label-primary ms-4"
-                data-bs-toggle="offcanvas" 
-                data-bs-target="#offcanvasEcommerceCategoryList"
-                >
-                <i class="icon-base ti tabler-plus icon-md"></i>
-                </button>
-              </div>
-              <!-- Status -->
-              <div class="mb-6 col ecommerce-select2-dropdown">
-                <label class="form-label mb-1" for="status-org">Status </label>
-                <select name="status" id="status-org" class="select2 form-select" data-placeholder="Published" required>
-                  <option value="Published">Published</option>
-                  <option value="Scheduled">Scheduled</option>
-                  <option value="Inactive">Inactive</option>
+                  @endforeach
                 </select>
               </div>
-              <!-- Tags -->
-              <div>
-                <label for="ecommerce-product-tags" class="form-label mb-1">Tags</label>
-                <input name="tags" id="ecommerce-product-tags" class="form-control" value="Normal,Standard,Premium" aria-label="Product Tags" />
+
+              <!-- Supplier -->
+              <div class="mb-4">
+                <label class="form-label">SUPPLIER</label>
+                <select class="form-select" name="supplier_id" required>
+                  <option value="">Select Supplier</option>
+                  @foreach($suppliers as $supplier)
+                    <option value="{{ $supplier->suppler_id }}">{{ $supplier->supplier_name }}</option>
+                  @endforeach
+                </select>
+              </div>
+
+              <!-- Base Price -->
+              <div class="mb-4">
+                <label class="form-label">BASE PRICE</label>
+                <div class="input-group">
+                  <span class="input-group-text">₱</span>
+                  <input type="number" class="form-control" name="base_price" placeholder="0.00" step="0.01" required>
+                </div>
+              </div>
+
+              <!-- Stock Info -->
+              <div class="mb-4">
+                <label class="form-label mb-2">STOCK INFORMATION</label>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <input type="number" class="form-control" name="quantity" placeholder="Total Stock" required>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="number" class="form-control" name="restock_point" placeholder="Restock Point">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- /Second column -->
+
+        <!-- Second column - Dates -->
+        <div class="col-12 col-lg-4">
+          <div class="card mb-6">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Product Dates</h5>
+            </div>
+            <div class="card-body">
+              <div class="mb-4">
+                <label class="form-label">MANUFACTURING DATE</label>
+                <input type="date" class="form-control" name="manufacturing_date">
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label">EXPIRATION DATE</label>
+                <input type="date" class="form-control" name="expiry_date">
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label">REMOVAL DATE</label>
+                <input type="date" class="form-control" name="removal_date">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
 </div>
           <!-- / Content -->
-<!-- Offcanvas for Adding New Category -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Add New Category</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-  </div>
-  <div class="offcanvas-body">
-    <form id="eCommerceCategoryListForm">
-      <div class="mb-3">
-        <label for="categoryTitle" class="form-label">Category Title</label>
-        <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" required>
-      </div>
-      <div class="mb-3">
-        <label for="slug" class="form-label">Slug</label>
-        <input type="text" class="form-control" id="slug" name="slug" required>
-        <small class="text-muted">The slug will be automatically generated from the title. Example: "Home & Garden" → "home-garden"</small>
-      </div>
-      <button type="submit" class="btn btn-primary">Save Category</button>
-    </form>
-  </div>
-</div>
-     
-<script>
-  document.getElementById('categoryTitle').addEventListener('input', function(e) {
-      const title = e.target.value;
-      const slug = title.toLowerCase()
-          .replace(/[^\w\s-]/g, '') // Remove special characters
-          .replace(/\s+/g, '-')     // Replace spaces with hyphens
-          .replace(/-+/g, '-');     // Replace multiple hyphens with single hyphen
-      
-      document.getElementById('slug').value = slug;
-  });
-
- 
-</script>
-     
 
 <!-- Footer -->
 <footer class="content-footer footer bg-footer-theme">
@@ -623,10 +431,18 @@
             const requiredFields = {
                 'name': 'Name',
                 'sku': 'SKU',
-                'bar_code': 'Barcode',
+              
                 'base_price': 'Base price',
                 'category_id': 'Category',
-                'status': 'Status'
+                'supplier_id': 'Supplier',
+                'quantity': 'Total stock',
+                'restock_point': 'Restock point',
+                'product_image': 'Product image',
+                'manufacturing_date': 'Manufacturing date',
+                'expiry_date': 'Expiry date',
+                'removal_date': 'Removal date'
+                
+
             };
 
             for (const [field, label] of Object.entries(requiredFields)) {

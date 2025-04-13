@@ -17,24 +17,17 @@ class AddProductController extends Controller
     public function create(Request $request)
     {
         $data = $request->validate([
+            'sku' => 'required|string|unique:new_product',
             'name' => 'required|string|max:255',
-            'sku' => 'required|string|unique:products',
-            'bar_code' => 'required|string|unique:products',
-            'description' => 'nullable|string',
-            'quantity' => 'required|integer|min:0',
-            'base_price' => 'required|numeric|min:0',
-            'discounted_price' => 'nullable|numeric|min:0',
+            'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'required|exists:categories,category_id',
-            'status' => 'required|in:Published,Scheduled,Inactive',
-            'tags' => 'nullable|string',
-            'shipping_type' => 'required|in:seller,company',
-            'is_fragile' ,
-            'is_biodegradable' , 
-            'is_frozen',
-            'max_temperature' => 'nullable|numeric',
+            'supplier_id' => 'required|exists:suppliers,suppler_id',
+            'base_price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
+            'restock_point' => 'required|integer|min:0',
+            'manufacturing_date' => 'nullable|date',
             'expiry_date' => 'nullable|date',
-            'in_stock',
-            'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'removal_date' => 'nullable|date'
         ]);
 
         // Handle image upload
@@ -43,12 +36,6 @@ class AddProductController extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('uploads/products'), $imageName);
             $data['product_image'] = 'uploads/products/' . $imageName;
-        }
-
-        // Convert checkbox values to boolean
-        $booleanFields = ['is_fragile', 'is_biodegradable', 'is_frozen', 'in_stock'];
-        foreach ($booleanFields as $field) {
-            $data[$field] = $request->has($field);
         }
 
         try {
@@ -61,7 +48,6 @@ class AddProductController extends Controller
         }
     }
 
-
     public function edit($sku)
     {
         try {
@@ -72,7 +58,8 @@ class AddProductController extends Controller
             ]);
             
             $product = Product::where('sku', $sku)->first();
-            $categories = \App\Models\category::all(); // Add this line
+            $categories = \App\Models\category::all(); 
+            $suppliers = \App\Models\Supplier::all(); 
             
             if (!$product) {
                 Log::error('Product not found', ['sku' => $sku]);
@@ -86,7 +73,7 @@ class AddProductController extends Controller
                 'product_data' => $product->toArray()
             ]);
 
-            return view('page.edit-product', compact('product', 'categories')); // Add categories here
+            return view('page.edit-product', compact('product', 'categories', 'suppliers')); // Add categories here
         } catch (\Exception $e) {
             Log::error('Error in edit product', [
                 'sku' => $sku,
@@ -110,31 +97,29 @@ class AddProductController extends Controller
             $product = Product::where('sku', $sku)->firstOrFail();
             
             $data = $request->validate([
+                'sku' => 'required|string|unique:new_product,sku,' . $sku . ',sku',
                 'name' => 'required|string|max:255',
-                'sku' => 'required|string|unique:products,sku,' . $sku . ',sku',
-                'bar_code' => 'required|string|unique:products,bar_code,' . $product->bar_code . ',bar_code',
-                'description' => 'nullable|string',
-                'quantity' => 'required|integer|min:0',
-                'base_price' => 'required|numeric|min:0',
-                'discounted_price' => 'nullable|numeric|min:0',
+                'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'category_id' => 'required|exists:categories,category_id',
-                'status' => 'required|in:Published,Scheduled,Inactive',
-                'tags' => 'nullable|string',
-                'shipping_type' => 'nullable|string|in:seller,company',
-                'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+                'supplier_id' => 'required|exists:suppliers,suppler_id',
+                'base_price' => 'required|numeric|min:0',
+                'quantity' => 'required|integer|min:0',
+                'restock_point' => 'required|integer|min:0',
+                'manufacturing_date' => 'nullable|date',
+                'expiry_date' => 'nullable|date',
+                'removal_date' => 'nullable|date'
             ], [
                 'name.required' => 'Product name is required',
                 'sku.required' => 'SKU is required',
                 'sku.unique' => 'This SKU is already in use',
-                'bar_code.required' => 'Barcode is required',
-                'bar_code.unique' => 'This barcode is already in use',
                 'quantity.required' => 'Quantity is required',
                 'quantity.min' => 'Quantity cannot be negative',
-                'base_price.required' => 'Base price is required',
+                'base_price.required' => 'Base price is required', 
                 'base_price.min' => 'Base price cannot be negative',
                 'category_id.required' => 'Please select a category',
                 'category_id.exists' => 'Selected category is invalid',
-                'status.required' => 'Status is required',
+                'supplier_id.required' => 'Please select a supplier',
+                'supplier_id.exists' => 'Selected supplier is invalid',
                 'product_image.image' => 'The file must be an image',
                 'product_image.mimes' => 'Supported image formats are: jpeg, png, jpg, gif'
             ]);

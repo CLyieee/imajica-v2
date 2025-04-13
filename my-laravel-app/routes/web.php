@@ -208,6 +208,7 @@ Route::get('/get-calendar-bookings', [BookingController::class, 'getCalendarBook
 
 Route::get('/position-list', [DashboardController::class, 'position_list'])->name('page.position-list');
 Route::post('/position/create', [PositionController::class, 'create'])->name('position.create');
+Route::get('/position/edit/{id}', [PositionController::class, 'edit'])->name('position.edit');
 Route::put('/position/update', [PositionController::class, 'update'])->name('position.update');
 Route::delete('/position/delete', [App\Http\Controllers\PositionController::class, 'delete'])->name('position.delete');
 

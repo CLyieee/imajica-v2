@@ -151,48 +151,74 @@
   <!-- Product List Table -->
   <div class="card">
     <div class="card-header border-bottom">
-      <h5 class="card-title">Filter</h5>
+      <div class="d-flex justify-content-between align-items-center">
+        <h4 class="card-title">Product List</h4>
+        <a href="{{ route('page.add-product') }}" class="btn btn-primary">
+          <i class="ti tabler-plus me-1"></i>Add Product
+        </a>
+      </div>
       <div class="d-flex justify-content-between align-items-center row pt-4 gap-6 gap-md-0 g-md-6">
-        <div class="col-md-4 product_status"></div>
         <div class="col-md-4 product_category"></div>
-        <div class="col-md-4 product_stock"></div>
       </div>
     </div>
-    <div class="card-datatable">
-      <table class="table datatables-products table-striped" >
+    <div class="card-datatable table-responsive pt-0">
+      <table class="table table-striped" id="prodTable">
         <thead class="border-top table-light">
           <tr>
-            <th></th>
-            <th></th>
-            <th>product</th>
-            <th>category</th>
-            <th>status</th>
-            <th>sku</th>
-            <th>price</th>
-            <th>qty</th>
-            <th>status</th>
+          
+            <th>Product</th>
+            <th>Category</th>
+            <th>Supplier</th>
+            <th>Base Price</th>
+            <th>Quantity</th>
+            <th>Restock Point</th>
+            <th>Manufacturing Date</th>
+            <th>Expiry Date</th>
+            <th>Removal Date</th>
             <th>Actions</th>
           </tr>
         </thead>
-        {{-- <tbody>
-          @foreach ($products as $product)
+        <tbody>
+          @foreach($products as $product)
           <tr>
-            <td></td>
-            <td></td>
-            <td>{{ $product->name }}</td>
-            <td>{{ $product->bar_code }}</td>
-            <td>{{ $product->category ? $product->category->category_name : $product->category_id }}</td>
-            <td>{{ $product->status }}</td>
-            <td>{{ $product->sku }}</td>
+          
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="avatar me-2">
+                  @if($product->product_image)
+                    <img src="{{ asset($product->product_image) }}" alt="Product image" class="rounded-circle">
+                  @else
+                    <span class="avatar-initial rounded-circle bg-label-primary">
+                      {{ strtoupper(substr($product->name, 0, 2)) }}
+                    </span>
+                  @endif
+                </div>
+                <div>
+                  {{ $product->name }}
+                </div>
+              </div>
+            </td>
+            <td>{{ $product->category ? $product->category->categoryTitle : $product->category_id }}</td>
+            <td>{{ $product->supplier ? $product->supplier->supplier_name : $product->supplier_id }}</td>
             <td>{{ $product->base_price }}</td>
             <td>{{ $product->quantity }}</td>
-            <td>{{ $product->status }}</td>
+            <td>{{ $product->restock_point }}</td>
+            <td>{{ $product->manufacturing_date }}</td>
+            <td>{{ $product->expiry_date }}</td>
+            <td>{{ $product->removal_date }}</td>
             <td>
-              
+              <div class="d-flex align-items-sm-center justify-content-sm-center">
+                <a href="{{ route('product.edit', ['sku' => $product->sku]) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Product">
+                  <i class="ti tabler-edit me-1"></i>Edit
+                </a>
+                <button class="btn btn-sm btn-danger delete-product ms-2" data-sku="{{ $product->sku }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Product">
+                  <i class="ti tabler-trash me-1"></i>Delete
+                </button>
+              </div>
             </td>
           </tr>
           @endforeach
-        </tbody> --}}
+        </tbody>
       </table>
     </div>
   </div>
@@ -293,8 +319,8 @@
       <script src="../../assets/js/main.js"></script>
     
 
-    <!-- Page JS -->
-    <script src="../../assets/js/product-list.js"></script>
+    {{-- <!-- Page JS -->
+    <script src="../../assets/js/product-list.js"></script> --}}
 
 
     <script src="../../assets/img/product-8.png"></script>
@@ -311,7 +337,7 @@
 
 <script>
 $(document).ready(function() {
-  $('#productTable').DataTable();
+  $('#prodTable').DataTable();
 })
 </script>
 

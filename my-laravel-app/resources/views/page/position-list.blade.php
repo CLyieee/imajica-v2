@@ -200,63 +200,7 @@
       </div>
     </div>
 
-    <!-- Edit Position Modal -->
-    <div class="modal fade" id="editPositionModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <form id="editPositionForm" method="POST" action="{{ route('position.update') }}">
-            @csrf
-            @method('PUT')
-            <input type="hidden" name="position_id" id="edit_position_id">
-            
-            <div class="modal-header " style="background-color: #0a3622">
-              <h5 class="modal-title text-white">
-                <i class="ti tabler-edit me-1"></i> Edit Position
-              </h5>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <div class="modal-body">
-              <div class="row g-3">
-                <div class="col-12">
-                  <label class="form-label" for="edit_position_title">Position Title</label>
-                  <input type="text" id="edit_position_title" name="position_name" class="form-control" required>
-                </div>
-
-                <div class="col-12">
-                  <label class="form-label" for="edit_department">Department</label>
-                  <select class="form-select" id="edit_department" name="department_code" required>
-                    <option value="">Select Department</option>
-                    @foreach($departments as $department)
-                      <option value="{{ $department->department_code }}">{{ $department->department_name }}</option>
-                    @endforeach
-                  </select>
-                </div>
-
-                <div class="col-12">
-                  <label class="form-label" for="edit_description">Description</label>
-                  <textarea class="form-control" id="edit_description" name="description" rows="3" required></textarea>
-                </div>
-
-                <div class="col-12">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="edit_status" name="status">
-                    <label class="form-check-label" for="edit_status">Active Status</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-
+ 
     <!-- Delete Position Form (Hidden) -->
     <form id="deletePositionForm" method="POST" action="/position/delete" style="display: none;">
       @csrf
