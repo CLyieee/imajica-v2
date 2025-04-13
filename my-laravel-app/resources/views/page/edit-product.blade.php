@@ -157,7 +157,7 @@
         @csrf
         <input type="hidden" name="_method" value="POST">
         <div class="row">
-            <!-- First column-->
+            <!-- First column - Product Info -->
             <div class="col-12 col-lg-8">
                 <!-- Product Information -->
                 <div class="card mb-6">
@@ -165,240 +165,100 @@
                         <h5 class="card-tile mb-0">Product information</h5>
                     </div>
                     <div class="card-body">
-                        <div class="mb-6">
-                            <label class="form-label" for="ecommerce-product-name">Name</label>
-                            <input type="text" class="form-control" id="ecommerce-product-name" name="name" value="{{ $product->name }}" required />
+                        <!-- Product Picture -->
+                        <div class="mb-4">
+                            <label class="form-label">PRODUCT PICTURE</label>
+                            <input type="file" class="form-control" name="product_image" accept="image/*">
+                            <small class="text-muted">Upload a profile picture. Max size 2MB</small>
                         </div>
-                        <div class="row mb-6">
-                            <div class="col">
-                                <label class="form-label" for="ecommerce-product-sku">SKU</label>
-                                <input type="text" class="form-control" id="ecommerce-product-sku" name="sku" value="{{ $product->sku }}" required />
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="ecommerce-product-barcode">Barcode</label>
-                                <input type="text" class="form-control" id="ecommerce-product-barcode" name="bar_code" value="{{ $product->bar_code }}" required />
-                            </div>
-                        </div>
-                        <!-- Description -->
-                        <div>
-                            <label class="mb-1">Description (Optional)</label>
-                            <textarea name="description" class="form-control" rows="4">{{ $product->description }}</textarea>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Media -->
-                <div class="card mb-6">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0 card-title">Product Image</h5>
-                        <a href="javascript:void(0);" class="fw-medium">Add media from URL</a>
-                    </div>
-                    <div class="card-body">
-                        <input type="file" name="product_image" class="form-control" accept="image/*">
-                    </div>
-                </div>
+                        <!-- SKU -->
+                        <div class="mb-4">
+                            <label class="form-label">SKU</label>
+                            <input type="text" class="form-control" name="sku" value="{{ $product->sku }}" required>
+                        </div>
 
-                <!-- Inventory -->
-                <div class="card mb-6">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Inventory</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <!-- Navigation -->
-                            <div class="col-12 col-md-4 col-xl-5 col-xxl-4 mx-auto card-separator">
-                                <div class="d-flex justify-content-between flex-column mb-4 mb-md-0 pe-md-4">
-                                    <div class="nav-align-left">
-                                        <ul class="nav nav-pills flex-column w-100">
-                                            <li class="nav-item">
-                                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
-                                                    <i class="icon-base ti tabler-box icon-sm me-1_5"></i>
-                                                    <span class="align-middle">Restock</span>
-                                                </button>
-                                            </li>
-                                            <li class="nav-item">
-                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping">
-                                                    <i class="icon-base ti tabler-car icon-sm me-1_5"></i>
-                                                    <span class="align-middle">Shipping</span>
-                                                </button>
-                                            </li>
-                                            <li class="nav-item">
-                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attributes">
-                                                    <i class="icon-base ti tabler-link icon-sm me-1_5"></i>
-                                                    <span class="align-middle">Attributes</span>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /Navigation -->
-                            <!-- Options -->
-                            <div class="col-12 col-md-8 col-xl-7 col-xxl-8 pt-6 pt-md-0">
-                                <div class="tab-content p-0 ps-md-4">
-                                    <!-- Restock Tab -->
-                                    <div class="tab-pane fade show active" id="restock" role="tabpanel">
-                                        <h6 class="text-body">Options</h6>
-                                        <label class="form-label" for="ecommerce-product-stock">Add to Stock</label>
-                                        <div class="row mb-4 g-4 pe-md-4">
-                                            <div class="col-12 col-sm-9">
-                                                <input type="number" class="form-control" name="quantity" value="{{ $product->quantity }}" required />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Shipping Tab -->
-                                    <div class="tab-pane fade" id="shipping" role="tabpanel">
-                                        <h6 class="mb-3 text-body">Shipping Type</h6>
-                                        <div>
-                                            <div class="form-check mb-4">
-                                                <input class="form-check-input" type="radio" name="shipping_type" value="seller" id="seller" {{ $product->shipping_type == 'seller' ? 'checked' : '' }} />
-                                                <label class="form-check-label" for="seller">
-                                                    <span class="mb-1 h6">Fulfilled by Seller</span><br />
-                                                    <small>You'll be responsible for product delivery.<br />Any damage or delay during shipping may cost you a Damage fee.</small>
-                                                </label>
-                                            </div>
-                                            <div class="form-check mb-6">
-                                                <input class="form-check-input" type="radio" name="shipping_type" value="company" id="companyName" {{ $product->shipping_type == 'company' ? 'checked' : '' }} />
-                                                <label class="form-check-label" for="companyName">
-                                                    <span class="mb-1 h6">Fulfilled by Company name &nbsp;<span class="badge rounded-2 badge-warning bg-label-warning fs-tiny py-1">RECOMMENDED</span></span><br />
-                                                    <small>Your product, Our responsibility.<br />For a measly fee, we will handle the delivery process for you.</small>
-                                                </label>
-                                            </div>
-                                            <p class="mb-0">See our <a href="javascript:void(0);">Delivery terms and conditions</a> for details</p>
-                                        </div>
-                                    </div>
-                                    <!-- Attributes Tab -->
-                                    <div class="tab-pane fade" id="attributes" role="tabpanel">
-                                        <h6 class="mb-2 text-body">Attributes</h6>
-                                        <div>
-                                            <!-- Fragile Product -->
-                                            <div class="form-check mb-4">
-                                                <input class="form-check-input" type="checkbox" name="is_fragile" value="fragile" id="fragile" {{ $product->is_fragile ? 'checked' : '' }} />
-                                                <label class="form-check-label" for="fragile">
-                                                    <span class="fw-medium">Fragile Product</span>
-                                                </label>
-                                            </div>
-                                            <!-- Biodegradable -->
-                                            <div class="form-check mb-4">
-                                                <input class="form-check-input" type="checkbox" name="is_biodegradable" value="biodegradable" id="biodegradable" {{ $product->is_biodegradable ? 'checked' : '' }} />
-                                                <label class="form-check-label" for="biodegradable">
-                                                    <span class="fw-medium">Biodegradable</span>
-                                                </label>
-                                            </div>
-                                            <!-- Frozen Product -->
-                                            <div class="form-check mb-4">
-                                                <input class="form-check-input" type="checkbox" name="is_frozen" value="frozen" {{ $product->is_frozen ? 'checked' : '' }} />
-                                                <label class="form-check-label w-75 pe-12" for="frozen">
-                                                    <span class="mb-1 h6">Frozen Product</span>
-                                                    <input type="number" name="max_temperature" class="form-control" placeholder="Max. allowed Temperature" id="frozen" value="{{ $product->max_temperature }}" />
-                                                </label>
-                                            </div>
-                                            <!-- Exp Date -->
-                                            <div class="form-check mb-6">
-                                                <input class="form-check-input" type="checkbox" name="expiry_date" value="expDate" id="expDate" {{ $product->expiry_date ? 'checked' : '' }} />
-                                                <label class="form-check-label w-75 pe-12" for="date-input">
-                                                    <span class="mb-1 h6">Expiry Date of Product</span>
-                                                    <input type="date" name="expiry_date" class="product-date form-control" id="date-input" value="{{ $product->expiry_date }}" />
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /Attributes Tab -->
-                                </div>
-                            </div>
-                            <!-- /Options-->
+                        <!-- Item Name -->
+                        <div class="mb-4">
+                            <label class="form-label">ITEM NAME</label>
+                            <input type="text" class="form-control" name="name" value="{{ $product->name }}" required>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /First column -->
 
-            <!-- Second column -->
-            <div class="col-12 col-lg-4">
-                <!-- Pricing Card -->
-                <div class="card mb-6">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Pricing</h5>
-                    </div>
-                    <div class="card-body">
-                        <!-- Base Price -->
-                        <div class="mb-6">
-                            <label class="form-label" for="ecommerce-product-price">Base Price</label>
-                            <input type="number" step="0.01" name="base_price" class="form-control" id="ecommerce-product-price" value="{{ $product->base_price }}" required />
-                        </div>
-                        <!-- Discounted Price -->
-                        <div class="mb-6">
-                            <label class="form-label" for="ecommerce-product-discount-price">Discounted Price</label>
-                            <input type="number" step="0.01" name="discounted_price" class="form-control" id="ecommerce-product-discount-price" value="{{ $product->discounted_price }}" />
-                        </div>
-                        <!-- Charge tax check box -->
-                        <div class="form-check ms-2 mt-2 mb-4">
-                            <input class="form-check-input" type="checkbox" name="in_stock" value="" id="price-charge-tax" {{ $product->in_stock ? 'checked' : '' }} />
-                            <label class="switch-label" for="price-charge-tax"> Charge tax on this product </label>
-                        </div>
-                        <!-- Instock switch -->
-                        <div class="d-flex justify-content-between align-items-center border-top pt-2">
-                            <span class="mb-0">In stock</span>
-                            <div class="w-25 d-flex justify-content-end">
-                                <div class="form-check form-switch me-n3">
-                                    <input type="checkbox" name="in_stock" class="form-check-input" {{ $product->in_stock ? 'checked' : '' }} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Organize Card -->
-                <div class="card mb-6">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Organize</h5>
-                    </div>
-                    <div class="card-body">
                         <!-- Category -->
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="mb-6 col ecommerce-select2-dropdown">
-                                <label class="form-label mb-1" for="category-org">
-                                    <span>Product Category</span>
-                                </label>
-                                <select name="category_id" id="category-org" class="select2 form-select" data-placeholder="Select Category" required>
-                                    <option value="">Select Category</option>
-                                    @foreach($categories as $category)
-                                    <option value="{{ $category->category_id }}" {{ $product->category_id == $category->category_id ? 'selected' : '' }}>{{ $category->categoryTitle }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <button 
-                            class="fw-medium btn btn-icon btn-label-primary ms-4"
-                            data-bs-toggle="offcanvas" 
-                            data-bs-target="#offcanvasEcommerceCategoryList"
-                            >
-                            <i class="icon-base ti tabler-plus icon-md"></i>
-                            </button>
-                        </div>
-                        <!-- Status -->
-                        <div class="mb-6 col ecommerce-select2-dropdown">
-                            <label class="form-label mb-1" for="status-org">Status </label>
-                            <select name="status" id="status-org" class="select2 form-select" data-placeholder="Published" required>
-                                <option value="Published" {{ $product->status == 'Published' ? 'selected' : '' }}>Published</option>
-                                <option value="Scheduled" {{ $product->status == 'Scheduled' ? 'selected' : '' }}>Scheduled</option>
-                                <option value="Inactive" {{ $product->status == 'Inactive' ? 'selected' : '' }}>Inactive</option>
+                        <div class="mb-4">
+                            <label class="form-label">CATEGORY</label>
+                            <select class="form-select" name="category_id" required>
+                                <option value="">Select Category</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->category_id }}" {{ $product->category_id == $category->category_id ? 'selected' : '' }}>
+                                        {{ $category->categoryTitle }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
-                        <!-- Tags -->
-                        <div>
-                            <label for="ecommerce-product-tags" class="form-label mb-1">Tags</label>
-                            <input name="tags" id="ecommerce-product-tags" class="form-control" value="{{ $product->tags }}" aria-label="Product Tags" />
+
+                        <!-- Supplier -->
+                        <div class="mb-4">
+                            <label class="form-label">SUPPLIER</label>
+                            <select class="form-select" name="supplier_id" required>
+                                <option value="">Select Supplier</option>
+                                @foreach($suppliers as $supplier)
+                                    <option value="{{ $supplier->suppler_id }}" {{ $product->supplier_id == $supplier->suppler_id ? 'selected' : '' }}>
+                                        {{ $supplier->supplier_name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
-                        <!-- Back Button -->
-                        <div class="mt-4 pt-3 border-top">
-                            <button type="button" onclick="window.location.href='{{ route('page.product-list') }}'" class="btn btn-primary">
-                                <i class="ti tabler-arrow-left me-1"></i>Back to Product List
-                            </button>
+
+                        <!-- Base Price -->
+                        <div class="mb-4">
+                            <label class="form-label">BASE PRICE</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₱</span>
+                                <input type="number" class="form-control" name="base_price" value="{{ $product->base_price }}" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <!-- Stock Info -->  
+                        <div class="mb-4">
+                            <label class="form-label mb-2">STOCK INFORMATION</label>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <input type="number" class="form-control" name="quantity" placeholder="Total Stock" value="{{ $product->quantity }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="number" class="form-control" name="restock_point" placeholder="Restock Point" value="{{ $product->restock_point }}">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- /Second column -->
+
+            <!-- Second column - Dates -->
+            <div class="col-12 col-lg-4">
+                <div class="card mb-6">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Product Dates</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label">MANUFACTURING DATE</label>
+                            <input type="date" class="form-control" name="manufacturing_date" value="{{ $product->manufacturing_date }}">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">EXPIRATION DATE</label>
+                            <input type="date" class="form-control" name="expiry_date" value="{{ $product->expiry_date }}">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">REMOVAL DATE</label>
+                            <input type="date" class="form-control" name="removal_date" value="{{ $product->removal_date }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
   </div>
@@ -613,10 +473,14 @@
             const requiredFields = {
                 'name': 'Name',
                 'sku': 'SKU',
-                'bar_code': 'Barcode',
+                'supplier_id': 'Supplier', 
+                'quantity': 'Quantity',
+                'restock_point': 'Restock Point',
+                'manufacturing_date': 'Manufacturing Date',
+                'expiry_date': 'Expiry Date',
+                'removal_date': 'Removal Date',
                 'base_price': 'Base price',
-                'category_id': 'Category',
-                'status': 'Status'
+                'category_id': 'Category'
             };
 
             for (const [field, label] of Object.entries(requiredFields)) {

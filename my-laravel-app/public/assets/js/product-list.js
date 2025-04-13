@@ -1,11 +1,6 @@
 document.addEventListener("DOMContentLoaded",function(e){
   config.colors.borderColor,config.colors.bodyBg,config.colors.headingColor;
   let t=document.querySelector(".datatables-products"),
-  o={
-    1:{title:"Scheduled",class:"bg-label-warning"},
-    2:{title:"Published",class:"bg-label-success"},
-    3:{title:"Inactive",class:"bg-label-danger"}
-  },
   r={
     0:{title:"Out of Stock", class:"bg-label-danger"},
     1:{title:"In Stock", class:"bg-label-success"}
@@ -22,15 +17,17 @@ t&&new DataTable(t,{
     }
   },
   columns:[
-    {data:"bar_code"}, // Primary identifier
-    {data:"bar_code",orderable:!1,render:DataTable.render.select()},
+    {data:"id"},
+    {data:"id", orderable:!1, render:DataTable.render.select()},
     {data:"name"},
     {data:"category"},
-    {data:"stock_status"},
-    {data:"sku"},
+    {data:"supplier_id"},
     {data:"base_price"},
     {data:"quantity"},
-    {data:"status"},
+    {data:"restock_point"},
+    {data:"manufacturing_date"},
+    {data:"expiry_date"},
+    {data:"removal_date"},
     {data:"actions"}
   ],
   columnDefs:[
@@ -67,7 +64,7 @@ t&&new DataTable(t,{
             </div>
             <div class="d-flex flex-column">
               <h6 class="text-nowrap mb-0">${n.name}</h6>
-              <small class="text-truncate d-none d-sm-block">${n.description || ''}</small>
+              <small class="text-truncate d-none d-sm-block">SKU: ${n.sku}</small>
             </div>
           </div>
         `;
@@ -81,32 +78,21 @@ t&&new DataTable(t,{
       }
     },
     {
-      targets:4,
-      orderable:!1,
-      responsivePriority:3,
+      targets:4, 
       render:function(e,t,n,a){
-        const status = r[n.stock_status] || {title: 'Unknown', class: 'bg-label-secondary'};
-        return `<span class="badge ${status.class}">${status.title}</span>`;
+        return n.suppler_id;
       }
     },
     {
       targets:5,
-      render:function(e,t,n,a){return"<span>"+n.sku+"</span>"}
+      render:function(e,t,n,a){
+        return `<span>₱${parseFloat(n.base_price).toFixed(2)}</span>`;
+      }
     },
     {
       targets:6,
-      render:function(e,t,n,a){return"<span>"+n.base_price+"</span>"}
-    },
-    {
-      targets:7,
-      responsivePriority:4,
-      render:function(e,t,n,a){return"<span>"+n.quantity+"</span>"}
-    },
-    {
-      targets:-2,
       render:function(e,t,n,a){
-        n=n.status;
-        return'<span class="badge '+o[n]?.class+'" text-capitalized>'+o[n]?.title+"</span>"
+        return n.quantity;
       }
     },
     {
@@ -167,25 +153,6 @@ t&&new DataTable(t,{
   },
   initComplete:function(){
     var e=this.api();
-    e.columns(-2).every(function(){
-      let t=this,n=document.createElement("select");
-      n.id="ProductStatus",n.className="form-select text-capitalize",n.innerHTML='<option value="">Status</option>';
-      document.querySelector(".product_status").appendChild(n);
-      
-      // Add all possible status options rather than just the ones in use
-      Object.values(o).forEach(status => {
-        let option = document.createElement("option");
-        option.value = status.title;
-        option.textContent = status.title;
-        n.appendChild(option);
-      });
-
-      n.addEventListener("change",function(){
-        var e=n.value?`^${n.value}$`:"";
-        t.search(e,!0,!1).draw()
-      });
-    }),
-    
     e.columns(3).every(function(){
       let t=this,n=document.createElement("select");
       n.id="ProductCategory";

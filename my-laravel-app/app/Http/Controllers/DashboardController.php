@@ -496,8 +496,9 @@ class DashboardController extends Controller
     }
     public function add_product()
     {
+        $suppliers = supplier::all();
         $categories = category::all();
-        return view('page.add-product', compact('categories'));
+        return view('page.add-product', compact('categories','suppliers'));
     }
     public function add_order()
     {
