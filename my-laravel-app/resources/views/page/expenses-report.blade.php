@@ -378,7 +378,7 @@
                   <td><span class="badge bg-label-success">Paid</span></td>
                   <td>
                     <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i>Export
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
                     </button>
                   </td>
                 </tr>
@@ -390,7 +390,7 @@
                   <td><span class="badge bg-label-success">Paid</span></td>
                   <td>
                     <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i>Export
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
                     </button>
                   </td>
                 </tr>
@@ -402,7 +402,7 @@
                   <td><span class="badge bg-label-success">Paid</span></td>
                   <td>
                     <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i>Export
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
                     </button>
                   </td>
                 </tr>
@@ -414,7 +414,7 @@
                   <td><span class="badge bg-label-success">Paid</span></td>
                   <td>
                     <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i>Export
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
                     </button>
                   </td>
                 </tr>
@@ -426,7 +426,7 @@
                   <td><span class="badge bg-label-success">Paid</span></td>
                   <td>
                     <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i>Export
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
                     </button>
                   </td>
                 </tr>
@@ -438,7 +438,7 @@
                   <td><span class="badge bg-label-success">Paid</span></td>
                   <td>
                     <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i>Export
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
                     </button>
                   </td>
                 </tr>
@@ -450,7 +450,7 @@
                   <td><span class="badge bg-label-success">Paid</span></td>
                   <td>
                     <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i>Export
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
                     </button>
                   </td>
                 </tr>
@@ -462,7 +462,7 @@
                   <td><span class="badge bg-label-warning">Pending</span></td>
                   <td>
                     <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i>Export
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
                     </button>
                   </td>
                 </tr>
@@ -474,7 +474,7 @@
                   <td><span class="badge bg-label-success">Paid</span></td>
                   <td>
                     <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i>Export
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
                     </button>
                   </td>
                 </tr>
@@ -486,7 +486,7 @@
                   <td><span class="badge bg-label-danger">Unpaid</span></td>
                   <td>
                     <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i>Export
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
                     </button>
                   </td>
                 </tr>

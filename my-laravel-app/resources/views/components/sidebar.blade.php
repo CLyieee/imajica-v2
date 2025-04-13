@@ -309,6 +309,14 @@
                     </a>
                 </li>
 
+                <li class="menu-item {{  request()->is('sales-transaction') || request()->is('commision-employee') || request()->is('employee-sales') || request()->is('purchase') || request()->is('void-logs') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base ti tabler-chart-pie "></i>
+                <div data-i18n="Accounting">Accounting</div>
+            </a>
+                
+                <ul class="menu-sub">
+
                 <li class="menu-item {{ request()->is('sales-transaction') ? 'active' : '' }}">
                     <a href="/sales-transaction" class="menu-link">
                         <div data-i18n="Services Transaction">Services Transaction</div>
@@ -337,8 +345,10 @@
                         <div data-i18n="Void Logs">Void Logs</div>
                     </a>
                 </li>
+                </ul>
 
             </ul>
+        </li>
         </li>
 
 
