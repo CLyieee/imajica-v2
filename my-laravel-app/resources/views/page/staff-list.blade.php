@@ -215,8 +215,8 @@
                               data-name="{{ $staff->firstname }} {{ $staff->lastname }}"
                               data-email="{{ $staff->email }}"
                               data-contact="{{ $staff->contact_number }}"
-                              data-position="{{ $staff->position }}"
-                              data-department="{{ $staff->department }}"
+                              data-position="{{ $staff->position_code }}"
+                              data-department="{{ $staff->department? $staff->department->department_name : $staff->department_code }}"
                               data-join-date="{{ $staff->join_date }}"
                               data-employment-type="{{ $staff->employment_type }}"
                               data-branch="{{ $staff->branch_code }}"
@@ -533,7 +533,7 @@
                 
                 <div class="col-md-6">
                   <label for="edit_department" class="form-label">Department</label>
-                  <input type="text" class="form-control" id="edit_department" name="department" required>
+                  <input type="text" class="form-control" id="edit_department" name="department_code" required>
                 </div>
 
                 <div class="col-md-6">
