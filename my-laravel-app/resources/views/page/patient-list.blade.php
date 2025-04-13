@@ -372,27 +372,33 @@
                     <div class="card-body">
                       <!-- Patient Header -->
                       <div class="d-flex align-items-center mb-3">
-                        <div class="avatar-wrapper me-3">
-                          @if($patient->image_path)
-                            <img src="{{ asset('storage/'.$patient->image_path) }}" alt="Avatar" class="rounded-circle avatar-img">
-                          @else
-                            <div class="avatar-placeholder">
-                              <div class="avatar-circle">
-                                <div class="avatar-silhouette">
-                                  <div class="avatar-head"></div>
-                                  <div class="avatar-body"></div>
-                                </div>
-                                <span class="initials">
-                                  {{ strtoupper(substr($patient->firstname ?? '', 0, 1) . substr($patient->lastname ?? '', 0, 1)) }}
-                                </span>
-                              </div>
-                            </div>
-                          @endif
-                        </div>
-                        <div>
-                          <h5 class="mb-1">{{ $patient->firstname }} {{ $patient->lastname }}</h5>
-                          <p class="text-muted mb-0">{{ $patient->email ?? 'No email provided' }}</p>
-                        </div>
+                          <div class="avatar-wrapper">
+                              @if($patient->image_path && Storage::disk('public')->exists($patient->image_path))
+                                  <div class="avatar-preview">
+                                      <img id="imagePreview_{{ $patient->patient_id }}" 
+                                           src="{{ asset('storage/'.$patient->image_path) }}" 
+                                           alt="Profile Preview"
+                                           class="rounded-circle"
+                                           style="width: 100%; height: 100%; object-fit: cover;">
+                                  </div>
+                              @else
+                                  <div class="avatar-placeholder">
+                                      <div class="avatar-circle">
+                                          <div class="avatar-silhouette">
+                                              <div class="avatar-head"></div>
+                                              <div class="avatar-body"></div>
+                                          </div>
+                                          <span class="initials">
+                                              {{ strtoupper(substr($patient->firstname ?? '', 0, 1) . substr($patient->lastname ?? '', 0, 1)) }}
+                                          </span>
+                                      </div>
+                                  </div>
+                              @endif
+                          </div>
+                          <div>
+                              <h5 class="mb-1">{{ $patient->firstname }} {{ $patient->lastname }}</h5>
+                              <p class="text-muted mb-0">{{ $patient->email ?? 'No email provided' }}</p>
+                          </div>
                       </div>
 
                       <!-- Patient Details -->
@@ -428,12 +434,7 @@
                         <a href="{{ route('patient.view', $patient->patient_id) }}" class="btn btn-sm btn-primary">
                           <i class="ti tabler-eye me-1"></i> View
                         </a>
-                        <button type="button" class="btn btn-sm btn-info edit-patient"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editPatientModal"
-                          data-id="{{ $patient->patient_id }}">
-                          <i class="ti tabler-edit me-1"></i> Edit
-                        </button>
+                       
                         <button type="button" class="btn btn-sm btn-danger delete-patient" 
                           data-id="{{ $patient->patient_id }}"
                           data-name="{{ $patient->firstname }} {{ $patient->lastname }}">
@@ -471,6 +472,35 @@
                   border-radius: 50%;
                   border: 3px solid #FFFFFF;
                   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  margin: 0 auto 1rem;
+                }
+
+                .avatar-preview {
+                  width: 100%;
+                  height: 100%;
+                  position: relative;
+                  border-radius: 50%;
+                  overflow: hidden;
+                }
+
+                .avatar-preview img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  border-radius: 50%;
+                }
+
+                .profile-upload-container {
+                  width: 200px;
+                  margin-bottom: 2rem;
+                }
+
+                .avatar-upload {
+                  position: relative;
+                  text-align: center;
                 }
 
                 .avatar-placeholder {
@@ -530,35 +560,27 @@
                   text-transform: uppercase;
                 }
 
-                .avatar-img {
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                }
-
                 .card-body {
-                  text-align: center;  /* Center the content */
+                  text-align: center;
                   padding: 1.5rem;
                 }
 
-                /* Update patient header layout */
                 .d-flex.align-items-center.mb-3 {
-                  flex-direction: column;  /* Stack elements vertically */
+                  display: flex !important;
+                  flex-direction: column;
+                  align-items: center !important;
                   text-align: center;
+                  width: 100%;
                 }
 
                 .d-flex.align-items-center.mb-3 > div:last-child {
-                  margin-top: 0.5rem;  /* Add space between avatar and text */
+                  margin-top: 1rem;
+                  text-align: center;
+                  width: 100%;
                 }
 
-                /* Optional: Adjust card width if needed */
-                .col-md-6.col-lg-4 {
-                  min-width: 300px;  /* Ensure minimum card width */
-                }
-
-                /* Update card margins */
-                .card {
-                  margin-bottom: 1.5rem;
+                .avatar-wrapper.me-3 {
+                  margin-right: 0 !important;
                 }
 
                 .patient-details {
@@ -609,16 +631,6 @@
                   max-height: 80px;
                   overflow-y: auto;
                 }
-
-                /* .card {
-                  border: 1px solid #e0e0e0;
-                  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-                } */
-
-                /* .card:hover {
-                  transform: translateY(-2px);
-                  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                } */
 
                 .action-buttons {
                   display: flex;

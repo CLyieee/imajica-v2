@@ -271,6 +271,74 @@
         background-color: rgba(10, 54, 34, 0.1) !important;
         color: #0a3622 !important;
       }
+
+      /* Add these shared avatar styles */
+      .avatar-wrapper,
+      .avatar-preview {
+        width: 120px;
+        height: 120px;
+        overflow: hidden;
+        border-radius: 50%;
+        border: 3px solid #FFFFFF;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .avatar-placeholder {
+        width: 100%;
+        height: 100%;
+        background: #E6EEFF;
+        border-radius: 50%;
+        position: relative;
+      }
+
+      .avatar-circle {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .avatar-silhouette {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      .avatar-head {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: #1B3F8F;
+        border-radius: 50%;
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .avatar-body {
+        position: absolute;
+        width: 90px;
+        height: 45px;
+        background: #1B3F8F;
+        border-radius: 45px 45px 0 0;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .initials {
+        color: #1B3F8F;
+        font-size: 2.5rem;
+        font-weight: 600;
+        position: relative;
+        z-index: 2;
+        text-transform: uppercase;
+      }
     </style>
   </head>
 
@@ -504,7 +572,7 @@
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <!-- Add this after the header and before the first form group -->
+                          <!-- Update the form tag to include enctype -->
                           <form method="POST" action="{{ route('patient.create') }}" enctype="multipart/form-data" id="patientForm">
                             @csrf
                             <div class="row g-6">
@@ -514,10 +582,9 @@
                                     <div class="avatar-preview">
                                       <img
                                         id="imagePreview"
-                                        src="../../assets/img/avatars/default-avatar.png"
                                         alt="Profile Preview"
                                         class="rounded-circle"
-                                        style="width: 100%; height: 100%; object-fit: cover;"
+                                        style="width: 100%; height: 100%; object-fit: cover; display: none;"
                                       />
                                     </div>
                                     <div class="avatar-edit">
@@ -530,7 +597,7 @@
                                       />
                                       <label
                                         for="imageUpload"
-                                        class="btn btn-primary btn-sm mt-2"
+                                        class="btn btn-outline-primary btn-sm mt-2"
                                       >
                                         <i class="ti tabler-upload me-1"></i>Upload Photo (Optional)
                                       </label>
@@ -725,58 +792,118 @@
 
     <!-- Add this JavaScript before the closing body tag -->
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const imageUpload = document.getElementById("imageUpload");
-        const imagePreview = document.getElementById("imagePreview");
-        const firstName = document.getElementById("firstName");
-        const lastName = document.getElementById("lastName");
+document.addEventListener("DOMContentLoaded", function () {
+  const imageUpload = document.getElementById("imageUpload");
+  const imagePreview = document.getElementById("imagePreview");
+  const previewContainer = document.querySelector(".avatar-preview");
+  const firstnameInput = document.getElementById("firstname");
+  const lastnameInput = document.getElementById("lastname");
 
-        function createInitialsAvatar(initials) {
-          const canvas = document.createElement("canvas");
-          const context = canvas.getContext("2d");
-          canvas.width = 150;
-          canvas.height = 150;
+  function getInitials() {
+    const firstname = firstnameInput.value.trim();
+    const lastname = lastnameInput.value.trim();
+    if (firstname || lastname) {
+      return `${firstname.charAt(0)}${lastname.charAt(0)}`.toUpperCase();
+    }
+    return '';
+  }
 
-          // Draw circle with light blue background
-          context.fillStyle = "#E6EEFF";  // Light blue background
-          context.beginPath();
-          context.arc(75, 75, 75, 0, Math.PI * 2);
-          context.fill();
+  function updateInitials() {
+    const initials = getInitials();
+    if (!imagePreview.style.display || imagePreview.style.display === 'none') {
+      showPlaceholderAvatar(initials);
+    }
+  }
 
-          // Draw silhouette
-          context.fillStyle = "#1B3F8F";  // Darker blue for silhouette
-          
-          // Draw head
-          context.beginPath();
-          context.arc(75, 60, 30, 0, Math.PI * 2);
-          context.fill();
+  function showPlaceholderAvatar(initials = '') {
+    // Hide image preview
+    imagePreview.style.display = 'none';
+    
+    // Remove existing placeholder if any
+    const existingPlaceholder = previewContainer.querySelector('.avatar-placeholder');
+    if (existingPlaceholder) {
+      existingPlaceholder.remove();
+    }
 
-          // Draw body
-          context.beginPath();
-          context.arc(75, 140, 45, Math.PI * 1.1, Math.PI * 1.9);
-          context.fill();
+    // Create new placeholder
+    const placeholder = document.createElement('div');
+    placeholder.className = 'avatar-placeholder';
+    placeholder.innerHTML = `
+      <div class="avatar-circle">
+        ${!initials ? `
+          <div class="avatar-silhouette">
+            <div class="avatar-head"></div>
+            <div class="avatar-body"></div>
+          </div>
+        ` : ''}
+        ${initials ? `<span class="initials">${initials}</span>` : ''}
+      </div>
+    `;
+    previewContainer.appendChild(placeholder);
+  }
 
-          return canvas.toDataURL();
-        }
+  function showImage(src) {
+    // Remove placeholder if exists
+    const placeholder = previewContainer.querySelector('.avatar-placeholder');
+    if (placeholder) {
+      placeholder.remove();
+    }
+    
+    // Show and update image preview
+    imagePreview.style.display = 'block';
+    imagePreview.src = src;
+    imagePreview.style.width = '100%';
+    imagePreview.style.height = '100%';
+    imagePreview.style.objectFit = 'cover';
+  }
 
-        // Handle image upload
-        imageUpload.addEventListener("change", function(e) {
-          const file = e.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-              imagePreview.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-          } else {
-            imagePreview.src = createInitialsAvatar();
-          }
+  // Handle image upload
+  imageUpload.addEventListener("change", function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      const maxSize = 2 * 1024 * 1024; // 2MB
+
+      if (!validTypes.includes(file.type)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid File Type',
+          text: 'Please upload a JPEG, PNG, or JPG image'
         });
+        this.value = '';
+        showPlaceholderAvatar(getInitials());
+        return;
+      }
 
-        // Set default avatar on load
-        imagePreview.src = createInitialsAvatar();
-      });
-    </script>
+      if (file.size > maxSize) {
+        Swal.fire({
+          icon: 'error',
+          title: 'File Too Large',
+          text: 'Image must be less than 2MB'
+        });
+        this.value = '';
+        showPlaceholderAvatar(getInitials());
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        showImage(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      showPlaceholderAvatar(getInitials());
+    }
+  });
+
+  // Update initials when name changes
+  firstnameInput.addEventListener('input', updateInitials);
+  lastnameInput.addEventListener('input', updateInitials);
+
+  // Show placeholder on initial load
+  showPlaceholderAvatar();
+});
+</script>
     <button
       class="btn btn-sm btn-success view-patient"
       data-bs-toggle="modal"

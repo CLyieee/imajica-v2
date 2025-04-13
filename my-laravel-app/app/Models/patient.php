@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Patient extends Model
 {
@@ -15,21 +16,16 @@ class Patient extends Model
         'lastname',
         'email',
         'contact_number',
-        'birthdate',
         'gender',
-        'patient_tier_id',
+        'birthdate',
         'occupation',
         'address',
-        'emergency_contact_name',
-        'emergency_contact_number',
-        'medical_concerns',
-        'current_medications',
-        'note_from_admin',
-        'image_path'  // Add this to fillable
+        'image_path',
+        'patient_tier_id'
     ];
 
     protected $attributes = [
-        'image_path' => null  // Set default value to null
+        'image_path' => null
     ];
 
     public function contact()
@@ -37,9 +33,9 @@ class Patient extends Model
         return $this->hasOne(Contact::class, 'patient_id', 'patient_id');
     }
 
-    public function tier()
+    public function patientTier(): BelongsTo
     {
-        return $this->belongsTo(Tier::class, 'patient_tier_id', 'patient_tier_id');
+        return $this->belongsTo(PatientTier::class, 'patient_tier_id');
     }
 
     public function bookings()
