@@ -115,6 +115,9 @@
       href="../../assets/vendor/libs/%40form-validation/form-validation.css"
     />
 
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     <!-- Helpers -->
     <script src="../../assets/vendor/js/helpers.js"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
@@ -208,32 +211,10 @@
                         </td>
                         <td>
                           <div class="d-inline-block">
-                            <button type="button" class="btn btn-sm btn-success view-staff"
-                              data-bs-toggle="modal"
-                              data-bs-target="#staffModal"
-                              data-id="{{ $staff->id }}"
-                              data-name="{{ $staff->firstname }} {{ $staff->lastname }}"
-                              data-email="{{ $staff->email }}"
-                              data-contact="{{ $staff->contact_number }}"
-                              data-position="{{ $staff->position_code }}"
-                              data-department="{{ $staff->department? $staff->department->department_name : $staff->department_code }}"
-                              data-join-date="{{ $staff->join_date }}"
-                              data-employment-type="{{ $staff->employment_type }}"
-                              data-branch="{{ $staff->branch_code }}"
-                              data-address="{{ $staff->address }}"
-                              data-emergency-contact="{{ $staff->emergency_contact_name }}"
-                              data-emergency-number="{{ $staff->emergency_contact_number }}"
-                              @if($staff->image_path) 
-                                data-profile-image="{{ asset('storage/'.$staff->image_path) }}" 
-                              @endif>
-                              <i class="ti tabler-eye me-1"></i> View
-                            </button>
-                            <button type="button" class="btn btn-sm btn-info edit-staff"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editStaffModal"
-                              data-id="{{ $staff->id }}">
+                          
+                            <a href="{{ route('staff.edit', $staff->id) }}" class="btn btn-sm btn-info">
                               <i class="ti tabler-edit me-1"></i> Edit
-                            </button>
+                            </a>
                             <button type="button" class="btn btn-sm btn-danger delete-staff" 
                               data-id="{{ $staff->id }}"
                               data-name="{{ $staff->firstname }} {{ $staff->lastname }}">
@@ -285,14 +266,14 @@
     </div>
     <!-- / Layout wrapper -->
 
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/theme.js -->
-
+    <!-- Core JS --> 
     <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
-
     <script src="../../assets/vendor/libs/popper/popper.js"></script>
-
     <script src="../../assets/vendor/js/bootstrap.js"></script>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
 
     <script src="../../assets/vendor/libs/%40algolia/autocomplete-js.js"></script>
@@ -329,12 +310,19 @@
     <script src="../../assets/vendor/libs/%40form-validation/popular.js"></script>
     <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
     <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
+
+    <!-- Initialize DataTable -->
+    <script>
+      $(document).ready(function() {
+        $('#staffTable').DataTable();
+      });
+    </script>
+
     <script>
       $(document).ready(function () {
         $("#servicesTable").DataTable();
       });
     </script>
-
 
     <!-- Staff Modal -->
     <div class="modal fade" id="staffModal" tabindex="-1" aria-hidden="true">
@@ -461,137 +449,6 @@
             </button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Edit Staff Modal -->
-    <div class="modal fade" id="editStaffModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-          <form id="editStaffForm" method="POST" action="{{ route('staff.update') }}" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-            <input type="hidden" name="staff_id" id="edit_staff_id">
-            
-            <div class="modal-header bg-info">
-              <h5 class="modal-title text-white">
-                <i class="ti tabler-edit me-1"></i> Edit Staff
-              </h5>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <div class="modal-body">
-              <div class="row g-3">
-                <!-- Personal Information Section -->
-                <div class="col-12">
-                  <h6 class="fw-semibold">Personal Information</h6>
-                  <hr class="mt-0">
-                </div>
-                
-                <!-- Profile Image -->
-                <div class="col-12 text-center mb-3">
-                  <div class="patient-profile-wrapper mx-auto position-relative">
-                    <img id="edit_preview_image" src="../../assets/img/avatars/default-avatar.png" 
-                         class="patient-profile-image" alt="Staff Profile">
-                    <div class="profile-image-overlay">
-                      <label for="edit_image_path" class="btn btn-sm btn-primary position-absolute bottom-0 end-0 m-2">
-                        <i class="ti tabler-camera"></i>
-                      </label>
-                      <input type="file" name="image_path" id="edit_image_path" class="d-none" accept="image/*">
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- Name Fields -->
-                <div class="col-md-6">
-                  <label for="edit_firstname" class="form-label">First Name</label>
-                  <input type="text" class="form-control" id="edit_firstname" name="firstname" required>
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_lastname" class="form-label">Last Name</label>
-                  <input type="text" class="form-control" id="edit_lastname" name="lastname" required>
-                </div>
-                
-                <!-- Contact Fields -->
-                <div class="col-md-6">
-                  <label for="edit_email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="edit_email" name="email" required>
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_contact_number" class="form-label">Contact Number</label>
-                  <input type="text" class="form-control" id="edit_contact_number" name="contact_number" required>
-                </div>
-                
-                <!-- Employment Details -->
-                <div class="col-md-6">
-                  <label for="edit_position" class="form-label">Position</label>
-                  <input type="text" class="form-control" id="edit_position" name="position" required>
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_department" class="form-label">Department</label>
-                  <input type="text" class="form-control" id="edit_department" name="department_code" required>
-                </div>
-
-                <div class="col-md-6">
-                  <label for="edit_join_date" class="form-label">Join Date</label>
-                  <input type="date" class="form-control" id="edit_join_date" name="join_date" required>
-                </div>
-
-                <div class="col-md-6">
-                  <label for="edit_employment_type" class="form-label">Employment Type</label>
-                  <select class="form-select" id="edit_employment_type" name="employment_type" required>
-                    <option value="">Select Type</option>
-                    <option value="Full-time">Full-time</option>
-                    <option value="Part-time">Part-time</option>
-                    <option value="Contract">Contract</option>
-                    <option value="Freelance">Freelance</option>
-                  </select>
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_branch_code" class="form-label">Branch</label>
-                  <select class="form-select" id="edit_branch_code" name="branch_code" required>
-                    <option value="">Select Branch</option>
-                    @foreach($branches as $branch)
-                      <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
-                    @endforeach
-                  </select>
-                </div>
-                
-                <div class="col-md-6"></div>
-                
-                <div class="col-12">
-                  <label for="edit_address" class="form-label">Address</label>
-                  <textarea class="form-control" id="edit_address" name="address" rows="2" required></textarea>
-                </div>
-                
-                <!-- Emergency Contact Section -->
-                <div class="col-12 mt-3">
-                  <h6 class="fw-semibold">Emergency Contact</h6>
-                  <hr class="mt-0">
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_emergency_contact_name" class="form-label">Contact Name</label>
-                  <input type="text" class="form-control" id="edit_emergency_contact_name" name="emergency_contact_name">
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="edit_emergency_contact_number" class="form-label">Contact Number</label>
-                  <input type="text" class="form-control" id="edit_emergency_contact_number" name="emergency_contact_number">
-                </div>
-              </div>
-            </div>
-            
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-info">Save Changes</button>
-            </div>
-          </form>
         </div>
       </div>
     </div>
@@ -727,179 +584,130 @@
 
     <!-- JavaScript for staff modals -->
     <script>
-      // Create initials avatar when no image is available
-      function createInitialsAvatar(name) {
-        if (!name) return '';
-        
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        canvas.width = 120;
-        canvas.height = 120;
+      // Add SweetAlert default configuration
+      const swalConfig = {
+        customClass: {
+          container: 'swal-container-class',
+          popup: 'swal-popup-class',
+          confirmButton: 'btn btn-danger me-3',
+          cancelButton: 'btn btn-secondary'
+        },
+        backdrop: true,
+        allowOutsideClick: false,
+        buttonsStyling: false
+      };
 
-        context.fillStyle = "#0a3622";
-
-        context.beginPath();
-        context.arc(60, 60, 60, 0, Math.PI * 2);
-        context.fill();
-
-        const initials = name
-          .split(" ")
-          .map(word => word[0])
-          .join("")
-          .toUpperCase();
-
-        context.font = "bold 48px Arial";
-        context.fillStyle = "#FFFFFF";
-        context.textAlign = "center";
-        context.textBaseline = "middle";
-        context.fillText(initials, 60, 60);
-
-        return canvas.toDataURL();
-      }
-
-      // Handle staff actions
       document.addEventListener("DOMContentLoaded", function() {
-        // Image preview for edit form
-        document.getElementById('edit_image_path').addEventListener('change', function(e) {
-          if (e.target.files && e.target.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-              document.getElementById('edit_preview_image').src = e.target.result;
-            }
-            reader.readAsDataURL(e.target.files[0]);
-          }
-        });
+        // Create initials avatar when no image is available
+        function createInitialsAvatar(name) {
+          if (!name) return '';
+          
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          canvas.width = 120;
+          canvas.height = 120;
 
-        // View staff details
-        const viewButtons = document.querySelectorAll(".view-staff");
-        viewButtons.forEach(button => {
-          button.addEventListener("click", function() {
-            const data = this.dataset;
-            
-            // Store staff ID for edit button
-            document.getElementById("editStaffLink").setAttribute('data-id', data.id);
-            
-            // Set profile image
-            const profileImage = document.getElementById("modalProfileImage");
-            profileImage.src = data.profileImage || createInitialsAvatar(data.name);
-            
-            // Basic information
-            document.getElementById("modalStaffName").textContent = data.name || '';
-            document.getElementById("modalStaffNameProfile").textContent = data.name || '';
-            document.getElementById("modalPosition").textContent = data.position || '';
-            document.getElementById("modalContact").textContent = data.contact || 'Not provided';
-            document.getElementById("modalEmail").textContent = data.email || 'Not provided';
-            document.getElementById("modalDepartment").textContent = data.department || 'Not specified';
-            document.getElementById("modalAddress").textContent = data.address || 'Not provided';
-            
-            // Employment information
-            document.getElementById("modalJoinDate").textContent = data.joinDate || 'Not provided';
-            document.getElementById("modalEmploymentType").textContent = data.employmentType || 'Not specified';
-            document.getElementById("modalBranch").textContent = getBranchName(data.branch) || 'Not assigned';
-            
-            // Emergency contact
-            document.getElementById("modalEmergencyContact").textContent = data.emergencyContact || 'Not provided';
-            document.getElementById("modalEmergencyNumber").textContent = data.emergencyNumber || '';
-          });
-        });
-        
-        // Get branch name from branch code
-        function getBranchName(branchCode) {
-          const branchSelect = document.getElementById('edit_branch_code');
-          for (let i = 0; i < branchSelect.options.length; i++) {
-            if (branchSelect.options[i].value === branchCode) {
-              return branchSelect.options[i].text;
-            }
-          }
-          return null;
-        }
-        
-        // Edit staff button click
-        document.getElementById('editStaffLink').addEventListener('click', function() {
-          const staffId = this.getAttribute('data-id');
-          // Open the edit modal programmatically after the view modal is dismissed
-          $('#staffModal').on('hidden.bs.modal', function () {
-            // Populate the edit form
-            populateEditForm(staffId);
-            // Show the edit modal
-            $('#editStaffModal').modal('show');
-            // Remove the event to prevent multiple bindings
-            $('#staffModal').off('hidden.bs.modal');
-          });
-        });
-        
-        // Direct edit button click
-        const editButtons = document.querySelectorAll(".edit-staff");
-        editButtons.forEach(button => {
-          button.addEventListener("click", function() {
-            const staffId = this.dataset.id;
-            populateEditForm(staffId);
-          });
-        });
+          context.fillStyle = "#0a3622";
 
-        // Function to populate edit form with staff data
-        function populateEditForm(staffId) {
-          // Find the view button for this staff to get data
-          const viewButton = document.querySelector(`.view-staff[data-id="${staffId}"]`);
-          if (!viewButton) return;
-          
-          const data = viewButton.dataset;
-          
-          // Set form action and staff ID
-          document.getElementById('edit_staff_id').value = staffId;
-          
-          // Set image preview
-          const previewImage = document.getElementById('edit_preview_image');
-          previewImage.src = data.profileImage || createInitialsAvatar(data.name);
-          
-          // Fill form fields with staff data
-          document.getElementById('edit_firstname').value = data.name.split(' ')[0] || '';
-          document.getElementById('edit_lastname').value = data.name.split(' ').slice(1).join(' ') || '';
-          document.getElementById('edit_email').value = data.email || '';
-          document.getElementById('edit_contact_number').value = data.contact || '';
-          document.getElementById('edit_position').value = data.position || '';
-          document.getElementById('edit_department').value = data.department || '';
-          document.getElementById('edit_join_date').value = data.joinDate || '';
-          document.getElementById('edit_employment_type').value = data.employmentType || '';
-          document.getElementById('edit_branch_code').value = data.branch || '';
-          document.getElementById('edit_address').value = data.address || '';
-          document.getElementById('edit_emergency_contact_name').value = data.emergencyContact || '';
-          document.getElementById('edit_emergency_contact_number').value = data.emergencyNumber || '';
+          context.beginPath();
+          context.arc(60, 60, 60, 0, Math.PI * 2);
+          context.fill();
+
+          const initials = name
+            .split(" ")
+            .map(word => word[0])
+            .join("")
+            .toUpperCase();
+
+          context.font = "bold 48px Arial";
+          context.fillStyle = "#FFFFFF";
+          context.textAlign = "center";
+          context.textBaseline = "middle";
+          context.fillText(initials, 60, 60);
+
+          return canvas.toDataURL();
         }
-        
-        // Delete staff confirmation
+
+        // Handle delete staff button clicks
         const deleteButtons = document.querySelectorAll(".delete-staff");
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteStaffModal'));
         
         deleteButtons.forEach(button => {
           button.addEventListener("click", function() {
             const staffId = this.dataset.id;
             const staffName = this.dataset.name;
             
-            document.getElementById("deleteStaffName").textContent = staffName;
-            document.getElementById("deleteStaffForm").action = `/staff/${staffId}`;
-            
-            deleteModal.show();
+            // Show delete confirmation
+            Swal.fire({
+              ...swalConfig,
+              title: 'Confirm Delete',
+              html: `Are you sure you want to delete staff <strong>${staffName}</strong>?<br>This action cannot be undone.`,
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Yes, delete it!',
+              cancelButtonText: 'Cancel',
+              confirmButtonColor: '#d33',
+              cancelButtonColor: '#6c757d'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                try {
+                  // Create and submit form
+                  const form = document.createElement('form');
+                  form.method = 'POST';
+                  form.action = `/staff/${staffId}`;
+                  
+                  const csrfToken = document.createElement('input');
+                  csrfToken.type = 'hidden';
+                  csrfToken.name = '_token';
+                  csrfToken.value = '{{ csrf_token() }}';
+                  
+                  const method = document.createElement('input');
+                  method.type = 'hidden';
+                  method.name = '_method';
+                  method.value = 'DELETE';
+                  
+                  form.appendChild(csrfToken);
+                  form.appendChild(method);
+                  document.body.appendChild(form);
+                  
+                  form.submit();
+                } catch (e) {
+                  console.error("Error submitting delete form:", e);
+                  Swal.fire({
+                    ...swalConfig,
+                    icon: 'error',
+                    title: 'Delete Error',
+                    html: 'An error occurred while deleting the staff:<br>' + e.message,
+                    showConfirmButton: true
+                  });
+                }
+              }
+            });
           });
         });
-      });
-    </script>
 
-    <!-- Update this script to handle staff deletion instead of patient deletion -->
-    <script>
-    function confirmDelete() {
-      if (confirm('Are you sure you want to delete this staff? This action cannot be undone.')) {
-        // Add your delete logic here
-        console.log('Staff deleted');
-      }
-    }
-    </script>
-    <script>
-      $document.ready(function () {
-        $('#staffTable').DataTable();
-      })
+        // Display success/error messages
+        @if(session('success'))
+          Swal.fire({
+            ...swalConfig,
+            icon: 'success',
+            title: 'Success',
+            text: "{{ session('success') }}",
+            timer: 1500,
+            showConfirmButton: false
+          });
+        @endif
+
+        @if(session('error'))
+          Swal.fire({
+            ...swalConfig,
+            icon: 'error', 
+            title: 'Error',
+            text: "{{ session('error') }}",
+            timer: 3000,
+            showConfirmButton: true
+          });
+        @endif
+      });
     </script>
   </body>
 </html>
-
-<!-- beautify ignore:end -->
