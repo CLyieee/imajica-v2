@@ -360,17 +360,6 @@
                 <!-- Success/Error Messages -->
                 <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
 
-                <!-- Branch Filter -->
-                <div class="px-3 py-2">
-                  <label for="branchFilter" class="form-label">Select Branch:</label>
-                  <select id="branchFilter" class="form-select w-auto d-inline-block">
-                    <option value="">All Branches</option>
-                    @foreach($branches as $branch)
-                      <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
-                    @endforeach
-                  </select>
-                </div>
-
                 <!-- Table -->
                 <div class="table-responsive">
                   <table class="table table-striped" id="couponTable">
@@ -424,12 +413,6 @@
                         </td>
                         <td>
                           <div class="d-flex justify-content-center gap-2">
-                            <button class="btn btn-sm btn-success view-coupon" 
-                              data-coupon-code="{{ $coupon->coupon_code }}"
-                              data-discount-name="{{ $coupon->discount_name }}"
-                              data-description="{{ $coupon->description }}">
-                              <i class="ti tabler-eye me-1"></i> View
-                            </button>
                             <button class="btn btn-sm btn-info" onclick="window.location.href='{{ route('coupon.edit', $coupon->coupon_code) }}'">
                               <i class="ti tabler-edit me-1"></i> Edit
                             </button>
@@ -583,16 +566,6 @@
     
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <!-- Filter Branch Script -->
-    <script>
-      $(document).ready(function() {
-        $('#branchFilter').change(function() {
-          var branchCode = $(this).val();
-          window.location.href = '/coupon-list' + branchCode;
-        });
-      });
-    </script>
     
     <!-- DataTable Initialization -->
     <script>
