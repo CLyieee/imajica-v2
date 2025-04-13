@@ -225,7 +225,7 @@
                           <i class="ti tabler-edit me-1"></i> Edit
                         </a>
                         <button class="btn btn-sm btn-danger delete-service" 
-                          data-service-id="{{ $service->id }}"
+                          data-service-id="{{ $service->service_id }}"
                           data-service-name="{{ $service->service_name }}">
                           <i class="ti tabler-trash me-1"></i> Delete
                         </button>
@@ -402,13 +402,6 @@
           </div>
         </div>
 
-        <!-- Hidden form for deleting service -->
-        <form id="deleteServiceForm" method="POST" action="{{ route('service.delete') }}" style="display: none;">
-          @csrf
-          @method('DELETE')
-          <input type="hidden" id="delete-service" name="id" />
-        </form>
-
         <!-- Content wrapper -->
 
         <!-- Content wrapper -->
@@ -580,10 +573,33 @@
             confirmButtonText: 'Yes, delete it!'
           }).then((result) => {
             if (result.isConfirmed) {
-              // Set the service ID in the hidden delete form
-              $('#delete-service').val(serviceID);
-              // Submit the form
-              $('#deleteServiceForm').submit();
+              // Perform AJAX request to delete service
+              $.ajax({
+                url: "{{ route('service.delete') }}",
+                type: "DELETE",
+                data: {
+                  _token: "{{ csrf_token() }}",
+                  id: serviceID
+                },
+                success: function(response) {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: response.message,
+                    confirmButtonColor: '#0a3622'
+                  }).then(() => {
+                    location.reload();
+                  });
+                },
+                error: function(xhr) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred while deleting the service',
+                    confirmButtonColor: '#d33'
+                  });
+                }
+              });
             }
           });
       });

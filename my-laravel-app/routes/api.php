@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// User Routes
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/products', [App\Http\Controllers\Api\ProductController::class, 'index']);
-Route::delete('/products/{id}', [App\Http\Controllers\Api\ProductController::class, 'destroy']);
+// Product Routes
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('api.products.index');
+    Route::delete('/{id}', [ProductController::class, 'destroy'])->name('api.products.destroy');
+});
