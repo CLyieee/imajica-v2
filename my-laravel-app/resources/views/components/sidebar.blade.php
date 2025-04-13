@@ -395,16 +395,13 @@
         });
         
         // Ensure menu links don't lose their text when clicked
-        const menuLinks = document.querySelectorAll('.menu-link:not(.menu-toggle)');
+        const menuLinks = document.querySelectorAll('.menu-link');
         menuLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 // Only prevent default for javascript:void(0) links
                 if (this.getAttribute('href') === 'javascript:void(0);') {
                     e.preventDefault();
                 }
-                
-                // Don't remove any content - just let the link work normally
-                // This preserves the menu item text
             });
         });
         
@@ -423,6 +420,20 @@
             .menu-link div[data-i18n] {
                 display: block !important;
                 visibility: visible !important;
+                opacity: 1 !important;
+            }
+            /* Fix for active menu items to ensure text stays visible */
+            .menu-item.active .menu-link div[data-i18n],
+            .menu-item.active.open .menu-link div[data-i18n] {
+                color: inherit !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            /* Fix hover states */
+            .menu-link:hover div[data-i18n] {
+                visibility: visible !important;
+                opacity: 1 !important;
             }
             /* Remove arrow icons from menu toggles */
             .menu-toggle::after {
