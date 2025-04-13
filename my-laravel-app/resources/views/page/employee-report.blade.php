@@ -261,6 +261,9 @@
         }
       }
     </style>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
 
   <body>
@@ -304,7 +307,7 @@
         <div class="card mt-4">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="mb-0">Employee Sales</h3>
+                    <h4 class="mb-0">Employee Sales</h4>
                     <div class="d-flex gap-2 align-items-end">
 
               <div class="d-flex flex-column" style="width: 150px;">
@@ -337,20 +340,24 @@
                 </div>
               </div>
 
-              <div class="d-flex flex-column" style="width: 150px;">
+              <div class="d-flex flex-column" style="width: 180px;">
                 <label class="form-label mb-1 small">Sort By</label>
                 <div class="dropdown w-100">
-                  <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100 py-1" type="button" id="sortByBtn" data-bs-toggle="dropdown" style="height: 31px;">
-                    Sort By: Default
+                  <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center" 
+                          type="button" 
+                          id="sortByBtn" 
+                          data-bs-toggle="dropdown" 
+                          style="height: 31px; font-size: 0.875rem;">
+                    <span class="me-2">Sort By</span>
                   </button>
-                  <div class="dropdown-menu p-2" style="min-width: 150px;">
+                  <div class="dropdown-menu p-2" style="min-width: 180px;">
                     <select class="form-select form-select-sm" id="sortBy">
                       <option value="">Default</option>
-                      <option value="totalSales">Total Sales (High to Low)</option>
-                      <option value="serviceSales">Service Sales (High to Low)</option>
-                      <option value="productSales">Product Sales (High to Low)</option>
-                      <option value="clients">Number of Clients (High to Low)</option>
-                      <option value="name">Employee Name (A to Z)</option>
+                      <option value="totalSales">Total Sales</option>
+                      <option value="serviceSales">Service Sales </option>
+                      <option value="productSales">Product Sales</option>
+                      <option value="clients">Number of Clients</option>
+                      <option value="name">Employee Name</option>
                     </select>
                   </div>
                 </div>
@@ -446,6 +453,70 @@
                       </button>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Michael Chen</td>
+                                <td>2023-11-12</td>
+                                <td>35</td>
+                                <td>52</td>
+                                <td>88</td>
+                                <td>₱180,000</td>
+                                <td>₱140,000</td>
+                                <td>₱320,000</td>
+                                <td>
+                                    <button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;">
+                                        <i class="ti tabler-download me-1"></i>Export
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Emily Brown</td>
+                                <td>2023-11-11</td>
+                                <td>32</td>
+                                <td>48</td>
+                                <td>82</td>
+                                <td>₱170,000</td>
+                                <td>₱130,000</td>
+                                <td>₱300,000</td>
+                                <td>
+                                    <button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;">
+                                        <i class="ti tabler-download me-1"></i>Export
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>David Lee</td>
+                                <td>2023-11-10</td>
+                                <td>30</td>
+                                <td>45</td>
+                                <td>76</td>
+                                <td>₱160,000</td>
+                                <td>₱120,000</td>
+                                <td>₱280,000</td>
+                                <td>
+                                    <button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;">
+                                        <i class="ti tabler-download me-1"></i>Export
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Sofia Rodriguez</td>
+                                <td>2023-11-09</td>
+                                <td>28</td>
+                                <td>42</td>
+                                <td>72</td>
+                                <td>₱150,000</td>
+                                <td>₱110,000</td>
+                                <td>₱260,000</td>
+                                <td>
+                                    <button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;">
+                                        <i class="ti tabler-download me-1"></i>Export
+                                    </button>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -539,386 +610,310 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const sortBy = document.getElementById('sortBy');
     const dateFilter = document.getElementById('dateFilter');
-    const table = document.getElementById('employeeReport');
-    const tbody = table.getElementsByTagName('tbody')[0];
-    const rows = tbody.getElementsByTagName('tr');
+    const sortByBtn = document.getElementById('sortByBtn');
+    const dateFilterBtn = document.getElementById('dateFilterBtn');
+    
+    // Initialize dropdowns
+    const sortByDropdown = new bootstrap.Dropdown(sortByBtn);
+    const dateFilterDropdown = new bootstrap.Dropdown(dateFilterBtn);
 
-    dateFilter.addEventListener('change', function() {
-        const selectedFilter = this.value;
+    // Handle sort dropdown changes
+    sortBy.addEventListener('change', function() {
+        const selectedText = this.options[this.selectedIndex].text;
+        sortByBtn.innerHTML = `${selectedText} <i class="ti tabler-chevron-down ms-1"></i>`;
+        applySort();
+        sortByDropdown.hide();
+    });
+
+    function applySort() {
+        const selectedSort = sortBy.value;
+        const tbody = document.querySelector('#employeeReport tbody');
+        const rows = Array.from(tbody.getElementsByTagName('tr'));
+
+        if (!selectedSort) return;
+
+        rows.sort((a, b) => {
+            let aValue, bValue;
+
+            switch(selectedSort) {
+                case 'totalSales':
+                    aValue = parseCurrency(a.cells[8].textContent);
+                    bValue = parseCurrency(b.cells[8].textContent);
+                    break;
+                case 'serviceSales':
+                    aValue = parseCurrency(a.cells[6].textContent);
+                    bValue = parseCurrency(b.cells[6].textContent);
+                    break;
+                case 'productSales':
+                    aValue = parseCurrency(a.cells[7].textContent);
+                    bValue = parseCurrency(b.cells[7].textContent);
+                    break;
+                case 'clients':
+                    aValue = parseInt(a.cells[5].textContent);
+                    bValue = parseInt(b.cells[5].textContent);
+                    break;
+                case 'name':
+                    aValue = a.cells[1].textContent.toLowerCase();
+                    bValue = b.cells[1].textContent.toLowerCase();
+                    return aValue.localeCompare(bValue);
+            }
+
+            return selectedSort === 'name' ? 0 : bValue - aValue;
+        });
+
+        // Clear and rebuild tbody
+        tbody.innerHTML = '';
+        rows.forEach((row, index) => {
+            row.cells[0].textContent = index + 1; // Update rank numbers
+            tbody.appendChild(row);
+        });
+
+        // Update metrics after sorting
+        updateMetrics(rows);
+
+        // Update the sort button text
+        const selectedText = sortBy.options[sortBy.selectedIndex].text;
+        sortByBtn.innerHTML = `${selectedText} <i class="ti tabler-chevron-down ms-1"></i>`;
+    }
+
+    function parseCurrency(value) {
+        return parseFloat(value.replace(/[₱,]/g, '')) || 0;
+    }
+
+    function updateMetrics(rows) {
+        let totalSales = 0;
+        let topEmployeeSales = 0;
+        let topEmployee = '';
+
+        rows.forEach(row => {
+            if (row.style.display !== 'none') {
+                const sales = parseCurrency(row.cells[8].textContent);
+                totalSales += sales;
+                if (sales > topEmployeeSales) {
+                    topEmployeeSales = sales;
+                    topEmployee = row.cells[1].textContent;
+                }
+            }
+        });
+
+        // Update the metrics display
+        document.querySelector('.metric-card:nth-child(1) h4').textContent = 
+            '₱' + totalSales.toLocaleString(undefined, {maximumFractionDigits: 0});
+        document.querySelector('.metric-card:nth-child(2) h4').textContent = 
+            '₱' + topEmployeeSales.toLocaleString(undefined, {maximumFractionDigits: 0});
+        document.querySelector('.metric-card:nth-child(3) h4').textContent = topEmployee;
+    }
+
+    // Modify existing updateTable function
+    function updateTable() {
+        const rows = Array.from(document.querySelectorAll('#employeeReport tbody tr'));
+        const selectedFilter = dateFilter.value;
+        
+        // First apply date filter
+        const filteredRows = filterRowsByDate(rows, selectedFilter);
+        
+        // Update table content
+        updateTableContent(filteredRows);
+        
+        // Apply sort after filtering
+        applySort();
+        
+        // Update metrics
+        updateMetrics(filteredRows);
+    }
+
+    function filterRowsByDate(rows, filter) {
+        if (!filter) return rows;
+
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        Array.from(rows).forEach(row => {
-            const dateCell = row.getElementsByTagName('td')[2]; // Date is in the third column
-            if (!dateCell) return;
-
+        const filteredRows = rows.filter(row => {
+            const dateCell = row.cells[2];
             const rowDate = new Date(dateCell.textContent);
             rowDate.setHours(0, 0, 0, 0);
-            let showRow = true;
 
-            switch(selectedFilter) {
+            switch(filter) {
                 case 'today':
-                    showRow = rowDate.getTime() === today.getTime();
-                    break;
+                    return rowDate.getTime() === today.getTime();
                 case 'yesterday':
                     const yesterday = new Date(today);
                     yesterday.setDate(yesterday.getDate() - 1);
-                    showRow = rowDate.getTime() === yesterday.getTime();
-                    break;
+                    return rowDate.getTime() === yesterday.getTime();
                 case 'last7days':
                     const last7Days = new Date(today);
                     last7Days.setDate(last7Days.getDate() - 7);
-                    showRow = rowDate >= last7Days;
-                    break;
+                    return rowDate >= last7Days;
                 case 'last30days':
                     const last30Days = new Date(today);
                     last30Days.setDate(last30Days.getDate() - 30);
-                    showRow = rowDate >= last30Days;
-                    break;
+                    return rowDate >= last30Days;
                 case 'thisMonth':
-                    showRow = rowDate.getMonth() === today.getMonth() && 
-                             rowDate.getFullYear() === today.getFullYear();
-                    break;
+                    return rowDate.getMonth() === today.getMonth() && 
+                           rowDate.getFullYear() === today.getFullYear();
                 case 'lastMonth':
                     const lastMonth = new Date(today);
                     lastMonth.setMonth(lastMonth.getMonth() - 1);
-                    showRow = rowDate.getMonth() === lastMonth.getMonth() && 
-                             rowDate.getFullYear() === lastMonth.getFullYear();
-                    break;
+                    return rowDate.getMonth() === lastMonth.getMonth() && 
+                           rowDate.getFullYear() === lastMonth.getFullYear();
                 case 'thisYear':
-                    showRow = rowDate.getFullYear() === today.getFullYear();
-                    break;
+                    return rowDate.getFullYear() === today.getFullYear();
                 default:
-                    showRow = true;
+                    return true;
+            }
+        });
+
+        // Update the Filter By button text with the count of filtered rows
+        const filterText = dateFilter.options[dateFilter.selectedIndex].text;
+        dateFilterBtn.innerHTML = `${filterText} (${filteredRows.length})`;
+        
+        return filteredRows;
+    }
+
+    function updateTableContent(rows) {
+        const tbody = document.querySelector('#employeeReport tbody');
+        tbody.innerHTML = '';
+        
+        if (rows.length === 0) {
+            // Show "No results found" message
+            const noDataRow = document.createElement('tr');
+            noDataRow.innerHTML = '<td colspan="10" class="text-center">No results found</td>';
+            tbody.appendChild(noDataRow);
+        } else {
+            // Update table with filtered rows
+            rows.forEach((row, index) => {
+                row.cells[0].textContent = index + 1; // Update rank
+                tbody.appendChild(row);
+            });
+        }
+    }
+
+    // Prevent dropdown menus from closing when selecting options
+    document.querySelectorAll('.dropdown-menu').forEach(dropdown => {
+        dropdown.addEventListener('click', e => e.stopPropagation());
+    });
+
+    // Initialize the table
+    updateTable();
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('employeeReport');
+    const tbody = table.getElementsByTagName('tbody')[0];
+
+    searchInput.addEventListener('input', function() {
+        const searchText = this.value.toLowerCase();
+        const rows = tbody.getElementsByTagName('tr');
+
+        Array.from(rows).forEach(row => {
+            const employeeName = row.cells[1].textContent.toLowerCase();
+            row.style.display = employeeName.includes(searchText) ? '' : 'none';
+        });
+
+        let rank = 1;
+        Array.from(rows).forEach(row => {
+            if (row.style.display !== 'none') {
+                row.cells[0].textContent = rank++;
+            }
+        });
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dateFrom = document.getElementById('dateFrom');
+    const dateTo = document.getElementById('dateTo');
+    const table = document.getElementById('employeeReport');
+    const tbody = table.getElementsByTagName('tbody')[0];
+
+    function filterByDateRange() {
+        const fromDate = dateFrom.value ? new Date(dateFrom.value) : null;
+        const toDate = dateTo.value ? new Date(dateTo.value) : null;
+        const rows = tbody.getElementsByTagName('tr');
+
+        Array.from(rows).forEach(row => {
+            const dateCell = row.cells[2];
+            const rowDate = new Date(dateCell.textContent);
+            
+            let showRow = true;
+            
+            if (fromDate && toDate) {
+                rowDate.setHours(0,0,0,0);
+                fromDate.setHours(0,0,0,0);
+                toDate.setHours(0,0,0,0);
+                
+                showRow = rowDate >= fromDate && rowDate <= toDate;
+            } else if (fromDate) {
+                showRow = rowDate >= fromDate;
+            } else if (toDate) {
+                showRow = rowDate <= toDate;
             }
 
             row.style.display = showRow ? '' : 'none';
         });
 
-        // Update rankings for visible rows
         let rank = 1;
         Array.from(rows).forEach(row => {
             if (row.style.display !== 'none') {
-                row.getElementsByTagName('td')[0].textContent = rank++;
+                row.cells[0].textContent = rank++;
             }
         });
-    });
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const sortBy = document.getElementById('sortBy');
-    const sortByBtn = document.getElementById('sortByBtn');
-    const table = document.getElementById('employeeReport');
-    const tbody = table.getElementsByTagName('tbody')[0];
-
-    sortBy.addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex];
-        sortByBtn.textContent = 'Sort By: ' + selectedOption.text;
-        
-        let rows = Array.from(tbody.getElementsByTagName('tr'));
-        
-        rows.sort((a, b) => {
-            let aVal, bVal;
-            
-            switch(this.value) {
-                case 'totalSales':
-                    // Parse total sales column (remove ₱ and commas)
-                    aVal = parseFloat(a.cells[8].textContent.replace('₱', '').replace(/,/g, ''));
-                    bVal = parseFloat(b.cells[8].textContent.replace('₱', '').replace(/,/g, ''));
-                    return bVal - aVal;
-                case 'serviceSales':
-                    // Parse total service sales column (remove ₱ and commas)
-                    aVal = parseFloat(a.cells[6].textContent.replace('₱', '').replace(/,/g, ''));
-                    bVal = parseFloat(b.cells[6].textContent.replace('₱', '').replace(/,/g, ''));
-                    return bVal - aVal;
-                case 'productSales':
-                    // Parse total product sales column (remove ₱ and commas)
-                    aVal = parseFloat(a.cells[7].textContent.replace('₱', '').replace(/,/g, ''));
-                    bVal = parseFloat(b.cells[7].textContent.replace('₱', '').replace(/,/g, ''));
-                    return bVal - aVal;
-                case 'clients':
-                    // Parse number of clients column
-                    aVal = parseInt(a.cells[5].textContent);
-                    bVal = parseInt(b.cells[5].textContent);
-                    return bVal - aVal;
-                case 'name':
-                    // Sort by employee name
-                    aVal = a.cells[1].textContent.trim().toLowerCase();
-                    bVal = b.cells[1].textContent.trim().toLowerCase();
-                    return aVal.localeCompare(bVal);
-                default:
-                    return 0;
-            }
-        });
-        
-        // Clear table and append sorted rows
-        while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild);
-        }
-        
-        // Reorder the rows and update ranks
-        rows.forEach((row, index) => {
-            row.cells[0].textContent = index + 1; // Update rank
-            tbody.appendChild(row);
-        });
-    });
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const sortBy = document.getElementById('sortBy');
-    const sortByBtn = document.getElementById('sortByBtn');
-    const table = document.getElementById('employeeReport');
-    const tbody = table.getElementsByTagName('tbody')[0];
-
-    sortBy.addEventListener('change', function() {
-        // Update button text to show selected option
-        const selectedOption = this.options[this.selectedIndex];
-        sortByBtn.textContent = 'Sort By: ' + selectedOption.text;
-        
-        let rows = Array.from(tbody.getElementsByTagName('tr'));
-        
-        rows.sort((a, b) => {
-            let aVal, bVal;
-            
-            switch(this.value) {
-                case 'totalSales':
-                    aVal = parseFloat(a.cells[8].textContent.replace('₱', '').replace(',', ''));
-                    bVal = parseFloat(b.cells[8].textContent.replace('₱', '').replace(',', ''));
-                    return bVal - aVal;
-                case 'serviceSales':
-                    aVal = parseFloat(a.cells[3].textContent); // Number of Service Sales
-                    bVal = parseFloat(b.cells[3].textContent);
-                    return bVal - aVal;
-                case 'productSales':
-                    aVal = parseFloat(a.cells[4].textContent); // Number of Product Sales
-                    bVal = parseFloat(b.cells[4].textContent);
-                    return bVal - aVal;
-                case 'clients':
-                    aVal = parseInt(a.cells[5].textContent); // Number of Clients
-                    bVal = parseInt(b.cells[5].textContent);
-                    return bVal - aVal;
-                case 'name':
-                    aVal = a.cells[1].textContent; // Employee Name
-                    bVal = b.cells[1].textContent;
-                    return aVal.localeCompare(bVal);
-                default:
-                    return 0;
-            }
-        });
-        
-        // Clear table and append sorted rows
-        while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild);
-        }
-        
-        // Reorder the rows and update ranks
-        rows.forEach((row, index) => {
-            tbody.appendChild(row);
-            row.cells[0].textContent = index + 1; // Update rank
-        });
-    });
-
-    // Set initial button text
-    if (sortBy.value) {
-        sortByBtn.textContent = 'Sort By: ' + sortBy.options[sortBy.selectedIndex].text;
     }
+
+    dateFrom.addEventListener('change', filterByDateRange);
+    dateTo.addEventListener('change', filterByDateRange);
+
+    dateTo.addEventListener('change', function() {
+        if (dateFrom.value && this.value < dateFrom.value) {
+            alert('End date cannot be earlier than start date');
+            this.value = dateFrom.value;
+        }
+    });
+
+    dateFrom.addEventListener('change', function() {
+        if (dateTo.value && this.value > dateTo.value) {
+            alert('Start date cannot be later than end date');
+            this.value = dateTo.value;
+        }
+    });
 });
 </script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Add click event listeners to all download buttons
-    document.querySelectorAll('.download-row').forEach(button => {
-        button.addEventListener('click', function() {
-            const row = this.closest('tr');
-            const rowData = [];
-            const headers = [];
-            
-            // Get headers
-            row.closest('table').querySelectorAll('thead th').forEach(th => {
-                if (th.textContent !== 'Action') {
-                    headers.push(th.textContent.trim());
-                }
-            });
-            
-            // Get row data
-            row.querySelectorAll('td').forEach((td, index) => {
-                if (index < row.cells.length - 1) { // Exclude the Action column
-                    rowData.push(td.textContent.trim());
-                }
-            });
-            
-            // Create worksheet data
-            const ws_data = [headers, rowData];
-            
-            // Create workbook
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet(ws_data);
-            
-            // Add worksheet to workbook
-            XLSX.utils.book_append_sheet(wb, ws, "Employee Data");
-            
-            // Get employee name for filename
-            const employeeName = rowData[1].replace(/\s+/g, '_').toLowerCase();
-            
-            // Generate and download file
-            XLSX.writeFile(wb, `employee_report_${employeeName}.xlsx`);
-        });
+    const dateFilter = document.getElementById('dateFilter');
+    const dateFilterBtn = document.getElementById('dateFilterBtn');
+    const dateFilterDropdown = new bootstrap.Dropdown(dateFilterBtn);
+
+    // Update date filter button text when selection changes
+    dateFilter.addEventListener('change', function() {
+        const selectedText = this.options[this.selectedIndex].text;
+        dateFilterBtn.textContent = selectedText;
+        updateTable(); // This calls the existing updateTable function
+        
+        // Close dropdown after selection
+        setTimeout(() => {
+            dateFilterDropdown.hide();
+        }, 100);
+    });
+
+    // Update the selected text for both dropdowns initially
+    sortBy.addEventListener('change', function() {
+        const selectedText = this.options[this.selectedIndex].text;
+        sortByBtn.innerHTML = selectedText;
+    });
+
+    dateFilter.addEventListener('change', function() {
+        const selectedText = this.options[this.selectedIndex].text;
+        dateFilterBtn.innerHTML = selectedText;
     });
 });
 </script>
-
-</script>
-  </body>
-        
-
-          <div class="content-backdrop fade"></div>
-        </div>
-        <!-- Content wrapper -->
-      </div>
-      <!-- / Layout page -->
-    </div>
-
-    <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
-
-    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-    <div class="drag-target"></div>
-    
-  </div>
-  <!-- / Layout wrapper -->
-
-  <!-- Core JS -->
-  <!-- build:js assets/vendor/js/theme.js -->
-
-  <!-- Footer -->
- 
-  <!-- / Footer -->
-
-  <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
-
-  <script src="../../assets/vendor/libs/popper/popper.js"></script>
-
-  <script src="../../assets/vendor/js/bootstrap.js"></script>
-  <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
-
-  <script src="../../assets/vendor/libs/%40algolia/autocomplete-js.js"></script>
-
-  <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
-
-  <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
-  <script src="../../assets/vendor/libs/hammer/hammer.js"></script>
-
-  <script src="../../assets/vendor/libs/i18n/i18n.js"></script>
-
-  <script src="../../assets/vendor/js/menu.js"></script>
-
-  <!-- endbuild -->
-
-  <!-- Vendors JS -->
-  <script src="../../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-  <script src="../../assets/vendor/libs/swiper/swiper.js"></script>
-  <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
-
-  <!-- Main JS -->
-
-  <script src="../../assets/js/main.js"></script>
-
-  <!-- Page JS -->
-  <script src="../../assets/vendor/libs/chartjs/chartjs.js"></script>
-  <script src="../../assets/js/charts-chartjs-legend.js"></script>
-  <script src="../../assets/js/charts-chartjs.js"></script>
-
-  <!-- Export Libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Handle export button clicks
-        document.querySelectorAll('[data-export]').forEach(button => {
-            button.addEventListener('click', function() {
-                const format = this.getAttribute('data-export');
-                const table = document.getElementById('employeeReport');
-                
-                switch(format) {
-                    case 'pdf':
-                        exportToPDF(table);
-                        break;
-                    case 'excel':
-                        exportToExcel(table);
-                        break;
-                    case 'csv':
-                        exportToCSV(table);
-                        break;
-                }
-            });
-        });
-
-        function exportToPDF(table) {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            doc.text('Employee Report', 14, 15);
-            
-            doc.autoTable({
-                html: table,
-                startY: 20,
-                styles: {
-                    fontSize: 8,
-                    cellPadding: 2,
-                },
-                columnStyles: {
-                    0: {cellWidth: 10}, // Rank
-                    1: {cellWidth: 30}, // Name
-                    2: {cellWidth: 20}, // Service Sales
-                    3: {cellWidth: 20}, // Product Sales
-                    4: {cellWidth: 20}, // Clients
-                    5: {cellWidth: 25}, // Service Sales Total
-                    6: {cellWidth: 25}, // Product Sales Total
-                    7: {cellWidth: 25}, // Total Sales
-                }
-            });
-            
-            doc.save('employee-report.pdf');
-        }
-
-        function exportToExcel(table) {
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.table_to_sheet(table);
-            
-            // Format currency columns
-            const currencyColumns = ['F', 'G', 'H'];
-            const range = XLSX.utils.decode_range(ws['!ref']);
-            
-            for (let R = range.s.r + 1; R <= range.e.r; ++R) {
-                currencyColumns.forEach(col => {
-                    const cell = ws[col + (R + 1)];
-                    if (cell && cell.v) {
-                        cell.v = cell.v.replace('₱', '').replace(',', '');
-                        cell.t = 'n';
-                    }
-                });
-            }
-            
-            XLSX.utils.book_append_sheet(wb, ws, 'Employee Report');
-            XLSX.writeFile(wb, 'employee-report.xlsx');
-        }
-
-        function exportToCSV(table) {
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.table_to_sheet(table);
-            XLSX.utils.book_append_sheet(wb, ws, 'Employee Report');
-            XLSX.writeFile(wb, 'employee-report.csv');
-        }
-    });
-  </script>
 </body>
 </html>

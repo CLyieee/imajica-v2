@@ -335,8 +335,9 @@
 
         <div class="card mt-4">
           <div class="card-body">
+          <h3 class="mb-0">All Sales</h3>
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h3 class="mb-0">All Sales</h3>
+           
               <div class="d-flex gap-2 align-items-end">
                 <!-- Search Bar -->
                 <div class="d-flex flex-column" style="width: 180px;">
@@ -373,6 +374,32 @@
                   >
                 </div>
 
+                <!-- Filter by -->
+                <div class="d-flex flex-column" style="width: 160px;">
+                  <label class="form-label text-muted small mb-1">Filter by</label>
+                  <select class="form-select form-select-sm" id="filterBy">
+                    <option value="">All</option>
+                    <option value="service">Services</option>
+                    <option value="product">Products</option>
+                    <option value="price_high">Price (High to Low)</option>
+                    <option value="price_low">Price (Low to High)</option>
+                  </select>
+                </div>
+
+                <!-- Filter by date -->
+                <div class="d-flex flex-column" style="width: 160px;">
+                  <label class="form-label text-muted small mb-1">Filter by date</label>
+                  <select class="form-select form-select-sm" id="filterByDate">
+                    <option value="">All time</option>
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="last_week">Last 7 days</option>
+                    <option value="last_month">Last 30 days</option>
+                    <option value="this_month">This month</option>
+                    <option value="last_3months">Last 3 months</option>
+                  </select>
+                </div>
+
                 <!-- Report Type -->
                 <div class="d-flex flex-column" style="width: 180px;">
                   <label class="form-label text-muted small mb-1">Report Type</label>
@@ -391,6 +418,7 @@
                 <thead>
                   <tr style="background-color: #134013;">
                     <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Services Name</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Date</th>
                     <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Branch Name</th>
                     <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Description</th>
                     <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Duration</th>
@@ -403,123 +431,61 @@
                 <tbody>
                   <tr>
                     <td>Hair Color Treatment</td>
+                    <td>2024-01-25</td> <!-- Today's sample data -->
+                    <td>Main Branch</td>
+                    <td>Professional hair coloring service</td>
+                    <td>2 hours</td>
+                    <td>Hair Care</td>
                     <td>₱1,500</td>
-                    <td>98</td>
-                    <td>₱14,700</td>
-                    <td>₱5,000</td>
-                    <td>₱147,000</td>
                     <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td>
-                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
-                              style="background-color: #134013; color: white;">
-                        <i class="ti tabler-download me-1"></i>Export
-                      </button>
-                    </td>
+                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
                   </tr>
                   <tr>
                     <td>Hair Rebonding</td>
+                    <td>2024-01-24</td> <!-- Yesterday's sample data -->
+                    <td>North Branch</td>
+                    <td>Professional hair straightening</td>
+                    <td>3 hours</td>
+                    <td>Hair Care</td>
                     <td>₱2,500</td>
-                    <td>75</td>
-                    <td>₱18,750</td>
-                    <td>₱3,500</td>
-                    <td>₱187,500</td>
                     <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td>
-                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
-                              style="background-color: #134013; color: white;">
-                        <i class="ti tabler-download me-1"></i>Export
-                      </button>
-                    </td>
+                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
                   </tr>
+                  <!-- Last 7 days sample data -->
                   <tr>
                     <td>Professional Shampoo</td>
+                    <td>2024-01-20</td>
+                    <td>East Branch</td>
+                    <td>Premium hair care product</td>
+                    <td>--</td>
+                    <td>Hair Care</td>
                     <td>₱850</td>
-                    <td>120</td>
-                    <td>₱10,200</td>
-                    <td>₱2,000</td>
-                    <td>₱102,000</td>
                     <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td>
-                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
-                              style="background-color: #134013; color: white;">
-                        <i class="ti tabler-download me-1"></i>Export
-                      </button>
-                    </td>
+                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
                   </tr>
+                  <!-- Last month sample data -->
                   <tr>
                     <td>Hair Treatment Package</td>
+                    <td>2023-12-15</td>
+                    <td>South Branch</td>
+                    <td>Complete hair care treatment</td>
+                    <td>4 hours</td>
+                    <td>Hair Care</td>
                     <td>₱3,500</td>
-                    <td>45</td>
-                    <td>₱15,750</td>
-                    <td>₱4,500</td>
-                    <td>₱157,500</td>
-                    <td><span class="badge" style="background-color: rgba(255,  165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td>
-                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
-                              style="background-color: #134013; color: white;">
-                        <i class="ti tabler-download me-1"></i>Export
-                      </button>
-                    </td>
+                    <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
+                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
                   </tr>
+                  <!-- 3 months ago sample data -->
                   <tr>
                     <td>Hair Styling Tools Set</td>
+                    <td>2023-10-25</td>
+                    <td>Main Branch</td>
+                    <td>Professional styling tools</td>
+                    <td>--</td>
+                    <td>Hair Care</td>
                     <td>₱1,200</td>
-                    <td>65</td>
-                    <td>₱7,800</td>
-                    <td>₱2,500</td>
-                    <td>₱78,000</td>
                     <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td>
-                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
-                              style="background-color: #134013; color: white;">
-                        <i class="ti tabler-download me-1"></i>Export
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Hair Care Bundle</td>
-                    <td>₱2,000</td>
-                    <td>85</td>
-                    <td>₱17,000</td>
-                    <td>₱3,000</td>
-                    <td>₱170,000</td>
-                    <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td>
-                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
-                              style="background-color: #134013; color: white;">
-                        <i class="ti tabler-download me-1"></i>Export
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Premium Hair Oil</td>
-                    <td>₱750</td>
-                    <td>150</td>
-                    <td>₱11,250</td>
-                    <td>₱2,800</td>
-                    <td>₱112,500</td>
-                    <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td>
-                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
-                              style="background-color: #134013; color: white;">
-                        <i class="ti tabler-download me-1"></i>Export
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Hair Spa Treatment</td>
-                    <td>₱2,800</td>
-                    <td>55</td>
-                    <td>₱15,400</td>
-                    <td>₱4,200</td>
-                    <td>₱154,000</td>
-                    <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td>
-                      <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
-                              style="background-color: #134013; color: white;">
-                        <i class="ti tabler-download me-1"></i>Export
-                      </button>
-                    </td>
+                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -1379,226 +1345,124 @@ function downloadRow(element, format) {
       });
     </script>
 
-          <div class="content-backdrop fade"></div>
-        </div>
-        <!-- Content wrapper -->
-      </div>
-      <!-- / Layout page -->
-    </div>
-
-    <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
-
-    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-    <div class="drag-target"></div>
-    
-  </div>
-  <!-- / Layout wrapper -->
-
-  <!-- Core JS -->
-  <!-- build:js assets/vendor/js/theme.js -->
-
-  <!-- Footer -->
- 
-  <!-- / Footer -->
-
-  <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
-
-  <script src="../../assets/vendor/libs/popper/popper.js"></script>
-
-  <script src="../../assets/vendor/js/bootstrap.js"></script>
-  <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
-
-  <script src="../../assets/vendor/libs/%40algolia/autocomplete-js.js"></script>
-
-  <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
-
-  <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
-  <script src="../../assets/vendor/libs/hammer/hammer.js"></script>
-
-  <script src="../../assets/vendor/libs/i18n/i18n.js"></script>
-
-  <script src="../../assets/vendor/js/menu.js"></script>
-
-  <!-- endbuild -->
-
-  <!-- Vendors JS -->
-  <script src="../../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-  <script src="../../assets/vendor/libs/swiper/swiper.js"></script>
-  <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
-
-  <!-- Main JS -->
-
-  <script src="../../assets/js/main.js"></script>
-
-  <!-- Page JS -->
-  <script src="../../assets/vendor/libs/chartjs/chartjs.js"></script>
-  <script src="../../assets/js/charts-chartjs-legend.js"></script>
-  <script src="../../assets/js/charts-chartjs.js"></script>
-
-
-    <!-- Customer Details Modal -->
-    <div class="modal fade" id="customerModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
-    <div class="modal-content shadow-lg rounded-4">
-      <div class="modal-header bg-gradient-primary text-white">
-        <h5 class="modal-title">Customer Details</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body px-4 py-3">
-        <div class="row g-4">
-          <!-- Customer Info -->
-          <div class="col-md-6 col-lg-4">
-            <div class="card border-0 shadow-sm rounded-3">
-              <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Customer Info</h5>
-                <small class="text-muted">ID: #CS12345</small>
-              </div>
-              <div class="card-body d-flex flex-column gap-3">
-                <p class="fw-semibold">Full Name: <span class="text-muted" id="customerName">John Smith</span></p>
-                <p class="fw-semibold">Email: <span class="text-muted" id="customerEmail">john.smith@email.com</span></p>
-                <p class="fw-semibold">Phone: <span class="text-muted" id="customerPhone">+1 234-567-8900</span></p>
-                <p class="fw-semibold">Member Since: <span class="text-muted">January 15, 2023</span></p>
-                <p class="fw-semibold">Total Bookings: <span class="text-muted">15 events</span></p>
-                <p class="fw-semibold">Loyalty Status: <span class="badge bg-success">Premium Member</span></p>
-              </div>
-            </div>
-          </div>
-          <!-- Recent Transactions -->
-          <div class="col-md-6 col-lg-8">
-  <div class="card border-0 shadow-sm rounded-3">
-    <div class="card-header bg-light d-flex justify-content-between">
-      <h5 class="mb-0">Recent Bookings</h5>
-      <div>
-        <button class="btn btn-sm btn-outline-primary">Filter</button>
-        <button class="btn btn-sm btn-outline-primary">Export</button>
-      </div>
-    </div>
-    <div class="card-body p-3">
-      <div class="table-responsive">
-        <table class="table table-sm">
-          <thead class="table-light">
-            <tr>
-              <th>Booking ID</th>
-              <th>Date</th>
-              <th>Event Type</th>
-              <th>Package</th>
-              <th>Status</th>
-              <th>Amount</th>
-              <th style="width: 120px;">Monthly Trend</th>
-            </tr>
-          </thead>
-          <tbody id="bookingHistory">
-            <tr>
-              <td>#12345</td>
-              <td>2025-03-27</td>
-              <td>Wedding</td>
-              <td>Gold Package</td>
-              <td><span class="badge bg-success">Confirmed</span></td>
-              <td>$1,500</td>
-              <td>
-                <div class="progress" style="height: 6px;">
-                  <div class="progress-bar bg-primary" style="width: 70%;"></div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-          <!-- Charts -->
-          <div class="col-md-6">
-  <div class="card border-0 shadow-sm rounded-3">
-    <div class="card-header bg-light">
-      <h5 class="mb-0">Booking History</h5>
-    </div>
-    <div class="card-body">
-      <canvas id="customerChart" height="300"></canvas>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    var ctx = document.getElementById("customerChart").getContext("2d");
-    var customerChart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-        datasets: [{
-          label: "Bookings",
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: "rgba(75, 192, 192, 0.2)",
-          borderColor: "rgba(75, 192, 192, 1)",
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
+document.addEventListener('DOMContentLoaded', function() {
+    const tableBody = document.querySelector('tbody');
+    const searchInput = document.getElementById('searchInput');
+    const dateFrom = document.getElementById('dateFrom');
+    const dateTo = document.getElementById('dateTo');
+    const filterBy = document.getElementById('filterBy');
+    const filterByDate = document.getElementById('filterByDate');
+    const reportType = document.getElementById('reportType');
+
+    function updateTable() {
+        const rows = Array.from(tableBody.getElementsByTagName('tr'));
+        
+        rows.forEach(row => {
+            const dateStr = row.cells[1].textContent; // Get date from second column
+            const date = new Date(dateStr);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            let showRow = true;
+
+            // Apply date filter
+            if (filterByDate.value) {
+                const dayDiff = Math.floor((today - date) / (1000 * 60 * 60 * 24));
+                
+                switch(filterByDate.value) {
+                    case 'today':
+                        showRow = dayDiff === 0;
+                        break;
+                    case 'yesterday':
+                        showRow = dayDiff === 1;
+                        break;
+                    case 'last_week':
+                        showRow = dayDiff <= 7;
+                        break;
+                    case 'last_month':
+                        showRow = dayDiff <= 30;
+                        break;
+                    case 'this_month':
+                        showRow = date.getMonth() === today.getMonth() && 
+                                date.getFullYear() === today.getFullYear();
+                        break;
+                    case 'last_3months':
+                        const threeMonthsAgo = new Date(today);
+                        threeMonthsAgo.setMonth(today.getMonth() - 3);
+                        showRow = date >= threeMonthsAgo;
+                        break;
+                }
+            }
+
+            // Filter by service/product type and price
+            if (filterBy.value) {
+                switch(filterBy.value) {
+                    case 'service':
+                        showRow = row.cells[7].textContent.toLowerCase().includes('service');
+                        break;
+                    case 'product':
+                        showRow = row.cells[7].textContent.toLowerCase().includes('product');
+                        break;
+                    case 'price_high':
+                        rows.sort((a, b) => {
+                            const priceA = parseFloat(a.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            const priceB = parseFloat(b.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            return priceB - priceA;
+                        });
+                        break;
+                    case 'price_low':
+                        rows.sort((a, b) => {
+                            const priceA = parseFloat(a.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            const priceB = parseFloat(b.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            return priceA - priceB;
+                        });
+                        break;
+                }
+            }
+
+            // Filter by report type
+            if (reportType.value !== 'overall') {
+                switch(reportType.value) {
+                    case 'services':
+                        showRow = row.cells[7].textContent.toLowerCase().includes('service');
+                        break;
+                    case 'products':
+                        showRow = row.cells[7].textContent.toLowerCase().includes('product');
+                        break;
+                    case 'discounts':
+                        showRow = row.textContent.toLowerCase().includes('discount');
+                        break;
+                    case 'giftcards':
+                        showRow = row.textContent.toLowerCase().includes('gift card');
+                        break;
+                }
+            }
+
+            row.style.display = showRow ? '' : 'none';
+        });
+
+        // Reapply sorting if needed
+        if (['price_high', 'price_low'].includes(filterBy.value)) {
+            rows.forEach(row => tableBody.appendChild(row));
         }
-      }
+    }
+
+    // Helper function to compare dates
+    function isSameDay(d1, d2) {
+        return d1.getFullYear() === d2.getFullYear() &&
+               d1.getMonth() === d2.getMonth() &&
+               d1.getDate() === d2.getDate();
+    }
+
+    // Add event listeners for all filters
+    [filterBy, filterByDate, reportType].forEach(filter => {
+        filter.addEventListener('change', updateTable);
     });
-  });
+
+    // Initialize the table
+    updateTable();
+});
 </script>
-
-          <!-- Package Preferences -->
-          <div class="col-md-6">
-            <div class="card border-0 shadow-sm rounded-3">
-              <div class="card-header bg-light">
-                <h5 class="mb-0">Package Preferences</h5>
-              </div>
-              <div class="card-body d-flex flex-column gap-3">
-                <div class="progress-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold">Wedding Packages</span>
-                    <span class="badge bg-primary">45%</span>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-primary" style="width: 45%"></div>
-                  </div>
-                </div>
-                <div class="progress-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold">Corporate Events</span>
-                    <span class="badge bg-info">30%</span>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-info" style="width: 30%"></div>
-                  </div>
-                </div>
-                <div class="progress-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold">Birthday Celebrations</span>
-                    <span class="badge bg-success">25%</span>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-success" style="width: 25%"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer border-0">
-        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Edit Customer</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 </body>
-
-
 </html>
