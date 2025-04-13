@@ -405,7 +405,7 @@
             });
         });
         
-        // Add CSS to fix menu transitions and styling
+        
         const style = document.createElement('style');
         style.textContent = `
             .menu-item .menu-sub {
