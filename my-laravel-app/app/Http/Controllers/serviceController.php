@@ -99,24 +99,39 @@ public function update(Request $request) {
 
 
 public function delete(Request $request)
-    {
-        // Validate the request
-        $request->validate([
-            'id' => 'required',
-        ]);
+{
+    // Validate the request
+    $request->validate([
+        'id' => 'required',
+    ]);
 
-        // Find the branch by branch_code
-        $service = service::where('id', $request->id)->first();
+    // Find the service by service_id
+    $service = service::where('service_id', $request->id)->first();
 
-        if (!$service) {
-            return redirect()->back()->with('error', 'Branch not found');
+    if (!$service) {
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Service not found'
+            ], 404);
         }
-
-        // Delete the branch
-        $service->delete();
-
-        return redirect()->back()->with('success', 'Service deleted successfully');
+        return redirect()->back()->with('error', 'Service not found');
     }
+
+    // Delete the service
+    $service->delete();
+
+    // If it's an AJAX request, return a JSON response
+    if ($request->ajax()) {
+        return response()->json([
+            'success' => true, 
+            'message' => 'Service deleted successfully'
+        ]);
+    }
+
+    // For non-AJAX requests, redirect back with success message
+    return redirect()->back()->with('success', 'Service deleted successfully');
+}
 
 
 

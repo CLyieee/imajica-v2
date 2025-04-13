@@ -3,10 +3,6 @@
  * Handles CRUD operations for services
  */
 
-
-
-
-
 $(document).ready(function () {
     // Load all services for service listing page
     if ($("#serviceTable").length) {
@@ -17,8 +13,6 @@ $(document).ready(function () {
     if ($(".branch-select").length) {
         loadBranchOptions();
     }
-
-    
 
     // Form submission for adding a service
     $("#addServiceForm").on("submit", function (e) {
@@ -105,7 +99,14 @@ $(document).ready(function () {
     });
 
     // Delete service functionality
-    $(document).on("click", ".delete-service", function () {
+    $(document).on("click", ".delete-service", function (e) {
+        // Prevent the default handler to avoid double confirmation dialogs
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Let the SweetAlert in services-list.blade.php handle this
+        // The original code is commented out below
+        /*
         const serviceId = $(this).data("id");
         const serviceName = $(this).data("name");
 
@@ -136,6 +137,7 @@ $(document).ready(function () {
                 },
             });
         }
+        */
     });
 
     // Get service data for editing
@@ -351,9 +353,6 @@ $(document).ready(function () {
                 `);
             });
         });
-
-
-
 
         if ($.fn.DataTable.isDataTable("#serviceTable")) {
             $("#serviceTable").DataTable().destroy();

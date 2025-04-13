@@ -167,7 +167,7 @@
                       <!-- Form Start -->
                       <form action="{{ route('expenses.update', $expense->expense_id) }}" method="POST">
                         @csrf
-                        @method('PUT')
+                        <input type="hidden" name="_method" value="PUT">
                         <div class="row g-3">
                           <div class="col-md-6">
                             <label class="form-label" for="expense_name">Expense Name</label>

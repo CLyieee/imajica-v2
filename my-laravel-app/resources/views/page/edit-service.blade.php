@@ -150,7 +150,7 @@
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
                           <!-- Form -->
-                          <form id="updateServiceForm" method="POST" action="/services/update" enctype="multipart/form-data">
+                          <form id="updateServiceForm" method="POST" action="{{ route('service.update') }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="service_id" value="{{ $service->service_id }}">
@@ -294,7 +294,7 @@
                                 <a href="{{ route('page.services-list') }}" class="btn btn-outline-secondary">Cancel</a>
                               </div>
                               <div class="col-sm-2 col-4 d-grid ms-2">
-                                <button type="submit" class="btn btn-primary" id="updateServiceBtn">
+                                <button type="button" class="btn btn-primary" id="updateServiceBtn">
                                   Update Service
                                 </button>
                               </div>
@@ -457,7 +457,7 @@
           }
         });
         
-        // Confirm update with SweetAlert
+        // AJAX form submission
         $('#updateServiceBtn').on('click', function(e) {
           e.preventDefault();
           
@@ -471,8 +471,73 @@
             confirmButtonText: 'Yes, update it!'
           }).then((result) => {
             if (result.isConfirmed) {
-              // Submit the form if confirmed
-              document.querySelector('form').submit();
+              // Create FormData object for file uploads
+              const form = document.getElementById('updateServiceForm');
+              const formData = new FormData(form);
+              
+              // Display loading state
+              Swal.fire({
+                title: 'Processing...',
+                text: 'Updating service information',
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading();
+                }
+              });
+              
+              // Send AJAX request
+              $.ajax({
+                url: "{{ route('service.update') }}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                  'X-HTTP-Method-Override': 'PUT', // Override method to PUT
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Service updated successfully',
+                  }).then(() => {
+                    window.location.href = "{{ route('page.services-list') }}";
+                  });
+                },
+                error: function(xhr, status, error) {
+                  console.error(xhr.responseText);
+                  let errorMessage = 'An error occurred while updating the service';
+                  
+                  if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                  }
+                  
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage,
+                  });
+                  
+                  // Display validation errors if any
+                  if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    const errors = xhr.responseJSON.errors;
+                    let errorHtml = '<ul>';
+                    for (const field in errors) {
+                      errors[field].forEach(error => {
+                        errorHtml += `<li>${error}</li>`;
+                      });
+                    }
+                    errorHtml += '</ul>';
+                    
+                    $('#responseMessage')
+                      .removeClass()
+                      .addClass('alert alert-danger')
+                      .html(errorHtml)
+                      .show();
+                  }
+                }
+              });
             }
           });
         });
