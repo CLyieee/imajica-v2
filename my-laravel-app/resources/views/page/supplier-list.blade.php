@@ -85,6 +85,7 @@
                                                         <td class="text-center">{{ $supplier->email }}</td>
                                                         <td class="text-center">{{ $supplier->description }}</td>
                                                         <td class="text-center">
+
                                                             <div class="d-inline-block">
                                                                 <a href="{{ route('supplier.edit', ['id' => $supplier->suppler_id]) }}" 
                                                                    class="btn btn-sm btn-info" 
@@ -93,6 +94,7 @@
                                                                    title="Edit Supplier">
                                                                     <i class="ti tabler-edit me-1"></i>Edit
                                                                 </a>
+
                                                                 <button type="button" class="btn btn-sm btn-danger delete-supplier" 
                                                                         data-id="{{ $supplier->suppler_id }}">
                                                                     <i class="ti tabler-trash me-1"></i> Delete

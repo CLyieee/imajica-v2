@@ -1,11 +1,5 @@
 @extends('layouts.app')
-@extends('layouts.layout-collapsed-menu-dark')
-@extends('layouts.layout-container-dark')
-@extends('layouts.layout-content-navbar-and-sidebar-dark')
-@extends('layouts.layout-without-navbar-dark')
-@extends('layouts.layout-content-navbar-dark')
-@extends('layouts.layout-fluid-dark')
-@extends('layouts.layout-without-menu-dark')
+
 
 <!DOCTYPE html>
 
