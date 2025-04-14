@@ -15,7 +15,7 @@ class CreateNewProductTable extends Migration
     {
         Schema::create('new_product', function (Blueprint $table) {
             $table->id();
-
+    
             // Basic product information
             $table->string('sku')->unique();
             $table->string('name');
@@ -23,7 +23,7 @@ class CreateNewProductTable extends Migration
             
             // Category relationship
             $table->foreignId('category_id')->constrained('categories', 'category_id');
-            $table->foreignId('supplier_id')->constrained('suppliers', 'supplier_id');
+            $table->foreignId('supplier_id')->constrained('suppliers', 'suppler_id');
             // Pricing
             $table->decimal('base_price', 10, 2);
             
@@ -36,7 +36,6 @@ class CreateNewProductTable extends Migration
             $table->date('expiry_date')->nullable(); 
             $table->date('removal_date')->nullable();
 
-            $table->timestamps();
         });
     }
 

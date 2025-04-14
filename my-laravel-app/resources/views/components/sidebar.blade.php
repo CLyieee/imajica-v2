@@ -78,6 +78,10 @@
                                 <div data-i18n="Category List">Category List</div>
                             </a>
                         </li>
+                        <li class="menu-item {{ request()->is('waste-list') ? 'active' : '' }}">
+                            <a href="/waste-list" class="menu-link">
+                                <div data-i18n="Waste List">Waste List</div>
+                            </a>
                     </ul>
                 </li>
                 <li class="menu-item {{ request()->is('order-list') ||  request()->is('add-order') ? 'active open' : '' }}">
@@ -314,7 +318,13 @@
                 <i class="menu-icon icon-base ti tabler-chart-pie "></i>
                 <div data-i18n="Accounting">Accounting</div>
             </a>
+
             <ul class="menu-sub">
+
+                
+                
+
+
                 <li class="menu-item {{ request()->is('sales-transaction') ? 'active' : '' }}">
                     <a href="/sales-transaction" class="menu-link">
                         <div data-i18n="Services Transaction">Services Transaction</div>
@@ -344,8 +354,13 @@
                     </a>
                 </li>
                 </ul>
+
                 </li>
+
+
+
             </ul>
+        </li>
         </li>
 
 
@@ -384,196 +399,145 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Prevent default behavior for menu toggle links
+        // Clear any previous event listeners from menu toggles
         const menuToggles = document.querySelectorAll('.menu-toggle');
         menuToggles.forEach(toggle => {
+            const clonedToggle = toggle.cloneNode(true);
+            toggle.parentNode.replaceChild(clonedToggle, toggle);
+        });
+        
+        // Reattach event listeners with improved handling
+        document.querySelectorAll('.menu-toggle').forEach(toggle => {
             toggle.addEventListener('click', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 
                 // Find the parent menu item
                 const menuItem = this.closest('.menu-item');
                 
-                // Toggle open class only
-                menuItem.classList.toggle('open');
-                
-                // Ensure the menu-sub is displayed when parent is open
-                const subMenu = menuItem.querySelector('.menu-sub');
-                if (subMenu) {
-                    if (menuItem.classList.contains('open')) {
-                        subMenu.style.display = 'block';
-                    } else {
-                        subMenu.style.display = 'none';
+                // Handle nested menu items properly
+                if (this.closest('.menu-sub')) {
+                    // If this is a nested submenu toggle, only toggle this specific item
+                    menuItem.classList.toggle('open');
+                    
+                    const subMenu = menuItem.querySelector('.menu-sub');
+                    if (subMenu) {
+                        if (menuItem.classList.contains('open')) {
+                            subMenu.style.display = 'block';
+                        } else {
+                            subMenu.style.display = 'none';
+                        }
+                    }
+                } else {
+                    // For top-level menu items, we need to handle sibling closures
+                    // First check if we need to close other open top-level items
+                    const isOpen = menuItem.classList.contains('open');
+                    
+                    // Toggle this menu item's state
+                    menuItem.classList.toggle('open');
+                    
+                    // Show/hide the submenu
+                    const subMenu = menuItem.querySelector('.menu-sub');
+                    if (subMenu) {
+                        subMenu.style.display = !isOpen ? 'block' : 'none';
                     }
                 }
                 
-                // Stop event propagation
-                e.stopPropagation();
+                // Force a repaint to ensure proper display
+                document.body.offsetHeight;
             });
         });
         
-        // Force visibility of all menu labels immediately
+        // Force visibility of all menu labels
         document.querySelectorAll('.menu-link div[data-i18n]').forEach(label => {
             label.style.display = 'block';
             label.style.visibility = 'visible';
             label.style.opacity = '1';
-            // Reset colors to ensure proper inheritance
-            label.style.color = '';
         });
         
-        // Only set white color on the directly active menu items
-        document.querySelectorAll('.menu-item.active > .menu-link > div[data-i18n]').forEach(label => {
-            label.style.color = '#ffffff';
-        });
-        
-        // Handle menu link clicks to ensure text stays visible
-        const menuLinks = document.querySelectorAll('.menu-link');
-        menuLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Only prevent default for javascript:void(0) links
-                if (this.getAttribute('href') === 'javascript:void(0);') {
-                    e.preventDefault();
-                }
-                
-                // Fix active state text visibility immediately on click
-                const textElement = this.querySelector('div[data-i18n]');
-                if (textElement) {
-                    textElement.style.visibility = 'visible';
-                    textElement.style.opacity = '1';
-                    textElement.style.display = 'block';
-                    
-                    // Set text to white ONLY if this is the direct active menu link
-                    const menuItem = this.closest('.menu-item');
-                    if (menuItem && menuItem.classList.contains('active') && this === menuItem.querySelector('> .menu-link')) {
-                        textElement.style.color = '#ffffff';
-                    }
-                }
-            });
-        });
-        
-        // Apply CSS fixes
-        const style = document.createElement('style');
-        style.textContent = `
-            /* Basic menu structure fixes */
-            .menu-item .menu-sub {
-                transition: none !important;
-                display: none;
-            }
-            
-            .menu-item.open > .menu-sub {
-                display: block !important;
-                max-height: 2000px !important;
-                transition: none !important;
-                animation: none !important;
-            }
-            
-            /* Menu item text visibility fixes - more specific */
-            .menu-inner .menu-item .menu-link div[data-i18n] {
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                transition: none !important;
-            }
-            
-            /* ONLY direct active menu items get white text color */
-            .menu-item.active > .menu-link > div[data-i18n] {
-                color: #000000FF !important;
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                font-weight: 500 !important;
-            }
-            
-            /* Make sure submenu items have default color */
-            .menu-item.active .menu-sub .menu-item .menu-link div[data-i18n] {
-                color: inherit !important;
-            }
-            
-            /* But submenu active items get white */
-            .menu-item .menu-sub .menu-item.active > .menu-link > div[data-i18n] {
-                color: #ffffff !important;
-            }
-            
-            /* Hover state fixes */
-            .menu-link:hover div[data-i18n] {
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-            
-            /* Menu toggle arrow removal */
-            .menu-toggle::after {
-                display: none !important;
-            }
-            
-            /* Fix for specific issue with staff submenu */
-            .menu-item[class*="staff"] .menu-sub .menu-link div[data-i18n] {
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-            
-            /* Staff submenu active items specifically with white text */
-            .menu-item[class*="staff"] .menu-sub .menu-item.active > .menu-link > div[data-i18n] {
-                color: #ffffff !important;
-            }
-            
-            /* Override any theme styles that might be causing the issue */
-            [data-bs-theme="dark"] .menu-link div[data-i18n],
-            [data-bs-theme="light"] .menu-link div[data-i18n] {
-                visibility: visible !important;
-                display: block !important;
-                opacity: 1 !important;
-            }
-            
-            /* Force menu item titles to always be visible regardless of state */
-            .menu-inner .menu-item .menu-link div[data-i18n],
-            .menu-inner .menu-item.open .menu-link div[data-i18n],
-            .menu-inner .menu-item:hover .menu-link div[data-i18n] {
-                position: static !important;
-                width: auto !important;
-                height: auto !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                font-size: inherit !important;
-                line-height: inherit !important;
-                text-indent: 0 !important;
-                clip: auto !important;
-                clip-path: none !important;
-                overflow: visible !important;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Initialize active menu states
-        const activeMenuItems = document.querySelectorAll('.menu-item.active');
-        activeMenuItems.forEach(item => {
-            // Make sure the text is visible
-            const textElement = item.querySelector('> .menu-link > div[data-i18n]');
-            if (textElement) {
-                textElement.style.color = '#ffffff';
-                textElement.style.visibility = 'visible';
-                textElement.style.opacity = '1';
-                textElement.style.display = 'block';
-                textElement.style.position = 'static';
-                textElement.style.width = 'auto';
-                textElement.style.height = 'auto';
-                textElement.style.overflow = 'visible';
-            }
-            
-            // Open parent menu items if needed
-            let parent = item.closest('.menu-item:not(.active)');
+        // Set active menu items properly
+        document.querySelectorAll('.menu-item.active').forEach(item => {
+            // Open all parent menu items
+            let parent = item.parentElement.closest('.menu-item');
             while (parent) {
                 parent.classList.add('open');
-                const subMenu = parent.querySelector('.menu-sub');
-                if (subMenu) {
-                    subMenu.style.display = 'block';
+                const parentSubMenu = parent.querySelector('.menu-sub');
+                if (parentSubMenu) {
+                    parentSubMenu.style.display = 'block';
                 }
-                parent = parent.parentElement.closest('.menu-item:not(.active)');
+                parent = parent.parentElement.closest('.menu-item');
             }
         });
         
-        // Handle all submenu visibility
+        // Make sure all open menu items have their sub-menus visible
         document.querySelectorAll('.menu-item.open > .menu-sub').forEach(subMenu => {
             subMenu.style.display = 'block';
         });
+        
+        // Add CSS to fix menu transitions and styling
+        const style = document.createElement('style');
+        style.textContent = `
+            /* Basic menu structure fixes */
+            #layout-menu {
+                overflow-y: auto !important;
+                height: 100vh;
+            }
+            
+            .menu-item .menu-sub {
+                display: none;
+                max-height: none !important;
+                transition: none !important;
+            }
+            .menu-item.open > .menu-sub {
+                display: block !important;
+                max-height: none !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            /* Fix menu toggle clicks */
+            .menu-toggle {
+                cursor: pointer !important;
+                user-select: none;
+                pointer-events: auto !important;
+            }
+            
+            /* Remove the toggle arrow */
+            .menu-toggle::after {
+                display: none !important;
+                content: "" !important;
+            }
+            
+            /* Fix menu item text visibility */
+            .menu-link div[data-i18n] {
+                visibility: visible !important;
+                display: block !important;
+                opacity: 1 !important;
+            }
+            
+            /* Fix pointer events for all menu items */
+            .menu-link, .menu-toggle, .menu-sub, .menu-item {
+                pointer-events: auto !important;
+            }
+            
+            /* Fix z-index of menu items */
+            .menu-sub {
+                z-index: 10 !important;
+                position: relative !important;
+            }
+            
+            /* Fix nested submenu handling */
+            .menu-sub .menu-sub {
+                margin-left: 1rem !important;
+                border-left: 1px solid rgba(0,0,0,0.05) !important;
+            }
+            
+            /* Make the menu links clearly clickable */
+            .menu-toggle, .menu-link {
+                position: relative !important;
+                z-index: 2 !important;
+            }
+        `;
+        document.head.appendChild(style);
     });
 </script>

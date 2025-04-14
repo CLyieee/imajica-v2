@@ -502,7 +502,7 @@ class DashboardController extends Controller
     }
     public function add_order()
     {
-        $products = \App\Models\Product::select('bar_code', 'name', 'base_price')->get();
+        $products = \App\Models\Product::select('id', 'name', 'base_price')->get();
         return view('page.add-order', compact('products'));
     }
 
@@ -511,6 +511,10 @@ class DashboardController extends Controller
         $categories = category::all();
         return view('page.category-list', compact('categories'));
 
+    }
+    public function waste_list(){
+        $wastes = \App\Models\Waste::all();
+        return view('page.waste-list', compact('wastes'));
     }
     public function system_settings()
     {

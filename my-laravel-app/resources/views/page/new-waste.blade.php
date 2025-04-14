@@ -1,5 +1,11 @@
 @extends('layouts.app')
-
+@extends('layouts.layout-collapsed-menu-dark')
+@extends('layouts.layout-container-dark')
+@extends('layouts.layout-content-navbar-and-sidebar-dark')
+@extends('layouts.layout-without-navbar-dark')
+@extends('layouts.layout-content-navbar-dark')
+@extends('layouts.layout-fluid-dark')
+@extends('layouts.layout-without-menu-dark')
 
 <!DOCTYPE html>
 
@@ -102,7 +108,17 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
-    
+    <!-- Add SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const supplierRoutes = {
+            add: "{{ route('add.supplier') }}",
+            getAll: "{{ route('get.suppliers') }}",
+            get: "{{ route('get.supplier', ['id' => '__ID__']) }}",
+            update: "{{ route('update.supplier', ['id' => '__ID__']) }}",
+            delete: "{{ route('delete.supplier', ['id' => '__ID__']) }}"
+        };
+    </script>
   </head>
 
   <body>
@@ -336,96 +352,61 @@
                 <div class="col-12">
                   <div class="card">
                     <div
-                      class="card-header d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
+                      class="card-header sticky-element d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
                       style="background-color: #0a3622"
                     >
                       <h5 class="card-title mb-sm-0 me-2 text-white">
-                        Department Management
+                        Waste Management
                       </h5>
                     </div>
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <!-- Department Information Form -->
-                          <form method="post" action="{{ route('department.create') }}">
+                          <form id="addWasteForm" action="{{ route('waste.store') }}" method="POST">
                             @csrf
-                            @method('POST')
-                            <div class="row g-3 mb-4">
+                            <div class="row g-6">
                               <div class="col-12">
-                                <h6 class="fw-semibold">Department Information</h6>
-                                <hr class="mt-0" />
-                              </div>
-                              
-                              <div class="col-md-6">
-                                <label class="form-label" for="department_code">Department Code</label>
-                                <input
-                                  type="text"
-                                  id="department_code"
-                                  name="department_code"
-                                  class="form-control"
-                                  placeholder="Department Code"
-                                  required
-                                />
+                                <label class="form-label" for="product_id">ITEM NAME</label>
+                                <select id="product_id" name="product_id" class="form-select" required>
+                                  <option value="">Search Item</option>
+                                  @foreach($products as $product)
+                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                  @endforeach
+                                </select>
                               </div>
 
-                              <div class="col-md-6">
-                                <label class="form-label" for="department_name">Department Name</label>
+                              <div class="col-12">
+                                <label class="form-label" for="quantity">QUANTITY</label>
                                 <input
-                                  type="text"
-                                  id="department_name"
-                                  name="department_name"
+                                  type="number"
+                                  id="quantity"
+                                  name="quantity" 
                                   class="form-control"
-                                  placeholder="Department Name"
                                   required
                                 />
                               </div>
 
                               <div class="col-12">
-                                <label class="form-label" for="description">Description</label>
+                                <label class="form-label" for="reason">REASON</label>
                                 <textarea
-                                  name="description"
+                                  id="reason"
+                                  name="reason"
                                   class="form-control"
-                                  id="description"
                                   rows="4"
-                                  placeholder="Department Description"
                                   required
                                 ></textarea>
                               </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="department_head">Department Head</label>
-                                <input
-                                  type="text"
-                                  id="department_head"
-                                  name="department_head"
-                                  class="form-control"
-                                  placeholder="Department Head Name"
-                                  required
-                                />
-                                <small class="text-muted">Enter the full name of the department head</small>
-                              </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="contact_email">Contact Email</label>
-                                <input
-                                  type="email"
-                                  id="contact_email"
-                                  name="contact_email"
-                                  class="form-control"
-                                  placeholder="department@example.com"
-                                  required
-                                />
-                                <small class="text-muted">This email will be used to create a staff record for the department head</small>
-                              </div>
                             </div>
 
+                            <br />
                             <div class="row">
-                              <div class="col-12 d-flex gap-3">
-                                <button type="submit" class="btn btn-primary">Add Department</button>
+                              <div class="col-12">
+                                <button type="button" class="btn btn-secondary" id="cancelBtn">CANCEL</button>
+                                <button type="submit" class="btn btn-primary" id="addItemBtn">ADD ITEM</button>
                               </div>
                             </div>
                           </form>
-                          
+                          <br />
                           <!-- Success/Error Messages -->
                           <div id="responseMessage" style="display: none;" class="alert mt-3"></div>
                         </div>
@@ -517,94 +498,99 @@
     <!-- Page JS -->
     <script src="../../assets/js/form-layouts.js"></script>
     <script src="../../assets/js/forms-pickers.js"></script>
-
+    
     <!-- AJAX Form Submission Script -->
     <script>
       $(document).ready(function() {
-        // Handle form submission
-        $('form').on('submit', function(e) {
+        // Initialize select2 
+        $('#product_id').select2({
+          placeholder: "Search for an item...",
+          allowClear: true
+        });
+
+        $('#addWasteForm').on('submit', function(e) {
           e.preventDefault();
           
-          // Get form data
-          var formData = $(this).serialize();
-          
-          // Show loading state
-          $('button[type="submit"]').prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...');
-          
-          // Submit form via AJAX
-          $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: formData,
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-              // Show success message
-              $('#responseMessage')
-                .removeClass('alert-danger')
-                .addClass('alert-success')
-                .html('Department added successfully!')
-                .show();
+          Swal.fire({
+            title: 'Confirm Action',
+            text: 'Are you sure you want to add this item to waste?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, add it!',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              $('#addItemBtn').prop('disabled', true).html('Processing...');
               
-              // Reset form
-              $('form')[0].reset();
-              
-              // Redirect to department list after 1.5 seconds
-              setTimeout(function() {
-                window.location.href = "{{ route('page.department-list') }}";
-              }, 1500);
-            },
-            error: function(xhr) {
-              // Show error message
-              var errorMessage = 'An error occurred while adding the department.';
-              
-              if (xhr.responseJSON && xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
-              } else if (xhr.responseText) {
-                try {
-                  var response = JSON.parse(xhr.responseText);
-                  if (response.message) {
-                    errorMessage = response.message;
+              $.ajax({
+                url: $(this).attr('action'),
+                type: "POST",
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(response) {
+                  if(response.status) {
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Success!',
+                      text: response.message,
+                      showConfirmButton: true,
+                      confirmButtonText: 'View Waste List',
+                      allowOutsideClick: false
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        window.location.href = "{{ route('page.waste-list') }}";
+                      }
+                    });
+                  } else {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error!',
+                      text: response.message,
+                      confirmButtonText: 'Try Again'
+                    });
                   }
-                } catch (e) {
-                  // If not JSON, use the response text
-                  errorMessage = xhr.responseText;
+                },
+                error: function(xhr) {
+                  let errorMessage = 'An error occurred while processing your request.';
+                  
+                  if(xhr.responseJSON && xhr.responseJSON.errors) {
+                    errorMessage = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                  }
+                  
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: errorMessage,
+                    confirmButtonText: 'Try Again'
+                  });
+                },
+                complete: function() {
+                  $('#addItemBtn').prop('disabled', false).html('ADD ITEM');
                 }
-              }
-              
-              $('#responseMessage')
-                .removeClass('alert-success')
-                .addClass('alert-danger')
-                .html(errorMessage)
-                .show();
-            },
-            complete: function() {
-              // Reset button state
-              $('button[type="submit"]').prop('disabled', false).html('Add Department');
+              });
             }
           });
         });
-        
-        // Display session messages if any
-        @if(session('success'))
-          $('#responseMessage')
-            .removeClass('alert-danger')
-            .addClass('alert-success')
-            .html("{{ session('success') }}")
-            .show();
-        @endif
-        
-        @if(session('error'))
-          $('#responseMessage')
-            .removeClass('alert-success')
-            .addClass('alert-danger')
-            .html("{{ session('error') }}")
-            .show();
-        @endif
+
+        $('#cancelBtn').on('click', function() {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You will lose any unsaved changes!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, cancel!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "{{ route('page.waste-list') }}";
+            }
+          });
+        });
       });
     </script>
-  
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->

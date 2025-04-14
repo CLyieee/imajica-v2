@@ -1,5 +1,11 @@
 @extends('layouts.app')
-
+@extends('layouts.layout-collapsed-menu-dark')
+@extends('layouts.layout-container-dark')
+@extends('layouts.layout-content-navbar-and-sidebar-dark')
+@extends('layouts.layout-without-navbar-dark')
+@extends('layouts.layout-content-navbar-dark')
+@extends('layouts.layout-fluid-dark')
+@extends('layouts.layout-without-menu-dark')
 
 <!DOCTYPE html>
 
@@ -102,7 +108,9 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
-    
+    <!-- Add SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   </head>
 
   <body>
@@ -113,14 +121,20 @@
         @include('components.sidebar')
         <!-- / Menu -->
 
-        
+        <div class="menu-mobile-toggler d-xl-none rounded-1">
+          <a
+            href="javascript:void(0);"
+            class="layout-menu-toggle menu-link text-large text-bg-secondary p-2 rounded-1"
+          >
+            <i class="ti tabler-menu icon-base"></i>
+            <i class="ti tabler-chevron-right icon-base"></i>
+          </a>
+        </div>
         <!-- / Menu -->
 
         <!-- Layout container -->
         <div class="layout-page">
-          <!-- Navbar -->
-
-
+        
 
           <!-- / Navbar -->
 
@@ -128,85 +142,54 @@
           <div class="content-wrapper">
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
-              <!-- Sticky Actions -->
-              <div class="row">
-                <div class="col-12">
-                  <div class="card">
-                    <div
-                      class="card-header  d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
-                      style="background-color: #0a3622"
-                    >
-                      <h5 class="card-title mb-sm-0 me-2 text-white">
-                        Branch Management
-                      </h5>
-                    </div>
-                    <div class="card-body pt-6">
-                      <div class="row">
-                        <div class="col-lg-8 mx-auto">
-                          <!-- Branch Information Form -->
-                          <form method="post" action="{{ route('branch.create') }}">
-                            @csrf
-                            @method('POST')
-                            <div class="row g-3 mb-4">
-                              <div class="col-12">
-                                <h6 class="fw-semibold">Branch Information</h6>
-                                <hr class="mt-0" />
-                              </div>
-                              
-                              <div class="col-md-6">
-                                <label class="form-label" for="branch_code">Branch Code</label>
-                                <input
-                                  type="text"
-                                  id="branch_code"
-                                  name="branch_code"
-                                  class="form-control"
-                                  placeholder="Branch Code"
-                                  required
-                                />
-                              </div>
+              <div class="card">
+                <!-- Header -->
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <h5 class="card-title mb-0">Inventory Waste List</h5>
+                  <a href="{{ route('page.new-waste') }}" class="btn btn-primary">
+                    <i class="ti tabler-plus me-1"></i> Add New Waste
+                  </a>
+                </div>
 
-                              <div class="col-md-6">
-                                <label class="form-label" for="branch_name">Branch Name</label>
-                                <input
-                                  type="text"
-                                  id="branch_name"
-                                  name="branch_name"
-                                  class="form-control"
-                                  placeholder="Branch Name"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-12">
-                                <label class="form-label" for="address">Address</label>
-                                <textarea
-                                  name="address"
-                                  class="form-control"
-                                  id="address"
-                                  rows="4"
-                                  placeholder="Full Address"
-                                  required
-                                ></textarea>
-                              </div>
-                            </div>
-
-                            <div class="row">
-                              <div class="col-12 d-flex gap-3">
-                                <button type="submit" class="btn btn-primary">Add Branch</button>
-                                
-                              </div>
-                            </div>
-                          </form>
-                          
-                          <!-- Success/Error Messages -->
-                          <div id="responseMessage" style="display: none;" class="alert mt-3"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <!-- Table -->
+                <div class="table-responsive text-nowrap px-3">
+                  <table class="table table-striped" id="wasteTable">
+                    <thead class="table-light">
+                      <tr>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Reason</th>
+                        <th>Date Added</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($wastes as $waste)
+                      <tr>
+                        <td>{{ $waste->id }}</td>
+                        <td>{{ $waste->product ? $waste->product->name : 'N/A' }}</td>
+                        <td>{{ $waste->quantity }}</td>
+                        <td>{{ $waste->reason }}</td>
+                        <td>{{ $waste->date_added }}</td>
+                        <td>
+                          <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-sm btn-info edit-waste" 
+                                    data-id="{{ $waste->id }}">
+                              <i class="ti tabler-edit me-1"></i>Edit
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger delete-waste"
+                                    data-id="{{ $waste->id }}">
+                              <i class="ti tabler-trash me-1"></i>Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
                 </div>
               </div>
-              <!-- /Sticky Actions -->
             </div>
             <!-- / Content -->
 
@@ -289,9 +272,14 @@
     <!-- Page JS -->
     <script src="../../assets/js/form-layouts.js"></script>
     <script src="../../assets/js/forms-pickers.js"></script>
-
-    <!-- AJAX Form Submission Script -->
-  
+    
+ 
+    <script>
+      $(document).ready(function() {
+        $('#wasteTable').DataTable();
+      });
+      
+    </script>
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->

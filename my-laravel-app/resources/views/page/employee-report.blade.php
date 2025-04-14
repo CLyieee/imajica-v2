@@ -124,7 +124,7 @@
       }
 
       .container {
-        max-width: 1200px;
+        max-width: 1000px;
         margin: auto;
         flex: 1;
         padding: 2rem;
@@ -194,15 +194,17 @@
         justify-content: center;
       }
 
-      .metric-card {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(236, 239, 243, 0.9);
-        min-width: 200px;
-        max-width: 300px;
-        flex: 1;
-      }
+.metric-card {
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #2b2c2d; /* Changed 'border-color' to 'border' for better clarity */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Corrected property name and increased shadow values */
+  background: rgba(254, 255, 255, 0.9);
+  min-width: 200px;
+  max-width: 300px;
+  flex: 1;
+}
 
       .metric-card i {
         font-size: 24px;
@@ -322,7 +324,7 @@
                 </div>
               </div>
 
-              <div class="d-flex gap-2 align-items-end">
+              {{-- <div class="d-flex gap-2 align-items-end">
                 <div class="d-flex flex-column" style="width: 150px;">
                   <label class="form-label mb-1 small">Date From</label>
                   <div class="input-group input-group-sm">
@@ -335,7 +337,7 @@
                     <input type="date" class="form-control form-control-sm" id="dateTo">
                   </div>
                 </div>
-              </div>
+              </div> --}}
 
               <div class="d-flex flex-column" style="width: 150px;">
                 <label class="form-label mb-1 small">Sort By</label>
@@ -357,7 +359,7 @@
               </div>
 
               <div class="d-flex flex-column" style="width: 150px;">
-                <label class="form-label mb-1 small">Filter Date</label>
+                <label class="form-label mb-1 small">Filter by Date</label>
                 <div class="dropdown w-100">
                   <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100 py-1" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" style="height: 31px;">
                     Filter By Date
@@ -540,9 +542,187 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const dateFilter = document.getElementById('dateFilter');
+
     const table = document.getElementById('employeeReport');
     const tbody = table.getElementsByTagName('tbody')[0];
     const rows = tbody.getElementsByTagName('tr');
+
+    const sortByBtn = document.getElementById('sortByBtn');
+    const dateFilterBtn = document.getElementById('dateFilterBtn');
+    
+    // Initialize dropdowns
+    const sortByDropdown = new bootstrap.Dropdown(sortByBtn);
+    const dateFilterDropdown = new bootstrap.Dropdown(dateFilterBtn);
+
+    // Handle sort dropdown changes
+    sortBy.addEventListener('change', function() {
+        const selectedText = this.options[this.selectedIndex].text;
+        sortByBtn.innerHTML = `${selectedText} <i class="ti tabler-chevron-down ms-1"></i>`;
+        applySort();
+        sortByDropdown.hide();
+    });
+
+    function applySort() {
+        const selectedSort = sortBy.value;
+        const tbody = document.querySelector('#employeeReport tbody');
+        const rows = Array.from(tbody.getElementsByTagName('tr'));
+
+        if (!selectedSort) {
+            // Reset to original order if no sort selected
+            updateTableContent(rows);
+            return;
+        }
+
+        rows.sort((a, b) => {
+            let aValue, bValue;
+
+            switch(selectedSort) {
+                case 'totalSales':
+                    aValue = parseCurrency(a.cells[8].textContent);
+                    bValue = parseCurrency(b.cells[8].textContent);
+                    return bValue - aValue;
+                case 'serviceSales': 
+                    aValue = parseCurrency(a.cells[6].textContent);
+                    bValue = parseCurrency(b.cells[6].textContent);
+                    return bValue - aValue;
+                case 'productSales':
+                    aValue = parseCurrency(a.cells[7].textContent);
+                    bValue = parseCurrency(b.cells[7].textContent);
+                    return bValue - aValue;
+                case 'clients':
+                    aValue = parseInt(a.cells[5].textContent);
+                    bValue = parseInt(b.cells[5].textContent);
+                    return bValue - aValue;
+                case 'name':
+                    aValue = a.cells[1].textContent.toLowerCase();
+                    bValue = b.cells[1].textContent.toLowerCase();
+                    return aValue.localeCompare(bValue);
+                default:
+                    return 0;
+            }
+        });
+
+        // Update table content with sorted rows
+        updateTableContent(rows);
+
+        // Update metrics after sorting
+        updateMetrics(rows);
+
+        // Update dropdown button text with sort information
+        const selectedText = sortBy.options[sortBy.selectedIndex].text;
+        sortByBtn.innerHTML = `${selectedText} <i class="ti tabler-chevron-down ms-1"></i>`;
+    }
+
+    function parseCurrency(value) {
+        return parseFloat(value.replace(/[₱,]/g, '')) || 0;
+    }
+
+    function updateMetrics(rows) {
+        let totalSales = 0;
+        let topEmployeeSales = 0;
+        let topEmployee = '';
+
+        rows.forEach(row => {
+            if (row.style.display !== 'none') {
+                const sales = parseCurrency(row.cells[8].textContent);
+                totalSales += sales;
+                if (sales > topEmployeeSales) {
+                    topEmployeeSales = sales;
+                    topEmployee = row.cells[1].textContent;
+                }
+            }
+        });
+
+        // Update the metrics display
+        document.querySelector('.metric-card:nth-child(1) h4').textContent = 
+            '₱' + totalSales.toLocaleString(undefined, {maximumFractionDigits: 0});
+        document.querySelector('.metric-card:nth-child(2) h4').textContent = 
+            '₱' + topEmployeeSales.toLocaleString(undefined, {maximumFractionDigits: 0});
+        document.querySelector('.metric-card:nth-child(3) h4').textContent = topEmployee;
+    }
+
+    // Modify existing updateTable function
+    function updateTable() {
+        const rows = Array.from(document.querySelectorAll('#employeeReport tbody tr'));
+        const selectedFilter = dateFilter.value;
+        
+        if (!selectedFilter) {
+            // Reset to show all rows if no filter selected
+            rows.forEach(row => row.style.display = '');
+            updateRanks(rows);
+            updateMetrics(rows);
+            return;
+        }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        rows.forEach(row => {
+            const dateCell = row.cells[2];
+            const rowDate = new Date(dateCell.textContent);
+            rowDate.setHours(0, 0, 0, 0);
+            let showRow = false;
+
+            switch(selectedFilter) {
+                case 'today':
+                    showRow = rowDate.getTime() === today.getTime();
+                    break;
+                case 'yesterday':
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    showRow = rowDate.getTime() === yesterday.getTime();
+                    break;
+                case 'last7days':
+                    const last7Days = new Date(today);
+                    last7Days.setDate(last7Days.getDate() - 7);
+                    showRow = rowDate >= last7Days;
+                    break;
+                case 'last30days':
+                    const last30Days = new Date(today);
+                    last30Days.setDate(last30Days.getDate() - 30);
+                    showRow = rowDate >= last30Days;
+                    break;
+                case 'thisMonth':
+                    showRow = rowDate.getMonth() === today.getMonth() && 
+                             rowDate.getFullYear() === today.getFullYear();
+                    break;
+                case 'lastMonth':
+                    const lastMonth = new Date(today);
+                    lastMonth.setMonth(lastMonth.getMonth() - 1);
+                    showRow = rowDate.getMonth() === lastMonth.getMonth() && 
+                             rowDate.getFullYear() === lastMonth.getFullYear();
+                    break;
+                case 'thisYear':
+                    showRow = rowDate.getFullYear() === today.getFullYear();
+                    break;
+                default:
+                    showRow = true;
+            }
+
+            row.style.display = showRow ? '' : 'none';
+        });
+
+        // Update ranks and metrics for visible rows
+        const visibleRows = rows.filter(row => row.style.display !== 'none');
+        updateRanks(visibleRows);
+        updateMetrics(visibleRows);
+
+        // Update the filter button text with count
+        const selectedText = dateFilter.options[dateFilter.selectedIndex].text;
+        dateFilterBtn.innerHTML = `${selectedText} (${visibleRows.length})`;
+    }
+
+    function updateRanks(rows) {
+        rows.forEach((row, index) => {
+            if (row.style.display !== 'none') {
+                row.cells[0].textContent = index + 1;
+            }
+        });
+    }
+
+    function filterRowsByDate(rows, filter) {
+        if (!filter) return rows;
+
 
     dateFilter.addEventListener('change', function() {
         const selectedFilter = this.value;
@@ -1015,6 +1195,130 @@ document.addEventListener('DOMContentLoaded', function() {
             XLSX.writeFile(wb, 'employee-report.csv');
         }
     });
-  </script>
+
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dateFilter = document.getElementById('dateFilter');
+    const dateFilterBtn = document.getElementById('dateFilterBtn');
+    const table = document.getElementById('employeeReport');
+    const tbody = table.getElementsByTagName('tbody')[0];
+
+    dateFilter.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const selectedText = selectedOption.text;
+        const selectedValue = this.value;
+        
+        dateFilterBtn.textContent = selectedText;
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const rows = Array.from(tbody.getElementsByTagName('tr'));
+        
+        rows.forEach(row => {
+            const dateCell = row.cells[2]; // Get the date cell
+            const rowDate = new Date(dateCell.textContent);
+            rowDate.setHours(0, 0, 0, 0);
+            
+            let showRow = true;
+            
+            switch(selectedValue) {
+                case 'today':
+                    showRow = rowDate.getTime() === today.getTime();
+                    if (showRow) dateCell.textContent = 'Today';
+                    break;
+                case 'yesterday':
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    showRow = rowDate.getTime() === yesterday.getTime();
+                    if (showRow) dateCell.textContent = 'Yesterday';
+                    break;
+                case 'last7days':
+                    const last7Days = new Date(today);
+                    last7Days.setDate(last7Days.getDate() - 7);
+                    showRow = rowDate >= last7Days;
+                    if (showRow) dateCell.textContent = 'Last 7 Days';
+                    break;
+                case 'last30days':
+                    const last30Days = new Date(today);
+                    last30Days.setDate(last30Days.getDate() - 30);
+                    showRow = rowDate >= last30Days;
+                    if (showRow) dateCell.textContent = 'Last 30 Days';
+                    break;
+                case 'thisMonth':
+                    showRow = rowDate.getMonth() === today.getMonth() && 
+                             rowDate.getFullYear() === today.getFullYear();
+                    if (showRow) dateCell.textContent = 'This Month';
+                    break;
+                case 'lastMonth':
+                    const lastMonth = new Date(today);
+                    lastMonth.setMonth(lastMonth.getMonth() - 1);
+                    showRow = rowDate.getMonth() === lastMonth.getMonth() && 
+                             rowDate.getFullYear() === lastMonth.getFullYear();
+                    if (showRow) dateCell.textContent = 'Last Month';
+                    break;
+                case 'thisYear':
+                    showRow = rowDate.getFullYear() === today.getFullYear();
+                    if (showRow) dateCell.textContent = 'This Year';
+                    break;
+                default:
+                    // Reset to original date format
+                    dateCell.textContent = rowDate.toISOString().split('T')[0];
+                    showRow = true;
+            }
+            
+            row.style.display = showRow ? '' : 'none';
+        });
+
+        // Update ranks for visible rows
+        let rank = 1;
+        rows.forEach(row => {
+            if (row.style.display !== 'none') {
+                row.cells[0].textContent = rank++;
+            }
+        });
+
+        // Update metrics
+        updateMetrics(rows.filter(row => row.style.display !== 'none'));
+    });
+});
+</script>
+
+<script>
+function downloadRow(button, format) {
+    // Get the parent row
+    const row = button.closest('tr');
+    
+    // Create data object from row
+    const data = {
+        Rank: row.cells[0].textContent,
+        'Employee Name': row.cells[1].textContent,
+        Date: row.cells[2].textContent,
+        'Service Sales Count': row.cells[3].textContent,
+        'Product Sales Count': row.cells[4].textContent,
+        'Client Count': row.cells[5].textContent,
+        'Total Service Sales': row.cells[6].textContent,
+        'Total Product Sales': row.cells[7].textContent,
+        'Total Sales': row.cells[8].textContent
+    };
+
+    // Create worksheet
+    const ws = XLSX.utils.json_to_sheet([data]);
+
+    // Create workbook
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Employee Report");
+
+    // Generate filename
+    const fileName = `employee_report_${data['Employee Name'].replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.xlsx`;
+
+    // Save the file
+    XLSX.writeFile(wb, fileName);
+}
+</script>
+
 </body>
 </html>
