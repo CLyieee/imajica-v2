@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-striped" id="supplierTable">
+                                            <table class="table table-striped "  id="supplierTableee">
                                                 <thead class="table-light">
                                                     <tr>
                                                
@@ -278,7 +278,7 @@
         };
     </script>
 
-    <script src="../../assets/js/supplier-management.js"></script>
+    {{-- <script src="../../assets/js/supplier-management.js"></script> --}}
 
     <script>
       $(document).ready(function() {
@@ -528,9 +528,10 @@
             });
         });
     </script>
+
     <script>
         $(document).ready(function() {
-            $('#supplierTable').DataTable();
+            $('#supplierTableee').DataTable();
         })
     </script>
 

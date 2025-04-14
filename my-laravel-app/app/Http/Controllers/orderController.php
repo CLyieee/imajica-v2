@@ -160,13 +160,15 @@ class OrderController extends Controller
             return response()->json(['message' => 'Order not found'], 404);
         }
     
-     
         $items = DB::table('order_items')
-            ->join('products', 'order_items.item_name', '=', 'products.name')
+            ->join('new_product', 'order_items.item_name', '=', 'new_product.name')
             ->select(
-                'order_items.*',
-                'products.product_image as product_image',
-                'products.description'
+                'order_items.item_id',
+                'order_items.item_name',
+                'order_items.quantity',
+                'order_items.unit_price',
+                'order_items.total',
+                'new_product.product_image'
             )
             ->where('order_items.order_id', $orderId)
             ->get();
@@ -182,7 +184,6 @@ class OrderController extends Controller
             ],
             'items' => $items
         ]);
-      
     }
 
     public function delete(Request $request)

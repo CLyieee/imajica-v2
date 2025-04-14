@@ -63,8 +63,8 @@
                                     </div>
                                     <div class="d-flex align-content-center flex-wrap gap-4">
                                         <div class="d-flex gap-4">
-                                            <button type="button" class="btn btn-label-secondary" onclick="discardChanges()">Discard</button>
-                                            <button type="button" class="btn btn-label-primary" onclick="saveDraft()">Save draft</button>
+                                            <button type="button" class="btn btn-label-secondary" onclick="discardChanges()">Cancel</button>
+                                  
                                         </div>
                                         <button type="submit" class="btn btn-primary">Create Order</button>
                                     </div>
@@ -134,7 +134,7 @@
                                                                 <select class="form-select" name="items[]">
                                                                     <option value="">Select Item</option>
                                                                     @foreach($products as $product)
-                                                                    <option value="{{ $product->bar_code }}" data-price="{{ $product->base_price }}">{{ $product->name }}</option>
+                                                                    <option value="{{ $product->id }}" data-price="{{ $product->base_price }}">{{ $product->name }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -354,7 +354,7 @@
                     const selectElement = item.querySelector('[name="items[]"]');
                     const selectedOption = selectElement.options[selectElement.selectedIndex];
                     return {
-                        bar_code: selectElement.value,
+                        id: selectElement.value,
                         name: selectedOption.text,
                         quantity: parseInt(item.querySelector('[name="quantities[]"]').value) || 1,
                         price: parseFloat(item.querySelector('[name="prices[]"]').value) || 0,
