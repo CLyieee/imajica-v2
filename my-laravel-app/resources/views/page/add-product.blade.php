@@ -62,7 +62,7 @@
       <!-- End Google Tag Manager -->
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -133,309 +133,7 @@
       <!-- Layout container -->
       <div class="layout-page">
         
-          
-
-
-
-<!-- Navbar -->
-{{-- 
-  <nav class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
-
-
-
-
-  <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0   d-xl-none ">
-    <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
-      <i class="icon-base ti tabler-menu-2 icon-md"></i>
-    </a>
-  </div>
-
-
-<div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
   
-    <!-- Search -->
-    <div class="navbar-nav align-items-center">
-      <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-        <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
-          <span class="d-inline-block text-body-secondary fw-normal" id="autocomplete"></span>
-        </a>
-      </div>
-    </div>
-
-    <!-- /Search -->
-  
-  
-
-  
-
-  <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-    
-
-
-      <!-- Notification -->
-      <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
-        <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-          <span class="position-relative">
-            <i class="icon-base ti tabler-bell icon-22px text-heading"></i>
-            <span class="badge rounded-pill bg-danger badge-dot badge-notifications border"></span>
-          </span>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end p-0">
-          <li class="dropdown-menu-header border-bottom">
-            <div class="dropdown-header d-flex align-items-center py-3">
-              <h6 class="mb-0 me-auto">Notification</h6>
-              <div class="d-flex align-items-center h6 mb-0">
-                <span class="badge bg-label-primary me-2">8 New</span>
-                <a href="javascript:void(0)" class="dropdown-notifications-all p-2 btn btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark all as read"><i class="icon-base ti tabler-mail-opened text-heading"></i></a>
-              </div>
-            </div>
-          </li>
-          <li class="dropdown-notifications-list scrollable-container">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar">
-                      <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="small mb-1">Congratulation Lettie 🎉</h6>
-                    <small class="mb-1 d-block text-body">Won the monthly best seller gold badge</small>
-                    <small class="text-body-secondary">1h ago</small>
-                  </div>
-                  <div class="flex-shrink-0 dropdown-notifications-actions">
-                    <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                    <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="icon-base ti tabler-x"></span></a>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar">
-                      <span class="avatar-initial rounded-circle bg-label-danger">CF</span>
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="mb-1 small">Charles Franklin</h6>
-                    <small class="mb-1 d-block text-body">Accepted your connection</small>
-                    <small class="text-body-secondary">12hr ago</small>
-                  </div>
-                  <div class="flex-shrink-0 dropdown-notifications-actions">
-                    <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                    <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="icon-base ti tabler-x"></span></a>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar">
-                      <img src="../../assets/img/avatars/2.png" alt class="rounded-circle" />
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="mb-1 small">New Message ✉️</h6>
-                    <small class="mb-1 d-block text-body">You have new message from Natalie</small>
-                    <small class="text-body-secondary">1h ago</small>
-                  </div>
-                  <div class="flex-shrink-0 dropdown-notifications-actions">
-                    <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                    <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="icon-base ti tabler-x"></span></a>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar">
-                      <span class="avatar-initial rounded-circle bg-label-success"><i class="icon-base ti tabler-shopping-cart"></i></span>
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="mb-1 small">Whoo! You have new order 🛒</h6>
-                    <small class="mb-1 d-block text-body">ACME Inc. made new order $1,154</small>
-                    <small class="text-body-secondary">1 day ago</small>
-                  </div>
-                  <div class="flex-shrink-0 dropdown-notifications-actions">
-                    <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                    <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="icon-base ti tabler-x"></span></a>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar">
-                      <img src="../../assets/img/avatars/9.png" alt class="rounded-circle" />
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="mb-1 small">Application has been approved 🚀</h6>
-                    <small class="mb-1 d-block text-body">Your ABC project application has been approved.</small>
-                    <small class="text-body-secondary">2 days ago</small>
-                  </div>
-                  <div class="flex-shrink-0 dropdown-notifications-actions">
-                    <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                    <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="icon-base ti tabler-x"></span></a>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar">
-                      <span class="avatar-initial rounded-circle bg-label-success"><i class="icon-base ti tabler-chart-pie"></i></span>
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="mb-1 small">Monthly report is generated</h6>
-                    <small class="mb-1 d-block text-body">July monthly financial report is generated </small>
-                    <small class="text-body-secondary">3 days ago</small>
-                  </div>
-                  <div class="flex-shrink-0 dropdown-notifications-actions">
-                    <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                    <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="icon-base ti tabler-x"></span></a>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar">
-                      <img src="../../assets/img/avatars/5.png" alt class="rounded-circle" />
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="mb-1 small">Send connection request</h6>
-                    <small class="mb-1 d-block text-body">Peter sent you connection request</small>
-                    <small class="text-body-secondary">4 days ago</small>
-                  </div>
-                  <div class="flex-shrink-0 dropdown-notifications-actions">
-                    <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                    <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="icon-base ti tabler-x"></span></a>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar">
-                      <img src="../../assets/img/avatars/6.png" alt class="rounded-circle" />
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="mb-1 small">New message from Jane</h6>
-                    <small class="mb-1 d-block text-body">Your have new message from Jane</small>
-                    <small class="text-body-secondary">5 days ago</small>
-                  </div>
-                  <div class="flex-shrink-0 dropdown-notifications-actions">
-                    <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                    <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="icon-base ti tabler-x"></span></a>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar">
-                      <span class="avatar-initial rounded-circle bg-label-warning"><i class="icon-base ti tabler-alert-triangle"></i></span>
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h6 class="mb-1 small">CPU is running high</h6>
-                    <small class="mb-1 d-block text-body">CPU Utilization Percent is currently at 88.63%,</small>
-                    <small class="text-body-secondary">5 days ago</small>
-                  </div>
-                  <div class="flex-shrink-0 dropdown-notifications-actions">
-                    <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                    <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="icon-base ti tabler-x"></span></a>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <li class="border-top">
-            <div class="d-grid p-4">
-              <a class="btn btn-primary btn-sm d-flex" href="javascript:void(0);">
-                <small class="align-middle">View all notifications</small>
-              </a>
-            </div>
-          </li>
-        </ul>
-      </li>
-      <!--/ Notification -->
-
-      <!-- User -->
-      <li class="nav-item navbar-dropdown dropdown-user dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
-          <div class="avatar avatar-online">
-            <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
-          </div>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item mt-0" href="pages-account-settings-account.html">
-              <div class="d-flex align-items-center">
-                <div class="flex-shrink-0 me-2">
-                  <div class="avatar avatar-online">
-                    <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
-                  </div>
-                </div>
-                <div class="flex-grow-1">
-                  <h6 class="mb-0">John Doe</h6>
-                  <small class="text-body-secondary">Admin</small>
-                </div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <div class="dropdown-divider my-1 mx-n2"></div>
-          </li>
-          <li>
-            <a class="dropdown-item" href="pages-profile-user.html"> <i class="icon-base ti tabler-user me-3 icon-md"></i><span class="align-middle">My Profile</span> </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="pages-account-settings-account.html"> <i class="icon-base ti tabler-settings me-3 icon-md"></i><span class="align-middle">Settings</span> </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="pages-account-settings-billing.html">
-              <span class="d-flex align-items-center align-middle">
-                <i class="flex-shrink-0 icon-base ti tabler-file-dollar me-3 icon-md"></i><span class="flex-grow-1 align-middle">Billing</span>
-                <span class="flex-shrink-0 badge bg-danger d-flex align-items-center justify-content-center">4</span>
-              </span>
-            </a>
-          </li>
-          <li>
-            <div class="dropdown-divider my-1 mx-n2"></div>
-          </li>
-          <li>
-            <a class="dropdown-item" href="pages-pricing.html"> <i class="icon-base ti tabler-currency-dollar me-3 icon-md"></i><span class="align-middle">Pricing</span> </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="pages-faq.html"> <i class="icon-base ti tabler-question-mark me-3 icon-md"></i><span class="align-middle">FAQ</span> </a>
-          </li>
-          <li>
-            <div class="d-grid px-2 pt-2 pb-1">
-              <a class="btn btn-sm btn-danger d-flex" href="auth-login-cover.html" target="_blank">
-                <small class="align-middle">Logout</small>
-                <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
-              </a>
-            </div>
-          </li>
-        </ul>
-      </li>
-      <!--/ User -->
-    
-  </ul>
-</div>
-</nav>
-
-<!-- / Navbar --> --}}
-
-        
-
         <!-- Content wrapper -->
         <div class="content-wrapper">
           <!-- Content -->
@@ -455,10 +153,10 @@
       </div>
     </div>
 
-    <form method="POST" action="{{ route('product.create') }}" enctype="multipart/form-data">
+    <form id="addProductForm" method="POST" action="{{ route('product.create') }}" enctype="multipart/form-data">
       @csrf
       <div class="row">
-        <!-- First column-->
+        <!-- First column - Product Info -->
         <div class="col-12 col-lg-8">
           <!-- Product Information -->
           <div class="card mb-6">
@@ -466,293 +164,101 @@
               <h5 class="card-tile mb-0">Product information</h5>
             </div>
             <div class="card-body">
-              <div class="mb-6">
-                <label class="form-label" for="ecommerce-product-name">Name</label>
-                <input type="text" class="form-control" id="ecommerce-product-name" name="name" placeholder="Product title" required />
+              <!-- Product Picture -->
+              <div class="mb-4">
+                <label class="form-label">PRODUCT PICTURE</label>
+                <input type="file" class="form-control" name="product_image" accept="image/*">
+                <small class="text-muted">Upload a profile picture. Max size 2MB</small>
               </div>
-              <div class="row mb-6">
-                <div class="col">
-                  <label class="form-label" for="ecommerce-product-sku">SKU</label>
-                  <input type="text" class="form-control" id="ecommerce-product-sku" name="sku" placeholder="SKU" required />
-                </div>
-                <div class="col">
-                  <label class="form-label" for="ecommerce-product-barcode">Barcode</label>
-                  <input type="text" class="form-control" id="ecommerce-product-barcode" name="bar_code" placeholder="0123-4567" required />
-                </div>
-              </div>
-              <!-- Description -->
-              <div>
-                <label class="mb-1">Description (Optional)</label>
-                <textarea name="description" class="form-control" rows="4"></textarea>
-              </div>
-            </div>
-          </div>
 
-          <!-- Media -->
-          <div class="card mb-6">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <h5 class="mb-0 card-title">Product Image</h5>
-              <a href="javascript:void(0);" class="fw-medium">Add media from URL</a>
-            </div>
-            <div class="card-body">
-              <input type="file" name="product_image" class="form-control" accept="image/*">
-            </div>
-          </div>
+              <!-- SKU -->
+              <div class="mb-4">
+                <label class="form-label">SKU</label>
+                <input type="text" class="form-control" name="sku" required>
+              </div>
 
-          <!-- Inventory -->
-          <div class="card mb-6">
-            <div class="card-header">
-              <h5 class="card-title mb-0">Inventory</h5>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <!-- Navigation -->
-                <div class="col-12 col-md-4 col-xl-5 col-xxl-4 mx-auto card-separator">
-                  <div class="d-flex justify-content-between flex-column mb-4 mb-md-0 pe-md-4">
-                    <div class="nav-align-left">
-                      <ul class="nav nav-pills flex-column w-100">
-                        <li class="nav-item">
-                          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
-                            <i class="icon-base ti tabler-box icon-sm me-1_5"></i>
-                            <span class="align-middle">Restock</span>
-                          </button>
-                        </li>
-                        <li class="nav-item">
-                          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping">
-                            <i class="icon-base ti tabler-car icon-sm me-1_5"></i>
-                            <span class="align-middle">Shipping</span>
-                          </button>
-                        </li>
-                        
-                        <li class="nav-item">
-                          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attributes">
-                            <i class="icon-base ti tabler-link icon-sm me-1_5"></i>
-                            <span class="align-middle">Attributes</span>
-                          </button>
-                        </li>
-                        
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <!-- /Navigation -->
-                <!-- Options -->
-                <div class="col-12 col-md-8 col-xl-7 col-xxl-8 pt-6 pt-md-0">
-                  <div class="tab-content p-0 ps-md-4">
-                    <!-- Restock Tab -->
-                    <div class="tab-pane fade show active" id="restock" role="tabpanel">
-                      <h6 class="text-body">Options</h6>
-                      <label class="form-label" for="ecommerce-product-stock">Add to Stock</label>
-                      <div class="row mb-4 g-4 pe-md-4">
-                        <div class="col-12 col-sm-9">
-                          <input type="number" class="form-control" name="quantity" placeholder="Quantity" required />
-                        </div>
-                      </div>
-                      <div>
-                        <h6 class="mb-2 fw-normal">Product in stock now: 54</h6>
-                        <h6 class="mb-2 fw-normal">Product in transit: 390</h6>
-                        <h6 class="mb-2 fw-normal">Last time restocked: 24th June, 2023</h6>
-                        <h6 class="mb-0 fw-normal">Total stock over lifetime: 2430</h6>
-                      </div>
-                    </div>
-                    <!-- Shipping Tab -->
-                    <div class="tab-pane fade" id="shipping" role="tabpanel">
-                      <h6 class="mb-3 text-body">Shipping Type</h6>
-                      <div>
-                        <div class="form-check mb-4">
-                          <input class="form-check-input" type="radio" name="shipping_type" value="seller" id="seller" />
-                          <label class="form-check-label" for="seller">
-                            <span class="mb-1 h6">Fulfilled by Seller</span><br />
-                            <small
-                              >You'll be responsible for product delivery.<br />
-                              Any damage or delay during shipping may cost you a Damage fee.</small
-                            >
-                          </label>
-                        </div>
-                        <div class="form-check mb-6">
-                          <input class="form-check-input" type="radio" name="shipping_type" value="company" id="companyName" checked />
-                          <label class="form-check-label" for="companyName">
-                            <span class="mb-1 h6">Fulfilled by Company name &nbsp;<span class="badge rounded-2 badge-warning bg-label-warning fs-tiny py-1">RECOMMENDED</span></span
-                            ><br />
-                            <small
-                              >Your product, Our responsibility.<br />
-                              For a measly fee, we will handle the delivery process for you.</small
-                            >
-                          </label>
-                        </div>
-                        <p class="mb-0">See our <a href="javascript:void(0);">Delivery terms and conditions</a> for details</p>
-                      </div>
-                    </div>
-              
-                    <!-- Attributes Tab -->
-                    <div class="tab-pane fade" id="attributes" role="tabpanel">
-                      <h6 class="mb-2 text-body">Attributes</h6>
-                      <div>
-                        <!-- Fragile Product -->
-                        <div class="form-check mb-4">
-                          <input class="form-check-input" type="checkbox" name="is_fragile" value="fragile" id="fragile" />
-                          <label class="form-check-label" for="fragile">
-                            <span class="fw-medium">Fragile Product</span>
-                          </label>
-                        </div>
-                        <!-- Biodegradable -->
-                        <div class="form-check mb-4">
-                          <input class="form-check-input" type="checkbox" name="is_biodegradable" value="biodegradable" id="biodegradable" />
-                          <label class="form-check-label" for="biodegradable">
-                            <span class="fw-medium">Biodegradable</span>
-                          </label>
-                        </div>
-                        <!-- Frozen Product -->
-                        <div class="form-check mb-4">
-                          <input class="form-check-input" type="checkbox" name="is_frozen" value="frozen" checked />
-                          <label class="form-check-label w-75 pe-12" for="frozen">
-                            <span class="mb-1 h6">Frozen Product</span>
-                            <input type="number" name="max_temperature" class="form-control" placeholder="Max. allowed Temperature" id="frozen" />
-                          </label>
-                        </div>
-                        <!-- Exp Date -->
-                        <div class="form-check mb-6">
-                          <input class="form-check-input" type="checkbox" name="expiry_date" value="expDate" id="expDate" checked />
-                          <label class="form-check-label w-75 pe-12" for="date-input">
-                            <span class="mb-1 h6">Expiry Date of Product</span>
-                            <input type="date" name="expiry_date" class="product-date form-control" id="date-input" />
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- /Attributes Tab -->
-                  
-                    <!-- /Advanced Tab -->
-                  </div>
-                </div>
-                <!-- /Options-->
+              <!-- Item Name -->
+              <div class="mb-4">
+                <label class="form-label">ITEM NAME</label> 
+                <input type="text" class="form-control" name="name" placeholder="Search Item Name" required>
               </div>
-            </div>
-          </div>
-        </div>
-        <!-- /First column -->
 
-        <!-- Second column -->
-        <div class="col-12 col-lg-4">
-          <!-- Pricing Card -->
-          <div class="card mb-6">
-            <div class="card-header">
-              <h5 class="card-title mb-0">Pricing</h5>
-            </div>
-            <div class="card-body">
-              <!-- Base Price -->
-              <div class="mb-6">
-                <label class="form-label" for="ecommerce-product-price">Base Price</label>
-                <input type="number" step="0.01" name="base_price" class="form-control" id="ecommerce-product-price" placeholder="Price" required />
-              </div>
-              <!-- Discounted Price -->
-              <div class="mb-6">
-                <label class="form-label" for="ecommerce-product-discount-price">Discounted Price</label>
-                <input type="number" step="0.01" name="discounted_price" class="form-control" id="ecommerce-product-discount-price" placeholder="Discounted Price" />
-              </div>
-              <!-- Charge tax check box -->
-              <div class="form-check ms-2 mt-2 mb-4">
-                <input class="form-check-input" type="checkbox" name="in_stock" value="" id="price-charge-tax" checked />
-                <label class="switch-label" for="price-charge-tax"> Charge tax on this product </label>
-              </div>
-              <!-- Instock switch -->
-              <div class="d-flex justify-content-between align-items-center border-top pt-2">
-                <span class="mb-0">In stock</span>
-                <div class="w-25 d-flex justify-content-end">
-                  <div class="form-check form-switch me-n3">
-                    <input type="checkbox" name="in_stock" class="form-check-input" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Organize Card -->
-          <div class="card mb-6">
-            <div class="card-header">
-              <h5 class="card-title mb-0">Organize</h5>
-            </div>
-            <div class="card-body">
               <!-- Category -->
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="mb-6 col ecommerce-select2-dropdown">
-                  <label class="form-label mb-1" for="category-org">
-                    <span>Product Category</span>
-                  </label>
-                  <select name="category_id" id="category-org" class="select2 form-select" data-placeholder="Select Category" required>
-                    <option value="">Select Category</option>
-                    @foreach($categories as $category)
+              <div class="mb-4">
+                <label class="form-label">CATEGORY</label>
+                <select class="form-select" name="category_id" required>
+                  <option value="">Select Category</option>
+                  @foreach($categories as $category)
                     <option value="{{ $category->category_id }}">{{ $category->categoryTitle }}</option>
-                    @endforeach
-                  </select>
-                </div>
-                <button 
-                class="fw-medium btn btn-icon btn-label-primary ms-4"
-                data-bs-toggle="offcanvas" 
-                data-bs-target="#offcanvasEcommerceCategoryList"
-                >
-                <i class="icon-base ti tabler-plus icon-md"></i>
-                </button>
-              </div>
-              <!-- Status -->
-              <div class="mb-6 col ecommerce-select2-dropdown">
-                <label class="form-label mb-1" for="status-org">Status </label>
-                <select name="status" id="status-org" class="select2 form-select" data-placeholder="Published" required>
-                  <option value="Published">Published</option>
-                  <option value="Scheduled">Scheduled</option>
-                  <option value="Inactive">Inactive</option>
+                  @endforeach
                 </select>
               </div>
-              <!-- Tags -->
-              <div>
-                <label for="ecommerce-product-tags" class="form-label mb-1">Tags</label>
-                <input name="tags" id="ecommerce-product-tags" class="form-control" value="Normal,Standard,Premium" aria-label="Product Tags" />
+
+              <!-- Supplier -->
+              <div class="mb-4">
+                <label class="form-label">SUPPLIER</label>
+                <select class="form-select" name="supplier_id" required>
+                  <option value="">Select Supplier</option>
+                  @foreach($suppliers as $supplier)
+                    <option value="{{ $supplier->suppler_id }}">{{ $supplier->supplier_name }}</option>
+                  @endforeach
+                </select>
+              </div>
+
+              <!-- Base Price -->
+              <div class="mb-4">
+                <label class="form-label">BASE PRICE</label>
+                <div class="input-group">
+                  <span class="input-group-text">₱</span>
+                  <input type="number" class="form-control" name="base_price" placeholder="0.00" step="0.01" required>
+                </div>
+              </div>
+
+              <!-- Stock Info -->
+              <div class="mb-4">
+                <label class="form-label mb-2">STOCK INFORMATION</label>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <input type="number" class="form-control" name="quantity" placeholder="Total Stock" required>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="number" class="form-control" name="restock_point" placeholder="Restock Point">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- /Second column -->
+
+        <!-- Second column - Dates -->
+        <div class="col-12 col-lg-4">
+          <div class="card mb-6">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Product Dates</h5>
+            </div>
+            <div class="card-body">
+              <div class="mb-4">
+                <label class="form-label">MANUFACTURING DATE</label>
+                <input type="date" class="form-control" name="manufacturing_date">
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label">EXPIRATION DATE</label>
+                <input type="date" class="form-control" name="expiry_date">
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label">REMOVAL DATE</label>
+                <input type="date" class="form-control" name="removal_date">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
 </div>
           <!-- / Content -->
-<!-- Offcanvas for Adding New Category -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Add New Category</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-  </div>
-  <div class="offcanvas-body">
-    <form id="eCommerceCategoryListForm">
-      <div class="mb-3">
-        <label for="categoryTitle" class="form-label">Category Title</label>
-        <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" required>
-      </div>
-      <div class="mb-3">
-        <label for="slug" class="form-label">Slug</label>
-        <input type="text" class="form-control" id="slug" name="slug" required>
-        <small class="text-muted">The slug will be automatically generated from the title. Example: "Home & Garden" → "home-garden"</small>
-      </div>
-      <button type="submit" class="btn btn-primary">Save Category</button>
-    </form>
-  </div>
-</div>
-     
-<script>
-  document.getElementById('categoryTitle').addEventListener('input', function(e) {
-      const title = e.target.value;
-      const slug = title.toLowerCase()
-          .replace(/[^\w\s-]/g, '') // Remove special characters
-          .replace(/\s+/g, '-')     // Replace spaces with hyphens
-          .replace(/-+/g, '-');     // Replace multiple hyphens with single hyphen
-      
-      document.getElementById('slug').value = slug;
-  });
-
- 
-</script>
-     
 
 <!-- Footer -->
 <footer class="content-footer footer bg-footer-theme">
@@ -918,19 +424,50 @@
         $('#createProductBtn').on('click', function(e) {
             e.preventDefault();
             
-            const form = $('form');
+            const form = $('#addProductForm');
             const formData = new FormData(form[0]);
 
             // Validate required fields
             const requiredFields = {
-                'name': 'Product name',
+                'name': 'Name',
                 'sku': 'SKU',
-                'bar_code': 'Barcode',
-                'base_price': 'Base price',
+                'product_image': 'Product image', 
                 'category_id': 'Category',
-                'status': 'Status'
+                'supplier_id': 'Supplier',
+                'base_price': 'Base price',
+                'quantity': 'Total stock',
+                'restock_point': 'Restock point',
+                'manufacturing_date': 'Manufacturing date',
+                'expiry_date': 'Expiry date',
+                'removal_date': 'Removal date'
             };
 
+            // Additional validation for dates
+            const mfgDate = new Date(formData.get('manufacturing_date'));
+            const expDate = new Date(formData.get('expiry_date')); 
+            const remDate = new Date(formData.get('removal_date'));
+
+            if (expDate <= mfgDate) {
+                Swal.fire({
+                    ...swalConfig,
+                    icon: 'error',
+                    title: 'Invalid Dates',
+                    text: 'Expiry date must be after manufacturing date'
+                });
+                return;
+            }
+
+            if (remDate < expDate) {
+                Swal.fire({
+                    ...swalConfig,
+                    icon: 'error', 
+                    title: 'Invalid Dates',
+                    text: 'Removal date must be after or equal to expiry date'
+                });
+                return;
+            }
+
+            // Check required fields
             for (const [field, label] of Object.entries(requiredFields)) {
                 if (!formData.get(field)) {
                     Swal.fire({
@@ -943,6 +480,37 @@
                 }
             }
 
+            // Validate numeric fields
+            if (parseFloat(formData.get('base_price')) <= 0) {
+                Swal.fire({
+                    ...swalConfig,
+                    icon: 'error',
+                    title: 'Invalid Base Price',
+                    text: 'Base price must be greater than 0'
+                });
+                return;
+            }
+
+            if (parseInt(formData.get('quantity')) < 0) {
+                Swal.fire({
+                    ...swalConfig,
+                    icon: 'error',
+                    title: 'Invalid Quantity',
+                    text: 'Quantity cannot be negative'
+                });
+                return;
+            }
+
+            if (parseInt(formData.get('restock_point')) < 0) {
+                Swal.fire({
+                    ...swalConfig,
+                    icon: 'error',
+                    title: 'Invalid Restock Point', 
+                    text: 'Restock point cannot be negative'
+                });
+                return;
+            }
+            
             // Show loading state
             Swal.fire({
                 title: 'Creating Product',
@@ -966,7 +534,7 @@
                         ...swalConfig,
                         icon: 'success',
                         title: 'Success',
-                        text: 'Product created successfully!',
+                        text: response.message,
                         showConfirmButton: true
                     }).then((result) => {
                         if (result.isConfirmed) {

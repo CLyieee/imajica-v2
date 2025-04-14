@@ -170,4 +170,38 @@ class CouponController extends Controller
             return redirect()->back()->with('error', 'An error occurred while deleting the coupon: ' . $e->getMessage());
         }
     }
+
+    public function edit($coupon_code)
+    {
+        try {
+            Log::info('Attempting to find coupon for editing', ['coupon_code' => $coupon_code]);
+            
+            $coupon = coupon::where('coupon_code', $coupon_code)->first();
+            
+            if (!$coupon) {
+                Log::warning('Coupon not found for editing', ['coupon_code' => $coupon_code]);
+                return redirect()->route('page.coupon-list')
+                    ->with('error', 'Coupon not found with code: ' . $coupon_code);
+            }
+            
+            $branches = branch::all();
+            $services = service::all();
+            
+            Log::info('Successfully found coupon for editing', [
+                'coupon_code' => $coupon_code, 
+                'name' => $coupon->discount_name
+            ]);
+            
+            return view('page.edit-coupon', compact('coupon', 'branches', 'services'));
+        } catch (\Exception $e) {
+            Log::error('Error finding coupon for editing', [
+                'coupon_code' => $coupon_code,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return redirect()->route('page.coupon-list')
+                ->with('error', 'Error occurred while editing coupon: ' . $e->getMessage());
+        }
+    }
 }

@@ -61,7 +61,7 @@
       <!-- End Google Tag Manager -->
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -137,69 +137,80 @@
         
 
 <div class="container">
-  <div class="d-flex justify-content-between align-items-center">
-    <h3>Category List</h3>
-    <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEcommerceCategoryList" id="eCommerceCategoryListForm">
-      <i class="ti tabler-plus me-1"></i> Add New Category
-</div>
-  <!-- Table for Category List -->
-  <table class="table table-striped" id="categoryTable" style="width: 100%">   
-     <thead class="table-light">
-      <tr>
-        <th>ID</th>
-        <th>Select</th>
-        <th>Category</th>
-        <th>Total Products</th>
-        <th>Total Earnings</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach ($categories as $category)
-      <tr>
-        <td>{{ $category->category_id }}</td>
-        <td><input type="checkbox" class="form-check-input select-category"></td>
-        <td>
-          <div class="d-flex justify-content-start align-items-center">
-            <div class="avatar-wrapper me-3">
-              <div class="avatar rounded-2 bg-label-secondary">
-                <img src="{{ $category->categoryImage ? asset($category->categoryImage) : asset('assets/img/products/default.jpg') }}" 
-                     class="rounded-2" alt="{{ $category->categoryTitle }}">
-              </div>
-            </div>
-            <div class="d-flex flex-column">
-              <h6 class="mb-0">{{ $category->categoryTitle }}</h6>
-              <small class="text-muted">{{ $category->description ?? 'No description available' }}</small>
-            </div>
-          </div>
-        </td>
-        <td>
-          <span class="fw-semibold align-middle">{{ $category->products_count }}</span>
+  
 
-        </td>
-        <td>
-          <span class="fw-semibold">₱{{ number_format($category->total_earnings, 2) }}</span>
-         
-        </td>
-        <td>
-          <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-success view-category" data-id="{{ $category->category_id }}">
-              <i class="ti tabler-eye me-1"></i> View
-            </button>
-            <button class="btn btn-sm btn-info edit-category" data-id="{{ $category->category_id }}">
-              <i class="ti tabler-edit me-1"></i> Edit
-            </button>
-            <button class="btn btn-sm btn-danger delete-category" 
-                    data-category-id="{{ $category->category_id }}"
-                    data-category-name="{{ $category->categoryTitle }}">
-              <i class="ti tabler-trash me-1"></i> Delete
-            </button>
-          </div>
-        </td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
+  <!-- Category Table Card -->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center py-3">
+      <div class="flex-grow-1">
+        <h4 class="card-title mb-0">Product Category List</h4>
+      </div>
+      <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEcommerceCategoryList" id="eCommerceCategoryListForm">
+        <i class="ti tabler-plus me-1"></i> Add New Category
+      </button>
+    </div>
+    <div class="card-datatable table-responsive">
+      <table class="table table-striped" id="categoryTable" style="width: 100%">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Category</th>
+            <th>Total Products</th>
+            <th>Total Earnings</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach ($categories as $category)
+          <tr>
+            <td>{{ $category->category_id }}</td>
+            <td>
+              <div class="d-flex justify-content-start align-items-center">
+                <div class="avatar-wrapper me-3">
+                  <div class="avatar rounded-2 bg-label-secondary">
+                    <img src="{{ $category->categoryImage ? asset($category->categoryImage) : asset('assets/img/products/default.jpg') }}" 
+                         class="rounded-2" alt="{{ $category->categoryTitle }}">
+                  </div>
+                </div>
+                <div class="d-flex flex-column">
+                  <h6 class="mb-0">{{ $category->categoryTitle }}</h6>
+                  <small class="text-muted">{{ $category->description ?? 'No description available' }}</small>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="fw-semibold align-middle">{{ $category->products_count }}</span>
+
+            </td>
+            <td>
+              <span class="fw-semibold">₱{{ number_format($category->total_earnings, 2) }}</span>
+             
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                
+                <button class="btn btn-sm btn-info edit-category" 
+                        data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="{{ $category->category_id }}"
+                        
+                        data-category-name="{{ $category->categoryTitle }}"
+                        data-description="{{ $category->description }}"
+                        data-category-image="{{ $category->categoryImage }}"
+                        >
+                  <i class="ti tabler-edit me-1"></i> Edit
+                </button>
+                <button class="btn btn-sm btn-danger delete-category" 
+                        data-category-id="{{ $category->category_id }}"
+                        data-category-name="{{ $category->categoryTitle }}">
+                  <i class="ti tabler-trash me-1"></i> Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <form id="deleteCategoryForm" method="POST" action="{{ route('category.delete') }}" style="display: none;">
@@ -242,43 +253,36 @@
   </div>
 </div>
 
-<!-- Edit Category Modal -->
-<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color: #0a3622">
-        <h5 class="modal-title text-white">Edit Category</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Edit Category Offcanvas -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="editCategoryOffcanvas">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Edit Category</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" id="editCategoryOffcanvasClose"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form id="editCategoryForm" method="POST" action="{{ route('category.update') }}" enctype="multipart/form-data">
+      @csrf
+      @method('PUT')
+      <input type="hidden" id="edit_category_id" name="category_id">
+      <div class="mb-3">
+        <label for="edit_categoryTitle" class="form-label">Category Title</label>
+        <input type="text" class="form-control" id="edit_categoryTitle" name="categoryTitle" required>
+        <div class="invalid-feedback" id="edit_categoryTitle_error"></div>
       </div>
-      <div class="modal-body">
-        <form id="editCategoryForm" method="POST" action="/category/update" enctype="multipart/form-data">
-          @csrf
-          @method('PUT')
-          <input type="hidden" id="edit_category_id" name="category_id">
-          <div class="mb-3">
-            <label for="edit_categoryTitle" class="form-label">Category Title</label>
-            <input type="text" class="form-control" id="edit_categoryTitle" name="categoryTitle" required>
-            <div class="invalid-feedback" id="edit_categoryTitle_error"></div>
-          </div>
-          <div class="mb-3">
-            <label for="edit_description" class="form-label">Description</label>
-            <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
-            <div class="invalid-feedback" id="edit_description_error"></div>
-          </div>
-          <div class="mb-3">
-            <label for="edit_categoryImage" class="form-label">Category Image</label>
-            <input type="file" class="form-control" id="edit_categoryImage" name="categoryImage" accept="image/*">
-            <div id="edit_imagePreview" class="mt-2" style="max-width: 200px;">
-              <img src="" alt="Preview" style="width: 100%; display: none;">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Update Category</button>
-          </div>
-        </form>
+      <div class="mb-3">
+        <label for="edit_description" class="form-label">Description</label>
+        <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
+        <div class="invalid-feedback" id="edit_description_error"></div>
       </div>
-    </div>
+      <div class="mb-3">
+        <label for="edit_categoryImage" class="form-label">Category Image</label>
+        <input type="file" class="form-control" id="edit_categoryImage" name="categoryImage" accept="image/*">
+        <div id="edit_imagePreview" class="mt-2" style="max-width: 200px;">
+          <img src="" alt="Preview" style="width: 100%; display: none;">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Update Category</button>
+    </form>
   </div>
 </div>
 
@@ -470,68 +474,96 @@
   
     // Handle edit category button clicks
     $('.edit-category').on('click', function() {
-      try {
-        const categoryId = $(this).data('id');
-        
-        // Show the modal immediately
-        $('#editCategoryModal').modal('show');
-        
-        // Fetch category data via AJAX
-        $.ajax({
-          url: `/category/get/${categoryId}`,
-          type: 'GET',
-          success: function(response) {
-            $('#edit_category_id').val(response.category_id);
-            $('#edit_categoryTitle').val(response.categoryTitle);
-            $('#edit_description').val(response.description);
-            
-            if (response.categoryImage) {
-              $('#edit_imagePreview img')
-                .attr('src', '/' + response.categoryImage)
-                .show();
-            }
-          },
-          error: function(xhr) {
-            console.error("Error fetching category data:", xhr);
-            Swal.fire({
-              ...swalConfig,
-              icon: 'error',
-              title: 'Error',
-              text: 'Could not load category data',
-              showConfirmButton: true
-            });
-          }
-        });
-      } catch (e) {
-        console.error("Error in edit button handler:", e);
+      const categoryId = $(this).data('category-id');
+      const categoryTitle = $(this).data('category-name');
+      const description = $(this).data('description');
+      const categoryImage = $(this).data('category-image');
+      
+      // Set form values directly from data attributes
+      $('#edit_category_id').val(categoryId);
+      $('#edit_categoryTitle').val(categoryTitle); 
+      $('#edit_description').val(description);
+      $('#edit_categoryImage').val(''); // Clear the file input
+
+      // Show existing image if available
+      if (categoryImage) {
+        const imageUrl = categoryImage.startsWith('http') ? categoryImage : `/${categoryImage}`;
+        $('#edit_imagePreview img').attr('src', imageUrl).show();
+      } else {
+        $('#edit_imagePreview img').hide();
       }
+      
+      // Show edit offcanvas
+      const editOffcanvas = new bootstrap.Offcanvas($('#editCategoryOffcanvas'));
+      editOffcanvas.show();
     });
   
     // Handle edit form submission
     $('#editCategoryForm').on('submit', function(e) {
       e.preventDefault();
       
-      $('#editCategoryModal').modal('hide');
+      const formData = new FormData(this);
+      const editOffcanvas = bootstrap.Offcanvas.getInstance($('#editCategoryOffcanvas'));
+      editOffcanvas.hide();
       
       setTimeout(() => {
         Swal.fire({
           ...swalConfig,
-          title: 'Confirm Update',
+          title: 'Confirm Update',  
           text: 'Are you sure you want to update this category?',
           icon: 'question',
           showCancelButton: true,
           confirmButtonText: 'Yes, update it!',
-          cancelButtonText: 'Cancel',
-          confirmButtonColor: '#0a3622',
-          cancelButtonColor: '#d33'
+          cancelButtonText: 'Cancel'
         }).then((result) => {
           if (result.isConfirmed) {
-            this.submit();
+            $.ajax({
+              url: $(this).attr('action'),
+              method: 'POST', 
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function(response) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Success',
+                  text: 'Category updated successfully!'
+                }).then(() => {
+                  window.location.reload();
+                });
+              },
+              error: function(xhr) {
+                editOffcanvas.show();
+                Swal.fire({
+                  icon: 'error', 
+                  title: 'Error',
+                  text: xhr.responseJSON?.message || 'Error updating category'
+                });
+              }
+            });
           } else {
-            $('#editCategoryModal').modal('show');
+            editOffcanvas.show();
           }
         });
       }, 200);
+    });
+  
+    // Handle image preview for edit form
+    $('#edit_categoryImage').on('change', function(e) {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          $('#edit_imagePreview img').attr('src', e.target.result).show();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  
+    // Reset edit form when offcanvas is closed
+    $('#editCategoryOffcanvas').on('hidden.bs.offcanvas', function () {
+      $('#editCategoryForm')[0].reset();
+      $('#edit_imagePreview img').hide();
     });
   
     // Handle delete category button clicks

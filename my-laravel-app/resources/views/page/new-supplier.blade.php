@@ -1,11 +1,4 @@
 @extends('layouts.app')
-@extends('layouts.layout-collapsed-menu-dark')
-@extends('layouts.layout-container-dark')
-@extends('layouts.layout-content-navbar-and-sidebar-dark')
-@extends('layouts.layout-without-navbar-dark')
-@extends('layouts.layout-content-navbar-dark')
-@extends('layouts.layout-fluid-dark')
-@extends('layouts.layout-without-menu-dark')
 
 <!DOCTYPE html>
 
@@ -42,7 +35,7 @@
     <link rel="canonical" href="Imajica Booking System" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="logo.png" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -108,6 +101,8 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
+    <!-- Add SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const supplierRoutes = {
             add: "{{ route('add.supplier') }}",
@@ -140,206 +135,7 @@
 
         <!-- Layout container -->
         <div class="layout-page">
-          <!-- Navbar -->
-
-          {{-- <nav
-            class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-            id="layout-navbar"
-          >
-            <div
-              class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none"
-            >
-              <a
-                class="nav-item nav-link px-0 me-xl-6"
-                href="javascript:void(0)"
-              >
-                <i class="icon-base ti tabler-menu-2 icon-md"></i>
-              </a>
-            </div>
-
-            <div
-              class="navbar-nav-right d-flex align-items-center justify-content-end"
-              id="navbar-collapse"
-            >
-              <!-- Search -->
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-                  <a
-                    class="nav-item nav-link search-toggler d-flex align-items-center px-0"
-                    href="javascript:void(0);"
-                  >
-                    <span
-                      class="d-inline-block text-body-secondary fw-normal"
-                      id="autocomplete"
-                    ></span>
-                  </a>
-                </div>
-              </div>
-
-              <!-- /Search -->
-
-              <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                <!--/ Language -->
-
-                <!-- Style Switcher -->
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
-                    id="nav-theme"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <i
-                      class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"
-                    ></i>
-                    <span class="d-none ms-2" id="nav-theme-text"
-                      >Toggle theme</span
-                    >
-                  </a>
-                  <ul
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="nav-theme-text"
-                  >
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center active"
-                        data-bs-theme-value="light"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-sun icon-22px me-3"
-                            data-icon="sun"
-                          ></i
-                          >Light</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="dark"
-                        aria-pressed="true"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-moon-stars icon-22px me-3"
-                            data-icon="moon-stars"
-                          ></i
-                          >Dark</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="system"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-device-desktop-analytics icon-22px me-3"
-                            data-icon="device-desktop-analytics"
-                          ></i
-                          >System</span
-                        >
-                      </button>
-                    </li>
-                  </ul>
-                </li>
-                <!-- / Style Switcher-->
-
-                <!-- Quick links  -->
-
-                <!-- Quick links -->
-
-                <!-- Notification -->
-
-                <!--/ Notification -->
-
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow p-0"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <div class="avatar avatar-online">
-                      <img
-                        src="../../assets/img/avatars/1.png"
-                        alt
-                        class="rounded-circle"
-                      />
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a
-                        class="dropdown-item mt-0"
-                        href="pages-account-settings-account.html"
-                      >
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0 me-2">
-                            <div class="avatar avatar-online">
-                              <img
-                                src="../../assets/img/avatars/1.png"
-                                alt
-                                class="rounded-circle"
-                              />
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="mb-0">Rommel Lacap</h6>
-                            <small class="text-body-secondary">Admin</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-user me-3 icon-md"></i
-                        ><span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-settings me-3 icon-md"></i
-                        ><span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-
-                    <li>
-                      <div class="d-grid px-2 pt-2 pb-1">
-                        <a
-                          class="btn btn-sm btn-danger d-flex"
-                          href="#"
-                          target="_blank"
-                        >
-                          <small class="align-middle">Logout</small>
-                          <i
-                            class="icon-base ti tabler-logout ms-2 icon-14px"
-                          ></i>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
-            </div>
-          </nav> --}}
-
-          <!-- / Navbar -->
+     
 
           <!-- Content wrapper -->
           <div class="content-wrapper">
@@ -365,111 +161,109 @@
                             <div class="row g-6">
                               <div class="col-md-6">
                                 <label class="form-label" for="supplier_name"
-                                  >Supplier Name</label
+                                  >SUPPLIER NAME</label
                                 >
                                 <input
                                   type="text"
                                   id="supplier_name"
                                   name="supplier_name"
                                   class="form-control"
-                                  placeholder="Supplier Name"
+                                  placeholder="Enter supplier name"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="company"
+                                  >COMPANY</label
+                                >
+                                <input
+                                  type="text"
+                                  id="company"
+                                  name="company"
+                                  class="form-control"
+                                  placeholder="Enter company name"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="contact_person"
+                                  >CONTACT PERSON</label
+                                >
+                                <input
+                                  type="text"
+                                  id="contact_person"
+                                  name="contact_person"
+                                  class="form-control"
+                                  placeholder="Enter contact person"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-12">
+                                <label class="form-label" for="address"
+                                  >ADDRESS</label
+                                >
+                                <input
+                                  type="text"
+                                  id="address"
+                                  name="address"
+                                  class="form-control"
+                                  placeholder="Enter supplier address"
+                                  required
+                                />
+                              </div>
+
+                              <div class="col-md-6">
+                                <label class="form-label" for="mobile_number"
+                                  >MOBILE NUMBER</label
+                                >
+                                <input
+                                  type="text"
+                                  id="mobile_number"
+                                  name="mobile_number"
+                                  class="form-control"
+                                  placeholder="Enter mobile number"
                                   required
                                 />
                               </div>
 
                               <div class="col-md-6">
                                 <label class="form-label" for="email"
-                                  >Email Address</label
+                                  >EMAIL</label
                                 >
                                 <input
                                   type="email"
                                   id="email"
                                   name="email"
                                   class="form-control"
-                                  placeholder="Email Address"
+                                  placeholder="Enter email address"
                                   required
                                 />
                               </div>
 
-                              <div class="col-md-6">
-                                <label class="form-label" for="contactNumber"
-                                  >Contact Number</label
-                                >
-                                <input
-                                  type="text"
-                                  id="contactNumber"
-                                  name="contactNumber"
-                                  class="form-control"
-                                  placeholder="Contact Number"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="supplier_type">Supplier Type</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  list="supplierHistory"
-                                  id="supplier_type"
-                                  name="supplier_type"
-                                  placeholder="Enter Supplier Type"
-                                  required
-                                />
-                                <datalist id="supplierHistory">
-                                  <option value="Product Supplier"></option>
-                                  <option value="Service Provider"></option>
-                                  <option value="Equipment Supplier"></option>
-                                  <option value="Other"></option>
-                                </datalist>
-                              </div>
-
                               <div class="col-12">
-                                <label class="form-label" for="address"
-                                  >Supplier Address</label
+                                <label class="form-label" for="description"
+                                  >Description</label
                                 >
                                 <textarea
-                                  name="address"
+                                  id="description"
+                                  name="description"
                                   class="form-control"
-                                  id="address"
                                   rows="4"
-                                  placeholder="Supplier Address"
-                                  required
+                                  placeholder="Enter description"
                                 ></textarea>
                               </div>
 
-                              <div class="col-12">
-                                <label class="form-label" for="product_offered"
-                                  >Products/Services Offered</label
-                                >
-                                <textarea
-                                  name="product_offered"
-                                  class="form-control"
-                                  id="product_offered"
-                                  rows="4"
-                                  placeholder="List of Products/Services Offered"
-                                ></textarea>
-                              </div>
-
-                              <div class="col-12">
-                                <label class="form-label" for="notes"
-                                  >Additional Notes</label
-                                >
-                                <textarea
-                                  name="notes"
-                                  class="form-control"
-                                  id="notes"
-                                  rows="4"
-                                  placeholder="Additional Notes"
-                                ></textarea>
-                              </div>
                             </div>
 
                             <br />
-                            <div class="col-sm-2 col-4 d-grid">
-                              <button type="submit" class="btn btn-primary" id="addSupplierBtn">
-                                Add Supplier
-                              </button>
+                            <div class="row">
+                              <div class="col-12">
+                                <button type="button" class="btn btn-secondary me-3">Cancel</button>
+                                <button type="submit" class="btn btn-primary" id="addSupplierBtn">Add Supplier</button>
+                              </div>
                             </div>
                           </form>
                           <br />
@@ -588,12 +382,25 @@
             },
             success: function(response) {
               if(response.status) {
-                showMessage('success', response.message);
-                
-                // Reset form
-                $('#addSupplierForm')[0].reset();
+                // Show success message
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Success!',
+                  text: response.message,
+                  showConfirmButton: false,
+                  timer: 1500
+                }).then(() => {
+                  // Reset form
+                  $('#addSupplierForm')[0].reset();
+                  // Redirect to supplier list
+                  window.location.href = "{{ route('page.supplier-list') }}";
+                });
               } else {
-                showMessage('error', response.message);
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error!',
+                  text: response.message
+                });
               }
             },
             error: function(xhr) {
@@ -609,7 +416,11 @@
                 errorMessage = xhr.responseJSON.message;
               }
               
-              showMessage('error', errorMessage);
+              Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                html: errorMessage
+              });
             },
             complete: function() {
               // Re-enable submit button
@@ -617,22 +428,23 @@
             }
           });
         });
-        
-        // Function to show success/error message
-        function showMessage(type, message) {
-          const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
-          
-          $('#responseMessage')
-            .removeClass('alert-success alert-danger')
-            .addClass(alertClass)
-            .html(message)
-            .show();
-            
-          // Auto hide after 5 seconds
-          setTimeout(() => {
-            $('#responseMessage').fadeOut();
-          }, 5000);
-        }
+
+        // Make the Cancel button functional
+        $('button.btn-secondary').on('click', function() {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You will lose any unsaved changes!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, cancel!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "{{ route('page.supplier-list') }}";
+            }
+          });
+        });
       });
     </script>
   </body>

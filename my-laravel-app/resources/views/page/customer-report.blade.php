@@ -31,7 +31,7 @@
     <!-- End Google Tag Manager -->
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="logo.png" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -198,14 +198,16 @@
       }
 
       .metric-card {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(236, 239, 243, 0.9);
-        min-width: 200px;
-        max-width: 300px;
-        flex: 1;
-      }
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #2b2c2d; /* Changed 'border-color' to 'border' for better clarity */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Corrected property name and increased shadow values */
+  background: rgba(254, 255, 255, 0.9);
+  min-width: 200px;
+  max-width: 300px;
+  flex: 1;
+}
 
       .metric-card i {
         font-size: 24px;

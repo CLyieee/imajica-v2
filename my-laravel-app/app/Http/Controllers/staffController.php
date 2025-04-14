@@ -79,59 +79,62 @@ class staffController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        try {
+            $staff = Staff::findOrFail($id);
+            $positions = \App\Models\positionModel::all();
+            $branches = \App\Models\Branch::all();
+            $departments = \App\Models\Department::all();
+            return view('page.edit-staff', compact('staff', 'positions', 'branches', 'departments'));
+        } catch (\Exception $e) {
+            Log::error('Error loading staff edit form', [
+                'staff_id' => $id,
+                'error' => $e->getMessage()
+            ]);
+            
+            return redirect()->route('page.staff-list')
+                ->with('error', 'Error loading staff edit form: ' . $e->getMessage());
+        }
+    }
+
     public function update(Request $request)
     {
         try {
+            $id = $request->input('staff_id');
+            $staff = Staff::findOrFail($id);
+            
             // Validate the form data
             $data = $request->validate([
-                'image_path' => 'nullable',
                 'firstname' => 'required|string|max:255',
                 'lastname' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
                 'contact_number' => 'required|string|max:20',
-                'position' => 'required|string|max:255',
-                'department' => 'required|string|max:255',
-                'join_date' => 'required|date',
-                'employment_type' => 'required|string|max:255',
-                'branch_code' => 'required|numeric|exists:branches,branch_code',
+                'position_id' => 'required|exists:position,position_id',
+                'branch_code' => 'required|exists:branches,branch_code', 
                 'address' => 'required|string',
                 'emergency_contact_name' => 'nullable|string|max:255',
                 'emergency_contact_number' => 'nullable|string|max:20',
             ]);
 
-            $staff = Staff::where('id', $request->staff_id)->first();
-            if (!$staff) {
-                return response()->json(['error' => 'Staff not found'], 404);
-            }
-
-            // Initialize data array without the image_path
-            $staffData = $request->except('image_path', '_token', '_method', 'staff_id');
-            
-            // Handle image upload if present
+            // Handle image upload if present 
             if ($request->hasFile('image_path')) {
-                $staffData['image_path'] = $request->file('image_path')->store('staff', 'public');
+                $data['image_path'] = $request->file('image_path')->store('staff', 'public');
             }
 
-            // Update staff data
-            $staff->update($staffData);
-
-            // Check if request is AJAX
-            if ($request->ajax()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Staff updated successfully',
-                    'staff' => $staff
-                ]);
-            }
-
-            // For regular form submission
-            return redirect()->back()->with('success', 'Staff updated successfully');
-        } catch (\Exception $e) {
-            if ($request->ajax()) {
-                return response()->json(['error' => $e->getMessage()], 500);
-            }
+            $staff->update($data);
             
-            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+            return redirect()->route('page.staff-list')
+                ->with('success', 'Staff updated successfully');
+        } catch (\Exception $e) {
+            Log::error('Error updating staff', [
+                'staff_id' => $id,
+                'error' => $e->getMessage()
+            ]);
+            
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Error updating staff: ' . $e->getMessage());
         }
     }
 

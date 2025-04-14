@@ -1,13 +1,4 @@
 @extends('layouts.app')
-@extends('layouts.layout-collapsed-menu-dark')
-@extends('layouts.layout-container-dark')
-@extends('layouts.layout-content-navbar-and-sidebar-dark')
-@extends('layouts.layout-without-navbar-dark')
-@extends('layouts.layout-content-navbar-dark')
-@extends('layouts.layout-fluid-dark')
-@extends('layouts.layout-without-menu-dark')
-
-
 
 <!DOCTYPE html>
 
@@ -71,6 +62,7 @@
 
   <!-- Page CSS -->
   <link rel="stylesheet" href="{{ asset(path: 'assets/vendor/css/pages/cards-advance.css') }}" />
+  <link rel="stylesheet" href="{{ asset(path: 'assets/css/sidebar-fix.css') }}" />
 
   <!-- Helpers -->
   <script src="{{ asset(path: 'assets/vendor/js/helpers.js') }}"></script>
@@ -104,128 +96,7 @@
 
       <!-- Layout container -->
       <div class="layout-page">
-        <!-- Navbar -->
-
-        {{-- <nav
-          class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-          id="layout-navbar">
-          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-            <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
-              <i class="icon-base ti tabler-menu-2 icon-md"></i>
-            </a>
-          </div>
-
-          <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
-            <!-- Search -->
-            <div class="navbar-nav align-items-center">
-              <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-                <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
-                  <span class="d-inline-block text-body-secondary fw-normal" id="autocomplete"></span>
-                </a>
-              </div>
-            </div>
-
-            <!-- /Search -->
-
-            <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-              <!--/ Language -->
-
-              <!-- Style Switcher -->
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
-                  id="nav-theme" href="javascript:void(0);" data-bs-toggle="dropdown">
-                  <i class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"></i>
-                  <span class="d-none ms-2" id="nav-theme-text">Toggle theme</span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-theme-text">
-                  <li>
-                    <button type="button" class="dropdown-item align-items-center active" data-bs-theme-value="light"
-                      aria-pressed="false">
-                      <span><i class="icon-base ti tabler-sun icon-22px me-3" data-icon="sun"></i>Light</span>
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="dark"
-                      aria-pressed="true">
-                      <span><i class="icon-base ti tabler-moon-stars icon-22px me-3"
-                          data-icon="moon-stars"></i>Dark</span>
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="system"
-                      aria-pressed="false">
-                      <span><i class="icon-base ti tabler-device-desktop-analytics icon-22px me-3"
-                          data-icon="device-desktop-analytics"></i>System</span>
-                    </button>
-                  </li>
-                </ul>
-              </li>
-              <!-- / Style Switcher-->
-
-              <!-- Quick links  -->
-
-              <!-- Quick links -->
-
-              <!-- Notification -->
-
-              <!--/ Notification -->
-
-              <!-- User -->
-              <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
-                  <div class="avatar avatar-online">
-                    <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
-                  </div>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li>
-                    <a class="dropdown-item mt-0" href="pages-account-settings-account.html">
-                      <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 me-2">
-                          <div class="avatar avatar-online">
-                            <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
-                          </div>
-                        </div>
-                        <div class="flex-grow-1">
-                          <h6 class="mb-0">Rommel Lacap</h6>
-                          <small class="text-body-secondary">Admin</small>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <div class="dropdown-divider my-1 mx-n2"></div>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="icon-base ti tabler-user me-3 icon-md"></i><span class="align-middle">My Profile</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="icon-base ti tabler-settings me-3 icon-md"></i><span
-                        class="align-middle">Settings</span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <div class="dropdown-divider my-1 mx-n2"></div>
-                  </li>
-
-                  <li>
-                    <div class="d-grid px-2 pt-2 pb-1">
-                      <a class="btn btn-sm btn-danger d-flex" href="#" target="_blank">
-                        <small class="align-middle">Logout</small>
-                        <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-              <!--/ User -->
-            </ul>
-          </div>
-        </nav> --}}
+        
 
         <!-- / Navbar -->
 
@@ -331,136 +202,14 @@
 
 
 
-              <!-- Enhanced Birthday Card -->
-              <div class="col-12 col-lg-14">
-                <div class="card">
-                  <div
-                    class="card-header d-flex justify-content-between align-items-center bg-primary bg-opacity-10 p-4">
-                    <div>
-                      <h5 class="card-title mb-1">
-                        <i class="ti tabler-gift me-2 text-primary"></i>
-                        Patient Birthdays
-                      </h5>
-                      <p class="text-muted mb-0 small">
-                        Stay connected with your patients on their special day
-                      </p>
-                    </div>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#allBirthdaysModal">
-                      <i class="ti tabler-list me-1"></i>View All
-                    </button>
-                  </div>
 
-                  <!-- Today's Birthday Section -->
-                  <div class="card-body border-bottom p-4">
-                    <h6 class="text-primary mb-3">
-                      <i class="ti tabler-confetti me-2"></i>
-                      Today's Birthdays
-                    </h6>
-                    <div class="birthday-today">
-                      @if(count($todayBirthdays) > 0)
-                        @foreach($todayBirthdays as $patient)
-                        <li class="d-flex mb-2 pb-1 birthday-item position-relative">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span
-                              class="avatar-initial rounded-circle bg-label-danger d-flex align-items-center justify-content-center"
-                              style="width: 45px; height: 45px">
-                              <i class="icon-base ti tabler-confetti icon-md"></i>
-                            </span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0 fw-semibold">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
-                              <div class="d-flex align-items-center mt-1">
-                                <i class="ti tabler-calendar-event text-muted me-1"></i>
-                                <small class="text-body-secondary">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d, Y') }} ({{ $patient->age }} years)</small>
-                                <span class="badge bg-label-danger ms-2 px-2 py-1">
-                                  <i class="ti tabler-party-popper me-1"></i>Today
-                                </span>
-                              </div>
-                            </div>
-                            <div class="action-buttons d-flex gap-2">
-                              <button class="btn btn-sm btn-primary" data-action="send-wishes" data-patient="{{ $patient->patient_id }}">
-                                <i class="ti tabler-mail me-1"></i>Send Wishes
-                              </button>
-                              <button class="btn btn-sm btn-outline-primary" data-action="send-offers" data-patient="{{ $patient->patient_id }}">
-                                <i class="ti tabler-gift me-1"></i>Send Offer
-                              </button>
-                            </div>
-                          </div>
-                        </li>
-                        @endforeach
-                      @else
-                        <p class="text-center text-muted my-3">No birthdays today</p>
-                      @endif
-                    </div>
-                  </div>
 
-                  <!-- Upcoming Birthdays Section -->
-                  <div class="card-body p-4">
-                    <h6 class="text-primary mb-3">
-                      <i class="ti tabler-calendar-event me-2"></i>
-                      Upcoming Birthdays
-                    </h6>
-                    <ul class="p-0 m-0">
-                      @if(count($upcomingBirthdays) > 0)
-                        @foreach($upcomingBirthdays->take(5) as $patient)
-                        <li class="d-flex mb-4 pb-1 birthday-item position-relative">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span
-                              class="avatar-initial rounded-circle bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} d-flex align-items-center justify-content-center"
-                              style="width: 45px; height: 45px">
-                              <i class="icon-base ti tabler-cake icon-md"></i>
-                            </span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0 fw-semibold">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
-                              <div class="d-flex align-items-center mt-1">
-                                <i class="ti tabler-calendar-event text-muted me-1"></i>
-                                <small class="text-body-secondary">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d, Y') }}</small>
-                                <span class="badge bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} ms-2 px-2 py-1">
-                                  <i class="ti tabler-clock me-1"></i>In {{ $patient->daysUntil }} days
-                                </span>
-                              </div>
-                            </div>
-                            <div class="dropdown">
-                              <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="ti tabler-dots-vertical"></i>
-                              </button>
-                              <ul class="dropdown-menu dropdown-menu-end show-on-hover">
-                                <li>
-                                  <a class="dropdown-item" href="#" data-action="send-wishes" data-patient="{{ $patient->patient_id }}">
-                                    <i class="ti tabler-mail me-2"></i>Send Wishes
-                                  </a>
-                                </li>
-                                <li>
-                                  <a class="dropdown-item" href="#" data-action="send-offers" data-patient="{{ $patient->patient_id }}">
-                                    <i class="ti tabler-gift me-2"></i>Send Offer
-                                  </a>
-                                </li>
-                                <li>
-                                  <a class="dropdown-item" href="#">
-                                    <i class="ti tabler-calendar-plus me-2"></i>Schedule Service
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
-                        @endforeach
-                      @else
-                        <p class="text-center text-muted my-3">No upcoming birthdays in the next 30 days</p>
-                      @endif
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
 
+            <!-- Add spacing here -->
+            <div class="mb-3"></div>
 
             <!-- Dynamic Banner Section -->
-            <div class="row mb-4">
+            <div class="col-12 col-lg-14">
               <div class="col-lg-12">
                 @if(count($todayBirthdays) > 0 || count($upcomingBirthdays) > 0)
                   <!-- Birthday Banner (existing code) -->
@@ -543,7 +292,130 @@
     }
   `;
               document.head.appendChild(style);
+              
             </script>
+
+
+
+
+ <!-- Enhanced Birthday Card -->
+ <div class="col-12 col-lg-14">
+                <div class="card">
+                  <div
+                    class="card-header d-flex justify-content-between align-items-center bg-primary bg-opacity-10 p-4">
+                    <div>
+                      <h5 class="card-title mb-1">
+                        <i class="ti tabler-gift me-2 text-primary"></i>
+                        Patient Birthdays
+                      </h5>
+                      <p class="text-muted mb-0 small">
+                        Stay connected with your patients on their special day
+                      </p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#allBirthdaysModal">
+                      <i class="ti tabler-list me-1"></i>View All
+                    </button>
+                  </div>
+
+                  <!-- Today's Birthday Section -->
+                  <div class="card-body border-bottom p-4">
+                    <h6 class="text-primary mb-3">
+                      <i class="ti tabler-confetti me-2"></i>
+                      Today's Birthdays
+                    </h6>
+                    <div class="birthday-today">
+                      @if(count($todayBirthdays) > 0)
+                        @foreach($todayBirthdays as $patient)
+                        <li class="d-flex mb-2 pb-1 birthday-item position-relative">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span
+                              class="avatar-initial rounded-circle bg-label-danger d-flex align-items-center justify-content-center"
+                              style="width: 45px; height: 45px">
+                              <i class="icon-base ti tabler-confetti icon-md"></i>
+                            </span>
+                          </div>
+                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                              <h6 class="mb-0 fw-semibold">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
+                              <div class="d-flex align-items-center mt-1">
+                                <i class="ti tabler-calendar-event text-muted me-1"></i>
+                                <small class="text-body-secondary">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d, Y') }} ({{ $patient->age }} years)</small>
+                                <span class="badge bg-label-danger ms-2 px-2 py-1">
+                                  <i class="ti tabler-party-popper me-1"></i>Today
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        @endforeach
+                      @else
+                        <p class="text-center text-muted my-3">No birthdays today</p>
+                      @endif
+                    </div>
+                  </div>
+
+                  <!-- Upcoming Birthdays Section -->
+                  <div class="card-body p-4">
+                    <h6 class="text-primary mb-3">
+                      <i class="ti tabler-calendar-event me-2"></i>
+                      Upcoming Birthdays
+                    </h6>
+                    <ul class="p-0 m-0">
+                      @if(count($upcomingBirthdays) > 0)
+                        @foreach($upcomingBirthdays->take(5) as $patient)
+                        <li class="d-flex mb-4 pb-1 birthday-item position-relative">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span
+                              class="avatar-initial rounded-circle bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} d-flex align-items-center justify-content-center"
+                              style="width: 45px; height: 45px">
+                              <i class="icon-base ti tabler-cake icon-md"></i>
+                            </span>
+                          </div>
+                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                              <h6 class="mb-0 fw-semibold">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
+                              <div class="d-flex align-items-center mt-1">
+                                <i class="ti tabler-calendar-event text-muted me-1"></i>
+                                <small class="text-body-secondary">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d, Y') }}</small>
+                                <span class="badge bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} ms-2 px-2 py-1">
+                                  <i class="ti tabler-clock me-1"></i>In {{ $patient->daysUntil }} days
+                                </span>
+                              </div>
+                            </div>
+                            <div class="dropdown">
+                              <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="ti tabler-dots-vertical"></i>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-end show-on-hover">
+                                <li>
+                                  <a class="dropdown-item" href="#" data-action="send-wishes" data-patient="{{ $patient->patient_id }}">
+                                    <i class="ti tabler-mail me-2"></i>Send Wishes
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="#" data-action="send-offers" data-patient="{{ $patient->patient_id }}">
+                                    <i class="ti tabler-gift me-2"></i>Send Offer
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="#">
+                                    <i class="ti tabler-calendar-plus me-2"></i>Schedule Service
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                        @endforeach
+                      @else
+                        <p class="text-center text-muted my-3">No upcoming birthdays in the next 30 days</p>
+                      @endif
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
 
@@ -655,7 +527,7 @@
               </div>
             </div>
 
-            <!-- Recent Bookings Table -->
+            <!-- Recent Bookings Table
             <div class="row">
               <div class="col-12">
                 <div class="card">
@@ -668,10 +540,6 @@
                     </div>
                     <div class="d-flex gap-2">
                       <div class="dropdown">
-                        <!-- <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
-                          data-bs-toggle="dropdown">
-                          <i class="ti tabler-filter me-1"></i>Filter
-                        </button> -->
                         <ul class="dropdown-menu">
                           <li>
                             <a class="dropdown-item" href="#">All Bookings</a>
@@ -744,7 +612,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- / Content -->
 
           <!-- Footer -->
@@ -1113,10 +981,7 @@
         csvContent = "Status,Percentage\n";
         chart.data.labels.forEach((label, i) => {
           const value = chart.data.datasets[0].data[i];
-          const total = chart.data.datasets[0].data.reduce(
-            (a, b) => a + b,
-            0
-          );
+          const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
           const percentage = ((value / total) * 100).toFixed(2);
           csvContent += `${label},${percentage}%\n`;
         });
@@ -1697,115 +1562,139 @@ The Imajica Team</textarea>
     document.addEventListener("DOMContentLoaded", function() {
       // Update the View All button click handler
       const viewAllButton = document.querySelector(
-        "button[onclick=\"window.location.href='all-birthdays.html'\"]"
+        "button[data-bs-toggle='modal'][data-bs-target='#allBirthdaysModal']"
       );
-      if (viewAllButton) {
-        viewAllButton.onclick = function (e) {
-          e.preventDefault();
-          const modal = new bootstrap.Modal(
-            document.getElementById("allBirthdaysModal")
-          );
-          modal.show();
-        };
-      }
+      
+      // Function to apply birthday filters
+      function applyBirthdayFilter(filterValue = 'all') {
+        const monthCards = document.querySelectorAll(".month-card");
+        
+        // Get current date information
+        const today = new Date();
+        const currentMonth = today.getMonth(); // 0-11
+        const currentDay = today.getDate();
+        const currentMonthName = today.toLocaleString('default', { month: 'long' });
+        const currentYear = today.getFullYear();
 
-      // Search functionality
-      const searchInput = document.getElementById("birthdaySearch");
-      if (searchInput) {
-        searchInput.addEventListener("input", function (e) {
-          const searchTerm = e.target.value.toLowerCase();
-          const birthdayItems = document.querySelectorAll(".birthday-item");
+        // Process each month card
+        monthCards.forEach((card) => {
+          const monthName = card.querySelector(".month-title").textContent.trim();
+          // Get month index (0-11) from month name
+          const monthIndex = new Date(Date.parse(monthName + " 1, " + currentYear)).getMonth();
+          const birthdayItems = card.querySelectorAll(".birthday-item");
 
-          birthdayItems.forEach((item) => {
-            const name = item.querySelector("h6").textContent.toLowerCase();
-            if (name.includes(searchTerm)) {
-              item.style.display = "flex";
-            } else {
-              item.style.display = "none";
-            }
-          });
-        });
-      }
+          switch (filterValue) {
+            case "all":
+              // Show all months and birthdays
+              card.style.display = "block";
+              birthdayItems.forEach(item => item.style.display = "flex");
+              break;
 
-      // Filter functionality
-      const filterSelect = document.getElementById("birthdayFilter");
-      if (filterSelect) {
-        filterSelect.addEventListener("change", function (e) {
-          const filterValue = e.target.value;
-          const monthCards = document.querySelectorAll(".month-card");
-          const currentMonth = new Date().getMonth(); // 0-11
-          const currentDay = new Date().getDate();
-
-          monthCards.forEach((card) => {
-            const monthName = card.querySelector(".month-title").textContent.trim();
-            const monthIndex = new Date(Date.parse(monthName + " 1")).getMonth();
-            const birthdayItems = card.querySelectorAll(".birthday-item");
-
-            switch (filterValue) {
-              case "all":
-                // Show all months and birthdays
+            case "current":
+              // Show only current month
+              if (monthName === currentMonthName) {
                 card.style.display = "block";
                 birthdayItems.forEach(item => item.style.display = "flex");
-                break;
-
-              case "current":
-                // Show only current month
-                card.style.display = monthIndex === currentMonth ? "block" : "none";
-                break;
-
-              case "upcoming":
-                // Show future months and upcoming birthdays in current month
-                if (monthIndex > currentMonth) {
-                  // Future months - show all
-                  card.style.display = "block";
-                  birthdayItems.forEach(item => item.style.display = "flex");
-                } else if (monthIndex === currentMonth) {
-                  // Current month - show only upcoming days
-                  card.style.display = "block";
-                  birthdayItems.forEach(item => {
-                    const dayText = item.querySelector("small.text-muted").textContent;
-                    const day = parseInt(dayText.match(/\d+/)[0]);
-                    item.style.display = day >= currentDay ? "flex" : "none";
-                  });
-                } else {
-                  // Past months - hide
-                  card.style.display = "none";
-                }
-                break;
-
-              case "past":
-                // Show past months and past birthdays in current month
-                if (monthIndex < currentMonth) {
-                  // Past months - show all
-                  card.style.display = "block";
-                  birthdayItems.forEach(item => item.style.display = "flex");
-                } else if (monthIndex === currentMonth) {
-                  // Current month - show only past days
-                  card.style.display = "block";
-                  birthdayItems.forEach(item => {
-                    const dayText = item.querySelector("small.text-muted").textContent;
-                    const day = parseInt(dayText.match(/\d+/)[0]);
-                    item.style.display = day < currentDay ? "flex" : "none";
-                  });
-                } else {
-                  // Future months - hide
-                  card.style.display = "none";
-                }
-                break;
-            }
-
-            // Hide empty month cards
-            if (card.style.display === "block") {
-              const visibleItems = Array.from(birthdayItems).filter(item => 
-                item.style.display === "flex"
-              ).length;
-              if (visibleItems === 0) {
+              } else {
                 card.style.display = "none";
               }
+              break;
+
+            case "upcoming":
+              if (monthIndex > currentMonth) {
+                // Future months - show all birthdays
+                card.style.display = "block";
+                birthdayItems.forEach(item => item.style.display = "flex");
+              } else if (monthIndex === currentMonth) {
+                // Current month - show only upcoming birthdays
+                card.style.display = "block";
+                birthdayItems.forEach(item => {
+                  // Check if this item has a badge with "days" text - these are upcoming
+                  const badgeElement = item.querySelector(".badge");
+                  if (badgeElement && (badgeElement.textContent.includes("In ") || badgeElement.textContent.includes("Today"))) {
+                    item.style.display = "flex";
+                  } else {
+                    // Otherwise look for the date and compare
+                    const dateText = item.querySelector("small.text-muted").textContent;
+                    // Extract the day from format like "February 15" or "February 15 (30 years)"
+                    const dayMatch = dateText.match(/(\w+)\s+(\d+)/);
+                    if (dayMatch && dayMatch[2]) {
+                      const day = parseInt(dayMatch[2]);
+                      item.style.display = day >= currentDay ? "flex" : "none";
+                    } else {
+                      item.style.display = "none";
+                    }
+                  }
+                });
+              } else {
+                // Past months - hide
+                card.style.display = "none";
+              }
+              break;
+
+            case "past":
+              if (monthIndex < currentMonth) {
+                // Past months - show all birthdays
+                card.style.display = "block";
+                birthdayItems.forEach(item => item.style.display = "flex");
+              } else if (monthIndex === currentMonth) {
+                // Current month - show only past birthdays
+                card.style.display = "block";
+                birthdayItems.forEach(item => {
+                  const badgeElement = item.querySelector(".badge");
+                  if (badgeElement && (badgeElement.textContent.includes("In ") || badgeElement.textContent.includes("Today"))) {
+                    // If has "In X days" badge or "Today" badge, it's not past - hide it
+                    item.style.display = "none";
+                  } else {
+                    // Extract the day and determine if it's past
+                    const dateText = item.querySelector("small.text-muted").textContent;
+                    const dayMatch = dateText.match(/(\w+)\s+(\d+)/);
+                    if (dayMatch && dayMatch[2]) {
+                      const day = parseInt(dayMatch[2]);
+                      item.style.display = day < currentDay ? "flex" : "none";
+                    } else {
+                      item.style.display = "none";
+                    }
+                  }
+                });
+              } else {
+                // Future months - hide
+                card.style.display = "none";
+              }
+              break;
+          }
+
+          // Hide empty month cards
+          if (card.style.display === "block") {
+            const visibleItems = Array.from(birthdayItems).filter(item => 
+              item.style.display === "flex"
+            ).length;
+            if (visibleItems === 0) {
+              card.style.display = "none";
             }
-          });
+          }
         });
       }
+      
+      // Apply filter when modal is shown
+      const birthdayModal = document.getElementById('allBirthdaysModal');
+      if (birthdayModal) {
+        birthdayModal.addEventListener('shown.bs.modal', function() {
+          const filterSelect = document.getElementById("birthdayFilter");
+          // Apply default filter (all)
+          applyBirthdayFilter();
+          
+          // When filter changes, apply the new filter
+          if (filterSelect) {
+            filterSelect.value = 'all'; // Reset to "All" when modal opens
+            filterSelect.addEventListener("change", function(e) {
+              applyBirthdayFilter(e.target.value);
+            });
+          }
+        });
+      }
+      
+      // Other existing code...
     });
   </script>
 

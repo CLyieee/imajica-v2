@@ -37,7 +37,7 @@
     <!-- End Google Tag Manager -->
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="logo.png" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -200,16 +200,17 @@
         justify-content: center;
       }
 
-      .metric-card {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.9);
-        min-width: 200px;
-        max-width: 300px;
-        flex: 1;
-      }
-
+  .metric-card {
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #2b2c2d; /* Changed 'border-color' to 'border' for better clarity */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Corrected property name and increased shadow values */
+  background: rgba(254, 255, 255, 0.9);
+  min-width: 200px;
+  max-width: 300px;
+  flex: 1;
+}
       .metric-card i {
         font-size: 24px;
         margin-bottom: 1rem;
@@ -308,53 +309,52 @@
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="m-0">Expense Transactions</h3>
             <div class="d-flex gap-2">
-              <div class="input-group" style="width: 300px; position: relative;">
-                <span class="input-group-text">
-                  <i class="ti tabler-search"></i>
-                </span>
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="searchInput" 
-                  placeholder="Search by name..."
-                  style="border-radius: 0; padding-right: 30px;"
-                >
-                <button 
-                  type="button"
-                  class="btn-close clear-search"
-                  id="clearSearch"
-                  style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
-                         z-index: 5; display: none; background-size: 8px; cursor: pointer;
-                         border: none; background-color: transparent; padding: 0.75rem;"
-                  aria-label="Clear search"
-                ></button>
-              </div>
-              <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  Filter By Date
-                </button>
-                <div class="dropdown-menu p-3" style="min-width: 250px;">
-                  <select class="form-select" id="dateFilter" onchange="applyDateFilter()">
-                    <option value="">Select Date Range</option>
-                    <option value="today">Today</option>
-                    <option value="yesterday">Yesterday</option>
-                    <option value="last7">Last 7 Days</option>
-                    <option value="last30">Last 30 Days</option>
-                    <option value="thisMonth">This Month</option>
-                    <option value="lastMonth">Last Month</option>
-                    <option value="thisYear">This Year</option>
-                  </select>
+              <div class="form-group" style="width: 150px;">
+                <div style="height: 21px;"><!-- Spacer to match label height --></div>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="ti tabler-search"></i>
+                  </span>
+                  <input 
+                    type="text" 
+                    class="form-control form-control-sm" 
+                    id="searchInput" 
+                    placeholder="Search..."
+                    style="border-radius: 0; padding-right: 30px;"
+                  >
+                  <button 
+                    type="button"
+                    class="btn-close clear-search"
+                    id="clearSearch"
+                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
+                           z-index: 5; display: none; background-size: 8px; cursor: pointer;
+                           border: none; background-color: transparent; padding: 0.75rem;"
+                    aria-label="Clear search"
+                  ></button>
                 </div>
               </div>
-              <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #18332a;">
-                  Export
-                </button>
-                <ul class="dropdown-menu" style="min-width: 120px;">
-                  <li><a class="dropdown-item" href="#" data-export="pdf">PDF</a></li>
-                  <li><a class="dropdown-item" href="#" data-export="excel">Excel</a></li>
-                  <li><a class="dropdown-item" href="#" data-export="csv">CSV</a></li>
-                </ul>
+              <div class="d-flex gap-2">
+                <div class="form-group" style="width: 150px;">
+                  <label class="form-label small text-muted mb-1">Date From</label>
+                  <input type="date" id="dateFrom" class="form-control form-control-sm" onchange="filterByDateRange()">
+                </div>
+                <div class="form-group" style="width: 150px;">
+                  <label class="form-label small text-muted mb-1">Date To</label>
+                  <input type="date" id="dateTo" class="form-control form-control-sm" onchange="filterByDateRange()">
+                </div>
+              </div>
+              <div class="form-group" style="width: 150px;">
+                <label class="form-label small text-muted mb-1">Filter By Date</label>
+                <select class="form-select form-select-sm" id="dateFilter" onchange="applyDateFilter()">
+                  <option value="">Select Date Range</option>
+                  <option value="today">Today</option>
+                  <option value="yesterday">Yesterday</option>
+                  <option value="last7">Last 7 Days</option>
+                  <option value="last30">Last 30 Days</option>
+                  <option value="thisMonth">This Month</option>
+                  <option value="lastMonth">Last Month</option>
+                  <option value="thisYear">This Year</option>
+                </select>
               </div>
             </div>
           </div>
@@ -370,14 +370,18 @@
                   <th style="color: white; font-weight: 500;">Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody> 
                 <tr>
                   <td>2024-01-15</td>
                   <td>INV-2024-001</td>
                   <td>Electricity Bill Payment</td>
                   <td>Utilities</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-14</td>
@@ -385,7 +389,11 @@
                   <td>Office Supplies Purchase</td>
                   <td>Supplies</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-13</td>
@@ -393,7 +401,11 @@
                   <td>Equipment Maintenance</td>
                   <td>Maintenance</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-12</td>
@@ -401,7 +413,11 @@
                   <td>Marketing Campaign</td>
                   <td>Marketing</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-11</td>
@@ -409,7 +425,11 @@
                   <td>Monthly Payroll</td>
                   <td>Payroll</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-10</td>
@@ -417,7 +437,11 @@
                   <td>Internet Service</td>
                   <td>Utilities</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-09</td>
@@ -425,7 +449,11 @@
                   <td>Office Rent</td>
                   <td>Rent</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-08</td>
@@ -433,7 +461,11 @@
                   <td>Software Licenses</td>
                   <td>IT Services</td>
                   <td><span class="badge bg-label-warning">Pending</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-07</td>
@@ -441,7 +473,11 @@
                   <td>Water Bill</td>
                   <td>Utilities</td>
                   <td><span class="badge bg-label-success">Paid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>2024-01-06</td>
@@ -449,7 +485,11 @@
                   <td>Equipment Purchase</td>
                   <td>Assets</td>
                   <td><span class="badge bg-label-danger">Unpaid</span></td>
-                  <td><button class="btn btn-sm btn-success">View</button></td>
+                  <td>
+                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
+                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -614,12 +654,16 @@
       }
 
       function applyDateFilter() {
+        // Clear date range inputs when using predefined filters
+        document.getElementById('dateFrom').value = '';
+        document.getElementById('dateTo').value = '';
+
         const filterValue = document.getElementById('dateFilter').value;
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
-        let startDate = new Date();
-        let endDate = new Date();
+        let startDate = null;
+        let endDate = null;
         
         switch(filterValue) {
           case 'today':
@@ -654,12 +698,60 @@
             endDate = new Date(today.getFullYear(), 11, 31);
             break;
           default:
-            startDate = null;
-            endDate = null;
+            // Show all rows if no filter is selected
+            document.querySelectorAll('tbody tr').forEach(row => {
+              row.style.display = '';
+            });
+            return;
         }
         
-        const searchValue = document.getElementById('searchInput').value.toLowerCase();
-        filterTable(searchValue, startDate && endDate ? { start: startDate, end: endDate } : null);
+        // Set end date to end of day
+        if (endDate) {
+          endDate.setHours(23, 59, 59, 999);
+        }
+
+        document.querySelectorAll('tbody tr').forEach(row => {
+          const dateCell = row.querySelector('td:nth-child(1)').textContent;
+          const rowDate = new Date(dateCell);
+          rowDate.setHours(0, 0, 0, 0); // Normalize row date to start of day
+          
+          if (startDate && endDate) {
+            row.style.display = (rowDate >= startDate && rowDate <= endDate) ? '' : 'none';
+          }
+        });
+      }
+
+      function filterByDateRange() {
+        const dateFrom = document.getElementById('dateFrom').value;
+        const dateTo = document.getElementById('dateTo').value;
+        const tableRows = document.querySelectorAll('tbody tr');
+        
+        tableRows.forEach(row => {
+            const dateCell = row.querySelector('td:nth-child(1)').textContent;
+            const rowDate = new Date(dateCell);
+            let showRow = true;
+            
+            if (dateFrom && dateTo) {
+                const fromDate = new Date(dateFrom);
+                const toDate = new Date(dateTo);
+                // Set toDate to end of day for inclusive comparison
+                toDate.setHours(23, 59, 59, 999);
+                
+                showRow = rowDate >= fromDate && rowDate <= toDate;
+            } else if (dateFrom) {
+                const fromDate = new Date(dateFrom);
+                showRow = rowDate >= fromDate;
+            } else if (dateTo) {
+                const toDate = new Date(dateTo);
+                toDate.setHours(23, 59, 59, 999);
+                showRow = rowDate <= toDate;
+            }
+            
+            row.style.display = showRow ? '' : 'none';
+        });
+        
+        // Clear the date filter dropdown when using date range
+        document.getElementById('dateFilter').value = '';
       }
 
 // Add event listeners to view buttons
@@ -770,6 +862,33 @@ function exportToCSV(data) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+
+function downloadRowAsExcel(button) {
+    // Get the row data
+    const row = button.closest('tr');
+    const cells = row.querySelectorAll('td');
+    const rowData = Array.from(cells).slice(0, -1).map(cell => {
+        // For cells with badge spans, get the text content
+        const badge = cell.querySelector('.badge');
+        return badge ? badge.textContent : cell.textContent;
+    });
+    
+    // Get invoice number for the filename
+    const invoiceNo = rowData[1];
+    
+    // Create headers array
+    const headers = ['Date', 'Receipt/Invoice No.', 'Expense Name', 'Expense Category', 'Payment Status'];
+    
+    // Create workbook and worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet([headers, rowData]);
+    
+    // Add worksheet to workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Expense Details');
+    
+    // Save the file
+    XLSX.writeFile(wb, `Expense_${invoiceNo}.xlsx`);
 }
 </script>
 

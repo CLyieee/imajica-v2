@@ -10,6 +10,8 @@ class service extends Model
     use HasFactory;
 
     protected $table = 'services';
+    protected $primaryKey = 'service_id';
+    public $incrementing = true;
 
     
     protected $fillable = [

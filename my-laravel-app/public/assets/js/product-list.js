@@ -1,14 +1,9 @@
 document.addEventListener("DOMContentLoaded",function(e){
   config.colors.borderColor,config.colors.bodyBg,config.colors.headingColor;
   let t=document.querySelector(".datatables-products"),
-  o={
-    1:{title:"Scheduled",class:"bg-label-warning"},
-    2:{title:"Published",class:"bg-label-success"},
-    3:{title:"Inactive",class:"bg-label-danger"}
-  },
   r={
-    0:{title:"Out_of_Stock"},
-    1:{title:"In_Stock"}
+    0:{title:"Out of Stock", class:"bg-label-danger"},
+    1:{title:"In Stock", class:"bg-label-success"}
   };
 
 t&&new DataTable(t,{
@@ -23,14 +18,16 @@ t&&new DataTable(t,{
   },
   columns:[
     {data:"id"},
-    {data:"id",orderable:!1,render:DataTable.render.select()},
+    {data:"id", orderable:!1, render:DataTable.render.select()},
     {data:"name"},
     {data:"category"},
-    {data:"stock_status"},
-    {data:"sku"},
+    {data:"supplier_id"},
     {data:"base_price"},
     {data:"quantity"},
-    {data:"status"},
+    {data:"restock_point"},
+    {data:"manufacturing_date"},
+    {data:"expiry_date"},
+    {data:"removal_date"},
     {data:"actions"}
   ],
   columnDefs:[
@@ -67,7 +64,7 @@ t&&new DataTable(t,{
             </div>
             <div class="d-flex flex-column">
               <h6 class="text-nowrap mb-0">${n.name}</h6>
-              <small class="text-truncate d-none d-sm-block">${n.description || ''}</small>
+              <small class="text-truncate d-none d-sm-block">SKU: ${n.sku}</small>
             </div>
           </div>
         `;
@@ -81,61 +78,33 @@ t&&new DataTable(t,{
       }
     },
     {
-      targets:4,
-      orderable:!1,
-      responsivePriority:3,
+      targets:4, 
       render:function(e,t,n,a){
-        n=r[n.stock_status]?.title || n.stock_status;
-        return"display"===t?`
-          <span class="text-truncate">
-            ${{Out_of_Stock:`
-            <label class="switch switch-primary switch-sm">
-            <input type="checkbox" class="switch-input" id="switch">
-              <span class="switch-toggle-slider">
-                <span class="switch-off"></span>
-              </span>
-            </label>`,In_Stock:`
-            <label class="switch switch-primary switch-sm">
-              <input type="checkbox" class="switch-input" checked>
-              <span class="switch-toggle-slider">
-                <span class="switch-on"></span>
-              </span>
-            </label>`}[n]}
-            <span class="d-none">${n}</span>
-          </span>`:n
+        return n.suppler_id;
       }
     },
     {
       targets:5,
-      render:function(e,t,n,a){return"<span>"+n.sku+"</span>"}
-    },
-    {
-      targets:6,
-      render:function(e,t,n,a){return"<span>"+n.base_price+"</span>"}
-    },
-    {
-      targets:7,
-      responsivePriority:4,
-      render:function(e,t,n,a){return"<span>"+n.quantity+"</span>"}
-    },
-    {
-      targets:-2,
       render:function(e,t,n,a){
-        n=n.status;
-        return'<span class="badge '+o[n]?.class+'" text-capitalized>'+o[n]?.title+"</span>"
+        return `<span>₱${parseFloat(n.base_price).toFixed(2)}</span>`;
       }
     },
     {
-      targets:-1,
-      title:"Actions",
-      searchable:!1,
-      orderable:!1,
+      targets:6,
       render:function(e,t,n,a){
+        return n.quantity;
+      }
+    },
+    {
+      targets: -1,
+      title: "Actions", 
+      searchable: false,
+      orderable: false,
+      render: function(data, type, row) {
         return `
-          <div class='d-flex gap-1'>
-            <a href="/products/${n.id}/view" class='btn btn-success'><i class='ti tabler-eye me-1'></i>View</a>
-            <a href="/products/${n.id}/edit" class='btn btn-info'><i class='ti tabler-edit me-1'></i>Edit</a>
-            <button class='btn btn-danger delete-product' data-id='${n.id}'><i class='ti tabler-trash me-1'></i>Delete</button>
+          <div class='d-flex gap-2'>
+              <a href="/edit-product/${row.sku}" class='btn btn-info btn-sm'><i class='ti tabler-edit me-1'></i>Edit</a>
+              <button class='btn btn-danger btn-sm delete-product' data-id="${row.sku}"><i class='ti tabler-trash me-1'></i>Delete</button>
           </div>
         `;
       }
@@ -154,7 +123,8 @@ t&&new DataTable(t,{
     },
     topEnd:{
       rowClass:"row m-3 my-0 justify-content-between",
-      features:[{pageLength:{menu:[7,10,25,50,100],text:"_MENU_"},buttons:[{extend:"collection",className:"btn btn-label-secondary dropdown-toggle me-4",text:'<span class="d-flex align-items-center gap-1"><i class="icon-base ti tabler-upload icon-xs"></i> <span class="d-none d-sm-inline-block">Export</span></span>',buttons:[{extend:"print",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-printer me-1"></i>Print</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0||!(-1<e.indexOf("<")))return e;{e=(new DOMParser).parseFromString(e,"text/html");let t="";var a=e.querySelectorAll(".product-name");return 0<a.length?a.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;t+=e.trim()+" "}):t=e.body.textContent||e.body.innerText,t.trim()}}}},customize:function(e){e.document.body.style.color=config.colors.headingColor,e.document.body.style.borderColor=config.colors.borderColor,e.document.body.style.backgroundColor=config.colors.bodyBg;e=e.document.body.querySelector("table");e.classList.add("compact"),e.style.color="inherit",e.style.borderColor="inherit",e.style.backgroundColor="inherit"}},{extend:"csv",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-file me-1"></i>Csv</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"excel",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-upload me-1"></i>Excel</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"pdf",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-file-text me-1"></i>Pdf</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"copy",text:'<i class="icon-base ti tabler-copy me-1"></i>Copy',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}}]},{text:'<i class="icon-base ti tabler-plus me-0 me-sm-1 icon-16px"></i><span class="d-none d-sm-inline-block">Add Product</span>',className:"add-new btn btn-primary",action:function(){window.location.href="/add-product"}}]}]},
+      features:[{pageLength:{menu:[7,10,25,50,100],text:"_MENU_"},buttons:[{extend:"collection",
+        className:"btn btn-label-secondary dropdown-toggle me-4",text:'<span class="d-flex align-items-center gap-1"><i class="icon-base ti tabler-upload icon-xs"></i> <span class="d-none d-sm-inline-block">Export</span></span>',buttons:[{extend:"print",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-printer me-1"></i>Print</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0||!(-1<e.indexOf("<")))return e;{e=(new DOMParser).parseFromString(e,"text/html");let t="";var a=e.querySelectorAll(".product-name");return 0<a.length?a.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;t+=e.trim()+" "}):t=e.body.textContent||e.body.innerText,t.trim()}}}},customize:function(e){e.document.body.style.color=config.colors.headingColor,e.document.body.style.borderColor=config.colors.borderColor,e.document.body.style.backgroundColor=config.colors.bodyBg;e=e.document.body.querySelector("table");e.classList.add("compact"),e.style.color="inherit",e.style.borderColor="inherit",e.style.backgroundColor="inherit"}},{extend:"csv",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-file me-1"></i>Csv</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"excel",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-upload me-1"></i>Excel</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"pdf",text:'<span class="d-flex align-items-center"><i class="icon-base ti tabler-file-text me-1"></i>Pdf</span>',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}},{extend:"copy",text:'<i class="icon-base ti tabler-copy me-1"></i>Copy',className:"dropdown-item",exportOptions:{columns:[3,4,5,6,7],format:{body:function(e,t,n){if(e.length<=0)return e;e=(new DOMParser).parseFromString(e,"text/html");let a="";var o=e.querySelectorAll(".product-name");return 0<o.length?o.forEach(e=>{e=e.querySelector(".fw-medium")?.textContent||e.querySelector(".d-block")?.textContent||e.textContent;a+=e.trim()+" "}):a=e.body.textContent||e.body.innerText,a.trim()}}}}]},{text:'<i class="icon-base ti tabler-plus me-0 me-sm-1 icon-16px"></i><span class="d-none d-sm-inline-block">Add Product</span>',className:"add-new btn btn-primary",action:function(){window.location.href="/add-product"}}]}]},
     bottomStart:{rowClass:"row mx-3 justify-content-between",features:["info"]},
     bottomEnd:"paging"
   },
@@ -183,25 +153,6 @@ t&&new DataTable(t,{
   },
   initComplete:function(){
     var e=this.api();
-    e.columns(-2).every(function(){
-      let t=this,n=document.createElement("select");
-      n.id="ProductStatus",n.className="form-select text-capitalize",n.innerHTML='<option value="">Status</option>';
-      document.querySelector(".product_status").appendChild(n);
-      
-      // Add all possible status options rather than just the ones in use
-      Object.values(o).forEach(status => {
-        let option = document.createElement("option");
-        option.value = status.title;
-        option.textContent = status.title;
-        n.appendChild(option);
-      });
-
-      n.addEventListener("change",function(){
-        var e=n.value?`^${n.value}$`:"";
-        t.search(e,!0,!1).draw()
-      });
-    }),
-    
     e.columns(3).every(function(){
       let t=this,n=document.createElement("select");
       n.id="ProductCategory";
@@ -263,21 +214,169 @@ setTimeout(()=>{
   })
 },100);
 
-// Add event handler for delete button
+// Replace the old delete handler with this new one
 $(document).on('click', '.delete-product', function() {
-  const productId = $(this).data('id');
-  if(confirm('Are you sure you want to delete this product?')) {
-    $.ajax({
-      url: `/api/products/${productId}`,
-      method: 'DELETE',
-      success: function() {
-        // Reload the DataTable
-        $('.datatables-products').DataTable().ajax.reload();
-      },
-      error: function(xhr) {
-        alert('Error deleting product');
-      }
+    try {
+        const sku = $(this).data('id');
+        const productName = $(this).closest('tr').find('.product-name h6').text();
+        
+        if (!sku) {
+            throw new Error("Product SKU not found in data attributes");
+        }
+        
+        // Set the SKU in the hidden delete form
+        $('#delete_product_sku').val(sku);
+        
+        // Show delete confirmation
+        Swal.fire({
+            customClass: {
+                confirmButton: 'btn btn-danger me-3', 
+                cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false,
+            title: 'Confirm Delete',
+            html: `Are you sure you want to delete <strong>${productName}</strong>?<br>This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit the delete form
+                $('#deleteProductForm').submit();
+                
+                // Show success message
+                Swal.fire({
+                    customClass: {
+                        confirmButton: 'btn btn-success'
+                    },
+                    buttonsStyling: false,
+                    title: 'Deleted!',
+                    text: 'Product has been deleted successfully.',
+                    icon: 'success',
+                    timer: 2000
+                }).then(() => {
+                    // Reload the page after successful deletion
+                    window.location.reload();
+                });
+            }
+        });
+    } catch (e) {
+        console.error("Error in delete button click handler:", e);
+        Swal.fire({
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false,
+            icon: 'error',
+            title: 'Delete Error',
+            html: 'An error occurred while processing your delete request:<br>' + e.message,
+            showConfirmButton: true
+        });
+    }
+});
+
+// Add edit form submission handler
+$(document).on('submit', '#editProductForm', function(e) {
+    e.preventDefault();
+    const form = $(this);
+    const barCode = form.data('bar-code');
+    const formData = new FormData(this);
+    
+    // Show loading state
+    Swal.fire({
+        title: 'Updating Product',
+        html: 'Please wait while we update the product...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
     });
-  }
+
+    // Submit form via AJAX
+    $.ajax({
+        url: `/products/${barCode}/update`,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Product updated successfully!',
+                showConfirmButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/product-list';
+                }
+            });
+        },
+        error: function(xhr) {
+            let errorMessage = 'An error occurred while updating the product.';
+            if (xhr.responseJSON?.message) {
+                errorMessage = xhr.responseJSON.message;
+            }
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage
+            });
+        }
+    });
+});
+
+// Update form submission handler
+$(document).on('click', '#updateProductBtn', function(e) {
+    e.preventDefault();
+    const form = $('#editProductForm');
+    const sku = form.data('sku');
+    const formData = new FormData(form[0]);
+    
+    // Show loading state
+    Swal.fire({
+        title: 'Updating Product',
+        html: 'Please wait while we update the product...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    // Submit form via AJAX
+    $.ajax({
+        url: form.attr('action'),
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Product updated successfully!',
+                showConfirmButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/product-list';
+                }
+            });
+        },
+        error: function(xhr) {
+            let errorMessage = 'An error occurred while updating the product.';
+            if (xhr.responseJSON?.message) {
+                errorMessage = xhr.responseJSON.message;
+            }
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage
+            });
+        }
+    });
 });
 });

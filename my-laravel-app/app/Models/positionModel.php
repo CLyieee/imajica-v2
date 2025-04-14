@@ -22,6 +22,11 @@ class positionModel extends Model
         'description',
         'status',
     ];
+
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function staff()
     {
         return $this->hasMany(Staff::class, 'position_id', 'position_id');

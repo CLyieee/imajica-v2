@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 
-
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CategoryListController;
 use App\Http\Controllers\ExpensesController;
@@ -18,6 +18,14 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\orderController;
 use App\Http\Controllers\AddProductController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\DepartmentController;
+
+use App\Http\Controllers\category_expenseController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeReportController;
+use App\Http\Controllers\CustomerReportController;
+use App\Http\Controllers\SalesTransactionController;
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -32,6 +40,7 @@ Route::get('/', [LoginController::class, 'index'])->name('page.index');
         Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
         Route::post('/coupon/create',[CouponController::class, 'create'] )->name('coupon.create');
         Route::get('/coupon/list', [DashboardController::class, 'coupon_list'])->name('page.coupon-list');
+        Route::get('/coupon/edit/{coupon_code}', [CouponController::class, 'edit'])->name('coupon.edit');
         Route::put('/coupon/update', [CouponController::class, 'update'])->name('coupon.update');
         Route::delete('/coupon/delete', [CouponController::class, 'delete'])->name('coupon.delete');
 
@@ -51,11 +60,15 @@ Route::get('/commision-employee', [DashboardController::class, 'commision_employ
 
 
 Route::get('/purchase', [DashboardController::class, 'purchase'])->name('page.purchase');
+Route::get('/purchase', [PurchaseController::class, 'index'])->name('purchase.index');
 
 
 Route::get('/void-logs', [DashboardController::class, 'void_logs'])->name('page.void-logs');
 
 Route::get('/product-list', [DashboardController::class, 'product_list'])->name('page.product-list');
+
+// Add the edit-branch route before the ORDER ROUTES
+Route::get('/branch/edit/{branch_code}', [branchController::class, 'edit'])->name('page.edit-branch');
 
 //ORDER ROUTES
 Route::get('/order-list', [DashboardController::class, 'order_list'])->name('page.order-list');
@@ -63,8 +76,15 @@ Route::get('/add-order', [DashboardController::class, 'add_order'])->name('page.
 Route::post('/order/create', [orderController::class, 'create'])->name('order.create');
 Route::get('/order-details/{id}', [OrderController::class, 'show'])->name('page.order-details');
 Route::get('/order/order-details/{orderId}', [OrderController::class, 'getOrderDetails'])->name('api.order.details');
+Route::delete('/order/delete', [OrderController::class, 'delete'])->name('order.delete');
 Route::get('/add-product', [DashboardController::class, 'add_product'])->name('page.add-product');
 Route::post('/product/create', [AddProductController::class, 'create'])->name('product.create');
+Route::get('/edit-product/{sku}', [AddProductController::class, 'edit'])
+    ->name('product.edit')
+    ->where('sku', '.*'); // Allow any character in sku
+
+Route::post('/product/{sku}/update', [AddProductController::class, 'update'])->name('product.update');
+Route::delete('/product/delete', [AddProductController::class, 'delete'])->name('product.delete');
 
 Route::get('/category-list', [DashboardController::class, 'category_list'])->name('page.category-list');
 
@@ -94,12 +114,14 @@ Route::get('/branch-list', [DashboardController::class, 'branch_list'])->name('p
 Route::get('/new-services', [DashboardController::class, 'new_services'])->name('page.new-services');
 
 Route::get('/services-list', [DashboardController::class, 'services_list'])->name('page.services-list');
+Route::get('/service/edit/{id}', [serviceController::class, 'edit'])->name('service.edit');
 
 Route::get('/new-user', [DashboardController::class, 'new_user'])->name('page.new-user');
 
 Route::get('/user-list', [DashboardController::class, 'user_list'])->name('page.user-list');
 
 Route::get('/booking', [BookingController::class, 'index'])->name('page.booking');
+Route::post('/save-quick-note', [BookingController::class, 'saveQuickNote'])->name('booking.save-quick-note');
 
 
 Route::get('/customer-report', [DashboardController::class, 'customer_report'])->name('page.customer-report');
@@ -119,18 +141,29 @@ Route::post('/branch/create', [App\Http\Controllers\branchController::class, 'cr
 Route::put('/branch/update', [App\Http\Controllers\branchController::class, 'update'])->name('branch.update');
 Route::delete('/branch/delete', [App\Http\Controllers\branchController::class, 'delete'])->name('branch.delete');
 Route::get('/branches/all', [App\Http\Controllers\branchController::class, 'getAllBranches'])->name('branch.getAllBranches');
+Route::get('/edit-branch/{branch_code}', [App\Http\Controllers\branchController::class, 'edit'])->name('branch.edit');
 
 // Supplier Routes
 Route::post('/supplier/add', [App\Http\Controllers\supplierController::class, 'add_supplier'])->name('add.supplier');
 Route::get('/supplier/all', [App\Http\Controllers\supplierController::class, 'get_suppliers'])->name('get.suppliers');
 Route::get('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'get_supplier'])->name('get.supplier');
-Route::put('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'update_supplier'])->name('update.supplier');
+Route::put('/supplier/{suppler_id}/update', [App\Http\Controllers\supplierController::class, 'update_supplier'])->name('supplier.update');
 Route::delete('/supplier/{id}', [App\Http\Controllers\supplierController::class, 'delete_supplier'])->name('delete.supplier');
-
+Route::get('/supplier/edit/{id}', [App\Http\Controllers\supplierController::class, 'edit'])->name('supplier.edit');
+Route::put('/supplier/update/{id}', [SupplierController::class, 'update_supplier'])->name('update.supplier');
+Route::get('/supplier/get/{id}', [SupplierController::class, 'get_supplier'])->name('get.supplier');
+Route::get('/suppliers', [SupplierController::class, 'get_suppliers'])->name('get.suppliers');
+Route::post('/supplier/add', [SupplierController::class, 'add_supplier'])->name('add.supplier');
+Route::delete('/supplier/delete/{id}', [SupplierController::class, 'delete_supplier'])->name('delete.supplier');
 
 // Patients Routes
-Route::put('/patient/update', [App\Http\Controllers\patientController::class, 'update'])->name('patient.update');
+Route::post('/patient/update/{id}', [PatientController::class, 'update'])->name('patient.update');
+Route::post('/patient/{id}/update', [PatientController::class, 'update'])->name('patient.update');
 Route::delete('/patient/{id}', [App\Http\Controllers\patientController::class, 'destroy'])->name('patient.destroy');
+Route::delete('/patient/delete', [PatientController::class, 'destroy'])->name('patient.delete');
+Route::get('/patients/{id}/view', [PatientController::class, 'view'])->name('patient.view');
+Route::get('/patients/{id}/view', [PatientController::class, 'show'])->name('patient.view');
+Route::get('/patients', [PatientController::class, 'index'])->name('patient.list');
 
 Route::get('/service-product', [DashboardController::class, 'service_product'])->name('page.service-product');
 
@@ -146,7 +179,7 @@ Route::get('/new category-expenses', [DashboardController::class, 'newcategory_e
 
 Route::get('/categoryexpenses-list', [DashboardController::class, 'categoryexpenses_list'])->name('page.categoryexpenses-list');
 
-Route::get('/expenses/view/{id}', [ExpensesController::class, 'view'])->name('expenses.view');
+// Route::get('/expenses/view/{id}', [ExpensesController::class, 'view'])->name('expenses.view');
 
 Route::get('/category/all', [CategoryListController::class, 'getAll'])->name('category.all');
 Route::get('/api/categories', [CategoryListController::class, 'getAll'])->name('api.categories');
@@ -161,10 +194,12 @@ Route::post('/staff/create', [App\Http\Controllers\staffController::class, 'crea
 Route::get('/staff/all', [App\Http\Controllers\staffController::class, 'get_staff'])->name('get.staff');
 Route::put('/staff/update', [staffController::class, 'update'])->name('staff.update');
 Route::delete('/staff/{id}', [App\Http\Controllers\staffController::class, 'delete'])->name('staff.delete');
+Route::get('/staff/edit/{id}', [staffController::class, 'edit'])->name('staff.edit');
 
 //Loyalty Route
 Route::post('/tier/create', [App\Http\Controllers\tierController::class, 'create'])->name('tier.create');
 Route::get('/tier/all', [App\Http\Controllers\tierController::class, 'list'])->name('tier.list');
+Route::get('/tier/edit/{patient_tier_id}', [App\Http\Controllers\tierController::class, 'edit'])->name('tier.edit');
 Route::put('/tier/update', [App\Http\Controllers\tierController::class, 'update'])->name('tier.update');
 Route::delete('/tier/delete', [App\Http\Controllers\tierController::class, 'delete'])->name('tier.delete');
 
@@ -178,7 +213,8 @@ Route::get('/get-calendar-bookings', [BookingController::class, 'getCalendarBook
 
 
 Route::get('/position-list', [DashboardController::class, 'position_list'])->name('page.position-list');
-Route::post('/position', [PositionController::class, 'create'])->name('position.create');
+Route::post('/position/create', [PositionController::class, 'create'])->name('position.create');
+Route::get('/position/edit/{id}', [PositionController::class, 'edit'])->name('position.edit');
 Route::put('/position/update', [PositionController::class, 'update'])->name('position.update');
 Route::delete('/position/delete', [App\Http\Controllers\PositionController::class, 'delete'])->name('position.delete');
 
@@ -191,10 +227,32 @@ Route::put('/department/update', [App\Http\Controllers\DepartmentController::cla
 Route::delete('/department/delete', [App\Http\Controllers\DepartmentController::class, 'delete'])->name('department.delete');
 Route::get('/departments/all', [App\Http\Controllers\DepartmentController::class, 'getAllDepartments'])->name('department.getAllDepartments');
 
-//Catehgory Route
+//Category Expense Routes
 Route::post('/category_expense/create', [App\Http\Controllers\category_expenseController::class, 'create'])->name('category_expense.create');
-Route::get('/category_expense/all', [App\Http\Controllers\category_expenseController::class, 'get_category_expenses'])->name('get.category_expenses');
+Route::get('/category_expense/all', [App\Http\Controllers\category_expenseController::class, 'getAll'])->name('get.category_expenses');
+Route::get('/category_expense/edit/{id}', [App\Http\Controllers\category_expenseController::class, 'edit'])->name('category_expense.edit');
 Route::put('/category_expense/update/{id}', [App\Http\Controllers\category_expenseController::class, 'update'])->name('category_expense.update');
 Route::delete('/category_expense/delete/{id}', [App\Http\Controllers\category_expenseController::class, 'delete'])->name('category_expense.delete');
 
+// Expense Management Routes
+Route::resource('expenses', ExpensesController::class);
 
+// Waste management routes
+Route::get('/new-waste', [App\Http\Controllers\WasteController::class, 'create'])->name('page.new-waste');
+Route::post('/waste/store', [App\Http\Controllers\WasteController::class, 'store'])->name('waste.store');
+Route::get('/waste-list', [App\Http\Controllers\WasteController::class, 'index'])->name('page.waste-list');
+Route::get('/waste/{id}/edit', [App\Http\Controllers\WasteController::class, 'edit'])->name('waste.edit');
+Route::put('/waste/{id}', [App\Http\Controllers\WasteController::class, 'update'])->name('waste.update');
+Route::delete('/waste/{id}', [App\Http\Controllers\WasteController::class, 'destroy'])->name('waste.destroy');
+
+// Patient Medical Information Routes
+Route::post('/patient/allergy/add', [PatientController::class, 'addAllergy'])->name('patient.allergy.add');
+Route::post('/patient/medication/add', [PatientController::class, 'addMedication'])->name('patient.medication.add');
+Route::post('/patient/health-concern/add', [PatientController::class, 'addHealthConcern'])->name('patient.health-concern.add');
+Route::post('/patient/prescription/add', [PatientController::class, 'addPrescription'])->name('patient.prescription.add');
+Route::post('/patient/attachment/add', [PatientController::class, 'addAttachment'])->name('patient.attachment.add');
+Route::post('/patient/appointment/add', [PatientController::class, 'addAppointment'])->name('patient.appointment.add');
+Route::post('/patient/medical-record/add', [PatientController::class, 'addMedicalRecord'])->name('patient.medical-record.add');
+
+
+Route::get('/waste-list', [DashboardController::class, 'waste_list'])->name('page.waste-list');

@@ -1,11 +1,5 @@
 @extends('layouts.app')
-@extends('layouts.layout-collapsed-menu-dark')
-@extends('layouts.layout-container-dark') 
-@extends('layouts.layout-content-navbar-and-sidebar-dark')
-@extends('layouts.layout-without-navbar-dark')
-@extends('layouts.layout-content-navbar-dark')
-@extends('layouts.layout-fluid-dark')
-@extends('layouts.layout-without-menu-dark')
+
 
 <!DOCTYPE html>
 
@@ -26,7 +20,7 @@
   <meta property="og:site_name" content="Pixinvent" />
   <link rel="canonical" href="Imajica Booking System" />
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="logo.png" />
+  <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com/" />
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
@@ -95,10 +89,155 @@
         font-weight: 500;
         color: #566a7f;
     }
+
+    /* Quick Note Form Styling */
+    .swal2-popup {
+      width: 32em !important;
+    }
+
+    #quickNoteForm .form-label {
+      color: #566a7f;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      margin-bottom: 0.5rem;
+    }
+
+    #quickNoteForm .form-control,
+    #quickNoteForm .form-select {
+      padding: 0.4375rem 0.875rem;
+      font-size: 0.9375rem;
+      border-radius: 0.375rem;
+      border: 1px solid #d9dee3;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    #quickNoteForm .form-control:focus,
+    #quickNoteForm .form-select:focus {
+      border-color: #696cff;
+      box-shadow: 0 0 0.25rem rgba(105, 108, 255, 0.1);
+    }
+
+    #quickNoteForm textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .swal2-styled.swal2-confirm {
+      background-color: #696cff !important;
+    }
+
+    .swal2-styled.swal2-cancel {
+      background-color: #8592a3 !important;
+    }
+
+    /* Add this CSS for Quick Note Popup */
+    .swal2-popup.quick-note-popup {
+      width: 24em !important;
+      padding: 1rem;
+    }
+
+    .quick-note-form {
+      text-align: left;
+    }
+
+    .quick-note-form .form-group {
+      margin-bottom: 0.75rem;
+    }
+
+    .quick-note-form .form-label {
+      font-size: 0.8125rem;
+      margin-bottom: 0.25rem;
+      color: #566a7f;
+    }
+
+    .quick-note-form .form-control {
+      font-size: 0.8125rem;
+      padding: 0.3rem 0.5rem;
+      line-height: 1.4;
+      min-height: auto;
+    }
+
+    .quick-note-form textarea.form-control {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    .quick-note-form .form-text {
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    .swal2-actions.quick-note-actions {
+      margin-top: 0.75rem;
+    }
+
+    .swal2-actions.quick-note-actions button {
+      font-size: 0.8125rem;
+      padding: 0.3rem 0.75rem;
+    }
+    
+
+    /* Add this to your existing styles section */
+    .quick-note-popup {
+      width: 400px !important;
+      padding: 0 !important;
+      border-radius: 4px !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+    }
+
+    .quick-note-popup .swal2-title {
+      font-size: 14px !important;
+      font-weight: normal !important;
+      color: #666 !important;
+      padding: 10px 15px !important;
+      margin: 0 !important;
+      text-align: left !important;
+    }
+
+    .quick-note-popup .swal2-content {
+      padding: 0 15px !important;
+    }
+
+    .quick-note-input {
+      border: none !important;
+      padding: 8px 0 !important;
+      font-size: 14px !important;
+      box-shadow: none !important;
+    }
+
+    .quick-note-input:focus {
+      outline: none !important;
+    }
+
+    .quick-note-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 15px;
+      border-top: 1px solid #eee;
+    }
+
+    .quick-note-epic {
+      color: #6563ff !important;
+      font-size: 13px;
+      text-decoration: none !important;
+    }
+
+    .quick-note-create {
+      background-color: #eee !important;
+      color: #666 !important;
+      font-size: 13px !important;
+      padding: 4px 12px !important;
+    }
+
+    .quick-note-create:hover {
+      background-color: #e0e0e0 !important;
+    }
   </style>
   <!-- Add these in your head section -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -441,8 +580,7 @@
                     <table class="table table-hover booking-table">
                       <thead class="table-light">
                         <tr>
-                          <th>Booking ID</th>
-                          <th>Patient Name</th>
+
                           <th>Service</th>
                           <th>Start Date/Time</th>
                           <th>End Date/Time</th>
@@ -454,14 +592,7 @@
                       <tbody>
                         @foreach($bookings as $booking)
                         <tr class="booking-row">
-                          <td># {{ $booking->booking_id }}</td>
-                          <td>
-                            @if($booking->patient)
-                              {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
-                            @else
-                              <span class="text-muted">No patient data</span>
-                            @endif
-                          </td>
+                          
                           <td>
                             @if($booking->service)
                               {{ $booking->service->service_name }}
@@ -883,6 +1014,127 @@
             });
         }
     });
+
+    // Update the dateClick handler in app-calendar.js or in your inline script
+    function saveQuickNote(data) {
+      console.log('Quick Note Saved:', data);
+      // Add your logic to save the quick note here
+    }
+
+    const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+      dateClick: function(info) {
+        Swal.fire({
+          title: 'What needs to be done?',
+          input: 'text',
+          inputPlaceholder: 'Enter your task...',
+          showCancelButton: true,
+          customClass: {
+            popup: 'quick-note-popup',
+            input: 'quick-note-input',
+            confirmButton: 'quick-note-confirm',
+            cancelButton: 'quick-note-cancel',
+            actions: 'quick-note-actions'
+          },
+          inputAttributes: {
+            autocomplete: 'off'
+          },
+          footer: `
+            <div class="quick-note-footer">
+              <button type="button" class="btn btn-link p-0 quick-note-epic">
+                <i class="ti ti-tag me-1"></i>Epic
+                <i class="ti ti-chevron-down ms-1"></i>
+              </button>
+              <button type="button" class="btn btn-primary btn-sm quick-note-create">Create</button>
+            </div>
+          `
+          showConfirmButton: false,
+          showCancelButton: false,
+          buttonsStyling: false
+        });
+      }
+    });
+  </script>
+
+  <!-- Delete Booking Form (Hidden) -->
+  <form id="deleteBookingForm" method="POST" action="{{ route('booking.delete') }}" style="display: none;">
+    @csrf
+    @method('DELETE')
+    <input type="hidden" id="delete_booking_id" name="booking_id">
+  </form>
+
+  <!-- Add this script before closing body tag -->
+  <script>
+    // Add SweetAlert default configuration
+    const swalConfig = {
+      customClass: {
+        container: 'swal-container-class',
+        popup: 'swal-popup-class',
+        confirmButton: 'btn btn-danger', // Add danger class
+        cancelButton: 'btn btn-secondary'
+      },
+      backdrop: true,
+      allowOutsideClick: false,
+      buttonsStyling: false // Disable default styling
+    };
+
+    // Add custom CSS to ensure SweetAlert appears above modal
+    $('<style>')
+      .prop('type', 'text/css')
+      .html(`
+        .swal-container-class {
+          z-index: 2000 !important;
+        }
+        .swal-popup-class {
+          z-index: 2001 !important;
+        }
+        .swal2-backdrop-show {
+          z-index: 1999 !important;
+        }
+      `)
+      .appendTo('head');
+
+    // Handle delete button click
+    $(document).on('click', '.btn-delete-event', function(e) {
+      e.preventDefault();
+      const bookingId = $('#update_booking_id').val();
+      
+      if (!bookingId) {
+        Swal.fire({
+          ...swalConfig,
+          icon: 'error',
+          title: 'Error',
+          text: 'Booking ID not found'
+        });
+        return;
+      }
+
+      // Hide the modal before showing SweetAlert
+      $('#updateEventSidebar').offcanvas('hide');
+      
+      setTimeout(() => {
+        Swal.fire({
+          ...swalConfig,
+          title: 'Are you sure?',
+          text: "This booking will be permanently deleted!",
+          icon: 'warning', 
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          customClass: {
+            ...swalConfig.customClass,
+            confirmButton: 'btn btn-danger me-3', // Add margin-end
+            cancelButton: 'btn btn-secondary'
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $('#delete_booking_id').val(bookingId);
+            $('#deleteBookingForm').submit();
+          } else {
+            // If canceled, show the modal again
+            $('#updateEventSidebar').offcanvas('show');
+          }
+        });
+      }, 200); // Small delay to ensure modal is hidden
+    });
   </script>
 
   <!-- Additional CSS for flatpickr visibility -->
@@ -897,4 +1149,3 @@
 </body>
 
 </html>
-``` 

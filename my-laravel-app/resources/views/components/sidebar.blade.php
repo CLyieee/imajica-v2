@@ -31,42 +31,6 @@
             </a>
         </li>
 
-        <li class="menu-item {{ request()->is('sales-transaction') || request()->is('commision-employee') || request()->is('employee-sales') || request()->is('purchase') || request()->is('void-logs') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-chart-pie "></i>
-                <div data-i18n="Accounting">Accounting</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('sales-transaction') ? 'active' : '' }}">
-                    <a href="/sales-transaction" class="menu-link">
-                        <div data-i18n="Sales Transaction">Sales Transaction</div>
-                    </a>
-                </li>
-
-                <li class="menu-item {{ request()->is('commision-employee') ? 'active' : '' }}">
-                    <a href="/commision-employee" class="menu-link">
-                        <div data-i18n="Commision for Employee">Commision for Employee</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->is('employee-sales') ? 'active' : '' }}">
-                    <a href="/employee-sales" class="menu-link">
-                        <div data-i18n="Employee Sales">Employee Sales</div>
-                    </a>
-                </li>
-
-                <li class="menu-item {{ request()->is('purchase') ? 'active' : '' }}">
-                    <a href="/purchase" class="menu-link">
-                        <div data-i18n="Purchase">Purchase</div>
-                    </a>
-                </li>
-
-                <li class="menu-item {{ request()->is('void-logs') ? 'active' : '' }}">
-                    <a href="/void-logs" class="menu-link">
-                        <div data-i18n="Void Logs">Void Logs</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
 
         <li class="menu-item {{ request()->is('new-services') || request()->is('services-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -88,7 +52,7 @@
             </ul>
         </li>
 
-        <li class="menu-item {{ request()->is('product-list') || request()->is('add-product') || request()->is('category-list') || request()->is('order-list') || request()->is('order-details') || request()->is('add-order') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->is('product-list') || request()->is('add-product') || request()->is('category-list') || request()->is('order-list') || request()->is('add-order') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-shopping-cart"></i>
                 <div data-i18n="Product Management">Product Management</div>
@@ -114,9 +78,13 @@
                                 <div data-i18n="Category List">Category List</div>
                             </a>
                         </li>
+                        <li class="menu-item {{ request()->is('waste-list') ? 'active' : '' }}">
+                            <a href="/waste-list" class="menu-link">
+                                <div data-i18n="Waste List">Waste List</div>
+                            </a>
                     </ul>
                 </li>
-                <li class="menu-item {{ request()->is('order-list') || request()->is('order-details') || request()->is('add-order') ? 'active open' : '' }}">
+                <li class="menu-item {{ request()->is('order-list') ||  request()->is('add-order') ? 'active open' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <div data-i18n="Order">Order</div>
                     </a>
@@ -131,11 +99,7 @@
                                 <div data-i18n="Add Order">Add Order</div>
                             </a>
                         </li>
-                        <li class="menu-item {{ request()->is('order-details') ? 'active' : '' }}">
-                            <a href="/order-details" class="menu-link">
-                                <div data-i18n="Order Details">Order Details</div>
-                            </a>
-                        </li>
+                        
                     </ul>
                 </li>
             </ul>
@@ -349,7 +313,46 @@
                     </a>
                 </li>
 
+                <li class="menu-item {{  request()->is('sales-transaction') || request()->is('commision-employee') || request()->is('employee-sales') || request()->is('purchase') || request()->is('void-logs') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base ti tabler-chart-pie "></i>
+                <div data-i18n="Accounting">Accounting</div>
+            </a>
+                
+                <ul class="menu-sub">
+
+                <li class="menu-item {{ request()->is('sales-transaction') ? 'active' : '' }}">
+                    <a href="/sales-transaction" class="menu-link">
+                        <div data-i18n="Services Transaction">Services Transaction</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('commision-employee') ? 'active' : '' }}">
+                    <a href="/commision-employee" class="menu-link">
+                        <div data-i18n="Commision for Employee">Commision for Employee</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->is('employee-sales') ? 'active' : '' }}">
+                    <a href="/employee-sales" class="menu-link">
+                        <div data-i18n="Employee Sales">Employee Sales</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('purchase') ? 'active' : '' }}">
+                    <a href="/purchase" class="menu-link">
+                        <div data-i18n="Purchase">Purchase</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('void-logs') ? 'active' : '' }}">
+                    <a href="/void-logs" class="menu-link">
+                        <div data-i18n="Void Logs">Void Logs</div>
+                    </a>
+                </li>
+                </ul>
+
             </ul>
+        </li>
         </li>
 
 
@@ -388,69 +391,145 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Prevent default behavior for menu toggle links
+        // Clear any previous event listeners from menu toggles
         const menuToggles = document.querySelectorAll('.menu-toggle');
         menuToggles.forEach(toggle => {
+            const clonedToggle = toggle.cloneNode(true);
+            toggle.parentNode.replaceChild(clonedToggle, toggle);
+        });
+        
+        // Reattach event listeners with improved handling
+        document.querySelectorAll('.menu-toggle').forEach(toggle => {
             toggle.addEventListener('click', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 
                 // Find the parent menu item
                 const menuItem = this.closest('.menu-item');
                 
-                // Toggle open class only
-                menuItem.classList.toggle('open');
+                // Handle nested menu items properly
+                if (this.closest('.menu-sub')) {
+                    // If this is a nested submenu toggle, only toggle this specific item
+                    menuItem.classList.toggle('open');
+                    
+                    const subMenu = menuItem.querySelector('.menu-sub');
+                    if (subMenu) {
+                        if (menuItem.classList.contains('open')) {
+                            subMenu.style.display = 'block';
+                        } else {
+                            subMenu.style.display = 'none';
+                        }
+                    }
+                } else {
+                    // For top-level menu items, we need to handle sibling closures
+                    // First check if we need to close other open top-level items
+                    const isOpen = menuItem.classList.contains('open');
+                    
+                    // Toggle this menu item's state
+                    menuItem.classList.toggle('open');
+                    
+                    // Show/hide the submenu
+                    const subMenu = menuItem.querySelector('.menu-sub');
+                    if (subMenu) {
+                        subMenu.style.display = !isOpen ? 'block' : 'none';
+                    }
+                }
                 
-                // Stop event propagation
-                e.stopPropagation();
+                // Force a repaint to ensure proper display
+                document.body.offsetHeight;
             });
         });
         
-        // Ensure menu links don't lose their text when clicked
-        const menuLinks = document.querySelectorAll('.menu-link:not(.menu-toggle)');
-        menuLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Only prevent default for javascript:void(0) links
-                if (this.getAttribute('href') === 'javascript:void(0);') {
-                    e.preventDefault();
+        // Force visibility of all menu labels
+        document.querySelectorAll('.menu-link div[data-i18n]').forEach(label => {
+            label.style.display = 'block';
+            label.style.visibility = 'visible';
+            label.style.opacity = '1';
+        });
+        
+        // Set active menu items properly
+        document.querySelectorAll('.menu-item.active').forEach(item => {
+            // Open all parent menu items
+            let parent = item.parentElement.closest('.menu-item');
+            while (parent) {
+                parent.classList.add('open');
+                const parentSubMenu = parent.querySelector('.menu-sub');
+                if (parentSubMenu) {
+                    parentSubMenu.style.display = 'block';
                 }
-                
-                // Don't remove any content - just let the link work normally
-                // This preserves the menu item text
-            });
+                parent = parent.parentElement.closest('.menu-item');
+            }
+        });
+        
+        // Make sure all open menu items have their sub-menus visible
+        document.querySelectorAll('.menu-item.open > .menu-sub').forEach(subMenu => {
+            subMenu.style.display = 'block';
         });
         
         // Add CSS to fix menu transitions and styling
         const style = document.createElement('style');
         style.textContent = `
+            /* Basic menu structure fixes */
+            #layout-menu {
+                overflow-y: auto !important;
+                height: 100vh;
+            }
+            
             .menu-item .menu-sub {
+                display: none;
+                max-height: none !important;
                 transition: none !important;
             }
             .menu-item.open > .menu-sub {
-                max-height: 2000px !important;
-                transition: none !important;
-                animation: none !important;
-            }
-            /* Ensure menu text doesn't disappear */
-            .menu-link div[data-i18n] {
                 display: block !important;
+                max-height: none !important;
                 visibility: visible !important;
+                opacity: 1 !important;
             }
-            /* Remove arrow icons from menu toggles */
+            
+            /* Fix menu toggle clicks */
+            .menu-toggle {
+                cursor: pointer !important;
+                user-select: none;
+                pointer-events: auto !important;
+            }
+            
+            /* Remove the toggle arrow */
             .menu-toggle::after {
                 display: none !important;
+                content: "" !important;
+            }
+            
+            /* Fix menu item text visibility */
+            .menu-link div[data-i18n] {
+                visibility: visible !important;
+                display: block !important;
+                opacity: 1 !important;
+            }
+            
+            /* Fix pointer events for all menu items */
+            .menu-link, .menu-toggle, .menu-sub, .menu-item {
+                pointer-events: auto !important;
+            }
+            
+            /* Fix z-index of menu items */
+            .menu-sub {
+                z-index: 10 !important;
+                position: relative !important;
+            }
+            
+            /* Fix nested submenu handling */
+            .menu-sub .menu-sub {
+                margin-left: 1rem !important;
+                border-left: 1px solid rgba(0,0,0,0.05) !important;
+            }
+            
+            /* Make the menu links clearly clickable */
+            .menu-toggle, .menu-link {
+                position: relative !important;
+                z-index: 2 !important;
             }
         `;
         document.head.appendChild(style);
-        
-        // Ensure active menu items with submenu are opened by default
-        const activeSubmenuItems = document.querySelectorAll('.menu-item.active');
-        activeSubmenuItems.forEach(item => {
-            // Find parent menu items and open them
-            let parent = item.closest('.menu-item:not(.active)');
-            while (parent) {
-                parent.classList.add('open');
-                parent = parent.parentElement.closest('.menu-item:not(.active)');
-            }
-        });
     });
 </script>

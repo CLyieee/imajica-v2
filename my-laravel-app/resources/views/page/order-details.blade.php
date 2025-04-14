@@ -64,7 +64,7 @@
       <!-- End Google Tag Manager -->
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -429,15 +429,21 @@
         <div class="content-wrapper">
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
-    <div class="d-flex flex-column justify-content-center">
-      <div class="mb-1">
-        <span class="h5">Order <span id="orderNumber"></span></span>
-        <span id="orderStatus" class="badge bg-label ms-2"></span>
-      </div>
-      <p class="mb-0" id="orderDate"></p>
-    </div>
-  </div>
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
+              <div class="d-flex flex-column justify-content-center">
+                <div class="d-flex align-items-center gap-3 mb-1">
+                  <span class="h5 mb-0">Order <span id="orderNumber"></span></span>
+                  <span id="orderStatus" class="badge bg-label ms-2"></span>
+                </div>
+                <p class="mb-0" id="orderDate"></p>
+              </div>
+              <div>
+                <a href="{{ route('page.order-list') }}" class="btn btn-primary">
+                  <i class="ti tabler-arrow-left me-1"></i>
+                  Back to Orders
+                </a>
+              </div>
+            </div>
 
   <!-- Order Details Table -->
   <div class="row">

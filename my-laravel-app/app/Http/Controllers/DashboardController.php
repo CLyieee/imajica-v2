@@ -294,18 +294,24 @@ class DashboardController extends Controller
     }
     public function expenses_list()
     {
-    
-        return view('page.expenses-list');
+        $expenses = \App\Models\expenses::with(['category_expense', 'branch'])->get();
+        return view('page.expenses-list', compact('expenses'));
     }
 
     public function new_expenses()
     {
+        $branches = Branch::all();
+        $positions = positionModel::with('department')->get();
+        $categories = category_expense::all();
     
-        return view('page.new-expenses');
+        return view('page.new-expenses', compact('branches', 'categories'));
     }
     public function position_list(){
        $positions = positionModel::all();
         $departments = Department::all();
+        $branches = Branch::all();
+        $positions = positionModel::with('department')->get();
+        $categories = category::all();
         return view('page.position-list', compact('positions', 'departments'));
     }
 
@@ -413,6 +419,21 @@ class DashboardController extends Controller
         
         return view('page.branch-list', ['branchs'=> $branchs]);
     }
+
+    /**
+     * Show the edit branch page.
+     *
+     * @param string $branch_code
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function edit_branch($branch_code)
+    {
+        // Fetch branch details by branch_code
+        $branch = \App\Models\Branch::where('branch_code', $branch_code)->firstOrFail();
+        
+        return view('page.edit-branch', compact('branch'));
+    }
+
     public function customer_report()
     {
         return view('page.customer-report');
@@ -432,11 +453,14 @@ class DashboardController extends Controller
 
     public function sales_transaction()
     {
-        return view('page.sales-transaction');
+            $sales = booking::all();
+        return view('page.sales-transaction', compact('sales'));
     }
     public function employee_sales()
     {
-        return view('page.employee-sales');
+       
+        $employees = staff::all();
+        return view('page.employee-sales', compact('employees'));
     }
 
     public function commision_employee()
@@ -456,7 +480,9 @@ class DashboardController extends Controller
     }
     public function product_list()
     {
-        return view('page.product-list');
+        $products = \App\Models\Product::all();
+        $categories = category::all();
+        return view('page.product-list', compact('products', 'categories'));
     }
     public function order_list()
     {
@@ -470,12 +496,13 @@ class DashboardController extends Controller
     }
     public function add_product()
     {
+        $suppliers = supplier::all();
         $categories = category::all();
-        return view('page.add-product', compact('categories'));
+        return view('page.add-product', compact('categories','suppliers'));
     }
     public function add_order()
     {
-        $products = \App\Models\Product::select('bar_code', 'name', 'base_price')->get();
+        $products = \App\Models\Product::select('id', 'name', 'base_price')->get();
         return view('page.add-order', compact('products'));
     }
 
@@ -484,6 +511,10 @@ class DashboardController extends Controller
         $categories = category::all();
         return view('page.category-list', compact('categories'));
 
+    }
+    public function waste_list(){
+        $wastes = \App\Models\Waste::all();
+        return view('page.waste-list', compact('wastes'));
     }
     public function system_settings()
     {

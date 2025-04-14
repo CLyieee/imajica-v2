@@ -8,36 +8,32 @@ use Illuminate\Database\Eloquent\Model;
 class product extends Model
 {
     use HasFactory;
-    protected $table = 'products';
-    protected $primaryKey = 'bar_code';
-    public $incrementing = false;
-    protected $keyType = 'string';
+    protected $table = 'new_product';
+    protected $primaryKey = 'id';
+    public $incrementing = true;
+    protected $keyType = 'int';
+    public $timestamps = false; // Disable timestamps
     protected $fillable = [
-        'bar_code',
-        'name',
         'sku',
-        'description',
+        'name',
         'product_image',
-        'quantity',
-        'quantity_in_transit',
-        'last_restocked_at',
-        'total_stock_lifetime',
-        'shipping_type',
-        'is_fragile',
-        'is_biodegradable',
-        'is_frozen',
-        'max_temperature',
-        'expiry_date',
-        'base_price',
-        'discounted_price',
-        'in_stock',
         'category_id',
-        'status',
-        'tags'
+        'supplier_id',
+        'base_price',
+        'quantity',
+        'restock_point', 
+        'manufacturing_date',
+        'expiry_date',
+        'removal_date'
     ];
 
     public function category()
     {
         return $this->belongsTo(category::class, 'category_id', 'category_id');
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(supplier::class, 'supplier_id', 'suppler_id');
     }
 }

@@ -160,13 +160,15 @@ class OrderController extends Controller
             return response()->json(['message' => 'Order not found'], 404);
         }
     
-     
         $items = DB::table('order_items')
-            ->join('products', 'order_items.item_name', '=', 'products.name')
+            ->join('new_product', 'order_items.item_name', '=', 'new_product.name')
             ->select(
-                'order_items.*',
-                'products.product_image as product_image',
-                'products.description'
+                'order_items.item_id',
+                'order_items.item_name',
+                'order_items.quantity',
+                'order_items.unit_price',
+                'order_items.total',
+                'new_product.product_image'
             )
             ->where('order_items.order_id', $orderId)
             ->get();
@@ -182,6 +184,45 @@ class OrderController extends Controller
             ],
             'items' => $items
         ]);
-      
+    }
+
+    public function delete(Request $request)
+    {
+        try {
+            $orderId = $request->input('order_id');
+            $order = Order::findOrFail($orderId);
+            
+            // Delete related order items first 
+            $order->orderItems()->delete();
+            
+            // Then delete the order
+            $order->delete();
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Order deleted successfully'
+                ]);
+            }
+
+            return redirect()->route('page.order-list')
+                ->with('success', 'Order deleted successfully!');
+
+        } catch (\Exception $e) {
+            Log::error('Error deleting order:', [
+                'order_id' => $orderId,
+                'error' => $e->getMessage()
+            ]);
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Failed to delete order: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Failed to delete order: ' . $e->getMessage());
+        }
     }
 }

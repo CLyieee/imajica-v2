@@ -11,10 +11,16 @@ class category_expense extends Model
 
     protected $table = 'category_expenses';
     protected $primaryKey = 'category_expense_id';
-    public $incrementing = false;
+    public $incrementing = true;
     public $timestamps = false;
     protected $fillable = [
         'name',
         'description',
     ];
+
+
+    public function expenses()
+    {
+        return $this->hasMany(expenses::class, 'category_expense_id', 'category_expense_id');
+    }
 }

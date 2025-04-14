@@ -13,12 +13,12 @@ class supplierController extends Controller
         // Validate the request data
         $validator = Validator::make($request->all(), [
             'supplier_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'contactNumber' => 'required|string|max:20',
-            'supplier_type' => 'required|string|max:100',
+            'company' => 'required|string|max:255',
+            'contact_person' => 'required|string|max:255',
             'address' => 'required|string',
-            'product_offered' => 'nullable|string',
-            'notes' => 'nullable|string',
+            'mobile_number' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
+            'description' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -33,12 +33,12 @@ class supplierController extends Controller
             // Create new supplier
             $supplier = supplier::create([
                 'supplier_name' => $request->supplier_name,
-                'email' => $request->email,
-                'contactNumber' => $request->contactNumber,
-                'supplier_type' => $request->supplier_type,
+                'company' => $request->company,
+                'contact_person' => $request->contact_person,
                 'address' => $request->address,
-                'product_offered' => $request->product_offered,
-                'notes' => $request->notes,
+                'mobile_number' => $request->mobile_number,
+                'email' => $request->email,
+                'description' => $request->description,
             ]);
 
             return response()->json([
@@ -97,21 +97,21 @@ class supplierController extends Controller
         }
     }
 
-    public function update_supplier(Request $request, $id) 
+    public function update_supplier(Request $request, $suppler_id) 
     {
         try {
             // Find the supplier first
-            $supplier = supplier::findOrFail($id);
+            $supplier = supplier::findOrFail($suppler_id);
 
             // Validate the request data
             $validator = Validator::make($request->all(), [
                 'supplier_name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'contactNumber' => 'required|string|max:20',
-                'supplier_type' => 'required|string|max:100',
+                'company' => 'required|string|max:255',
+                'contact_person' => 'required|string|max:255',
                 'address' => 'required|string',
-                'product_offered' => 'nullable|string',
-                'notes' => 'nullable|string',
+                'mobile_number' => 'required|string|max:20',
+                'email' => 'required|email|max:255',
+                'description' => 'nullable|string',
             ]);
 
             if ($validator->fails()) {
@@ -125,18 +125,23 @@ class supplierController extends Controller
             // Update the supplier
             $supplier->update($request->only([
                 'supplier_name',
-                'email', 
-                'contactNumber',
-                'supplier_type',
+                'company',
+                'contact_person',
                 'address',
-                'product_offered',
-                'notes'
+                'mobile_number',
+                'email',
+                'description'
             ]));
 
+            // Add session flash message
+            session()->flash('success', 'Supplier updated successfully!');
+
+            // Redirect to supplier list
             return response()->json([
                 'status' => true,
                 'message' => 'Supplier updated successfully',
-                'data' => $supplier->fresh()
+                'data' => $supplier->fresh(),
+                'redirect' => route('page.supplier-list') // This URL will be used by frontend to redirect
             ], 200);
 
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -176,6 +181,17 @@ class supplierController extends Controller
                 'message' => 'Failed to delete supplier',
                 'error' => $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function edit($id)
+    {
+        try {
+            $supplier = supplier::findOrFail($id);
+            return view('page.edit-supplier', compact('supplier'));
+        } catch (\Exception $e) {
+            return redirect()->route('page.supplier-list')
+                ->with('error', 'Failed to load supplier: ' . $e->getMessage());
         }
     }
 }

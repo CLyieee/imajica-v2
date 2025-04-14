@@ -1,11 +1,5 @@
 @extends('layouts.app')
-@extends('layouts.layout-collapsed-menu-dark')
-@extends('layouts.layout-container-dark')
-@extends('layouts.layout-content-navbar-and-sidebar-dark')
-@extends('layouts.layout-without-navbar-dark')
-@extends('layouts.layout-content-navbar-dark')
-@extends('layouts.layout-fluid-dark')
-@extends('layouts.layout-without-menu-dark')
+
 
 <!DOCTYPE html>
 <html
@@ -26,6 +20,9 @@
     <title>Imajica Booking System</title>
     <meta name="description" content="Imajica Booking System" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
     
     <!-- Include the same CSS as staff-list -->
     <link rel="stylesheet" href="../../assets/vendor/fonts/iconify-icons.css" />
@@ -197,63 +194,7 @@
       </div>
     </div>
 
-    <!-- Edit Position Modal -->
-    <div class="modal fade" id="editPositionModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <form id="editPositionForm" method="POST" action="{{ route('position.update') }}">
-            @csrf
-            @method('PUT')
-            <input type="hidden" name="position_id" id="edit_position_id">
-            
-            <div class="modal-header " style="background-color: #0a3622">
-              <h5 class="modal-title text-white">
-                <i class="ti tabler-edit me-1"></i> Edit Position
-              </h5>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <div class="modal-body">
-              <div class="row g-3">
-                <div class="col-12">
-                  <label class="form-label" for="edit_position_title">Position Title</label>
-                  <input type="text" id="edit_position_title" name="position_name" class="form-control" required>
-                </div>
-
-                <div class="col-12">
-                  <label class="form-label" for="edit_department">Department</label>
-                  <select class="form-select" id="edit_department" name="department_code" required>
-                    <option value="">Select Department</option>
-                    @foreach($departments as $department)
-                      <option value="{{ $department->department_code }}">{{ $department->department_name }}</option>
-                    @endforeach
-                  </select>
-                </div>
-
-                <div class="col-12">
-                  <label class="form-label" for="edit_description">Description</label>
-                  <textarea class="form-control" id="edit_description" name="description" rows="3" required></textarea>
-                </div>
-
-                <div class="col-12">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="edit_status" name="status">
-                    <label class="form-check-label" for="edit_status">Active Status</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-
+ 
     <!-- Delete Position Form (Hidden) -->
     <form id="deletePositionForm" method="POST" action="/position/delete" style="display: none;">
       @csrf
@@ -374,12 +315,14 @@
             const submitBtn = $(this).find('button[type="submit"]');
             submitBtn.prop('disabled', true);
             
+            // Clear any existing error messages
+            $('.error-feedback').remove();
+            
             $.ajax({
                 url: '{{ route("position.create") }}',
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function(response) {
-                    // Show success message before hiding modal
                     Swal.fire({
                         ...swalConfig,
                         icon: 'success',
@@ -393,6 +336,29 @@
                 },
                 error: function(xhr) {
                     submitBtn.prop('disabled', false);
+                    
+                    if (xhr.status === 422) { // Validation error
+                        const errors = xhr.responseJSON.errors;
+                        Object.keys(errors).forEach(field => {
+                            const input = $(`[name="${field}"]`);
+                            input.addClass('is-invalid');
+                            input.after(`<div class="invalid-feedback error-feedback">${errors[field][0]}</div>`);
+                        });
+                        
+                        Swal.fire({
+                            ...swalConfig,
+                            icon: 'error',
+                            title: 'Validation Error',
+                            text: 'Please check the form for errors'
+                        });
+                    } else {
+                        Swal.fire({
+                            ...swalConfig,
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to create position. Please try again.'
+                        });
+                    }
                 }
             });
         });
@@ -529,3 +495,4 @@
 
   </body>
 </html>
+``` 

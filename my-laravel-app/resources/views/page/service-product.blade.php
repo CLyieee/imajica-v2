@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 <!DOCTYPE html>
 <html
   lang="en"
@@ -34,7 +36,7 @@
     <!-- End Google Tag Manager -->
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="logo.png" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -125,7 +127,7 @@
       }
 
       .container {
-        max-width: 1200px;
+        max-width: 1000px;
         margin: auto;
         flex: 1;
         padding: 2rem;
@@ -195,15 +197,17 @@
         justify-content: center;
       }
 
-      .metric-card {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(236, 239, 243, 0.9);
-        min-width: 200px;
-        max-width: 300px;
-        flex: 1;
-      }
+.metric-card {
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #2b2c2d; /* Changed 'border-color' to 'border' for better clarity */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Corrected property name and increased shadow values */
+  background: rgba(254, 255, 255, 0.9);
+  min-width: 200px;
+  max-width: 300px;
+  flex: 1;
+}
 
       .metric-card i {
         font-size: 24px;
@@ -335,48 +339,81 @@
 
         <div class="card mt-4">
           <div class="card-body">
+          <h3 class="mb-0">All Sales</h3>
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h3 class="mb-0">All Sales</h3>
-              <div class="d-flex gap-2">
-              <div class="input-group" style="width: 300px;">
-                <span class="input-group-text">
-                  <i class="ti tabler-search"></i>
-                </span>
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="searchInput" 
-                  placeholder="Search items..."
-                  style="border-radius: 0 4px 4px 0;"
-                >
-
-              </div>
-                <div class="dropdown">
-                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                    Filter By Date
-                  </button>
-                  <div class="dropdown-menu p-3" style="min-width: 250px;">
-                    <select class="form-select" id="dateFilter" onchange="applyDateFilter()">
-                      <option value="">Select Date Range</option>
-                      <option value="today">Today</option>
-                      <option value="yesterday">Yesterday</option>
-                      <option value="last7">Last 7 Days</option>
-                      <option value="last30">Last 30 Days</option>
-                      <option value="thisMonth">This Month</option>
-                      <option value="lastMonth">Last Month</option>
-                      <option value="thisYear">This Year</option>
-                    </select>
+           
+              <div class="d-flex gap-2 align-items-end">
+                <!-- Search Bar -->
+                <div class="d-flex flex-column" style="width: 180px;">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">
+                      <i class="ti tabler-search"></i>
+                    </span>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      id="searchInput" 
+                      placeholder="Search items..."
+                    >
                   </div>
                 </div>
-                <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="background-color: #18332a;">
-                                Export
-                            </button>
-                  <ul class="dropdown-menu" style="min-width: 120px;">
-                    <li><a class="dropdown-item" href="#" data-export="pdf">PDF</a></li>
-                    <li><a class="dropdown-item" href="#" data-export="excel">Excel</a></li>
-                    <li><a class="dropdown-item" href="#" data-export="csv">CSV</a></li>
-                  </ul>
+
+                <!-- Date From -->
+                {{-- <div class="d-flex flex-column" style="width: 160px;">
+                  <label class="form-label text-muted small mb-1">Date From</label>
+                  <input 
+                    type="date" 
+                    class="form-control form-control-sm" 
+                    id="dateFrom"
+                  >
+                </div>
+
+                <!-- Date To -->
+                <div class="d-flex flex-column" style="width: 160px;">
+                  <label class="form-label text-muted small mb-1">Date To</label>
+                  <input 
+                    type="date" 
+                    class="form-control form-control-sm" 
+                    id="dateTo"
+                  >
+                </div> --}}
+
+                <!-- Filter by -->
+                <div class="d-flex flex-column" style="width: 160px;">
+                  <label class="form-label text-muted small mb-1">Filter by</label>
+                  <select class="form-select form-select-sm" id="filterBy">
+                    <option value="">All</option>
+                    <option value="service">Services</option>
+                    <option value="product">Products</option>
+                    <option value="price_high">Price (High to Low)</option>
+                    <option value="price_low">Price (Low to High)</option>
+                  </select>
+                </div>
+
+                <!-- Filter by date -->
+                <div class="d-flex flex-column" style="width: 160px;">
+                  <label class="form-label text-muted small mb-1">Filter by date</label>
+                  <select class="form-select form-select-sm" id="filterByDate">
+                    <option value="">All time</option>
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="last_week">Last 7 days</option>
+                    <option value="last_month">Last 30 days</option>
+                    <option value="this_month">This month</option>
+                    <option value="last_3months">Last 3 months</option>
+                  </select>
+                </div>
+
+                <!-- Report Type -->
+                <div class="d-flex flex-column" style="width: 180px;">
+                  <label class="form-label text-muted small mb-1">Report Type</label>
+                  <select class="form-select form-select-sm" id="reportType">
+                    <option value="overall">Overall Sales</option>
+                    <option value="services">Services Only</option>
+                    <option value="products">Products Only</option>
+                    <option value="discounts">Discounts Report</option>
+                    <option value="giftcards">Gift Card Usage</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -384,96 +421,75 @@
               <table class="table">
                 <thead>
                   <tr style="background-color: #134013;">
-                    <th style="color: white; font-weight: 500;">NAME</th>
-                    <th style="color: white; font-weight: 500;">PRICE</th>
-                    <th style="color: white; font-weight: 500;">TOTAL QUANTITY</th>
-                    <th style="color: white; font-weight: 500;">TOTAL DISCOUNT</th>
-                    <th style="color: white; font-weight: 500;">GIFT CARD AMOUNT</th>
-                    <th style="color: white; font-weight: 500;">TOTAL SALES</th>
-                    <th style="color: white; font-weight: 500;">TYPE</th>
-                    <th style="color: white; font-weight: 500;">ACTION</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Services Name</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Date</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Branch Name</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Description</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Duration</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Service Category</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Service Cost</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Loyalty Points</th>
+                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">ACTION</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>Hair Color Treatment</td>
+                    <td>2024-01-25</td> <!-- Today's sample data -->
+                    <td>Main Branch</td>
+                    <td>Professional hair coloring service</td>
+                    <td>2 hours</td>
+                    <td>Hair Care</td>
                     <td>₱1,500</td>
-                    <td>98</td>
-                    <td>₱14,700</td>
-                    <td>₱5,000</td>
-                    <td>₱147,000</td>
                     <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="1">VIEW</button></td>
+                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
                   </tr>
                   <tr>
                     <td>Hair Rebonding</td>
+                    <td>2024-01-24</td> <!-- Yesterday's sample data -->
+                    <td>North Branch</td>
+                    <td>Professional hair straightening</td>
+                    <td>3 hours</td>
+                    <td>Hair Care</td>
                     <td>₱2,500</td>
-                    <td>75</td>
-                    <td>₱18,750</td>
-                    <td>₱3,500</td>
-                    <td>₱187,500</td>
                     <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="2">VIEW</button></td>
+                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
                   </tr>
+                  <!-- Last 7 days sample data -->
                   <tr>
                     <td>Professional Shampoo</td>
+                    <td>2024-01-20</td>
+                    <td>East Branch</td>
+                    <td>Premium hair care product</td>
+                    <td>--</td>
+                    <td>Hair Care</td>
                     <td>₱850</td>
-                    <td>120</td>
-                    <td>₱10,200</td>
-                    <td>₱2,000</td>
-                    <td>₱102,000</td>
                     <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="3">VIEW</button></td>
+                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
                   </tr>
+                  <!-- Last month sample data -->
                   <tr>
                     <td>Hair Treatment Package</td>
+                    <td>2023-12-15</td>
+                    <td>South Branch</td>
+                    <td>Complete hair care treatment</td>
+                    <td>4 hours</td>
+                    <td>Hair Care</td>
                     <td>₱3,500</td>
-                    <td>45</td>
-                    <td>₱15,750</td>
-                    <td>₱4,500</td>
-                    <td>₱157,500</td>
-                    <td><span class="badge" style="background-color: rgba(255,  165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="4">VIEW</button></td>
+                    <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
+                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
                   </tr>
+                  <!-- 3 months ago sample data -->
                   <tr>
                     <td>Hair Styling Tools Set</td>
+                    <td>2023-10-25</td>
+                    <td>Main Branch</td>
+                    <td>Professional styling tools</td>
+                    <td>--</td>
+                    <td>Hair Care</td>
                     <td>₱1,200</td>
-                    <td>65</td>
-                    <td>₱7,800</td>
-                    <td>₱2,500</td>
-                    <td>₱78,000</td>
                     <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="5">VIEW</button></td>
-                  </tr>
-                  <tr>
-                    <td>Hair Care Bundle</td>
-                    <td>₱2,000</td>
-                    <td>85</td>
-                    <td>₱17,000</td>
-                    <td>₱3,000</td>
-                    <td>₱170,000</td>
-                    <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="6">VIEW</button></td>
-                  </tr>
-                  <tr>
-                    <td>Premium Hair Oil</td>
-                    <td>₱750</td>
-                    <td>150</td>
-                    <td>₱11,250</td>
-                    <td>₱2,800</td>
-                    <td>₱112,500</td>
-                    <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="7">VIEW</button></td>
-                  </tr>
-                  <tr>
-                    <td>Hair Spa Treatment</td>
-                    <td>₱2,800</td>
-                    <td>55</td>
-                    <td>₱15,400</td>
-                    <td>₱4,200</td>
-                    <td>₱154,000</td>
-                    <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td><button class="btn btn-sm btn-success view-details" data-service-id="8">VIEW</button></td>
+                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -975,7 +991,7 @@
 
     </script>
 
-    <script>
+<script>
 // Customer modal functionality
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.view-customer').forEach(button => {
@@ -1046,6 +1062,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <td>${booking.id}</td>
             <td>${booking.date}</td>
             <td>${booking.eventType}</td>
+            <td>${booking.package}</td>
             <td>${booking.package}</td>
             <td><span class="badge bg-success">${booking.status}</span></td>
             <td>₱${booking.amount.toLocaleString()}</td>
@@ -1205,7 +1222,6 @@ function initializeMiniCharts() {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
 <script>
 document.querySelectorAll('.dropdown-item[data-export]').forEach(button => {
     button.addEventListener('click', function(e) {
@@ -1222,47 +1238,12 @@ document.querySelectorAll('.dropdown-item[data-export]').forEach(button => {
         });
 
         switch(exportType) {
-            case 'pdf':
-                exportToPDF(headers.slice(0, -1), data);
-                break;
             case 'excel':
                 exportToExcel(headers.slice(0, -1), data);
-                break;
-            case 'csv':
-                exportToCSV(headers.slice(0, -1), data);
                 break;
         }
     });
 });
-
-function exportToPDF(headers, data) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF('l', 'mm', 'a4'); // landscape orientation
-    
-    // Add title
-    doc.setFontSize(18);
-    doc.text('Service/Product Report', 15, 15);
-    
-    // Add date
-    doc.setFontSize(11);
-    doc.text(`Generated on: ${new Date().toLocaleString()}`, 15, 22);
-    
-    doc.autoTable({
-        head: [headers],
-        body: data,
-        startY: 25,
-        theme: 'grid',
-        styles: { fontSize: 8, cellPadding: 1 },
-        headStyles: { 
-            fillColor: [19, 64, 19],
-            textColor: [255, 255, 255],
-            fontStyle: 'bold'
-        },
-        alternateRowStyles: { fillColor: [245, 245, 245] }
-    });
-    
-    doc.save('service-product-report.pdf');
-}
 
 function exportToExcel(headers, data) {
     const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
@@ -1275,26 +1256,31 @@ function exportToExcel(headers, data) {
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Service_Product_Report');
     XLSX.writeFile(workbook, 'service-product-report.xlsx');
 }
+</script>
 
-function exportToCSV(headers, data) {
-    // Add BOM for proper Excel UTF-8 encoding
-    const BOM = "\uFEFF";
-    const csvContent = BOM + [
-        headers.join(','),
-        ...data.map(row => row.join(','))
-    ].join('\n');
+<script>
+function downloadRow(element, format) {
+    const row = element.closest('tr');
+    const cells = Array.from(row.cells);
+    const headers = Array.from(row.parentElement.parentElement.querySelector('thead tr').cells)
+                        .map(th => th.textContent.trim());
     
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
+    // Get data excluding the last column (action button)
+    const data = cells.slice(0, -1).map(cell => cell.textContent.trim());
+
+    // Create workbook
+    const worksheet = XLSX.utils.aoa_to_sheet([headers.slice(0, -1), data]);
+    const workbook = XLSX.utils.book_new();
     
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'service-product-report.csv');
-    link.style.visibility = 'hidden';
+    // Set column widths
+    const colWidths = headers.map(h => ({wch: Math.max(h.length, 15)}));
+    worksheet['!cols'] = colWidths;
     
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Service_Product_Details');
+    
+    // Generate filename from service/product name
+    const filename = `${data[0].toLowerCase().replace(/\s+/g, '-')}-details.xlsx`;
+    XLSX.writeFile(workbook, filename);
 }
 </script>
 
@@ -1363,226 +1349,175 @@ function exportToCSV(headers, data) {
       });
     </script>
 
-          <div class="content-backdrop fade"></div>
-        </div>
-        <!-- Content wrapper -->
-      </div>
-      <!-- / Layout page -->
-    </div>
-
-    <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
-
-    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-    <div class="drag-target"></div>
-    
-  </div>
-  <!-- / Layout wrapper -->
-
-  <!-- Core JS -->
-  <!-- build:js assets/vendor/js/theme.js -->
-
-  <!-- Footer -->
- 
-  <!-- / Footer -->
-
-  <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
-
-  <script src="../../assets/vendor/libs/popper/popper.js"></script>
-
-  <script src="../../assets/vendor/js/bootstrap.js"></script>
-  <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
-
-  <script src="../../assets/vendor/libs/%40algolia/autocomplete-js.js"></script>
-
-  <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
-
-  <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
-  <script src="../../assets/vendor/libs/hammer/hammer.js"></script>
-
-  <script src="../../assets/vendor/libs/i18n/i18n.js"></script>
-
-  <script src="../../assets/vendor/js/menu.js"></script>
-
-  <!-- endbuild -->
-
-  <!-- Vendors JS -->
-  <script src="../../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-  <script src="../../assets/vendor/libs/swiper/swiper.js"></script>
-  <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
-
-  <!-- Main JS -->
-
-  <script src="../../assets/js/main.js"></script>
-
-  <!-- Page JS -->
-  <script src="../../assets/vendor/libs/chartjs/chartjs.js"></script>
-  <script src="../../assets/js/charts-chartjs-legend.js"></script>
-  <script src="../../assets/js/charts-chartjs.js"></script>
-
-
-    <!-- Customer Details Modal -->
-    <div class="modal fade" id="customerModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
-    <div class="modal-content shadow-lg rounded-4">
-      <div class="modal-header bg-gradient-primary text-white">
-        <h5 class="modal-title">Customer Details</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body px-4 py-3">
-        <div class="row g-4">
-          <!-- Customer Info -->
-          <div class="col-md-6 col-lg-4">
-            <div class="card border-0 shadow-sm rounded-3">
-              <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Customer Info</h5>
-                <small class="text-muted">ID: #CS12345</small>
-              </div>
-              <div class="card-body d-flex flex-column gap-3">
-                <p class="fw-semibold">Full Name: <span class="text-muted" id="customerName">John Smith</span></p>
-                <p class="fw-semibold">Email: <span class="text-muted" id="customerEmail">john.smith@email.com</span></p>
-                <p class="fw-semibold">Phone: <span class="text-muted" id="customerPhone">+1 234-567-8900</span></p>
-                <p class="fw-semibold">Member Since: <span class="text-muted">January 15, 2023</span></p>
-                <p class="fw-semibold">Total Bookings: <span class="text-muted">15 events</span></p>
-                <p class="fw-semibold">Loyalty Status: <span class="badge bg-success">Premium Member</span></p>
-              </div>
-            </div>
-          </div>
-          <!-- Recent Transactions -->
-          <div class="col-md-6 col-lg-8">
-  <div class="card border-0 shadow-sm rounded-3">
-    <div class="card-header bg-light d-flex justify-content-between">
-      <h5 class="mb-0">Recent Bookings</h5>
-      <div>
-        <button class="btn btn-sm btn-outline-primary">Filter</button>
-        <button class="btn btn-sm btn-outline-primary">Export</button>
-      </div>
-    </div>
-    <div class="card-body p-3">
-      <div class="table-responsive">
-        <table class="table table-sm">
-          <thead class="table-light">
-            <tr>
-              <th>Booking ID</th>
-              <th>Date</th>
-              <th>Event Type</th>
-              <th>Package</th>
-              <th>Status</th>
-              <th>Amount</th>
-              <th style="width: 120px;">Monthly Trend</th>
-            </tr>
-          </thead>
-          <tbody id="bookingHistory">
-            <tr>
-              <td>#12345</td>
-              <td>2025-03-27</td>
-              <td>Wedding</td>
-              <td>Gold Package</td>
-              <td><span class="badge bg-success">Confirmed</span></td>
-              <td>$1,500</td>
-              <td>
-                <div class="progress" style="height: 6px;">
-                  <div class="progress-bar bg-primary" style="width: 70%;"></div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-          <!-- Charts -->
-          <div class="col-md-6">
-  <div class="card border-0 shadow-sm rounded-3">
-    <div class="card-header bg-light">
-      <h5 class="mb-0">Booking History</h5>
-    </div>
-    <div class="card-body">
-      <canvas id="customerChart" height="300"></canvas>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    var ctx = document.getElementById("customerChart").getContext("2d");
-    var customerChart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-        datasets: [{
-          label: "Bookings",
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: "rgba(75, 192, 192, 0.2)",
-          borderColor: "rgba(75, 192, 192, 1)",
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
+document.addEventListener('DOMContentLoaded', function() {
+    const tableBody = document.querySelector('tbody');
+    const searchInput = document.getElementById('searchInput');
+    const dateFrom = document.getElementById('dateFrom');
+    const dateTo = document.getElementById('dateTo');
+    const filterBy = document.getElementById('filterBy');
+    const filterByDate = document.getElementById('filterByDate');
+    const reportType = document.getElementById('reportType');
+
+    function updateTable() {
+        const rows = Array.from(tableBody.getElementsByTagName('tr'));
+        const searchValue = searchInput.value.toLowerCase();
+        const fromDate = dateFrom.value ? new Date(dateFrom.value) : null;
+        const toDate = dateTo.value ? new Date(dateTo.value) : null;
+        const filterDateValue = filterByDate.value;
+        const filterByValue = filterBy.value;
+        const reportTypeValue = reportType.value;
+        
+        rows.forEach(row => {
+            const rowData = Array.from(row.cells).map(cell => cell.textContent.toLowerCase());
+            const dateStr = row.cells[1].textContent;
+            const date = new Date(dateStr);
+            const typeCell = row.cells[7].textContent.toLowerCase(); // Loyalty Points column contains Service/Product type
+            const costValue = parseFloat(row.cells[6].textContent.replace('₱', '').replace(',', '')); // Service Cost column
+            const description = row.cells[3].textContent.toLowerCase(); // Description column
+            
+            let showRow = true;
+
+            // Apply search filter
+            if (searchValue) {
+                showRow = rowData.some(text => text.includes(searchValue));
+            }
+
+            // Apply filter by type and price
+            if (showRow && filterByValue) {
+                switch(filterByValue) {
+                    case 'service':
+                        showRow = typeCell.includes('service');
+                        break;
+                    case 'product':
+                        showRow = typeCell.includes('product');
+                        break;
+                    case 'price_high':
+                        // Sort by price high to low
+                        const rows = Array.from(tableBody.getElementsByTagName('tr'));
+                        rows.sort((a, b) => {
+                            const priceA = parseFloat(a.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            const priceB = parseFloat(b.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            return priceB - priceA;
+                        });
+                        rows.forEach(row => tableBody.appendChild(row));
+                        break;
+                    case 'price_low':
+                        // Sort by price low to high
+                        const rowsLow = Array.from(tableBody.getElementsByTagName('tr'));
+                        rowsLow.sort((a, b) => {
+                            const priceA = parseFloat(a.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            const priceB = parseFloat(b.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            return priceA - priceB;
+                        });
+                        rowsLow.forEach(row => tableBody.appendChild(row));
+                        break;
+                }
+            }
+
+            // Apply date filters
+            if (showRow) {
+                if (fromDate || toDate) {
+                    // Custom date range filter
+                    if (fromDate && toDate) {
+                        showRow = date >= fromDate && date <= toDate;
+                    } else if (fromDate) {
+                        showRow = date >= fromDate;
+                    } else if (toDate) {
+                        showRow = date <= toDate;
+                    }
+                } else if (filterDateValue) {
+                    // Preset date filters
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    switch(filterDateValue) {
+                        case 'today':
+                            showRow = date.toDateString() === today.toDateString();
+                            break;
+                        case 'yesterday':
+                            const yesterday = new Date(today);
+                            yesterday.setDate(today.getDate() - 1);
+                            showRow = date.toDateString() === yesterday.toDateString();
+                            break;
+                        case 'last_week':
+                            const lastWeek = new Date(today);
+                            lastWeek.setDate(today.getDate() - 7);
+                            showRow = date >= lastWeek;
+                            break;
+                        case 'last_month':
+                            const lastMonth = new Date(today);
+                            lastMonth.setDate(today.getDate() - 30);
+                            showRow = date >= lastMonth;
+                            break;
+                        case 'this_month':
+                            showRow = date.getMonth() === today.getMonth() && 
+                                    date.getFullYear() === today.getFullYear();
+                            break;
+                        case 'last_3months':
+                            const last3Months = new Date(today);
+                            last3Months.setMonth(today.getMonth() - 3);
+                            showRow = date >= last3Months;
+                            break;
+                    }
+                }
+            }
+
+            // Apply report type filter
+            if (showRow && reportTypeValue) {
+                switch(reportTypeValue) {
+                    case 'services':
+                        showRow = typeCell.includes('service');
+                        break;
+                    case 'products':
+                        showRow = typeCell.includes('product');
+                        break;
+                    case 'discounts':
+                        // Assuming items with discounts have "discount" in description
+                        showRow = description.includes('discount');
+                        break;
+                    case 'giftcards':
+                        // Assuming gift card usage is mentioned in description
+                        showRow = description.includes('gift card');
+                        break;
+                    case 'overall':
+                        showRow = true;
+                        break;
+                }
+            }
+
+            row.style.display = showRow ? '' : 'none';
+        });
+    }
+
+    // Add event listeners for date inputs
+    dateFrom.addEventListener('change', function() {
+        filterByDate.value = ''; // Clear preset filter
+        updateTable();
     });
-  });
+    dateTo.addEventListener('change', function() {
+        filterByDate.value = ''; // Clear preset filter
+        updateTable();
+    });
+    filterByDate.addEventListener('change', function() {
+        // Clear custom date range when using preset filters
+        if (this.value) {
+            dateFrom.value = '';
+            dateTo.value = '';
+        }
+        updateTable();
+    });
+    searchInput.addEventListener('input', updateTable);
+
+    // Add event listener for Filter By dropdown
+    filterBy.addEventListener('change', updateTable);
+
+    // Add event listener for Report Type dropdown
+    reportType.addEventListener('change', updateTable);
+
+    // Initialize the table
+    updateTable();
+});
 </script>
-
-          <!-- Package Preferences -->
-          <div class="col-md-6">
-            <div class="card border-0 shadow-sm rounded-3">
-              <div class="card-header bg-light">
-                <h5 class="mb-0">Package Preferences</h5>
-              </div>
-              <div class="card-body d-flex flex-column gap-3">
-                <div class="progress-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold">Wedding Packages</span>
-                    <span class="badge bg-primary">45%</span>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-primary" style="width: 45%"></div>
-                  </div>
-                </div>
-                <div class="progress-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold">Corporate Events</span>
-                    <span class="badge bg-info">30%</span>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-info" style="width: 30%"></div>
-                  </div>
-                </div>
-                <div class="progress-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold">Birthday Celebrations</span>
-                    <span class="badge bg-success">25%</span>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-success" style="width: 25%"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer border-0">
-        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Edit Customer</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 </body>
-
-
 </html>
