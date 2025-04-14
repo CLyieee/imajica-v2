@@ -53,61 +53,41 @@ class patientController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         try {
-            // Validate the form data
-            $data = $request->validate([
-                'image_path' => 'nullable',
+            $patient = Patient::findOrFail($id);
+            
+            $validated = $request->validate([
                 'firstname' => 'required|string|max:255',
                 'lastname' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'contact_number' => 'required|string|max:20',
-                'birthdate' => 'required|date',
-                'gender' => 'required|string',
-                'patient_tier_id' => 'required|numeric|exists:tiers,patient_tier_id',
-                'occupation' => 'nullable|string|max:255',
-                'address' => 'required|string',
-                'emergency_contact_name' => 'nullable|string|max:255',
-                'emergency_contact_number' => 'nullable|string|max:20',
+                'email' => 'nullable|email|max:255',
+                'contact_number' => 'nullable|string|max:20',
+                'gender' => 'nullable|string',
+                'birthdate' => 'nullable|date',
+                'occupation' => 'nullable|string',
+                'address' => 'nullable|string',
+                'emergency_contact_name' => 'nullable|string',
+                'emergency_contact_number' => 'nullable|string',
                 'medical_concerns' => 'nullable|string',
                 'current_medications' => 'nullable|string',
-                'note_from_admin' => 'nullable|string',
+                'note_from_admin' => 'nullable|string'
             ]);
 
-            $patient = Patient::where('patient_id', $request->patient_id)->first();
-            if (!$patient) {
-                return response()->json(['error' => 'Patient not found'], 404);
-            }
+            $patient->update($validated);
 
-            // Initialize data array without the image_path
-            $patientData = $request->except('image_path', '_token', '_method', 'patient_id');
-            
-            // Handle image upload if present
-            if ($request->hasFile('image_path')) {
-                $patientData['image_path'] = $request->file('image_path')->store('patients', 'public');
-            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Patient updated successfully',
+                'patient' => $patient->fresh()
+            ]);
 
-            // Update patient data
-            $patient->update($patientData);
-
-            // Check if request is AJAX
-            if ($request->ajax()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Patient updated successfully',
-                    'patient' => $patient
-                ]);
-            }
-
-            // For regular form submission
-            return redirect()->back()->with('success', 'Patient updated successfully');
         } catch (\Exception $e) {
-            if ($request->ajax()) {
-                return response()->json(['error' => $e->getMessage()], 500);
-            }
-            
-            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+            \Log::error('Patient update error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update patient: ' . $e->getMessage()
+            ], 500);
         }
     }
 
