@@ -318,8 +318,12 @@
                 <i class="menu-icon icon-base ti tabler-chart-pie "></i>
                 <div data-i18n="Accounting">Accounting</div>
             </a>
+
+            <ul class="menu-sub">
+
                 
-                <ul class="menu-sub">
+                
+
 
                 <li class="menu-item {{ request()->is('sales-transaction') ? 'active' : '' }}">
                     <a href="/sales-transaction" class="menu-link">
@@ -350,6 +354,10 @@
                     </a>
                 </li>
                 </ul>
+
+                </li>
+
+
 
             </ul>
         </li>

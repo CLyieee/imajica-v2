@@ -336,11 +336,11 @@
               <div class="d-flex gap-2">
                 <div class="form-group" style="width: 150px;">
                   <label class="form-label small text-muted mb-1">Date From</label>
-                  <input type="date" id="dateFrom" class="form-control form-control-sm" onchange="filterByDateRange()">
+                  <input type="date" id="dateFrom" class="form-control form-control-sm" onchange="applyDateRangeFilter()">
                 </div>
                 <div class="form-group" style="width: 150px;">
                   <label class="form-label small text-muted mb-1">Date To</label>
-                  <input type="date" id="dateTo" class="form-control form-control-sm" onchange="filterByDateRange()">
+                  <input type="date" id="dateTo" class="form-control form-control-sm" onchange="applyDateRangeFilter()">
                 </div>
               </div>
               <div class="form-group" style="width: 150px;">
@@ -654,7 +654,7 @@
       }
 
       function applyDateFilter() {
-        // Clear date range inputs when using predefined filters
+        // Reset date range inputs when using preset filters
         document.getElementById('dateFrom').value = '';
         document.getElementById('dateTo').value = '';
 
@@ -662,8 +662,8 @@
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
-        let startDate = null;
-        let endDate = null;
+        let startDate = new Date();
+        let endDate = new Date();
         
         switch(filterValue) {
           case 'today':
@@ -698,61 +698,66 @@
             endDate = new Date(today.getFullYear(), 11, 31);
             break;
           default:
-            // Show all rows if no filter is selected
-            document.querySelectorAll('tbody tr').forEach(row => {
-              row.style.display = '';
-            });
-            return;
+            startDate = null;
+            endDate = null;
         }
         
-        // Set end date to end of day
-        if (endDate) {
-          endDate.setHours(23, 59, 59, 999);
-        }
-
-        document.querySelectorAll('tbody tr').forEach(row => {
-          const dateCell = row.querySelector('td:nth-child(1)').textContent;
-          const rowDate = new Date(dateCell);
-          rowDate.setHours(0, 0, 0, 0); // Normalize row date to start of day
-          
-          if (startDate && endDate) {
-            row.style.display = (rowDate >= startDate && rowDate <= endDate) ? '' : 'none';
-          }
-        });
+        const searchValue = document.getElementById('searchInput').value.toLowerCase();
+        filterTable(searchValue, startDate && endDate ? { start: startDate, end: endDate } : null);
       }
 
-      function filterByDateRange() {
+      function applyDateRangeFilter() {
         const dateFrom = document.getElementById('dateFrom').value;
         const dateTo = document.getElementById('dateTo').value;
-        const tableRows = document.querySelectorAll('tbody tr');
         
+        // Reset the date filter dropdown when using manual date range
+        document.getElementById('dateFilter').value = '';
+        
+        let startDate = dateFrom ? new Date(dateFrom) : null;
+        let endDate = dateTo ? new Date(dateTo) : null;
+        
+        // Add one day to endDate to include the selected end date
+        if (endDate) {
+            endDate.setDate(endDate.getDate() + 1);
+        }
+        
+        const searchValue = document.getElementById('searchInput').value.toLowerCase();
+        
+        let tableRows = document.querySelectorAll('tbody tr');
         tableRows.forEach(row => {
-            const dateCell = row.querySelector('td:nth-child(1)').textContent;
-            const rowDate = new Date(dateCell);
             let showRow = true;
             
-            if (dateFrom && dateTo) {
-                const fromDate = new Date(dateFrom);
-                const toDate = new Date(dateTo);
-                // Set toDate to end of day for inclusive comparison
-                toDate.setHours(23, 59, 59, 999);
-                
-                showRow = rowDate >= fromDate && rowDate <= toDate;
-            } else if (dateFrom) {
-                const fromDate = new Date(dateFrom);
-                showRow = rowDate >= fromDate;
-            } else if (dateTo) {
-                const toDate = new Date(dateTo);
-                toDate.setHours(23, 59, 59, 999);
-                showRow = rowDate <= toDate;
+            // Get date from the first column
+            let dateCell = row.querySelector('td:nth-child(1)').textContent;
+            let rowDate = new Date(dateCell);
+            
+            // Check if date is within range
+            if (startDate && endDate) {
+                if (rowDate < startDate || rowDate >= endDate) {
+                    showRow = false;
+                }
+            } else if (startDate) {
+                if (rowDate < startDate) {
+                    showRow = false;
+                }
+            } else if (endDate) {
+                if (rowDate >= endDate) {
+                    showRow = false;
+                }
+            }
+            
+            // Apply existing search filter
+            if (showRow && searchValue) {
+                let name = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                let category = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                if (!name.includes(searchValue) && !category.includes(searchValue)) {
+                    showRow = false;
+                }
             }
             
             row.style.display = showRow ? '' : 'none';
         });
-        
-        // Clear the date filter dropdown when using date range
-        document.getElementById('dateFilter').value = '';
-      }
+    }
 
 // Add event listeners to view buttons
 document.querySelectorAll('.btn-success').forEach(button => {
