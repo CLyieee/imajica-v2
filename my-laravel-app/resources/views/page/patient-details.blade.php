@@ -947,10 +947,6 @@
                                     <option value="Under observation">Under observation</option>
                                 </select>
                             </div>
-                            <div class="col-12 mb-3">
-                                <label for="notes" class="form-label">Notes</label>
-                                <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Additional notes or observations"></textarea>
-                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -997,10 +993,6 @@
                                     <option value="Expired">Expired</option>
                                 </select>
                             </div>
-                            <div class="col-12 mb-3">
-                                <label for="prescription_notes" class="form-label">Notes</label>
-                                <textarea id="prescription_notes" name="notes" class="form-control" rows="3" placeholder="Additional notes about the prescription"></textarea>
-                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -1041,10 +1033,6 @@
                                     <option value="Prescription">Prescription</option>
                                     <option value="Other">Other</option>
                                 </select>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="file_description" class="form-label">Description</label>
-                                <textarea id="file_description" name="description" class="form-control" rows="3" placeholder="Brief description of the file contents"></textarea>
                             </div>
                         </div>
                     </div>
