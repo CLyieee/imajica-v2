@@ -157,7 +157,8 @@ Route::post('/supplier/add', [SupplierController::class, 'add_supplier'])->name(
 Route::delete('/supplier/delete/{id}', [SupplierController::class, 'delete_supplier'])->name('delete.supplier');
 
 // Patients Routes
-Route::put('/patient/update', [App\Http\Controllers\patientController::class, 'update'])->name('patient.update');
+Route::post('/patient/update/{id}', [PatientController::class, 'update'])->name('patient.update');
+Route::post('/patient/{id}/update', [PatientController::class, 'update'])->name('patient.update');
 Route::delete('/patient/{id}', [App\Http\Controllers\patientController::class, 'destroy'])->name('patient.destroy');
 Route::delete('/patient/delete', [PatientController::class, 'destroy'])->name('patient.delete');
 Route::get('/patients/{id}/view', [PatientController::class, 'view'])->name('patient.view');
@@ -243,5 +244,15 @@ Route::get('/waste-list', [App\Http\Controllers\WasteController::class, 'index']
 Route::get('/waste/{id}/edit', [App\Http\Controllers\WasteController::class, 'edit'])->name('waste.edit');
 Route::put('/waste/{id}', [App\Http\Controllers\WasteController::class, 'update'])->name('waste.update');
 Route::delete('/waste/{id}', [App\Http\Controllers\WasteController::class, 'destroy'])->name('waste.destroy');
+
+// Patient Medical Information Routes
+Route::post('/patient/allergy/add', [PatientController::class, 'addAllergy'])->name('patient.allergy.add');
+Route::post('/patient/medication/add', [PatientController::class, 'addMedication'])->name('patient.medication.add');
+Route::post('/patient/health-concern/add', [PatientController::class, 'addHealthConcern'])->name('patient.health-concern.add');
+Route::post('/patient/prescription/add', [PatientController::class, 'addPrescription'])->name('patient.prescription.add');
+Route::post('/patient/attachment/add', [PatientController::class, 'addAttachment'])->name('patient.attachment.add');
+Route::post('/patient/appointment/add', [PatientController::class, 'addAppointment'])->name('patient.appointment.add');
+Route::post('/patient/medical-record/add', [PatientController::class, 'addMedicalRecord'])->name('patient.medical-record.add');
+
 
 Route::get('/waste-list', [DashboardController::class, 'waste_list'])->name('page.waste-list');
