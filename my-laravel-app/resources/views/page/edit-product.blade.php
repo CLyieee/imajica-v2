@@ -147,8 +147,8 @@
         </div>
         <div class="d-flex align-content-center flex-wrap gap-4">
             <div class="d-flex gap-4">
-                <button type="button" class="btn btn-label-secondary" id="discardBtn">Discard</button>
-                <button type="button" class="btn btn-primary" id="updateProductBtn">Update Product</button>
+                <button type="button" class="btn btn-label-secondary" id="discardBtn">Back</button>
+                <button type="button" class="btn btn-primary" id="updateProductBtn">Save changes</button>
             </div>
         </div>
     </div>
@@ -446,19 +446,7 @@
 
         // Handle discard button
         $('#discardBtn').on('click', function() {
-            Swal.fire({
-                ...swalConfig,
-                title: 'Discard Changes?',
-                text: 'Are you sure you want to discard all changes?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, discard',
-                cancelButtonText: 'No, keep editing'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '{{ route("page.product-list") }}';
-                }
-            });
+            window.location.href = '{{ route("page.product-list") }}';
         });
 
         // Handle form submission
@@ -467,13 +455,13 @@
             
             const form = $('#editProductForm');
             const formData = new FormData(form[0]);
-            formData.set('_method', 'POST'); // Ensure POST method
+            formData.set('_method', 'POST');
 
             // Validate required fields
             const requiredFields = {
                 'name': 'Name',
                 'sku': 'SKU',
-                'supplier_id': 'Supplier', 
+                'supplier_id': 'Supplier',
                 'quantity': 'Quantity',
                 'restock_point': 'Restock Point',
                 'manufacturing_date': 'Manufacturing Date',
@@ -483,6 +471,7 @@
                 'category_id': 'Category'
             };
 
+            // Validate fields first
             for (const [field, label] of Object.entries(requiredFields)) {
                 if (!formData.get(field)) {
                     Swal.fire({
@@ -495,53 +484,66 @@
                 }
             }
 
-            // Show loading state
+            // Show confirmation dialog
             Swal.fire({
-                title: 'Updating Product',
-                html: 'Please wait while we update your product...',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                willOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-
-            // Submit form via AJAX
-            $.ajax({
-                url: form.attr('action'),
-                type: 'POST', // Use POST method
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
+                ...swalConfig,
+                title: 'Confirm Update',
+                text: 'Are you sure the details are correct?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, update it!',
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show loading state
                     Swal.fire({
-                        ...swalConfig,
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Product updated successfully!',
-                        showConfirmButton: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '{{ route("page.product-list") }}';
+                        title: 'Updating Product',
+                        html: 'Please wait while we update your product...',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        willOpen: () => {
+                            Swal.showLoading();
                         }
                     });
-                },
-                error: function(xhr) {
-                    let errorMessage = 'An error occurred while updating the product.';
-                    
-                    if (xhr.responseJSON) {
-                        if (xhr.responseJSON.errors) {
-                            errorMessage = Object.values(xhr.responseJSON.errors).flat().join('\n');
-                        } else if (xhr.responseJSON.message) {
-                            errorMessage = xhr.responseJSON.message;
-                        }
-                    }
 
-                    Swal.fire({
-                        ...swalConfig,
-                        icon: 'error',
-                        title: 'Error',
-                        text: errorMessage
+                    // Submit form via AJAX
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            Swal.fire({
+                                ...swalConfig,
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Product updated successfully!',
+                                showConfirmButton: true
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '{{ route("page.product-list") }}';
+                                }
+                            });
+                        },
+                        error: function(xhr) {
+                            let errorMessage = 'An error occurred while updating the product.';
+                            
+                            if (xhr.responseJSON) {
+                                if (xhr.responseJSON.errors) {
+                                    errorMessage = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                                } else if (xhr.responseJSON.message) {
+                                    errorMessage = xhr.responseJSON.message;
+                                }
+                            }
+
+                            Swal.fire({
+                                ...swalConfig,
+                                icon: 'error',
+                                title: 'Error',
+                                text: errorMessage
+                            });
+                        }
                     });
                 }
             });

@@ -356,20 +356,22 @@
                       style="background-color: #0a3622"
                     >
                       <h5 class="card-title mb-sm-0 me-2 text-white">
-                        Supplier Management
+                        Waste Management
                       </h5>
                     </div>
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <form id="addWasteForm">
+                          <form id="addWasteForm" action="{{ route('waste.store') }}" method="POST">
                             @csrf
                             <div class="row g-6">
                               <div class="col-12">
-                                <label class="form-label" for="item_name">ITEM NAME</label>
-                                <select id="item_name" name="item_name" class="form-select" required>
+                                <label class="form-label" for="product_id">ITEM NAME</label>
+                                <select id="product_id" name="product_id" class="form-select" required>
                                   <option value="">Search Item</option>
-                                  <!-- Add options dynamically from your products database -->
+                                  @foreach($products as $product)
+                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                  @endforeach
                                 </select>
                               </div>
 
@@ -500,75 +502,79 @@
     <!-- AJAX Form Submission Script -->
     <script>
       $(document).ready(function() {
-        $('#addSupplierForm').on('submit', function(e) {
+        // Initialize select2 
+        $('#product_id').select2({
+          placeholder: "Search for an item...",
+          allowClear: true
+        });
+
+        $('#addWasteForm').on('submit', function(e) {
           e.preventDefault();
           
-          // Disable submit button during form submission
-          $('#addSupplierBtn').prop('disabled', true).html('Processing...');
-          
-          // Get form data
-          const formData = $(this).serialize();
-          
-          // Make AJAX request
-          $.ajax({
-            url: supplierRoutes.add,
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-              if(response.status) {
-                // Show success message
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Success!',
-                  text: response.message,
-                  showConfirmButton: false,
-                  timer: 1500
-                }).then(() => {
-                  // Reset form
-                  $('#addSupplierForm')[0].reset();
-                  // Redirect to supplier list
-                  window.location.href = "{{ route('page.supplier-list') }}";
-                });
-              } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error!',
-                  text: response.message
-                });
-              }
-            },
-            error: function(xhr) {
-              let errorMessage = 'An error occurred while processing your request.';
+          Swal.fire({
+            title: 'Confirm Action',
+            text: 'Are you sure you want to add this item to waste?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, add it!',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              $('#addItemBtn').prop('disabled', true).html('Processing...');
               
-              if(xhr.responseJSON && xhr.responseJSON.errors) {
-                errorMessage = '<ul>';
-                for(let field in xhr.responseJSON.errors) {
-                  errorMessage += `<li>${xhr.responseJSON.errors[field][0]}</li>`;
+              $.ajax({
+                url: $(this).attr('action'),
+                type: "POST",
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(response) {
+                  if(response.status) {
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Success!',
+                      text: response.message,
+                      showConfirmButton: true,
+                      confirmButtonText: 'View Waste List',
+                      allowOutsideClick: false
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        window.location.href = "{{ route('page.waste-list') }}";
+                      }
+                    });
+                  } else {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error!',
+                      text: response.message,
+                      confirmButtonText: 'Try Again'
+                    });
+                  }
+                },
+                error: function(xhr) {
+                  let errorMessage = 'An error occurred while processing your request.';
+                  
+                  if(xhr.responseJSON && xhr.responseJSON.errors) {
+                    errorMessage = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                  }
+                  
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: errorMessage,
+                    confirmButtonText: 'Try Again'
+                  });
+                },
+                complete: function() {
+                  $('#addItemBtn').prop('disabled', false).html('ADD ITEM');
                 }
-                errorMessage += '</ul>';
-              } else if(xhr.responseJSON && xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
-              }
-              
-              Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                html: errorMessage
               });
-            },
-            complete: function() {
-              // Re-enable submit button
-              $('#addSupplierBtn').prop('disabled', false).html('Add Supplier');
             }
           });
         });
 
-        // Make the Cancel button functional
-        $('button.btn-secondary').on('click', function() {
+        $('#cancelBtn').on('click', function() {
           Swal.fire({
             title: 'Are you sure?',
             text: "You will lose any unsaved changes!",
@@ -579,7 +585,7 @@
             confirmButtonText: 'Yes, cancel!'
           }).then((result) => {
             if (result.isConfirmed) {
-              window.location.href = "{{ route('page.supplier-list') }}";
+              window.location.href = "{{ route('page.waste-list') }}";
             }
           });
         });

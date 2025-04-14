@@ -110,15 +110,7 @@
     <script src="../../assets/js/config.js"></script>
     <!-- Add SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        const supplierRoutes = {
-            add: "{{ route('add.supplier') }}",
-            getAll: "{{ route('get.suppliers') }}",
-            get: "{{ route('get.supplier', ['id' => '__ID__']) }}",
-            update: "{{ route('update.supplier', ['id' => '__ID__']) }}",
-            delete: "{{ route('delete.supplier', ['id' => '__ID__']) }}"
-        };
-    </script>
+
   </head>
 
   <body>
@@ -142,204 +134,7 @@
 
         <!-- Layout container -->
         <div class="layout-page">
-          <!-- Navbar -->
-
-          {{-- <nav
-            class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-            id="layout-navbar"
-          >
-            <div
-              class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none"
-            >
-              <a
-                class="nav-item nav-link px-0 me-xl-6"
-                href="javascript:void(0)"
-              >
-                <i class="icon-base ti tabler-menu-2 icon-md"></i>
-              </a>
-            </div>
-
-            <div
-              class="navbar-nav-right d-flex align-items-center justify-content-end"
-              id="navbar-collapse"
-            >
-              <!-- Search -->
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-                  <a
-                    class="nav-item nav-link search-toggler d-flex align-items-center px-0"
-                    href="javascript:void(0);"
-                  >
-                    <span
-                      class="d-inline-block text-body-secondary fw-normal"
-                      id="autocomplete"
-                    ></span>
-                  </a>
-                </div>
-              </div>
-
-              <!-- /Search -->
-
-              <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                <!--/ Language -->
-
-                <!-- Style Switcher -->
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
-                    id="nav-theme"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <i
-                      class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"
-                    ></i>
-                    <span class="d-none ms-2" id="nav-theme-text"
-                      >Toggle theme</span
-                    >
-                  </a>
-                  <ul
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="nav-theme-text"
-                  >
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center active"
-                        data-bs-theme-value="light"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-sun icon-22px me-3"
-                            data-icon="sun"
-                          ></i
-                          >Light</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="dark"
-                        aria-pressed="true"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-moon-stars icon-22px me-3"
-                            data-icon="moon-stars"
-                          ></i
-                          >Dark</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="system"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-device-desktop-analytics icon-22px me-3"
-                            data-icon="device-desktop-analytics"
-                          ></i
-                          >System</span
-                        >
-                      </button>
-                    </li>
-                  </ul>
-                </li>
-                <!-- / Style Switcher-->
-
-                <!-- Quick links  -->
-
-                <!-- Quick links -->
-
-                <!-- Notification -->
-
-                <!--/ Notification -->
-
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow p-0"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <div class="avatar avatar-online">
-                      <img
-                        src="../../assets/img/avatars/1.png"
-                        alt
-                        class="rounded-circle"
-                      />
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a
-                        class="dropdown-item mt-0"
-                        href="pages-account-settings-account.html"
-                      >
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0 me-2">
-                            <div class="avatar avatar-online">
-                              <img
-                                src="../../assets/img/avatars/1.png"
-                                alt
-                                class="rounded-circle"
-                              />
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="mb-0">Rommel Lacap</h6>
-                            <small class="text-body-secondary">Admin</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-user me-3 icon-md"></i
-                        ><span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-settings me-3 icon-md"></i
-                        ><span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-
-                    <li>
-                      <div class="d-grid px-2 pt-2 pb-1">
-                        <a
-                          class="btn btn-sm btn-danger d-flex"
-                          href="#"
-                          target="_blank"
-                        >
-                          <small class="align-middle">Logout</small>
-                          <i
-                            class="icon-base ti tabler-logout ms-2 icon-14px"
-                          ></i>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
-            </div>
-          </nav> --}}
+        
 
           <!-- / Navbar -->
 
@@ -376,7 +171,7 @@
                         <td>{{ $waste->product ? $waste->product->name : 'N/A' }}</td>
                         <td>{{ $waste->quantity }}</td>
                         <td>{{ $waste->reason }}</td>
-                        <td>{{ $waste->created_at->format('M d, Y') }}</td>
+                        <td>{{ $waste->date_added }}</td>
                         <td>
                           <div class="d-flex gap-2">
                             <button type="button" class="btn btn-sm btn-info edit-waste" 
@@ -478,93 +273,12 @@
     <script src="../../assets/js/form-layouts.js"></script>
     <script src="../../assets/js/forms-pickers.js"></script>
     
-    <!-- AJAX Form Submission Script -->
+ 
     <script>
       $(document).ready(function() {
-        $('#addSupplierForm').on('submit', function(e) {
-          e.preventDefault();
-          
-          // Disable submit button during form submission
-          $('#addSupplierBtn').prop('disabled', true).html('Processing...');
-          
-          // Get form data
-          const formData = $(this).serialize();
-          
-          // Make AJAX request
-          $.ajax({
-            url: supplierRoutes.add,
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-              if(response.status) {
-                // Show success message
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Success!',
-                  text: response.message,
-                  showConfirmButton: false,
-                  timer: 1500
-                }).then(() => {
-                  // Reset form
-                  $('#addSupplierForm')[0].reset();
-                  // Redirect to supplier list
-                  window.location.href = "{{ route('page.supplier-list') }}";
-                });
-              } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error!',
-                  text: response.message
-                });
-              }
-            },
-            error: function(xhr) {
-              let errorMessage = 'An error occurred while processing your request.';
-              
-              if(xhr.responseJSON && xhr.responseJSON.errors) {
-                errorMessage = '<ul>';
-                for(let field in xhr.responseJSON.errors) {
-                  errorMessage += `<li>${xhr.responseJSON.errors[field][0]}</li>`;
-                }
-                errorMessage += '</ul>';
-              } else if(xhr.responseJSON && xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
-              }
-              
-              Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                html: errorMessage
-              });
-            },
-            complete: function() {
-              // Re-enable submit button
-              $('#addSupplierBtn').prop('disabled', false).html('Add Supplier');
-            }
-          });
-        });
-
-        // Make the Cancel button functional
-        $('button.btn-secondary').on('click', function() {
-          Swal.fire({
-            title: 'Are you sure?',
-            text: "You will lose any unsaved changes!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, cancel!'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.href = "{{ route('page.supplier-list') }}";
-            }
-          });
-        });
+        $('#wasteTable').DataTable();
       });
+      
     </script>
   </body>
 
