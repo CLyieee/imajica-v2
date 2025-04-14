@@ -21,11 +21,21 @@ class Patient extends Model
         'occupation',
         'address',
         'image_path',
-        'patient_tier_id'
+        'patient_tier_id',
+        'emergency_contact_name',
+        'emergency_contact_number',
+        'medical_concerns',
+        'current_medications',
+        'note_from_admin'
     ];
 
     protected $attributes = [
-        'image_path' => null
+        'image_path' => null,
+        'emergency_contact_name' => null,
+        'emergency_contact_number' => null,
+        'medical_concerns' => null,
+        'current_medications' => null,
+        'note_from_admin' => null
     ];
 
     public function contact()
