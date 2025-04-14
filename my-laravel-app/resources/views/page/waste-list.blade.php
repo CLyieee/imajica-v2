@@ -1,11 +1,6 @@
 @extends('layouts.app')
-@extends('layouts.layout-collapsed-menu-dark')
-@extends('layouts.layout-container-dark')
-@extends('layouts.layout-content-navbar-and-sidebar-dark')
-@extends('layouts.layout-without-navbar-dark')
-@extends('layouts.layout-content-navbar-dark')
-@extends('layouts.layout-fluid-dark')
-@extends('layouts.layout-without-menu-dark')
+
+
 
 <!DOCTYPE html>
 
@@ -134,7 +129,7 @@
 
         <!-- Layout container -->
         <div class="layout-page">
-        
+
 
           <!-- / Navbar -->
 
@@ -174,7 +169,7 @@
                         <td>{{ $waste->date_added }}</td>
                         <td>
                           <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-sm btn-info edit-waste" 
+                            <button type="button" class="btn btn-sm btn-info edit-waste"
                                     data-id="{{ $waste->id }}">
                               <i class="ti tabler-edit me-1"></i>Edit
                             </button>
@@ -272,13 +267,13 @@
     <!-- Page JS -->
     <script src="../../assets/js/form-layouts.js"></script>
     <script src="../../assets/js/forms-pickers.js"></script>
-    
- 
+
+
     <script>
       $(document).ready(function() {
         $('#wasteTable').DataTable();
       });
-      
+
     </script>
   </body>
 
