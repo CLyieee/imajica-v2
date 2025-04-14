@@ -431,20 +431,43 @@
             const requiredFields = {
                 'name': 'Name',
                 'sku': 'SKU',
-              
-                'base_price': 'Base price',
+                'product_image': 'Product image', 
                 'category_id': 'Category',
                 'supplier_id': 'Supplier',
+                'base_price': 'Base price',
                 'quantity': 'Total stock',
                 'restock_point': 'Restock point',
-                'product_image': 'Product image',
                 'manufacturing_date': 'Manufacturing date',
                 'expiry_date': 'Expiry date',
                 'removal_date': 'Removal date'
-                
-
             };
 
+            // Additional validation for dates
+            const mfgDate = new Date(formData.get('manufacturing_date'));
+            const expDate = new Date(formData.get('expiry_date')); 
+            const remDate = new Date(formData.get('removal_date'));
+
+            if (expDate <= mfgDate) {
+                Swal.fire({
+                    ...swalConfig,
+                    icon: 'error',
+                    title: 'Invalid Dates',
+                    text: 'Expiry date must be after manufacturing date'
+                });
+                return;
+            }
+
+            if (remDate < expDate) {
+                Swal.fire({
+                    ...swalConfig,
+                    icon: 'error', 
+                    title: 'Invalid Dates',
+                    text: 'Removal date must be after or equal to expiry date'
+                });
+                return;
+            }
+
+            // Check required fields
             for (const [field, label] of Object.entries(requiredFields)) {
                 if (!formData.get(field)) {
                     Swal.fire({
@@ -457,6 +480,37 @@
                 }
             }
 
+            // Validate numeric fields
+            if (parseFloat(formData.get('base_price')) <= 0) {
+                Swal.fire({
+                    ...swalConfig,
+                    icon: 'error',
+                    title: 'Invalid Base Price',
+                    text: 'Base price must be greater than 0'
+                });
+                return;
+            }
+
+            if (parseInt(formData.get('quantity')) < 0) {
+                Swal.fire({
+                    ...swalConfig,
+                    icon: 'error',
+                    title: 'Invalid Quantity',
+                    text: 'Quantity cannot be negative'
+                });
+                return;
+            }
+
+            if (parseInt(formData.get('restock_point')) < 0) {
+                Swal.fire({
+                    ...swalConfig,
+                    icon: 'error',
+                    title: 'Invalid Restock Point', 
+                    text: 'Restock point cannot be negative'
+                });
+                return;
+            }
+            
             // Show loading state
             Swal.fire({
                 title: 'Creating Product',
@@ -480,7 +534,7 @@
                         ...swalConfig,
                         icon: 'success',
                         title: 'Success',
-                        text: 'Product created successfully!',
+                        text: response.message,
                         showConfirmButton: true
                     }).then((result) => {
                         if (result.isConfirmed) {

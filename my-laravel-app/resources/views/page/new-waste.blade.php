@@ -1,4 +1,11 @@
 @extends('layouts.app')
+@extends('layouts.layout-collapsed-menu-dark')
+@extends('layouts.layout-container-dark')
+@extends('layouts.layout-content-navbar-and-sidebar-dark')
+@extends('layouts.layout-without-navbar-dark')
+@extends('layouts.layout-content-navbar-dark')
+@extends('layouts.layout-fluid-dark')
+@extends('layouts.layout-without-menu-dark')
 
 <!DOCTYPE html>
 
@@ -349,119 +356,53 @@
                       style="background-color: #0a3622"
                     >
                       <h5 class="card-title mb-sm-0 me-2 text-white">
-                        Supplier Management
+                        Waste Management
                       </h5>
                     </div>
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <form id="addSupplierForm">
+                          <form id="addWasteForm" action="{{ route('waste.store') }}" method="POST">
                             @csrf
                             <div class="row g-6">
-                              <div class="col-md-6">
-                                <label class="form-label" for="supplier_name"
-                                  >SUPPLIER NAME</label
-                                >
-                                <input
-                                  type="text"
-                                  id="supplier_name"
-                                  name="supplier_name"
-                                  class="form-control"
-                                  placeholder="Enter supplier name"
-                                  required
-                                />
+                              <div class="col-12">
+                                <label class="form-label" for="product_id">ITEM NAME</label>
+                                <select id="product_id" name="product_id" class="form-select" required>
+                                  <option value="">Search Item</option>
+                                  @foreach($products as $product)
+                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                  @endforeach
+                                </select>
                               </div>
 
-                              <div class="col-md-6">
-                                <label class="form-label" for="company"
-                                  >COMPANY</label
-                                >
+                              <div class="col-12">
+                                <label class="form-label" for="quantity">QUANTITY</label>
                                 <input
-                                  type="text"
-                                  id="company"
-                                  name="company"
+                                  type="number"
+                                  id="quantity"
+                                  name="quantity" 
                                   class="form-control"
-                                  placeholder="Enter company name"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="contact_person"
-                                  >CONTACT PERSON</label
-                                >
-                                <input
-                                  type="text"
-                                  id="contact_person"
-                                  name="contact_person"
-                                  class="form-control"
-                                  placeholder="Enter contact person"
                                   required
                                 />
                               </div>
 
                               <div class="col-12">
-                                <label class="form-label" for="address"
-                                  >ADDRESS</label
-                                >
-                                <input
-                                  type="text"
-                                  id="address"
-                                  name="address"
-                                  class="form-control"
-                                  placeholder="Enter supplier address"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="mobile_number"
-                                  >MOBILE NUMBER</label
-                                >
-                                <input
-                                  type="text"
-                                  id="mobile_number"
-                                  name="mobile_number"
-                                  class="form-control"
-                                  placeholder="Enter mobile number"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-md-6">
-                                <label class="form-label" for="email"
-                                  >EMAIL</label
-                                >
-                                <input
-                                  type="email"
-                                  id="email"
-                                  name="email"
-                                  class="form-control"
-                                  placeholder="Enter email address"
-                                  required
-                                />
-                              </div>
-
-                              <div class="col-12">
-                                <label class="form-label" for="description"
-                                  >Description</label
-                                >
+                                <label class="form-label" for="reason">REASON</label>
                                 <textarea
-                                  id="description"
-                                  name="description"
+                                  id="reason"
+                                  name="reason"
                                   class="form-control"
                                   rows="4"
-                                  placeholder="Enter description"
+                                  required
                                 ></textarea>
                               </div>
-
                             </div>
 
                             <br />
                             <div class="row">
                               <div class="col-12">
-                                <button type="button" class="btn btn-secondary me-3">Cancel</button>
-                                <button type="submit" class="btn btn-primary" id="addSupplierBtn">Add Supplier</button>
+                                <button type="button" class="btn btn-secondary" id="cancelBtn">CANCEL</button>
+                                <button type="submit" class="btn btn-primary" id="addItemBtn">ADD ITEM</button>
                               </div>
                             </div>
                           </form>
@@ -561,75 +502,79 @@
     <!-- AJAX Form Submission Script -->
     <script>
       $(document).ready(function() {
-        $('#addSupplierForm').on('submit', function(e) {
+        // Initialize select2 
+        $('#product_id').select2({
+          placeholder: "Search for an item...",
+          allowClear: true
+        });
+
+        $('#addWasteForm').on('submit', function(e) {
           e.preventDefault();
           
-          // Disable submit button during form submission
-          $('#addSupplierBtn').prop('disabled', true).html('Processing...');
-          
-          // Get form data
-          const formData = $(this).serialize();
-          
-          // Make AJAX request
-          $.ajax({
-            url: supplierRoutes.add,
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-              if(response.status) {
-                // Show success message
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Success!',
-                  text: response.message,
-                  showConfirmButton: false,
-                  timer: 1500
-                }).then(() => {
-                  // Reset form
-                  $('#addSupplierForm')[0].reset();
-                  // Redirect to supplier list
-                  window.location.href = "{{ route('page.supplier-list') }}";
-                });
-              } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error!',
-                  text: response.message
-                });
-              }
-            },
-            error: function(xhr) {
-              let errorMessage = 'An error occurred while processing your request.';
+          Swal.fire({
+            title: 'Confirm Action',
+            text: 'Are you sure you want to add this item to waste?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, add it!',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              $('#addItemBtn').prop('disabled', true).html('Processing...');
               
-              if(xhr.responseJSON && xhr.responseJSON.errors) {
-                errorMessage = '<ul>';
-                for(let field in xhr.responseJSON.errors) {
-                  errorMessage += `<li>${xhr.responseJSON.errors[field][0]}</li>`;
+              $.ajax({
+                url: $(this).attr('action'),
+                type: "POST",
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(response) {
+                  if(response.status) {
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Success!',
+                      text: response.message,
+                      showConfirmButton: true,
+                      confirmButtonText: 'View Waste List',
+                      allowOutsideClick: false
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        window.location.href = "{{ route('page.waste-list') }}";
+                      }
+                    });
+                  } else {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error!',
+                      text: response.message,
+                      confirmButtonText: 'Try Again'
+                    });
+                  }
+                },
+                error: function(xhr) {
+                  let errorMessage = 'An error occurred while processing your request.';
+                  
+                  if(xhr.responseJSON && xhr.responseJSON.errors) {
+                    errorMessage = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                  }
+                  
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: errorMessage,
+                    confirmButtonText: 'Try Again'
+                  });
+                },
+                complete: function() {
+                  $('#addItemBtn').prop('disabled', false).html('ADD ITEM');
                 }
-                errorMessage += '</ul>';
-              } else if(xhr.responseJSON && xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
-              }
-              
-              Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                html: errorMessage
               });
-            },
-            complete: function() {
-              // Re-enable submit button
-              $('#addSupplierBtn').prop('disabled', false).html('Add Supplier');
             }
           });
         });
 
-        // Make the Cancel button functional
-        $('button.btn-secondary').on('click', function() {
+        $('#cancelBtn').on('click', function() {
           Swal.fire({
             title: 'Are you sure?',
             text: "You will lose any unsaved changes!",
@@ -640,7 +585,7 @@
             confirmButtonText: 'Yes, cancel!'
           }).then((result) => {
             if (result.isConfirmed) {
-              window.location.href = "{{ route('page.supplier-list') }}";
+              window.location.href = "{{ route('page.waste-list') }}";
             }
           });
         });

@@ -19,32 +19,37 @@ class AddProductController extends Controller
         $data = $request->validate([
             'sku' => 'required|string|unique:new_product',
             'name' => 'required|string|max:255',
-            'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'product_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'required|exists:categories,category_id',
             'supplier_id' => 'required|exists:suppliers,suppler_id',
             'base_price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
             'restock_point' => 'required|integer|min:0',
-            'manufacturing_date' => 'nullable|date',
-            'expiry_date' => 'nullable|date',
-            'removal_date' => 'nullable|date'
+            'manufacturing_date' => 'required|date',
+            'expiry_date' => 'required|date|after:manufacturing_date',
+            'removal_date' => 'required|date|after_or_equal:expiry_date'
         ]);
 
-        // Handle image upload
-        if ($request->hasFile('product_image')) {
-            $image = $request->file('product_image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/products'), $imageName);
-            $data['product_image'] = 'uploads/products/' . $imageName;
-        }
-
         try {
+            if ($request->hasFile('product_image')) {
+                $image = $request->file('product_image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('uploads/products'), $imageName);
+                $data['product_image'] = 'uploads/products/' . $imageName;
+            }
+
             $product = Product::create($data);
-            return redirect()->route('page.product-list')
-                           ->with('success', 'Product created successfully!');
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Product created successfully!'
+            ]);
+
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to create product: ' . $e->getMessage())
-                        ->withInput();
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to create product: ' . $e->getMessage()
+            ], 500);
         }
     }
 

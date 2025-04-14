@@ -30,7 +30,7 @@ class category extends Model
     public function getTotalEarningsAttribute()
     {
         return $this->products()
-            ->join('order_items', 'products.name', '=', 'order_items.item_name') 
+            ->join('order_items', 'new_product.name', '=', 'order_items.item_name') 
             ->sum('order_items.total');
     }
 

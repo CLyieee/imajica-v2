@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Supplier List | Imajica Booking System</title>
+    <title>Imajica Booking System</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
@@ -41,6 +41,13 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
+                        @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
+
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
@@ -52,57 +59,44 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-striped">
+                                            <table class="table table-striped" id="supplierTable">
                                                 <thead class="table-light">
                                                     <tr>
+                                               
                                                         <th class="text-center">Supplier Name</th>
-                                                        <th class="text-center">Contact Number</th>
+                                                        <th class="text-center">Company</th>
+                                                        <th class="text-center">Contact Person</th>
                                                         <th class="text-center">Address</th>
+                                                        <th class="text-center">Mobile Number</th>
                                                         <th class="text-center">Email</th>
-                                                        <th class="text-center">Supplier Type</th>
+                                                        <th class="text-center">Description</th>
                                                         <th class="text-center">Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($suppliers as $supplier)
                                                     <tr>
+                                                       
                                                         <td class="text-center">{{ $supplier->supplier_name }}</td>
-                                                        <td class="text-center">{{ $supplier->contactNumber }}</td>
+                                                        <td class="text-center">{{ $supplier->company }}</td>
+                                                        <td class="text-center">{{ $supplier->contact_person }}</td>
                                                         <td class="text-center">{{ $supplier->address }}</td>
+                                                        <td class="text-center">{{ $supplier->mobile_number }}</td>
                                                         <td class="text-center">{{ $supplier->email }}</td>
-                                                        <td class="text-center">{{ $supplier->supplier_type }}</td>
+                                                        <td class="text-center">{{ $supplier->description }}</td>
                                                         <td class="text-center">
-                                                            <div class="d-flex justify-content-center align-items-center gap-2">
-                                                                {{-- <button class="btn btn-sm btn-success view-supplier" 
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#supplierModal"
-                                                                    data-supplier-id="{{ $supplier->suppler_id }}"
-                                                                    data-supplier-name="{{ $supplier->supplier_name }}"
-                                                                    data-supplier-contact="{{ $supplier->contactNumber }}"
-                                                                    data-supplier-email="{{ $supplier->email }}"
-                                                                    data-supplier-type="{{ $supplier->supplier_type }}"
-                                                                    data-supplier-address="{{ $supplier->address }}"
-                                                                    data-supplier-products="{{ $supplier->product_offered }}"
-                                                                    >
-                                                                    
-                                                                    <i class="ti tabler-eye me-1"></i> View
-                                                                </button> --}}
-                                                                <button type="button" class="btn btn-sm btn-info edit-supplier" 
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#editSupplierModal"
-                                                                    data-id="{{ $supplier->suppler_id }}"
-                                                                    data-name="{{ $supplier->supplier_name }}"
-                                                                    data-email="{{ $supplier->email }}"
-                                                                    data-contact="{{ $supplier->contactNumber }}"
-                                                                    data-phone="{{ $supplier->phone }}"
-                                                                    data-address="{{ $supplier->address }}"
-                                                                    data-supplier-products="{{ $supplier->product_offered }}"
-                                                                    data-type="{{ $supplier->supplier_type }}"
-                                                                    >
-                                                                    <i class="ti tabler-edit me-1"></i> Edit
-                                                                </button>
+
+                                                            <div class="d-inline-block">
+                                                                <a href="{{ route('supplier.edit', ['id' => $supplier->suppler_id]) }}" 
+                                                                   class="btn btn-sm btn-info" 
+                                                                   data-bs-toggle="tooltip" 
+                                                                   data-bs-placement="top" 
+                                                                   title="Edit Supplier">
+                                                                    <i class="ti tabler-edit me-1"></i>Edit
+                                                                </a>
+
                                                                 <button type="button" class="btn btn-sm btn-danger delete-supplier" 
-                                                                    data-id="{{ $supplier->supplier_id }}">
+                                                                        data-id="{{ $supplier->suppler_id }}">
                                                                     <i class="ti tabler-trash me-1"></i> Delete
                                                                 </button>
                                                             </div>
@@ -262,13 +256,6 @@
       </div>
     </div>
 
-    <!-- Delete Supplier Form (Hidden) -->
-    <form id="deleteSupplierForm" method="POST" action="/supplier/delete" style="display: none;">
-      @csrf
-      @method('DELETE')
-      <input type="hidden" id="delete_supplier_id" name="suppler_id">
-    </form>
-
     <!-- Core JS -->
     <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
     <script src="../../assets/vendor/libs/popper/popper.js"></script>
@@ -285,9 +272,9 @@
         const supplierRoutes = {
             add: "{{ route('add.supplier') }}",
             getAll: "{{ route('get.suppliers') }}",
-            get: "{{ route('get.supplier', ['id' => '__ID__']) }}",
-            update: "{{ route('update.supplier', ['id' => '__ID__']) }}",
-            delete: "{{ route('delete.supplier', ['id' => '__ID__']) }}"
+            get: "{{ route('get.supplier', ['id' => ':id']) }}".replace(':id', '__ID__'),
+            update: "{{ route('update.supplier', ['id' => ':id']) }}".replace(':id', '__ID__'),
+            delete: "{{ route('delete.supplier', ['id' => ':id']) }}".replace(':id', '__ID__')
         };
     </script>
 
@@ -396,7 +383,7 @@
                         showConfirmButton: false,
                         timer: 1500
                       }).then(() => {
-                        window.location.reload();
+                        window.location.href = response.redirect;
                       });
                     } else {
                       showErrorAlert(response.message);
@@ -432,8 +419,6 @@
           const supplierId = $(this).data('id');
           const supplierName = $(this).closest('tr').find('td:first').text();
           
-          $('#delete_supplier_id').val(supplierId);
-          
           Swal.fire({
             ...swalConfig,
             title: 'Confirm Delete',
@@ -446,7 +431,34 @@
             cancelButtonColor: '#6c757d'
           }).then((result) => {
             if (result.isConfirmed) {
-              $('#deleteSupplierForm').submit();
+              // Make AJAX request to delete
+              $.ajax({
+                url: supplierRoutes.delete.replace('__ID__', supplierId),
+                type: 'DELETE',
+                success: function(response) {
+                  if(response.status) {
+                    Swal.fire({
+                      ...swalConfig,
+                      icon: 'success',
+                      title: 'Deleted!',
+                      text: response.message,
+                      timer: 1500,
+                      showConfirmButton: false
+                    }).then(() => {
+                      window.location.reload();
+                    });
+                  } else {
+                    showErrorAlert(response.message || 'Failed to delete supplier');
+                  }
+                },
+                error: function(xhr) {
+                  let errorMessage = 'An error occurred while deleting the supplier.';
+                  if(xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                  }
+                  showErrorAlert(errorMessage);
+                }
+              });
             }
           });
         });
@@ -462,11 +474,12 @@
                     console.log('View Supplier Clicked - Data Attributes:', {
                         name: this.dataset.supplierName,
                         id: this.dataset.supplierId,
-                        type: this.dataset.supplierType,
+                        company: this.dataset.supplierCompany,
                         contact: this.dataset.supplierContact,
+                        mobile: this.dataset.supplierMobile,
                         email: this.dataset.supplierEmail,
                         address: this.dataset.supplierAddress,
-                        products: this.dataset.supplierProducts
+                        description: this.dataset.supplierDescription
                     });
 
                     // Update modal content with data attributes
@@ -492,11 +505,11 @@
                     // Update content and log assignments
                     modalSupplierName.textContent = this.dataset.supplierName;
                     modalSupplierId.textContent = this.dataset.supplierId;
-                    modalSupplierType.textContent = this.dataset.supplierType;
+                    modalSupplierType.textContent = this.dataset.supplierCompany;
                     modalContactNumber.textContent = this.dataset.supplierContact;
                     modalEmail.textContent = this.dataset.supplierEmail;
                     modalAddress.textContent = this.dataset.supplierAddress;
-                    modalProducts.textContent = this.dataset.supplierProducts || 'No products/services listed';
+                    modalProducts.textContent = this.dataset.supplierDescription || 'No description provided';
 
                     // Debug: Log final content
                     console.log('Updated Modal Content:', {
@@ -514,6 +527,11 @@
                 });
             });
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#supplierTable').DataTable();
+        })
     </script>
 
 </body>

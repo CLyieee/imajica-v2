@@ -2,7 +2,6 @@ let commentEditor=document.querySelector(".comment-editor");commentEditor&&new Q
 document.addEventListener("DOMContentLoaded",function(e){var t=document.querySelector(".datatables-category-list"),a=$(".select2");a.length&&a.each(function(){var e=$(this);e.wrap('<div class="position-relative"></div>').select2({dropdownParent:e.parent(),placeholder:e.data("placeholder")})}),t&&new DataTable(t,{ajax:{url:"/api/categories",method:"GET",dataSrc:""},
   columns:[
     {data:"category_id"},
-    {data:"category_id", orderable:!1},
     {
       data: null,
       render: function(data, type, row) {
@@ -26,8 +25,7 @@ document.addEventListener("DOMContentLoaded",function(e){var t=document.querySel
     {data:"slug"},
     {data:"description"},
     {data:"category_id"}
-  ],columnDefs:[{className:"control",searchable:!1,orderable:!1,responsivePriority:1,targets:0,render:function(e,t,a,o){return""}},{targets:1,orderable:!1,searchable:!1,responsivePriority:4,checkboxes:!0,checkboxes:{selectAllRender:'<input type="checkbox" class="form-check-input">'},render:function(){return'<input type="checkbox" class="dt-checkboxes form-check-input">'}},
-    {targets:2,
+  ],columnDefs:[{className:"control",searchable:!1,orderable:!1,responsivePriority:1,targets:0,render:function(e,t,a,o){return""}},{targets:2,
       responsivePriority:2,render:function(e,t,a,o)
       {const imageUrl=a.categoryImage?`/storage/categories/${a.categoryImage}`:null;return`
               <div class="d-flex align-items-center">

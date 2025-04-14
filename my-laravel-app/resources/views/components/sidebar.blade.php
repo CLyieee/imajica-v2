@@ -78,6 +78,10 @@
                                 <div data-i18n="Category List">Category List</div>
                             </a>
                         </li>
+                        <li class="menu-item {{ request()->is('waste-list') ? 'active' : '' }}">
+                            <a href="/waste-list" class="menu-link">
+                                <div data-i18n="Waste List">Waste List</div>
+                            </a>
                     </ul>
                 </li>
                 <li class="menu-item {{ request()->is('order-list') ||  request()->is('add-order') ? 'active open' : '' }}">

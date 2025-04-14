@@ -96,35 +96,6 @@ $(document).ready(function () {
         });
     });
 
-    // Delete supplier functionality
-    $(document).on("click", ".delete-supplier", function () {
-        const supplierId = $(this).data("id");
-        const supplierName = $(this).data("name");
-
-        if (
-            confirm(
-                `Are you sure you want to delete the supplier: ${supplierName}?`
-            )
-        ) {
-            $.ajax({
-                url: supplierRoutes.delete.replace("__ID__", supplierId),
-                type: "DELETE",
-                data: { id: supplierId }, // Explicitly include ID in request body
-                dataType: "json",
-                success: function (response) {
-                    if (response.status) {
-                        showMessage("success", response.message);
-                        loadSuppliers();
-                    } else {
-                        showMessage("error", response.message);
-                    }
-                },
-                error: function (xhr) {
-                    handleAjaxError(xhr);
-                },
-            });
-        }
-    });
 
     // Get supplier data for editing
     $(document).on("click", ".edit-supplier", function () {
