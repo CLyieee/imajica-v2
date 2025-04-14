@@ -236,6 +236,56 @@
         font-size: 1.1rem;
         margin-bottom: 0;
     }
+
+    /* Add these styles for smooth tab transitions */
+    .tab-pane {
+        transition: opacity 0.15s linear;
+    }
+
+    .tab-pane:not(.show) {
+        display: none;
+        opacity: 0;
+    }
+
+    .tab-pane.show {
+        opacity: 1;
+    }
+
+    /* Style improvements for tabs */
+    .nav-tabs .nav-link {
+        color: #566a7f;
+        border: none;
+        border-bottom: 2px solid transparent;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: #696cff;
+        border-bottom-color: rgba(105, 108, 255, 0.3);
+    }
+
+    .nav-tabs .nav-link.active {
+        color: #696cff;
+        background: none;
+        border-bottom: 2px solid #696cff;
+    }
+
+    /* Card styles for tab content */
+    .tab-content .card {
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 6px 0 rgba(67, 89, 113, 0.12);
+    }
+
+    .tab-content .card-header {
+        background-color: transparent;
+        border-bottom: 1px solid rgba(67, 89, 113, 0.1);
+        padding: 1.5rem;
+    }
+
+    .tab-content .card-body {
+        padding: 1.5rem;
+    }
     </style>
 </head>
 
@@ -1188,6 +1238,275 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Get all tab links
+    const tabLinks = document.querySelectorAll('.nav-link');
+    
+    // Add click event listener to each tab
+    tabLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active class from all tabs
+            tabLinks.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Hide all tab panes
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('show', 'active');
+            });
+            
+            // Show the selected tab pane
+            const targetId = this.getAttribute('href').substring(1);
+            const targetPane = document.getElementById(targetId);
+            if (targetPane) {
+                targetPane.classList.add('show', 'active');
+            }
+        });
+    });
+
+    // Add click handlers for the add buttons
+    const addButtons = {
+        'addAllergyBtn': '#addAllergyModal',
+        'addMedicationBtn': '#addMedicationModal',
+        'addHealthConcernBtn': '#addHealthConcernModal',
+        'addPrescriptionBtn': '#addPrescriptionModal',
+        'addAttachmentBtn': '#addAttachmentModal'
+    };
+
+    Object.entries(addButtons).forEach(([btnId, modalId]) => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            btn.addEventListener('click', function() {
+                const modal = new bootstrap.Modal(document.querySelector(modalId));
+                modal.show();
+            });
+        }
+    });
+
+    // Handle form submissions for all modals
+    const formHandlers = {
+        'allergy-form': {
+            table: '#allergies table tbody',
+            modal: '#addAllergyModal',
+            rowTemplate: (data) => `
+                <tr>
+                    <td>${data.allergen}</td>
+                    <td>${data.reaction}</td>
+                    <td>${data.severity}</td>
+                    <td>${data.date_identified}</td>
+                    <td>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                            <i class="ti ti-eye"></i>
+                        </a>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                            <i class="ti ti-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
+                            <i class="ti ti-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            `
+        },
+        'medication-form': {
+            table: '#medications table tbody',
+            modal: '#addMedicationModal',
+            rowTemplate: (data) => `
+                <tr>
+                    <td>${data.medication_name}</td>
+                    <td>${data.dosage}</td>
+                    <td>${data.frequency}</td>
+                    <td>${data.start_date}</td>
+                    <td>${data.end_date || 'Ongoing'}</td>
+                    <td>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                            <i class="ti ti-eye"></i>
+                        </a>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                            <i class="ti ti-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
+                            <i class="ti ti-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            `
+        },
+        'health-concern-form': {
+            table: '#health-concerns table tbody',
+            modal: '#addHealthConcernModal',
+            rowTemplate: (data) => `
+                <tr>
+                    <td>${data.concern}</td>
+                    <td>${data.date_reported}</td>
+                    <td>${data.status}</td>
+                    <td>${data.notes || ''}</td>
+                    <td>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                            <i class="ti ti-eye"></i>
+                        </a>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                            <i class="ti ti-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
+                            <i class="ti ti-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            `
+        },
+        'prescription-form': {
+            table: '#prescriptions table tbody',
+            modal: '#addPrescriptionModal',
+            rowTemplate: (data) => `
+                <tr>
+                    <td>${data.prescription_number}</td>
+                    <td>${data.date}</td>
+                    <td>${data.doctor}</td>
+                    <td>${data.status}</td>
+                    <td>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                            <i class="ti ti-eye"></i>
+                        </a>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                            <i class="ti ti-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
+                            <i class="ti ti-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            `
+        },
+        'attachment-form': {
+            table: '#attachments table tbody',
+            modal: '#addAttachmentModal',
+            rowTemplate: (data) => `
+                <tr>
+                    <td>${data.file_name}</td>
+                    <td>${data.file_type}</td>
+                    <td>${new Date().toLocaleDateString()}</td>
+                    <td>${data.file_size || 'N/A'}</td>
+                    <td>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                            <i class="ti ti-download"></i>
+                        </a>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                            <i class="ti ti-eye"></i>
+                        </a>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
+                            <i class="ti ti-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
+                            <i class="ti ti-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            `
+        }
+    };
+
+    // Handle form submissions
+    Object.entries(formHandlers).forEach(([formId, config]) => {
+        const form = document.getElementById(formId);
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                
+                // Show loading state
+                Swal.fire({
+                    title: 'Saving...',
+                    text: 'Please wait',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Simulate API call (replace with actual API endpoint)
+                setTimeout(() => {
+                    // Convert FormData to object
+                    const data = {};
+                    formData.forEach((value, key) => {
+                        data[key] = value;
+                    });
+
+                    // Clear "No records" row if it exists
+                    const tbody = document.querySelector(config.table);
+                    const noRecordsRow = tbody.querySelector('tr td[colspan]');
+                    if (noRecordsRow) {
+                        tbody.innerHTML = '';
+                    }
+
+                    // Add new row
+                    tbody.insertAdjacentHTML('beforeend', config.rowTemplate(data));
+
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.querySelector(config.modal));
+                    modal.hide();
+
+                    // Reset form
+                    form.reset();
+
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Record has been saved successfully.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }, 1000);
+            });
+        }
+    });
+
+    // Delete record handler
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.delete-record')) {
+            e.preventDefault();
+            const row = e.target.closest('tr');
+            
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Simulate delete API call
+                    row.remove();
+                    
+                    // Check if table is empty and add "No records" row
+                    const tbody = row.closest('tbody');
+                    if (tbody.children.length === 0) {
+                        const columnCount = row.cells.length;
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="${columnCount}" class="text-center">No records found</td>
+                            </tr>
+                        `;
+                    }
+
+                    Swal.fire(
+                        'Deleted!',
+                        'Record has been deleted.',
+                        'success'
+                    );
+                }
+            });
+        }
+    });
 });
 </script>
 </body>
