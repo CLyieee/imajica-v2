@@ -502,12 +502,6 @@
                 pointer-events: auto !important;
             }
             
-            /* Remove the toggle arrow */
-            .menu-toggle::after {
-                display: none !important;
-                content: "" !important;
-            }
-            
             /* Fix menu item text visibility */
             .menu-link div[data-i18n] {
                 visibility: visible !important;
