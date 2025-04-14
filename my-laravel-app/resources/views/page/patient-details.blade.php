@@ -554,7 +554,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-hover">
+                                                    <table class="table table-hover" id="allergies-table">
                                                         <thead>
                                                             <tr>
                                                                 <th>Allergen</th>
@@ -606,7 +606,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-hover">
+                                                    <table class="table table-hover" id="medications-table">
                                                         <thead>
                                                             <tr>
                                                                 <th>Medication Name</th>
@@ -660,7 +660,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-hover">
+                                                    <table class="table table-hover" id="health-concerns-table">
                                                         <thead>
                                                             <tr>
                                                                 <th>Concern</th>
@@ -712,7 +712,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-hover">
+                                                    <table class="table table-hover" id="prescriptions-table">
                                                         <thead>
                                                             <tr>
                                                                 <th>Prescription #</th>
@@ -764,7 +764,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-hover">
+                                                    <table class="table table-hover" id="attachments-table">
                                                         <thead>
                                                             <tr>
                                                                 <th>File Name</th>
@@ -1291,137 +1291,163 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle form submissions for all modals
     const formHandlers = {
         'allergy-form': {
-            table: '#allergies table tbody',
+            table: '#allergies-table tbody',
             modal: '#addAllergyModal',
             rowTemplate: (data) => `
-                <tr>
+                <tr data-id="${data.id || ''}" data-record='${JSON.stringify(data)}'>
                     <td>${data.allergen}</td>
                     <td>${data.reaction}</td>
                     <td>${data.severity}</td>
                     <td>${data.date_identified}</td>
                     <td>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                            <i class="ti ti-eye"></i>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                            <i class="ti ti-edit"></i>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
-                            <i class="ti ti-trash"></i>
-                        </a>
+                        <button class="btn btn-info btn-sm edit-record">Edit</button>
+                        <button class="btn btn-danger btn-sm delete-record">Delete</button>
                     </td>
                 </tr>
             `
         },
         'medication-form': {
-            table: '#medications table tbody',
+            table: '#medications-table tbody',
             modal: '#addMedicationModal',
             rowTemplate: (data) => `
-                <tr>
+                <tr data-id="${data.id || ''}" data-record='${JSON.stringify(data)}'>
                     <td>${data.medication_name}</td>
                     <td>${data.dosage}</td>
                     <td>${data.frequency}</td>
                     <td>${data.start_date}</td>
                     <td>${data.end_date || 'Ongoing'}</td>
                     <td>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                            <i class="ti ti-eye"></i>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                            <i class="ti ti-edit"></i>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
-                            <i class="ti ti-trash"></i>
-                        </a>
+                        <button class="btn btn-info btn-sm edit-record">Edit</button>
+                        <button class="btn btn-danger btn-sm delete-record">Delete</button>
                     </td>
                 </tr>
             `
         },
         'health-concern-form': {
-            table: '#health-concerns table tbody',
+            table: '#health-concerns-table tbody',
             modal: '#addHealthConcernModal',
             rowTemplate: (data) => `
-                <tr>
+                <tr data-id="${data.id || ''}" data-record='${JSON.stringify(data)}'>
                     <td>${data.concern}</td>
                     <td>${data.date_reported}</td>
                     <td>${data.status}</td>
                     <td>${data.notes || ''}</td>
                     <td>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                            <i class="ti ti-eye"></i>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                            <i class="ti ti-edit"></i>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
-                            <i class="ti ti-trash"></i>
-                        </a>
+                        <button class="btn btn-info btn-sm edit-record">Edit</button>
+                        <button class="btn btn-danger btn-sm delete-record">Delete</button>
                     </td>
                 </tr>
             `
         },
         'prescription-form': {
-            table: '#prescriptions table tbody',
+            table: '#prescriptions-table tbody',
             modal: '#addPrescriptionModal',
             rowTemplate: (data) => `
-                <tr>
+                <tr data-id="${data.id || ''}" data-record='${JSON.stringify(data)}'>
                     <td>${data.prescription_number}</td>
                     <td>${data.date}</td>
                     <td>${data.doctor}</td>
                     <td>${data.status}</td>
                     <td>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                            <i class="ti ti-eye"></i>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                            <i class="ti ti-edit"></i>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
-                            <i class="ti ti-trash"></i>
-                        </a>
+                        <button class="btn btn-info btn-sm edit-record">Edit</button>
+                        <button class="btn btn-danger btn-sm delete-record">Delete</button>
                     </td>
                 </tr>
             `
         },
         'attachment-form': {
-            table: '#attachments table tbody',
+            table: '#attachments-table tbody',
             modal: '#addAttachmentModal',
             rowTemplate: (data) => `
-                <tr>
+                <tr data-id="${data.id || ''}" data-record='${JSON.stringify(data)}'>
                     <td>${data.file_name}</td>
                     <td>${data.file_type}</td>
                     <td>${new Date().toLocaleDateString()}</td>
                     <td>${data.file_size || 'N/A'}</td>
                     <td>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                            <i class="ti ti-download"></i>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                            <i class="ti ti-eye"></i>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                            <i class="ti ti-edit"></i>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
-                            <i class="ti ti-trash"></i>
-                        </a>
+                        <button class="btn btn-info btn-sm edit-record">Edit</button>
+                        <button class="btn btn-danger btn-sm delete-record">Delete</button>
                     </td>
                 </tr>
             `
         }
     };
 
-    // Handle form submissions
+    // Add click handlers for edit buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('edit-record')) {
+            const row = e.target.closest('tr');
+            const recordData = JSON.parse(row.getAttribute('data-record'));
+            
+            // Find the correct modal based on the table section
+            let modalId = '';
+            if (row.closest('#allergies-table')) {
+                modalId = 'addAllergyModal';
+            } else if (row.closest('#medications-table')) {
+                modalId = 'addMedicationModal';
+            } else if (row.closest('#health-concerns-table')) {
+                modalId = 'addHealthConcernModal';
+            } else if (row.closest('#prescriptions-table')) {
+                modalId = 'addPrescriptionModal';
+            } else if (row.closest('#attachments-table')) {
+                modalId = 'addAttachmentModal';
+            }
+
+            console.log('Edit clicked for modal:', modalId); // Debug log
+
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                const form = modal.querySelector('form');
+                
+                // Update modal title to indicate editing
+                const modalTitle = modal.querySelector('.modal-title');
+                if (modalTitle) {
+                    modalTitle.textContent = 'Edit ' + modalTitle.textContent.replace('Add ', '');
+                }
+                
+                // Fill form with existing data
+                Object.keys(recordData).forEach(key => {
+                    const input = form.querySelector(`[name="${key}"]`);
+                    if (input) {
+                        if (input.type === 'select-one') {
+                            // Handle select elements
+                            const option = Array.from(input.options).find(opt => opt.value === recordData[key]);
+                            if (option) {
+                                option.selected = true;
+                            }
+                        } else {
+                            // Handle other input types
+                            input.value = recordData[key];
+                        }
+                    }
+                });
+
+                // Add edit mode flag and record ID to form
+                form.setAttribute('data-edit-mode', 'true');
+                form.setAttribute('data-record-id', row.getAttribute('data-id'));
+
+                // Show modal
+                const bsModal = new bootstrap.Modal(modal);
+                bsModal.show();
+            } else {
+                console.error('Modal not found:', modalId); // Debug log
+            }
+        }
+    });
+
+    // Update form submit handlers
     Object.entries(formHandlers).forEach(([formId, config]) => {
         const form = document.getElementById(formId);
         if (form) {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const formData = new FormData(this);
+                const isEditMode = this.getAttribute('data-edit-mode') === 'true';
+                const recordId = this.getAttribute('data-record-id');
                 
                 // Show loading state
                 Swal.fire({
-                    title: 'Saving...',
+                    title: isEditMode ? 'Updating...' : 'Saving...',
                     text: 'Please wait',
                     allowOutsideClick: false,
                     showConfirmButton: false,
@@ -1438,28 +1464,43 @@ document.addEventListener('DOMContentLoaded', function() {
                         data[key] = value;
                     });
 
-                    // Clear "No records" row if it exists
-                    const tbody = document.querySelector(config.table);
-                    const noRecordsRow = tbody.querySelector('tr td[colspan]');
-                    if (noRecordsRow) {
-                        tbody.innerHTML = '';
+                    if (isEditMode) {
+                        // Update existing row
+                        const tbody = document.querySelector(config.table);
+                        const existingRow = tbody.querySelector(`tr[data-id="${recordId}"]`);
+                        if (existingRow) {
+                            existingRow.outerHTML = config.rowTemplate({...data, id: recordId});
+                        }
+                    } else {
+                        // Add new row
+                        const tbody = document.querySelector(config.table);
+                        const noRecordsRow = tbody.querySelector('tr td[colspan]');
+                        if (noRecordsRow) {
+                            tbody.innerHTML = '';
+                        }
+                        tbody.insertAdjacentHTML('beforeend', config.rowTemplate(data));
                     }
-
-                    // Add new row
-                    tbody.insertAdjacentHTML('beforeend', config.rowTemplate(data));
 
                     // Close modal
                     const modal = bootstrap.Modal.getInstance(document.querySelector(config.modal));
                     modal.hide();
 
-                    // Reset form
+                    // Reset form and edit mode
                     form.reset();
+                    form.removeAttribute('data-edit-mode');
+                    form.removeAttribute('data-record-id');
+
+                    // Reset modal title
+                    const modalTitle = document.querySelector(`${config.modal} .modal-title`);
+                    if (modalTitle) {
+                        modalTitle.textContent = modalTitle.textContent.replace('Edit ', 'Add ');
+                    }
 
                     // Show success message
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: 'Record has been saved successfully.',
+                        text: `Record has been ${isEditMode ? 'updated' : 'saved'} successfully.`,
                         timer: 2000,
                         showConfirmButton: false
                     });
@@ -1507,6 +1548,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
+    // Add console.log for debugging
+    console.log('JavaScript loaded and event listeners attached');
 });
 </script>
 </body>
