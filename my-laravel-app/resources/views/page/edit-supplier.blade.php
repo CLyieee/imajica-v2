@@ -34,7 +34,7 @@
                                 <div class="card">
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <h5 class="card-title mb-0">Edit Supplier</h5>
-                                        <a href="{{ route('page.supplier-list') }}" class="btn btn-secondary">Back to List</a>
+                                        <a href="{{ route('page.supplier-list') }}" class="btn btn-primary">Back to List</a>
                                     </div>
                                     <div class="card-body">
                                         <form action="{{ route('supplier.update', $supplier->suppler_id) }}" method="POST">
