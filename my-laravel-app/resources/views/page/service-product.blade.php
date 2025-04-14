@@ -1357,68 +1357,159 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateTable() {
         const rows = Array.from(tableBody.getElementsByTagName('tr'));
+        const searchValue = searchInput.value.toLowerCase();
         const fromDate = dateFrom.value ? new Date(dateFrom.value) : null;
         const toDate = dateTo.value ? new Date(dateTo.value) : null;
+        const filterDateValue = filterByDate.value;
+        const filterByValue = filterBy.value;
+        const reportTypeValue = reportType.value;
         
         rows.forEach(row => {
+            const rowData = Array.from(row.cells).map(cell => cell.textContent.toLowerCase());
             const dateStr = row.cells[1].textContent;
             const date = new Date(dateStr);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
+            const typeCell = row.cells[7].textContent.toLowerCase(); // Loyalty Points column contains Service/Product type
+            const costValue = parseFloat(row.cells[6].textContent.replace('₱', '').replace(',', '')); // Service Cost column
+            const description = row.cells[3].textContent.toLowerCase(); // Description column
             
             let showRow = true;
 
-            // Apply date range filter if at least one date is selected
-            if (fromDate || toDate) {
-                if (fromDate && toDate) {
-                    // Show rows between the date range
-                    showRow = date >= fromDate && date <= toDate;
-                } else if (fromDate) {
-                    // Show rows from the start date onwards
-                    showRow = date >= fromDate;
-                } else if (toDate) {
-                    // Show rows up to the end date
-                    showRow = date <= toDate;
-                }
-                filterByDate.value = ''; // Clear preset date filters when using custom range
+            // Apply search filter
+            if (searchValue) {
+                showRow = rowData.some(text => text.includes(searchValue));
             }
-            // ...rest of the filtering logic remains the same
-            
+
+            // Apply filter by type and price
+            if (showRow && filterByValue) {
+                switch(filterByValue) {
+                    case 'service':
+                        showRow = typeCell.includes('service');
+                        break;
+                    case 'product':
+                        showRow = typeCell.includes('product');
+                        break;
+                    case 'price_high':
+                        // Sort by price high to low
+                        const rows = Array.from(tableBody.getElementsByTagName('tr'));
+                        rows.sort((a, b) => {
+                            const priceA = parseFloat(a.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            const priceB = parseFloat(b.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            return priceB - priceA;
+                        });
+                        rows.forEach(row => tableBody.appendChild(row));
+                        break;
+                    case 'price_low':
+                        // Sort by price low to high
+                        const rowsLow = Array.from(tableBody.getElementsByTagName('tr'));
+                        rowsLow.sort((a, b) => {
+                            const priceA = parseFloat(a.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            const priceB = parseFloat(b.cells[6].textContent.replace('₱', '').replace(',', ''));
+                            return priceA - priceB;
+                        });
+                        rowsLow.forEach(row => tableBody.appendChild(row));
+                        break;
+                }
+            }
+
+            // Apply date filters
+            if (showRow) {
+                if (fromDate || toDate) {
+                    // Custom date range filter
+                    if (fromDate && toDate) {
+                        showRow = date >= fromDate && date <= toDate;
+                    } else if (fromDate) {
+                        showRow = date >= fromDate;
+                    } else if (toDate) {
+                        showRow = date <= toDate;
+                    }
+                } else if (filterDateValue) {
+                    // Preset date filters
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    switch(filterDateValue) {
+                        case 'today':
+                            showRow = date.toDateString() === today.toDateString();
+                            break;
+                        case 'yesterday':
+                            const yesterday = new Date(today);
+                            yesterday.setDate(today.getDate() - 1);
+                            showRow = date.toDateString() === yesterday.toDateString();
+                            break;
+                        case 'last_week':
+                            const lastWeek = new Date(today);
+                            lastWeek.setDate(today.getDate() - 7);
+                            showRow = date >= lastWeek;
+                            break;
+                        case 'last_month':
+                            const lastMonth = new Date(today);
+                            lastMonth.setDate(today.getDate() - 30);
+                            showRow = date >= lastMonth;
+                            break;
+                        case 'this_month':
+                            showRow = date.getMonth() === today.getMonth() && 
+                                    date.getFullYear() === today.getFullYear();
+                            break;
+                        case 'last_3months':
+                            const last3Months = new Date(today);
+                            last3Months.setMonth(today.getMonth() - 3);
+                            showRow = date >= last3Months;
+                            break;
+                    }
+                }
+            }
+
+            // Apply report type filter
+            if (showRow && reportTypeValue) {
+                switch(reportTypeValue) {
+                    case 'services':
+                        showRow = typeCell.includes('service');
+                        break;
+                    case 'products':
+                        showRow = typeCell.includes('product');
+                        break;
+                    case 'discounts':
+                        // Assuming items with discounts have "discount" in description
+                        showRow = description.includes('discount');
+                        break;
+                    case 'giftcards':
+                        // Assuming gift card usage is mentioned in description
+                        showRow = description.includes('gift card');
+                        break;
+                    case 'overall':
+                        showRow = true;
+                        break;
+                }
+            }
+
             row.style.display = showRow ? '' : 'none';
         });
     }
 
     // Add event listeners for date inputs
     dateFrom.addEventListener('change', function() {
-        const fromDate = new Date(this.value);
-        const toDate = dateTo.value ? new Date(dateTo.value) : null;
-        
-        // If end date exists and is before start date, clear end date
-        if (toDate && toDate < fromDate) {
-            dateTo.value = '';
-        }
+        filterByDate.value = ''; // Clear preset filter
         updateTable();
     });
-
     dateTo.addEventListener('change', function() {
-        const toDate = new Date(this.value);
-        const fromDate = dateFrom.value ? new Date(dateFrom.value) : null;
-        
-        // If start date exists and is after end date, clear start date
-        if (fromDate && fromDate > toDate) {
-            dateFrom.value = '';
-        }
+        filterByDate.value = ''; // Clear preset filter
         updateTable();
     });
-
-    // Clear custom date range when using preset filters
     filterByDate.addEventListener('change', function() {
+        // Clear custom date range when using preset filters
         if (this.value) {
             dateFrom.value = '';
             dateTo.value = '';
         }
         updateTable();
     });
+    searchInput.addEventListener('input', updateTable);
+
+    // Add event listener for Filter By dropdown
+    filterBy.addEventListener('change', updateTable);
+
+    // Add event listener for Report Type dropdown
+    reportType.addEventListener('change', updateTable);
 
     // Initialize the table
     updateTable();
