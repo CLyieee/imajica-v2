@@ -12,32 +12,47 @@ use App\Models\Branch;
 class serviceController extends Controller
 {
    public function create(Request $request) {
-        $data = $request->validate([
-            'service_name' => 'required',
-            'service_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'branch_code' => 'required',
-            'description' => 'required',
-            'duration' => 'required',
-            'service_category' => 'required',
-            'service_cost' => 'required',
-            'loyalty_pts' => 'required',
-        ]);
+        try {
+            $data = $request->validate([
+                'service_name' => 'required',
+                'service_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'branch_code' => 'required',
+                'description' => 'required',
+                'duration' => 'required|numeric',
+                'service_category' => 'required',
+                'service_cost' => 'required|numeric',
+                'loyalty_pts' => 'required|numeric',
+            ]);
 
-        // Handle image upload
-        if ($request->hasFile('service_image')) {
-            $image = $request->file('service_image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/services'), $imageName);
-            $data['service_image'] = 'uploads/services/' . $imageName;
+            // Handle image upload
+            if ($request->hasFile('service_image')) {
+                $image = $request->file('service_image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/services'), $imageName);
+                $data['service_image'] = 'uploads/services/' . $imageName;
+            }
+
+            $service = service::create($data);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Service created successfully',
+                    'data' => $service
+                ]);
+            }
+
+            return redirect()->route('page.services-list')->with('success', 'Service created successfully');
+
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Failed to create service: ' . $e->getMessage()
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Failed to create service: ' . $e->getMessage());
         }
-
-        $newService = service::create($data);
-
-
-
-        
-        return redirect(route('page.new-services'))->with('success', 'Service created successfully');
-
     }
 
 public function update(Request $request) {

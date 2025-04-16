@@ -412,6 +412,8 @@
 
     <!-- Page JS -->
     <script src="../../assets/js/form-layouts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
       $(document).ready(function() {
         // Define routes object for API endpoints
@@ -469,6 +471,148 @@
             select.trigger('change');
           }
         }
+
+        // Form submission handler
+        $('form').on('submit', function(e) {
+          e.preventDefault();
+          
+          // Validate required fields
+          const requiredFields = ['service_name', 'branch_code','description', 'duration', 'service_category', 'service_cost', 'loyalty_pts'];	
+          let isValid = true;
+          
+          requiredFields.forEach(field => {
+            if (!$(`#${field}`).val()) {
+              isValid = false;
+              $(`#${field}`).addClass('is-invalid');
+            } else {
+              $(`#${field}`).removeClass('is-invalid');
+            }
+          });
+
+          if (!isValid) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Required Fields',
+              text: 'Please fill in all required fields',
+              confirmButtonColor: '#0A3622'
+            });
+            return;
+          }
+
+          let formData = new FormData(this);
+
+          // Show loading state
+          Swal.fire({
+            title: 'Processing...',
+            text: 'Please wait while we add the service',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+              if(response.status) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Success!',
+                  text: 'Service has been added successfully',
+                  confirmButtonColor: '#0A3622',
+                  confirmButtonText: 'View Services List',
+                  showCancelButton: true,
+                  cancelButtonText: 'Add Another Service',
+                  cancelButtonColor: '#6c757d'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href = "{{ route('page.services-list') }}";
+                  } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Reset form for new entry
+                    $('form')[0].reset();
+                    $('#imagePreview').attr('src', '../../assets/img/services/default-service.png');
+                    $('#defaultAvatar').show();
+                    $('#imagePreview').hide();
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Operation Failed',
+                  text: response.message || 'Failed to add service. Please try again.',
+                  confirmButtonColor: '#0A3622'
+                });
+              }
+            },
+            error: function(xhr) {
+              let errorMessage = 'Something went wrong!';
+              if(xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+              }
+              
+              if(xhr.status === 422) { // Validation error
+                let errors = xhr.responseJSON.errors;
+                let errorList = '<ul class="text-start">';
+                Object.keys(errors).forEach(key => {
+                  errorList += `<li>${errors[key][0]}</li>`;
+                });
+                errorList += '</ul>';
+                
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Validation Error',
+                  html: errorList,
+                  confirmButtonColor: '#0A3622'
+                });
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: errorMessage,
+                  confirmButtonColor: '#0A3622'
+                });
+              }
+            }
+          });
+        });
+
+        // Image upload validation with SweetAlert
+        $('#service_image').on('change', function() {
+          const file = this.files[0];
+          if (file) {
+            const fileSize = file.size / 1024 / 1024; // in MB
+            const fileType = file.type;
+            
+            if (!fileType.startsWith('image/')) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Invalid File',
+                text: 'Please upload an image file',
+                confirmButtonColor: '#0A3622'
+              });
+              this.value = '';
+              return;
+            }
+            
+            if (fileSize > 2) {
+              Swal.fire({
+                icon: 'error',
+                title: 'File Too Large',
+                text: 'Image size should not exceed 2MB',
+                confirmButtonColor: '#0A3622'
+              });
+              this.value = '';
+              return;
+            }
+
+            handleImageUpload(this);
+          }
+        });
       });
 
       function handleImageUpload(input) {
