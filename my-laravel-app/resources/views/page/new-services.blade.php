@@ -126,6 +126,21 @@
         background-color: #0a3622;
         border-color: #0a3622;
       }
+
+      .default-avatar {
+        width: 100%;
+        height: 100%;
+        background-color: #0a3622;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .avatar-initials {
+        color: white;
+        font-size: 3rem;
+        font-weight: bold;
+      }
     </style>
 
   </head>
@@ -181,6 +196,9 @@
                                 <div class="profile-upload-container mx-auto">
                                   <div class="avatar-upload">
                                     <div class="avatar-preview">
+                                      <div id="defaultAvatar" class="default-avatar rounded-circle" style="display: none;">
+                                        <span class="avatar-initials">S</span>
+                                      </div>
                                       <img
                                         id="imagePreview"
                                         src="../../assets/img/services/default-service.png"
@@ -196,6 +214,7 @@
                                         name="service_image"
                                         accept=".png, .jpg, .jpeg"
                                         class="d-none"
+                                        onchange="handleImageUpload(this)"
                                       />
                                       <label
                                         for="service_image"
@@ -452,21 +471,33 @@
         }
       });
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const imageUpload = document.getElementById("imageUpload");
-        const imagePreview = document.getElementById("imagePreview");
+      function handleImageUpload(input) {
+        const imagePreview = document.getElementById('imagePreview');
+        const defaultAvatar = document.getElementById('defaultAvatar');
 
-        // Handle photo upload
-        imageUpload.addEventListener("change", function (e) {
-          const file = e.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              imagePreview.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-          }
-        });
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+            defaultAvatar.style.display = 'none';
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          imagePreview.style.display = 'none';
+          defaultAvatar.style.display = 'flex';
+        }
+      }
+
+      // Show default avatar on page load if no image
+      document.addEventListener('DOMContentLoaded', function() {
+        const imagePreview = document.getElementById('imagePreview');
+        const defaultAvatar = document.getElementById('defaultAvatar');
+        
+        if (!imagePreview.src || imagePreview.src.endsWith('default-service.png')) {
+          imagePreview.style.display = 'none';
+          defaultAvatar.style.display = 'flex';
+        }
       });
     </script>
   </body>

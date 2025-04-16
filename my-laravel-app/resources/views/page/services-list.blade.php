@@ -162,17 +162,6 @@
             <!-- Success/Error Messages -->
             <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
 
-            <!-- Branch Filter -->
-            <div class="px-3 py-2">
-              <label for="branchFilter" class="form-label">Select Branch:</label>
-              <select id="branchFilter" class="form-select w-auto d-inline-block">
-                <option value="">All Branches</option>
-                @foreach($branches as $branch)
-                  <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
-                @endforeach
-              </select>
-            </div>
-
             <!-- Table -->
             <div class="table-responsive text-nowrap px-3">
               <table class="table table-striped" id="servicesTable">
@@ -464,12 +453,6 @@
   <script>
     $(document).ready(function () {
       $('#servicesTable').DataTable();
-
-        // Filter by branch
-        $("#branchFilter").on("change", function () {
-          var selectedBranch = $(this).val();
-          table.column(0).search(selectedBranch).draw();
-        });
       });
 
       // Add this to your existing script section
