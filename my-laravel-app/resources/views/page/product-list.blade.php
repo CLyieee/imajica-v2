@@ -211,8 +211,8 @@
                 <a href="{{ route('product.edit', ['sku' => $product->sku]) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Product">
                   <i class="ti tabler-edit me-1"></i>Edit
                 </a>
-                <button class="btn btn-sm btn-danger delete-product ms-2" data-sku="{{ $product->sku }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Product">
-                  <i class="ti tabler-trash me-1"></i>Delete
+                <button class="btn btn-sm btn-danger delete-product" data-sku="{{ $product->sku }}">
+                    <i class="ti tabler-trash me-1"></i>Delete
                 </button>
               </div>
             </td>
@@ -338,7 +338,82 @@
 <script>
 $(document).ready(function() {
   $('#prodTable').DataTable();
-})
+  
+    // SweetAlert default configuration
+    const swalConfig = {
+        customClass: {
+            container: 'swal-container-class',
+            popup: 'swal-popup-class',
+            confirmButton: 'btn btn-danger me-3',
+            cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false,
+        backdrop: true,
+        allowOutsideClick: false
+    };
+
+    // Handle delete product button clicks
+    $('.delete-product').on('click', function() {
+        try {
+            const sku = $(this).data('sku');
+            const productName = $(this).closest('tr').find('div').text().trim();
+            
+            if (!sku) {
+                throw new Error("Product SKU not found in data attributes");
+            }
+            
+            // Set the SKU in the hidden delete form
+            $('#delete_product_sku').val(sku);
+            
+            // Show delete confirmation
+            Swal.fire({
+                ...swalConfig,
+                title: 'Confirm Delete',
+                html: `Are you sure you want to delete product <strong>${productName}</strong>?<br>This action cannot be undone.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the delete form
+                    $('#deleteProductForm').submit();
+                }
+            });
+        } catch (e) {
+            console.error("Error in delete button click handler:", e);
+            Swal.fire({
+                ...swalConfig,
+                icon: 'error',
+                title: 'Delete Error',
+                html: 'An error occurred while processing your delete request:<br>' + e.message,
+                showConfirmButton: true
+            });
+        }
+    });
+
+    // Handle success/error messages from server
+    @if(session('success'))
+        Swal.fire({
+            ...swalConfig,
+            icon: 'success',
+            title: 'Success',
+            text: "{{ session('success') }}",
+            timer: 1500,
+            showConfirmButton: false
+        });
+    @endif
+
+    @if(session('error'))
+        Swal.fire({
+            ...swalConfig,
+            icon: 'error',
+            title: 'Error',
+            text: "{{ session('error') }}",
+            showConfirmButton: true
+        });
+    @endif
+});
 </script>
 
   </body>
