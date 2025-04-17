@@ -290,12 +290,6 @@
                 <div data-i18n="Reports">Reports</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('customer-report') ? 'active' : '' }}">
-                    <a href="/customer-report" class="menu-link">
-                        <div data-i18n="Customer Report">Customer Report</div>
-                    </a>
-                </li>
-
                 <li class="menu-item {{ request()->is('service-product') ? 'active' : '' }}">
                     <a href="/service-product" class="menu-link">
                         <div data-i18n="Service/Product Report">Service/Product Report</div>
@@ -306,7 +300,6 @@
                         <div data-i18n="Employee Report">Employee Report</div>
                     </a>
                 </li>
-
                 <li class="menu-item {{ request()->is('expenses-report') ? 'active' : '' }}">
                     <a href="/expenses-report" class="menu-link">
                         <div data-i18n="Expenses Report">Expenses Report</div>
