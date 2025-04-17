@@ -291,10 +291,124 @@
     <script src="../../assets/js/forms-pickers.js"></script>
 
     <!-- AJAX Form Submission Script -->
-  
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      $(document).ready(function() {
+        $('form').on('submit', function(e) {
+          e.preventDefault();
+          
+          const requiredFields = ['branch_code', 'branch_name', 'address'];
+          let isValid = true;
+          
+          requiredFields.forEach(field => {
+            if (!$(`#${field}`).val()) {
+              isValid = false;
+              $(`#${field}`).addClass('is-invalid');
+            } else {
+              $(`#${field}`).removeClass('is-invalid');
+            }
+          });
+
+          if (!isValid) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Required Fields',
+              text: 'Please fill in all required fields',
+              confirmButtonColor: '#0A3622'
+            });
+            return;
+          }
+
+          Swal.fire({
+            title: 'Processing...',
+            text: 'Please wait while we add the branch',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+              if(response.status) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Success!',
+                  text: 'Branch has been added successfully',
+                  confirmButtonColor: '#0A3622',
+                  confirmButtonText: 'View Branches List',
+                  showCancelButton: true,
+                  cancelButtonText: 'Add Another Branch',
+                  cancelButtonColor: '#6c757d'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href = "{{ route('page.branch-list') }}";
+                  } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    $('form')[0].reset();
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Operation Failed',
+                  text: response.message || 'Failed to add branch. Please try again.',
+                  confirmButtonColor: '#0A3622'
+                });
+              }
+            },
+            error: function(xhr) {
+              // Handle duplicate entry error
+              if(xhr.responseText.includes('Duplicate entry')) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Duplicate Branch Code',
+                  text: 'This branch code already exists. Please use a different code.',
+                  confirmButtonColor: '#0A3622'
+                }).then(() => {
+                  // Clear only the branch_code field
+                  $('#branch_code').val('').focus();
+                });
+                return;
+              }
+
+              // Handle validation errors
+              if(xhr.status === 422) {
+                let errors = xhr.responseJSON.errors;
+                let errorList = '<ul class="text-start">';
+                Object.keys(errors).forEach(key => {
+                  errorList += `<li>${errors[key][0]}</li>`;
+                });
+                errorList += '</ul>';
+                
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Validation Error',
+                  html: errorList,
+                  confirmButtonColor: '#0A3622'
+                });
+                return;
+              }
+
+              // Handle other errors
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An unexpected error occurred. Please try again.',
+                confirmButtonColor: '#0A3622'
+              });
+            }
+          });
+        });
+      });
+    </script>
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->
 </html>
 
 <!-- beautify ignore:end -->
+``` 

@@ -8,18 +8,39 @@ use Illuminate\Support\Facades\Validator;
 
 class branchController extends Controller
 {
-    public function create(Request $request) {
-        $data = $request->validate([
-            'branch_code' => 'required',
-            'branch_name' => 'required',
-            'address' => 'required',
-        ]);
+    public function create(Request $request)
+    {
+        try {
+            // Validate input
+            $validated = $request->validate([
+                'branch_code' => 'required|unique:branches,branch_code',
+                'branch_name' => 'required',
+                'address' => 'required'
+            ]);
 
-        $newBranch = branch::create($data);
-        
-        return redirect(route('page.new-branch'));
+            // Create branch
+            $branch = Branch::create($validated);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Branch created successfully'
+            ]);
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Check for duplicate entry error (MySQL error code 1062)
+            if ($e->errorInfo[1] == 1062) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Branch code already exists'
+                ], 422);
+            }
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Database error occurred'
+            ], 500);
+        }
     }
-
 
     public function update(Request $request)
     {
