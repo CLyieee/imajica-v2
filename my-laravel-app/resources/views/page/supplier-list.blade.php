@@ -41,77 +41,110 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                        @endif
+                        <div class="card">
+                            <!-- Table Header with Search -->
+                            <div class="d-flex justify-content-between align-items-center p-3">
+                                <h5 class="card-title mb-0">Supplier List</h5>
+                                <a class="btn btn-primary" href="{{ route('page.new-supplier') }}">
+                                    <i class="ti tabler-plus me-1"></i> Add New Supplier
+                                </a>
+                            </div>
 
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="card-title mb-0 text-black">Supplier List</h5>
-                                        <a href="{{ route('page.new-supplier') }}" class="btn btn-primary">
-                                            <i class="ti tabler-plus"></i> Add New Supplier
-                                        </a>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped "  id="supplierTableee">
-                                                <thead class="table-light">
-                                                    <tr>
-                                               
-                                                        <th class="text-center">Supplier Name</th>
-                                                        <th class="text-center">Company</th>
-                                                        <th class="text-center">Contact Person</th>
-                                                        <th class="text-center">Address</th>
-                                                        <th class="text-center">Mobile Number</th>
-                                                        <th class="text-center">Email</th>
-                                                        <th class="text-center">Description</th>
-                                                        <th class="text-center">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($suppliers as $supplier)
-                                                    <tr>
-                                                       
-                                                        <td class="text-center">{{ $supplier->supplier_name }}</td>
-                                                        <td class="text-center">{{ $supplier->company }}</td>
-                                                        <td class="text-center">{{ $supplier->contact_person }}</td>
-                                                        <td class="text-center">{{ $supplier->address }}</td>
-                                                        <td class="text-center">{{ $supplier->mobile_number }}</td>
-                                                        <td class="text-center">{{ $supplier->email }}</td>
-                                                        <td class="text-center">{{ $supplier->description }}</td>
-                                                        <td class="text-center">
+                            <!-- Success/Error Messages -->
+                            <div id="responseMessage" style="display: none;" class="alert mx-3 mt-0 mb-3"></div>
 
-                                                            <div class="d-inline-block">
-                                                                <a href="{{ route('supplier.edit', ['id' => $supplier->suppler_id]) }}" 
-                                                                   class="btn btn-sm btn-info" 
-                                                                   data-bs-toggle="tooltip" 
-                                                                   data-bs-placement="top" 
-                                                                   title="Edit Supplier">
-                                                                    <i class="ti tabler-edit me-1"></i>Edit
-                                                                </a>
-
-                                                                <button type="button" class="btn btn-sm btn-danger delete-supplier" 
-                                                                        data-id="{{ $supplier->suppler_id }}">
-                                                                    <i class="ti tabler-trash me-1"></i> Delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Table -->
+                            <div class="table-responsive text-nowrap px-3">
+                                <table class="table table-striped" id="supplierTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Supplier Name</th>
+                                            <th>Company</th>
+                                            <th>Contact Person</th>
+                                            <th>Address</th>
+                                            <th>Mobile Number</th>
+                                            <th>Email</th>
+                                            <th>Description</th>
+                                            <th class="text-center" style="min-width: 150px;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($suppliers as $supplier)
+                                        <tr>
+                                            <td>{{ $supplier->supplier_name }}</td>
+                                            <td>{{ $supplier->company }}</td>
+                                            <td>{{ $supplier->contact_person }}</td>
+                                            <td>{{ $supplier->address }}</td>
+                                            <td>{{ $supplier->mobile_number }}</td>
+                                            <td>{{ $supplier->email }}</td>
+                                            <td>{{ $supplier->description }}</td>
+                                            <td>
+                                                <div class="d-flex gap-2 justify-content-center">
+                                                    <a href="{{ route('supplier.edit', ['id' => $supplier->suppler_id]) }}" 
+                                                       class="btn btn-sm btn-info">
+                                                        <i class="ti tabler-edit me-1"></i> Edit
+                                                    </a>
+                                                    <button class="btn btn-sm btn-danger delete-supplier" 
+                                                            data-id="{{ $supplier->suppler_id }}"
+                                                            data-name="{{ $supplier->supplier_name }}">
+                                                        <i class="ti tabler-trash me-1"></i> Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <br />
                             </div>
                         </div>
                     </div>
-                    <!-- / Content -->
+
+                    <!-- Add this CSS to match the services table styling -->
+                    <style>
+                        .table th {
+                            font-weight: 600;
+                            background-color: #f5f5f9;
+                        }
+                        
+                        .btn {
+                            display: inline-flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 0.25rem;
+                        }
+
+                        .btn i {
+                            font-size: 1rem;
+                        }
+
+                        .btn-sm {
+                            padding: 0.25rem 0.5rem;
+                            font-size: 0.875rem;
+                        }
+
+                        .gap-2 {
+                            gap: 0.5rem !important;
+                        }
+                    </style>
+
+                    <!-- Update the DataTable initialization script -->
+                    <script>
+                        $(document).ready(function() {
+                            $('#supplierTable').DataTable({
+                                responsive: true,
+                                dom: 'Bfrtip',
+                                searching: true,
+                                paging: true,
+                                searchPlaceholder: 'Search...',
+                                order: [[0, 'asc']], // Sort by first column by default
+                                language: {
+                                    search: '',
+                                    searchPlaceholder: "Search suppliers..."
+                                }
+                            });
+                        });
+                    </script>
                 </div>
             </div>
         </div>
@@ -527,12 +560,6 @@
                 });
             });
         });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $('#supplierTableee').DataTable();
-        })
     </script>
 
 </body>

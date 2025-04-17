@@ -22,72 +22,127 @@
 </head>
 
 <body>
+    <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             @include('components.sidebar')
 
+            <!-- Layout container -->
             <div class="layout-page">
+                <!-- Content wrapper -->
                 <div class="content-wrapper">
+                    <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
+                        <!-- Sticky Actions -->
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="card-title mb-0">Edit Supplier</h5>
-                                        <a href="{{ route('page.supplier-list') }}" class="btn btn-primary">Back to List</a>
+                                    <div class="card-header d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
+                                         style="background-color: #0A3622;">
+                                        <h5 class="card-title mb-sm-0 me-2 text-white">
+                                            Edit Supplier: {{ $supplier->supplier_name }}
+                                        </h5>
+                                        <div class="mt-3 mt-sm-0">
+                                            <a href="{{ route('page.supplier-list') }}" class="btn btn-light">
+                                                <i class="ti tabler-arrow-left me-1"></i>Back to Suppliers List
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <form action="{{ route('supplier.update', $supplier->suppler_id) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Supplier Name</label>
-                                                    <input type="text" name="supplier_name" class="form-control" 
-                                                           value="{{ old('supplier_name', $supplier->supplier_name) }}" required>
-                                                </div>
-                                                
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Company</label>
-                                                    <input type="text" name="company" class="form-control"
-                                                           value="{{ old('company', $supplier->company) }}">
-                                                </div>
+                                    
+                                    <div class="card-body pt-6">
+                                        <div class="row">
+                                            <div class="col-lg-8 mx-auto">
+                                                <!-- Form -->
+                                                <form action="{{ route('supplier.update', $supplier->suppler_id) }}" 
+                                                      method="POST" 
+                                                      id="updateSupplierForm">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    
+                                                    <div class="row g-6">
+                                                        <!-- Supplier Name -->
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">Supplier Name</label>
+                                                            <input type="text" 
+                                                                   name="supplier_name" 
+                                                                   class="form-control" 
+                                                                   value="{{ old('supplier_name', $supplier->supplier_name) }}" 
+                                                                   required>
+                                                        </div>
 
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Contact Person</label>
-                                                    <input type="text" name="contact_person" class="form-control"
-                                                           value="{{ old('contact_person', $supplier->contact_person) }}">
-                                                </div>
+                                                        <!-- Company -->
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">Company</label>
+                                                            <input type="text" 
+                                                                   name="company" 
+                                                                   class="form-control"
+                                                                   value="{{ old('company', $supplier->company) }}">
+                                                        </div>
 
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Mobile Number</label>
-                                                    <input type="text" name="mobile_number" class="form-control"
-                                                           value="{{ old('mobile_number', $supplier->mobile_number) }}">
-                                                </div>
+                                                        <!-- Contact Person -->
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">Contact Person</label>
+                                                            <input type="text" 
+                                                                   name="contact_person" 
+                                                                   class="form-control"
+                                                                   value="{{ old('contact_person', $supplier->contact_person) }}">
+                                                        </div>
 
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Email</label>
-                                                    <input type="email" name="email" class="form-control"
-                                                           value="{{ old('email', $supplier->email) }}">
-                                                </div>
+                                                        <!-- Mobile Number -->
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">Mobile Number</label>
+                                                            <input type="text" 
+                                                                   name="mobile_number" 
+                                                                   class="form-control"
+                                                                   value="{{ old('mobile_number', $supplier->mobile_number) }}">
+                                                        </div>
 
-                                                <div class="col-12 mb-3">
-                                                    <label class="form-label">Address</label>
-                                                    <textarea name="address" class="form-control" rows="3">{{ old('address', $supplier->address) }}</textarea>
-                                                </div>
+                                                        <!-- Email -->
+                                                        <div class="col-md-12">
+                                                            <label class="form-label">Email</label>
+                                                            <input type="email" 
+                                                                   name="email" 
+                                                                   class="form-control"
+                                                                   value="{{ old('email', $supplier->email) }}">
+                                                        </div>
 
-                                                <div class="col-12 mb-3">
-                                                    <label class="form-label">Description</label>
-                                                    <textarea name="description" class="form-control" rows="3">{{ old('description', $supplier->description) }}</textarea>
-                                                </div>
+                                                        <!-- Address -->
+                                                        <div class="col-12">
+                                                            <label class="form-label">Address</label>
+                                                            <textarea name="address" 
+                                                                      class="form-control" 
+                                                                      rows="3">{{ old('address', $supplier->address) }}</textarea>
+                                                        </div>
+
+                                                        <!-- Description -->
+                                                        <div class="col-12">
+                                                            <label class="form-label">Description</label>
+                                                            <textarea name="description" 
+                                                                      class="form-control" 
+                                                                      rows="4">{{ old('description', $supplier->description) }}</textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-sm-2 col-4 d-grid">
+                                                            <a href="{{ route('page.supplier-list') }}" 
+                                                               class="btn btn-outline-secondary">Cancel</a>
+                                                        </div>
+                                                        <div class="col-sm-2 col-4 d-grid ms-2">
+                                                            <button type="button" 
+                                                                    class="btn btn-primary" 
+                                                                    id="updateSupplierBtn">
+                                                                Update Supplier
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <br />
+                                                <!-- Messages -->
+                                                <div id="responseMessage" style="display: none;" class="alert mt-3"></div>
                                             </div>
-
-                                            <div class="mt-3">
-                                                <button type="submit" class="btn btn-primary me-2">Update Supplier</button>
-                                                <a href="{{ route('page.supplier-list') }}" class="btn btn-outline-secondary">Cancel</a>
-                                            </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +161,7 @@
     <script>
         $(document).ready(function() {
             // Handle form submission
-            $('form').on('submit', function(e) {
+            $('#updateSupplierBtn').on('click', function(e) {
                 e.preventDefault();
                 
                 Swal.fire({
@@ -120,31 +175,33 @@
                     cancelButtonColor: '#d33'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        const form = $(this);
+                        const form = $('#updateSupplierForm');
                         const formData = form.serialize();
+
+                        // Show loading state
+                        Swal.fire({
+                            title: 'Processing...',
+                            text: 'Updating supplier information',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
 
                         $.ajax({
                             url: form.attr('action'),
                             type: 'POST',
                             data: formData,
                             success: function(response) {
-                                if(response.status) {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Success',
-                                        text: response.message,
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    }).then(() => {
-                                        window.location.href = response.redirect;
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error',
-                                        text: response.message
-                                    });
-                                }
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: 'Supplier updated successfully',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    window.location.href = "{{ route('page.supplier-list') }}";
+                                });
                             },
                             error: function(xhr) {
                                 let errorMessage = 'An error occurred while updating the supplier.';
@@ -161,26 +218,6 @@
                     }
                 });
             });
-
-            // Display success/error messages
-            @if(session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: "{{ session('success') }}",
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-            @endif
-
-            @if(session('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: "{{ session('error') }}",
-                    confirmButtonColor: '#d33'
-                });
-            @endif
         });
     </script>
 </body>
