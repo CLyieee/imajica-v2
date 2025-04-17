@@ -11,22 +11,23 @@ class Patient extends Model
     use HasFactory;
 
     protected $primaryKey = 'patient_id';
+
     protected $fillable = [
         'firstname',
         'lastname',
         'email',
         'contact_number',
-        'gender',
         'birthdate',
+        'gender',
+        'patient_tier_id',
         'occupation',
         'address',
-        'image_path',
-        'patient_tier_id',
         'emergency_contact_name',
         'emergency_contact_number',
         'medical_concerns',
         'current_medications',
-        'note_from_admin'
+        'note_from_admin',
+        'image_path'
     ];
 
     protected $attributes = [
