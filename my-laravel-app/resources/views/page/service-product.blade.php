@@ -294,6 +294,76 @@
           min-height: calc(100% - 3.5rem);
         }
       }
+
+      /* Add these styles */
+      .table {
+        margin-bottom: 0;
+      }
+
+      .table th {
+        font-weight: 500;
+        font-size: 14px;
+        vertical-align: middle;
+      }
+
+      .badge {
+        padding: 0.4em 0.7em;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .bg-label-info {
+        background-color: rgba(3, 195, 236, 0.16) !important;
+        color: #03c3ec !important;
+      }
+
+      .bg-label-warning {
+        background-color: rgba(255, 171, 0, 0.16) !important;
+        color: #ffab00 !important;
+      }
+
+      .bg-label-success {
+        background-color: rgba(113, 221, 55, 0.16) !important;
+        color: #71dd37 !important;
+      }
+
+      .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        border-radius: 0.25rem;
+      }
+
+      .btn-info {
+        background-color: #03c3ec;
+        border-color: #03c3ec;
+        color: #fff;
+      }
+
+      .btn-primary {
+        background-color: #134013;
+        border-color: #134013;
+        color: #fff;
+      }
+
+      .form-select-sm {
+        font-size: 0.875rem;
+        padding: 0.25rem 2rem 0.25rem 0.5rem;
+      }
+
+      .input-group-sm > .form-control {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+      }
+
+      .input-group-text {
+        background-color: #f0f0f0;
+        border-right: none;
+      }
+
+      .form-control:focus {
+        border-color: #134013;
+        box-shadow: 0 0 0 0.2rem rgba(19, 64, 19, 0.25);
+      }
     </style>
   </head>
 
@@ -339,9 +409,10 @@
 
         <div class="card mt-4">
           <div class="card-body">
-          <h3 class="mb-0">All Sales</h3>
             <div class="d-flex justify-content-between align-items-center mb-3">
-           
+              <h3 class="mb-0">All Sales</h3>
+              
+              <!-- Search and Filters -->
               <div class="d-flex gap-2 align-items-end">
                 <!-- Search Bar -->
                 <div class="d-flex flex-column" style="width: 180px;">
@@ -357,26 +428,6 @@
                     >
                   </div>
                 </div>
-
-                <!-- Date From -->
-                {{-- <div class="d-flex flex-column" style="width: 160px;">
-                  <label class="form-label text-muted small mb-1">Date From</label>
-                  <input 
-                    type="date" 
-                    class="form-control form-control-sm" 
-                    id="dateFrom"
-                  >
-                </div>
-
-                <!-- Date To -->
-                <div class="d-flex flex-column" style="width: 160px;">
-                  <label class="form-label text-muted small mb-1">Date To</label>
-                  <input 
-                    type="date" 
-                    class="form-control form-control-sm" 
-                    id="dateTo"
-                  >
-                </div> --}}
 
                 <!-- Filter by -->
                 <div class="d-flex flex-column" style="width: 160px;">
@@ -417,86 +468,70 @@
                 </div>
               </div>
             </div>
-            <div class="table-responsive">
-              <table class="table">
+
+            <!-- Table -->
+            <div class="table-responsive text-nowrap">
+              <table class="table table-striped" id="servicesTable">
                 <thead>
-                  <tr style="background-color: #134013;">
-                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Services Name</th>
-                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Date</th>
-                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Branch Name</th>
-                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Description</th>
-                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Duration</th>
-                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Service Category</th>
-                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Service Cost</th>
-                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">Loyalty Points</th>
-                    <th style="color: white; font-weight: 500; font-size: 14px; vertical-align: middle;">ACTION</th>
+                  <tr class="table-light">
+                    <th>Services Name</th>
+                    <th>Date</th>
+                    <th>Branch Name</th>
+                    <th>Description</th>
+                    <th>Duration</th>
+                    <th>Service Category</th>
+                    <th>Service Cost</th>
+                    <th>Type</th>
+                    <th class="text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>Hair Color Treatment</td>
-                    <td>2024-01-25</td> <!-- Today's sample data -->
+                    <td>2024-01-25</td>
                     <td>Main Branch</td>
                     <td>Professional hair coloring service</td>
-                    <td>2 hours</td>
+                    <td><span class="badge bg-label-info">2h</span></td>
                     <td>Hair Care</td>
-                    <td>₱1,500</td>
-                    <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
+                    <td>₱1,500.00</td>
+                    <td><span class="badge bg-label-warning">Service</span></td>
+                    <td class="text-center">
+                      <div class="d-flex gap-2 justify-content-center">
+                        <button class="btn btn-sm btn-info view-details" data-service-id="1">
+                          <i class="ti tabler-eye me-1"></i> View
+                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="downloadRow(this, 'excel')">
+                          <i class="ti tabler-download me-1"></i> Export
+                        </button>
+                      </div>
+                    </td>
                   </tr>
-                  <tr>
-                    <td>Hair Rebonding</td>
-                    <td>2024-01-24</td> <!-- Yesterday's sample data -->
-                    <td>North Branch</td>
-                    <td>Professional hair straightening</td>
-                    <td>3 hours</td>
-                    <td>Hair Care</td>
-                    <td>₱2,500</td>
-                    <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
-                  </tr>
-                  <!-- Last 7 days sample data -->
                   <tr>
                     <td>Professional Shampoo</td>
                     <td>2024-01-20</td>
                     <td>East Branch</td>
                     <td>Premium hair care product</td>
-                    <td>--</td>
+                    <td><span class="badge bg-label-info">--</span></td>
                     <td>Hair Care</td>
-                    <td>₱850</td>
-                    <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
+                    <td>₱850.00</td>
+                    <td><span class="badge bg-label-success">Product</span></td>
+                    <td class="text-center">
+                      <div class="d-flex gap-2 justify-content-center">
+                        <button class="btn btn-sm btn-info view-details" data-service-id="2">
+                          <i class="ti tabler-eye me-1"></i> View
+                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="downloadRow(this, 'excel')">
+                          <i class="ti tabler-download me-1"></i> Export
+                        </button>
+                      </div>
+                    </td>
                   </tr>
-                  <!-- Last month sample data -->
-                  <tr>
-                    <td>Hair Treatment Package</td>
-                    <td>2023-12-15</td>
-                    <td>South Branch</td>
-                    <td>Complete hair care treatment</td>
-                    <td>4 hours</td>
-                    <td>Hair Care</td>
-                    <td>₱3,500</td>
-                    <td><span class="badge" style="background-color: rgba(255, 165, 0, 0.2); color: #FF8C00;">Service</span></td>
-                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
-                  </tr>
-                  <!-- 3 months ago sample data -->
-                  <tr>
-                    <td>Hair Styling Tools Set</td>
-                    <td>2023-10-25</td>
-                    <td>Main Branch</td>
-                    <td>Professional styling tools</td>
-                    <td>--</td>
-                    <td>Hair Care</td>
-                    <td>₱1,200</td>
-                    <td><span class="badge" style="background-color: rgba(0, 128, 0, 0.2); color: #006400;">Product</span></td>
-                    <td><button class="btn btn-sm" onclick="downloadRow(this, 'excel')" style="background-color: #134013; color: white;"><i class="ti tabler-download me-1"></i>Export</button></td>
-                  </tr>
+                  <!-- Add more rows as needed -->
                 </tbody>
               </table>
             </div>
           </div>
         </div>
-
 
         <!-- Service/Product Details Modal -->
         <div class="modal fade" id="serviceDetailsModal" tabindex="-1" aria-hidden="true">
