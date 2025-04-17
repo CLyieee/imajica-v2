@@ -212,16 +212,16 @@ background-color: #d1ecf1; /* Light cyan */
     <div class="card">
       <div class="card-body">
         <table class="table table-striped" id="purchaseTablee">
-            <thead style="background-color: #1b392f; color: white;">
+            <thead>
                 <tr>
-                    <th style="color: white;">Trans No.</th>
-                    <th style="color: white;">Vendor Name</th>
-                    <th style="color: white;">Product Ordered</th>
-                    <th style="color: white;">Date Received</th>
-                    <th style="color: white;">Received By</th>
-                    <th style="color: white;">Quantity</th>
-                    <th style="color: white;">Amount</th>
-                    <th style="color: white;">Payment Terms</th>
+                    <th>Trans No.</th>
+                    <th>Vendor Name</th>
+                    <th>Product Ordered</th>
+                    <th>Date Received</th>
+                    <th>Received By</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th>Payment Terms</th>
                 </tr>
             </thead>
         </table>

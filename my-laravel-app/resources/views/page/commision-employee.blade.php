@@ -170,9 +170,10 @@
         }
 
         .table thead th {
-          background-color: #1b392f !important;
-          color: white !important;
+          background-color: #f8f9fa !important;
+          color: #333 !important;
         }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
           .datatable-card {

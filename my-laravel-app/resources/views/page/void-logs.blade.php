@@ -232,16 +232,16 @@
               
             <div class="container">
                 <table class="table table-striped" id="voidTable">
-                    <thead class="dark-green-header">
+                    <thead>
                         <tr>
-                            <th class="text-white">Id</th>
-                            <th class="text-white">Service</th>
-                            <th class="text-white">Customer</th>
-                            <th class="text-white">Staff</th>
-                            <th class="text-white">Amount Voided</th>
-                            <th class="text-white">Status</th>
-                            <th class="text-white">Date Voided</th>
-                            <th class="text-white">Branch</th>
+                            <th>Id</th>
+                            <th>Service</th>
+                            <th>Customer</th>
+                            <th>Staff</th>
+                            <th>Amount Voided</th>
+                            <th>Status</th>
+                            <th>Date Voided</th>
+                            <th>Branch</th>
                         </tr>
                     </thead>
                    <tbody>
