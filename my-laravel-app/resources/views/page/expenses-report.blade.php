@@ -267,6 +267,70 @@
           display: block;
         }
       }
+
+      .table {
+        margin-bottom: 0;
+      }
+
+      .table th {
+        font-weight: 500;
+        font-size: 14px;
+        vertical-align: middle;
+        padding: 0.75rem;
+      }
+
+      .badge {
+        padding: 0.4em 0.7em;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .bg-label-success {
+        background-color: rgba(113, 221, 55, 0.16) !important;
+        color: #71dd37 !important;
+      }
+
+      .bg-label-warning {
+        background-color: rgba(255, 171, 0, 0.16) !important;
+        color: #ffab00 !important;
+      }
+
+      .bg-label-danger {
+        background-color: rgba(255, 62, 29, 0.16) !important;
+        color: #ff3e1d !important;
+      }
+
+      .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        border-radius: 0.25rem;
+      }
+
+      .btn-primary {
+        background-color: #1e4d2b;
+        border-color: #1e4d2b;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #183d22;
+        border-color: #183d22;
+      }
+
+      .form-select-sm {
+        font-size: 0.875rem;
+        padding: 0.25rem 2rem 0.25rem 0.5rem;
+      }
+
+      .input-group-text {
+        background-color: #f0f0f0;
+        border-right: none;
+      }
+
+      .form-control:focus {
+        border-color: #1e4d2b;
+        box-shadow: 0 0 0 0.2rem rgba(30, 77, 43, 0.25);
+      }
     </style>
     <!-- Add these libraries in the head section -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -308,190 +372,81 @@
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="m-0">Expense Transactions</h3>
-            <div class="d-flex gap-2">
-              <div class="form-group" style="width: 150px;">
-                <div style="height: 21px;"><!-- Spacer to match label height --></div>
-                <div class="input-group">
-                  <span class="input-group-text">
-                    <i class="ti tabler-search"></i>
-                  </span>
-                  <input 
-                    type="text" 
-                    class="form-control form-control-sm" 
-                    id="searchInput" 
-                    placeholder="Search..."
-                    style="border-radius: 0; padding-right: 30px;"
-                  >
-                  <button 
-                    type="button"
-                    class="btn-close clear-search"
-                    id="clearSearch"
-                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
-                           z-index: 5; display: none; background-size: 8px; cursor: pointer;
-                           border: none; background-color: transparent; padding: 0.75rem;"
-                    aria-label="Clear search"
-                  ></button>
+            <div class="d-flex gap-2 align-items-end">
+                <!-- Search Bar -->
+                <div class="d-flex flex-column" style="width: 180px;">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text">
+                            <i class="ti tabler-search"></i>
+                        </span>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="searchInput" 
+                            placeholder="Search expenses..."
+                        >
+                    </div>
                 </div>
-              </div>
-              <div class="d-flex gap-2">
-                <div class="form-group" style="width: 150px;">
-                  <label class="form-label small text-muted mb-1">Date From</label>
-                  <input type="date" id="dateFrom" class="form-control form-control-sm" onchange="applyDateRangeFilter()">
+
+                <!-- Sort By -->
+                <div class="d-flex flex-column" style="width: 160px;">
+                    <label class="form-label text-muted small mb-1">Sort By</label>
+                    <select class="form-select form-select-sm" id="sortBy">
+                        <option value="">Default</option>
+                        <option value="date">Date (Newest First)</option>
+                        <option value="amount">Amount (High to Low)</option>
+                        <option value="category">Category (A to Z)</option>
+                        <option value="status">Payment Status</option>
+                    </select>
                 </div>
-                <div class="form-group" style="width: 150px;">
-                  <label class="form-label small text-muted mb-1">Date To</label>
-                  <input type="date" id="dateTo" class="form-control form-control-sm" onchange="applyDateRangeFilter()">
+
+                <!-- Date Filter -->
+                <div class="d-flex flex-column" style="width: 160px;">
+                    <label class="form-label text-muted small mb-1">Filter by date</label>
+                    <select class="form-select form-select-sm" id="dateFilter">
+                        <option value="">All time</option>
+                        <option value="today">Today</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="last_week">Last 7 days</option>
+                        <option value="last_month">Last 30 days</option>
+                        <option value="this_month">This month</option>
+                        <option value="last_3months">Last 3 months</option>
+                    </select>
                 </div>
-              </div>
-              <div class="form-group" style="width: 150px;">
-                <label class="form-label small text-muted mb-1">Filter By Date</label>
-                <select class="form-select form-select-sm" id="dateFilter" onchange="applyDateFilter()">
-                  <option value="">Select Date Range</option>
-                  <option value="today">Today</option>
-                  <option value="yesterday">Yesterday</option>
-                  <option value="last7">Last 7 Days</option>
-                  <option value="last30">Last 30 Days</option>
-                  <option value="thisMonth">This Month</option>
-                  <option value="lastMonth">Last Month</option>
-                  <option value="thisYear">This Year</option>
-                </select>
-              </div>
             </div>
           </div>
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead>
-                <tr style="background-color: #1e4d2b;">
-                  <th style="color: white; font-weight: 500;">Date</th>
-                  <th style="color: white; font-weight: 500;">Receipt/Invoice No.</th>
-                  <th style="color: white; font-weight: 500;">Expense Name</th>
-                  <th style="color: white; font-weight: 500;">Expense Category</th>
-                  <th style="color: white; font-weight: 500;">Payment Status</th>
-                  <th style="color: white; font-weight: 500;">Action</th>
-                </tr>
-              </thead>
-              <tbody> 
-                <tr>
-                  <td>2024-01-15</td>
-                  <td>INV-2024-001</td>
-                  <td>Electricity Bill Payment</td>
-                  <td>Utilities</td>
-                  <td><span class="badge bg-label-success">Paid</span></td>
-                  <td>
-                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2024-01-14</td>
-                  <td>INV-2024-002</td>
-                  <td>Office Supplies Purchase</td>
-                  <td>Supplies</td>
-                  <td><span class="badge bg-label-success">Paid</span></td>
-                  <td>
-                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2024-01-13</td>
-                  <td>INV-2024-003</td>
-                  <td>Equipment Maintenance</td>
-                  <td>Maintenance</td>
-                  <td><span class="badge bg-label-success">Paid</span></td>
-                  <td>
-                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2024-01-12</td>
-                  <td>INV-2024-004</td>
-                  <td>Marketing Campaign</td>
-                  <td>Marketing</td>
-                  <td><span class="badge bg-label-success">Paid</span></td>
-                  <td>
-                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2024-01-11</td>
-                  <td>INV-2024-005</td>
-                  <td>Monthly Payroll</td>
-                  <td>Payroll</td>
-                  <td><span class="badge bg-label-success">Paid</span></td>
-                  <td>
-                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2024-01-10</td>
-                  <td>INV-2024-006</td>
-                  <td>Internet Service</td>
-                  <td>Utilities</td>
-                  <td><span class="badge bg-label-success">Paid</span></td>
-                  <td>
-                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2024-01-09</td>
-                  <td>INV-2024-007</td>
-                  <td>Office Rent</td>
-                  <td>Rent</td>
-                  <td><span class="badge bg-label-success">Paid</span></td>
-                  <td>
-                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2024-01-08</td>
-                  <td>INV-2024-008</td>
-                  <td>Software Licenses</td>
-                  <td>IT Services</td>
-                  <td><span class="badge bg-label-warning">Pending</span></td>
-                  <td>
-                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2024-01-07</td>
-                  <td>INV-2024-009</td>
-                  <td>Water Bill</td>
-                  <td>Utilities</td>
-                  <td><span class="badge bg-label-success">Paid</span></td>
-                  <td>
-                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2024-01-06</td>
-                  <td>INV-2024-010</td>
-                  <td>Equipment Purchase</td>
-                  <td>Assets</td>
-                  <td><span class="badge bg-label-danger">Unpaid</span></td>
-                  <td>
-                    <button class="btn btn-sm" style="background-color: #1e4d2b; color: white;" onclick="downloadRowAsExcel(this)">
-                    <i class="ti tabler-download me-1"></i><span class="fw-bold">Export</span>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
+
+          <div class="table-responsive text-nowrap">
+            <table class="table table-striped" id="expenseReport">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Receipt/Invoice No.</th>
+                        <th>Expense Name</th>
+                        <th>Expense Category</th>
+                        <th>Amount</th>
+                        <th>Payment Status</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-01-15</td>
+                        <td>INV-2024-001</td>
+                        <td>Electricity Bill Payment</td>
+                        <td>Utilities</td>
+                        <td>₱12,450.00</td>
+                        <td><span class="badge bg-label-success">Paid</span></td>
+                        <td class="text-center">
+                            <div class="d-flex gap-2 justify-content-center">
+                                <button class="btn btn-sm btn-primary" onclick="downloadRow(this, 'excel')">
+                                    <i class="ti tabler-download me-1"></i> Export
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Add more rows with the same structure -->
+                </tbody>
             </table>
           </div>
         </div>
@@ -894,6 +849,189 @@ function downloadRowAsExcel(button) {
     
     // Save the file
     XLSX.writeFile(wb, `Expense_${invoiceNo}.xlsx`);
+}
+
+// Add this after your existing scripts
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const sortBy = document.getElementById('sortBy');
+    const dateFilter = document.getElementById('dateFilter');
+    const table = document.getElementById('expenseReport');
+
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const rows = table.querySelectorAll('tbody tr');
+
+        rows.forEach(row => {
+            const expenseName = row.cells[2].textContent.toLowerCase();
+            const category = row.cells[3].textContent.toLowerCase();
+            row.style.display = expenseName.includes(searchTerm) || category.includes(searchTerm) 
+                ? '' 
+                : 'none';
+        });
+    });
+
+    // Sort functionality
+    sortBy.addEventListener('change', function() {
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        const sortValue = this.value;
+
+        rows.sort((a, b) => {
+            let aVal, bVal;
+            
+            switch(sortValue) {
+                case 'date':
+                    aVal = new Date(a.cells[0].textContent);
+                    bVal = new Date(b.cells[0].textContent);
+                    return bVal - aVal;
+                case 'amount':
+                    aVal = parseFloat(a.cells[4].textContent.replace('₱', '').replace(',', ''));
+                    bVal = parseFloat(b.cells[4].textContent.replace('₱', '').replace(',', ''));
+                    return bVal - aVal;
+                case 'category':
+                    aVal = a.cells[3].textContent;
+                    bVal = b.cells[3].textContent;
+                    return aVal.localeCompare(bVal);
+                case 'status':
+                    aVal = a.cells[5].textContent;
+                    bVal = b.cells[5].textContent;
+                    return aVal.localeCompare(bVal);
+                default:
+                    return 0;
+            }
+        });
+
+        // Clear and re-append sorted rows
+        const tbody = table.querySelector('tbody');
+        tbody.innerHTML = '';
+        rows.forEach(row => tbody.appendChild(row));
+    });
+
+    // Date filter functionality
+    dateFilter.addEventListener('change', function() {
+        const rows = table.querySelectorAll('tbody tr');
+        const filterValue = this.value;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        rows.forEach(row => {
+            const rowDate = new Date(row.cells[0].textContent);
+            let show = true;
+
+            switch(filterValue) {
+                case 'today':
+                    show = rowDate.toDateString() === today.toDateString();
+                    break;
+                case 'yesterday':
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    show = rowDate.toDateString() === yesterday.toDateString();
+                    break;
+                case 'last_week':
+                    const lastWeek = new Date(today);
+                    lastWeek.setDate(lastWeek.getDate() - 7);
+                    show = rowDate >= lastWeek;
+                    break;
+                case 'last_month':
+                    const lastMonth = new Date(today);
+                    lastMonth.setDate(lastMonth.getDate() - 30);
+                    show = rowDate >= lastMonth;
+                    break;
+                case 'this_month':
+                    show = rowDate.getMonth() === today.getMonth() && 
+                           rowDate.getFullYear() === today.getFullYear();
+                    break;
+                case 'last_3months':
+                    const last3Months = new Date(today);
+                    last3Months.setMonth(last3Months.getMonth() - 3);
+                    show = rowDate >= last3Months;
+                    break;
+            }
+
+            row.style.display = show || !filterValue ? '' : 'none';
+        });
+    });
+});
+
+// Add this function to handle the export and save
+function downloadRow(button, format) {
+    const row = button.closest('tr');
+    const rowData = {
+        date: row.cells[0].textContent,
+        invoice: row.cells[1].textContent,
+        name: row.cells[2].textContent,
+        category: row.cells[3].textContent,
+        amount: row.cells[4].textContent,
+        status: row.cells[5].querySelector('.badge').textContent
+    };
+
+    switch(format) {
+        case 'excel':
+            saveAsExcel(rowData);
+            break;
+        case 'pdf':
+            saveAsPDF(rowData);
+            break;
+        case 'csv':
+            saveAsCSV(rowData);
+            break;
+    }
+}
+
+function saveAsExcel(data) {
+    const wb = XLSX.utils.book_new();
+    const headers = ['Date', 'Invoice No', 'Expense Name', 'Category', 'Amount', 'Status'];
+    const rowData = [
+        headers,
+        [data.date, data.invoice, data.name, data.category, data.amount, data.status]
+    ];
+    
+    const ws = XLSX.utils.aoa_to_sheet(rowData);
+    XLSX.utils.book_append_sheet(wb, ws, 'Expense Details');
+    XLSX.writeFile(wb, `Expense_${data.invoice}.xlsx`);
+}
+
+function saveAsPDF(data) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    doc.text('Expense Details', 14, 15);
+    doc.autoTable({
+        head: [['Field', 'Value']],
+        body: [
+            ['Date', data.date],
+            ['Invoice No', data.invoice],
+            ['Expense Name', data.name],
+            ['Category', data.category],
+            ['Amount', data.amount],
+            ['Status', data.status]
+        ],
+        startY: 20,
+        theme: 'grid',
+        headStyles: { fillColor: [30, 77, 43] }
+    });
+    
+    doc.save(`Expense_${data.invoice}.pdf`);
+}
+
+function saveAsCSV(data) {
+    const headers = ['Date', 'Invoice No', 'Expense Name', 'Category', 'Amount', 'Status'];
+    const rowData = [data.date, data.invoice, data.name, data.category, data.amount, data.status];
+    
+    const csvContent = [
+        headers.join(','),
+        rowData.join(',')
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Expense_${data.invoice}.csv`;
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 </script>
 
