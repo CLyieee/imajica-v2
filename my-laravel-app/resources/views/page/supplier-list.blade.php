@@ -449,52 +449,66 @@
 
         // Handle delete supplier button clicks
         $('.delete-supplier').on('click', function() {
-          const supplierId = $(this).data('id');
-          const supplierName = $(this).closest('tr').find('td:first').text();
-          
-          Swal.fire({
-            ...swalConfig,
-            title: 'Confirm Delete',
-            html: `Are you sure you want to delete supplier <strong>${supplierName}</strong>?<br>This action cannot be undone.`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // Make AJAX request to delete
-              $.ajax({
-                url: supplierRoutes.delete.replace('__ID__', supplierId),
-                type: 'DELETE',
-                success: function(response) {
-                  if(response.status) {
-                    Swal.fire({
-                      ...swalConfig,
-                      icon: 'success',
-                      title: 'Deleted!',
-                      text: response.message,
-                      timer: 1500,
-                      showConfirmButton: false
-                    }).then(() => {
-                      window.location.reload();
+            const supplierId = $(this).data('id');
+            const supplierName = $(this).data('name');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `You won't be able to revert the deletion of supplier "${supplierName}"!`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#0a3622',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Perform AJAX request to delete supplier
+                    $.ajax({
+                        url: supplierRoutes.delete.replace('__ID__', supplierId),
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: response.message || 'Supplier has been deleted successfully.',
+                                confirmButtonColor: '#0a3622'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred while deleting the supplier',
+                                confirmButtonColor: '#d33'
+                            });
+                        }
                     });
-                  } else {
-                    showErrorAlert(response.message || 'Failed to delete supplier');
-                  }
-                },
-                error: function(xhr) {
-                  let errorMessage = 'An error occurred while deleting the supplier.';
-                  if(xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMessage = xhr.responseJSON.message;
-                  }
-                  showErrorAlert(errorMessage);
                 }
-              });
-            }
-          });
+            });
         });
+
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: "{{ session('success') }}",
+                confirmButtonColor: '#0a3622'
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: "{{ session('error') }}",
+                confirmButtonColor: '#d33'
+            });
+        @endif
 
       });
     </script>
@@ -564,4 +578,5 @@
 
 </body>
 </html>
+``` 
 
