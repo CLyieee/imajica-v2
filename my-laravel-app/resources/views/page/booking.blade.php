@@ -425,7 +425,7 @@
                           </div>
                           <div class="d-flex justify-content-sm-between justify-content-start mt-6 gap-2">
                             <div class="d-flex">
-                              <button type="submit" class="btn btn-primary btn-add-event me-4">Saveee</button>
+                              <button type="submit" class="btn btn-primary btn-add-event me-4">Save</button>
                               <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1" data-bs-dismiss="offcanvas">Cancel</button>
                             </div>
                             <button class="btn btn-label-danger btn-delete-event d-none">Delete</button>
@@ -554,26 +554,6 @@
                     <div>
                       <h5 class="card-title mb-1">Booking History</h5>
                       <p class="text-muted mb-0 small">Overview of all appointments</p>
-                    </div>
-                  </div>
-                  <div class="row mb-4">
-                    <div class="col-md-9">
-                        <!-- Empty space on the left -->
-                    </div>
-                    <div class="col-md-3">
-                        <div class="d-flex justify-content-end">
-                            <div class="w-100">
-                                <label class="form-label">Status Filter</label>
-                                <select class="form-select" id="statusFilter">
-                                    <option value="">All Status</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                    <option value="Paid">Paid</option>
-                                    <option value="No Show">No Show</option>
-                                </select>
-                            </div>
-                        </div>
                     </div>
                   </div>
                   <div class="table-responsive">
@@ -1000,19 +980,9 @@
 
     // Initialize DataTable with only status filter functionality
     const bookingTable = $('.booking-table').DataTable({
-        order: [[3, 'desc']], // Sort by date by default
+        order: [[1, 'desc']], 
         pageLength: 10,
-        responsive: true,
-        initComplete: function() {
-            const table = this;
-
-            // Status filter only
-            $('#statusFilter').on('change', function() {
-                table.column(7)
-                    .search(this.value)
-                    .draw();
-            });
-        }
+        responsive: true
     });
 
     // Update the dateClick handler in app-calendar.js or in your inline script
