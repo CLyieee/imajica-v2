@@ -262,6 +262,75 @@
           display: block;
         }
       }
+
+      .table {
+        margin-bottom: 0;
+      }
+
+      .table th {
+        font-weight: 500;
+        font-size: 14px;
+        vertical-align: middle;
+      }
+
+      .badge {
+        padding: 0.4em 0.7em;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .bg-label-info {
+        background-color: rgba(3, 195, 236, 0.16) !important;
+        color: #03c3ec !important;
+      }
+
+      .bg-label-warning {
+        background-color: rgba(255, 171, 0, 0.16) !important;
+        color: #ffab00 !important;
+      }
+
+      .bg-label-success {
+        background-color: rgba(113, 221, 55, 0.16) !important;
+        color: #71dd37 !important;
+      }
+
+      .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        border-radius: 0.25rem;
+      }
+
+      .btn-info {
+        background-color: #03c3ec;
+        border-color: #03c3ec;
+        color: #fff;
+      }
+
+      .btn-primary {
+        background-color: #134013;
+        border-color: #134013;
+        color: #fff;
+      }
+
+      .form-select-sm {
+        font-size: 0.875rem;
+        padding: 0.25rem 2rem 0.25rem 0.5rem;
+      }
+
+      .input-group-sm > .form-control {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+      }
+
+      .input-group-text {
+        background-color: #f0f0f0;
+        border-right: none;
+      }
+
+      .form-control:focus {
+        border-color: #134013;
+        box-shadow: 0 0 0 0.2rem rgba(19, 64, 19, 0.25);
+      }
     </style>
   </head>
 
@@ -304,155 +373,96 @@
       </div>
 
         <div class="card mt-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="mb-0">Employee Sales</h3>
-                    <div class="d-flex gap-2 align-items-end">
-
-              <div class="d-flex flex-column" style="width: 150px;">
-                <div class="input-group input-group-sm h-100">
-                  <span class="input-group-text">
-                    <i class="ti tabler-search"></i>
-                  </span>
-                  <input 
-                    type="text" 
-                    class="form-control form-control-sm" 
-                    id="searchInput" 
-                    placeholder="Search by name..."
-                    style="border-radius: 0 4px 4px 0;"
-                  >
-                </div>
-              </div>
-
-              {{-- <div class="d-flex gap-2 align-items-end">
-                <div class="d-flex flex-column" style="width: 150px;">
-                  <label class="form-label mb-1 small">Date From</label>
-                  <div class="input-group input-group-sm">
-                    <input type="date" class="form-control form-control-sm" id="dateFrom">
-                  </div>
-                </div>
-                <div class="d-flex flex-column" style="width: 150px;">
-                  <label class="form-label mb-1 small">Date To</label>
-                  <div class="input-group input-group-sm">
-                    <input type="date" class="form-control form-control-sm" id="dateTo">
-                  </div>
-                </div>
-              </div> --}}
-
-              <div class="d-flex flex-column" style="width: 150px;">
-                <label class="form-label mb-1 small">Sort By</label>
-                <div class="dropdown w-100">
-                  <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100 py-1" type="button" id="sortByBtn" data-bs-toggle="dropdown" style="height: 31px;">
-                    Sort By: Default
-                  </button>
-                  <div class="dropdown-menu p-2" style="min-width: 150px;">
-                    <select class="form-select form-select-sm" id="sortBy">
-                      <option value="">Default</option>
-                      <option value="totalSales">Total Sales (High to Low)</option>
-                      <option value="serviceSales">Service Sales (High to Low)</option>
-                      <option value="productSales">Product Sales (High to Low)</option>
-                      <option value="clients">Number of Clients (High to Low)</option>
-                      <option value="name">Employee Name (A to Z)</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div class="d-flex flex-column" style="width: 150px;">
-                <label class="form-label mb-1 small">Filter by Date</label>
-                <div class="dropdown w-100">
-                  <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100 py-1" type="button" id="dateFilterBtn" data-bs-toggle="dropdown" style="height: 31px;">
-                    Filter By Date
-                  </button>
-                  <div class="dropdown-menu p-2" style="min-width: 150px;">
-                    <select class="form-select form-select-sm" id="dateFilter">
-                      <option value="">All Time</option>
-                      <option value="today">Today</option>
-                      <option value="yesterday">Yesterday</option>
-                      <option value="last7days">Last 7 Days</option>
-                      <option value="last30days">Last 30 Days</option>
-                      <option value="thisMonth">This Month</option>
-                      <option value="lastMonth">Last Month</option>
-                      <option value="thisYear">This Year</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Employee Sales</h3>
+            <div class="d-flex gap-2 align-items-end">
+                <!-- Search Bar -->
+                <div class="d-flex flex-column" style="width: 180px;">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text">
+                            <i class="ti tabler-search"></i>
+                        </span>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="searchInput" 
+                            placeholder="Search employees..."
+                        >
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="employeeReport">
-                        <thead>
-                            <tr style="background-color: #1e4d2b;">
-                                <th class="text-white">Rank</th>
-                                <th class="text-white">Employee Name</th>
-                                <th class="text-white">Date</th>
-                                <th class="text-white">No. of Service Sales</th>
-                                <th class="text-white">No. of Product Sales</th>
-                                <th class="text-white">No. of Clients</th>
-                                <th class="text-white">Total Service Sales</th>
-                                <th class="text-white">Total Product Sales</th>
-                                <th class="text-white">Total Sales</th>
-                                <th class="text-white">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Maria Garcia</td>
-                                <td>2023-11-15</td>
-                                <td>45</td>
-                                <td>78</td>
-                                <td>120</td>
-                                <td>₱250,000</td>
-                                <td>₱200,000</td>
-                                <td>₱450,000</td>
-                                <td>
-                                <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
-                              style="background-color: #134013; color: white;">
-                        <i class="ti tabler-download me-1"></i>Export
-                      </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>John Davis</td>
-                                <td>2023-11-14</td>
-                                <td>42</td>
-                                <td>65</td>
-                                <td>105</td>
-                                <td>₱220,000</td>
-                                <td>₱180,000</td>
-                                <td>₱400,000</td>
-                                <td>
-                                <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
-                              style="background-color: #134013; color: white;">
-                        <i class="ti tabler-download me-1"></i>Export
-                      </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Sarah Wilson</td>
-                                <td>2023-11-13</td>
-                                <td>38</td>
-                                <td>58</td>
-                                <td>95</td>
-                                <td>₱200,000</td>
-                                <td>₱150,000</td>
-                                <td>₱350,000</td>
-                                <td>
-                                <button class="btn btn-sm" onclick="downloadRow(this, 'excel')"
-                              style="background-color: #134013; color: white;">
-                        <i class="ti tabler-download me-1"></i>Export
-                      </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                <!-- Filter by -->
+                <div class="d-flex flex-column" style="width: 160px;">
+                    <label class="form-label text-muted small mb-1">Sort By</label>
+                    <select class="form-select form-select-sm" id="sortBy">
+                        <option value="">Default</option>
+                        <option value="totalSales">Total Sales (High to Low)</option>
+                        <option value="serviceSales">Service Sales (High to Low)</option>
+                        <option value="productSales">Product Sales (High to Low)</option>
+                        <option value="clients">Number of Clients (High to Low)</option>
+                        <option value="name">Employee Name (A to Z)</option>
+                    </select>
+                </div>
+
+                <!-- Filter by date -->
+                <div class="d-flex flex-column" style="width: 160px;">
+                    <label class="form-label text-muted small mb-1">Filter by date</label>
+                    <select class="form-select form-select-sm" id="dateFilter">
+                        <option value="">All time</option>
+                        <option value="today">Today</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="last_week">Last 7 days</option>
+                        <option value="last_month">Last 30 days</option>
+                        <option value="this_month">This month</option>
+                        <option value="last_3months">Last 3 months</option>
+                    </select>
                 </div>
             </div>
         </div>
+
+        <div class="table-responsive text-nowrap">
+            <table class="table table-striped" id="employeeReport">
+                <thead>
+                    <tr class="table-light">
+                        <th>Rank</th>
+                        <th>Employee Name</th>
+                        <th>Date</th>
+                        <th>No. of Service Sales</th>
+                        <th>No. of Product Sales</th>
+                        <th>No. of Clients</th>
+                        <th>Total Service Sales</th>
+                        <th>Total Product Sales</th>
+                        <th>Total Sales</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Maria Garcia</td>
+                        <td>2024-01-15</td>
+                        <td><span class="badge bg-label-info">45</span></td>
+                        <td><span class="badge bg-label-warning">78</span></td>
+                        <td><span class="badge bg-label-success">120</span></td>
+                        <td>₱250,000</td>
+                        <td>₱200,000</td>
+                        <td>₱450,000</td>
+                        <td class="text-center">
+                            <div class="d-flex gap-2 justify-content-center">
+                               
+                                <button class="btn btn-sm btn-primary" onclick="downloadRow(this, 'excel')">
+                                    <i class="ti tabler-download me-1"></i> Export
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Additional rows with same structure -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
     </div>
 </div>
 
@@ -893,7 +903,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Clear table and append sorted rows
         while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild);
+            tbody.removeChild(ttbody.firstChild);
         }
         
         // Reorder the rows and update ranks
