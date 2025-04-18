@@ -22,30 +22,40 @@ class CategoryListController extends Controller
                 'description' => 'nullable|string',
                 'categoryImage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
-
+    
             if ($request->hasFile('categoryImage')) {
                 $image = $request->file('categoryImage');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('uploads/categories'), $imageName);
                 $data['categoryImage'] = 'uploads/categories/' . $imageName;
             }
-
+    
             $category = category::create($data);
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Category created successfully',
-                'data' => $category
-            ]);
+    
+            // Check if it's an AJAX request (returns JSON)
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Category created successfully',
+                    'data' => $category
+                ]);
+            }
+    
+            // If not an AJAX request, redirect to the list page with success message
+            return redirect()->route('page.category-list')->with('success', 'Category created successfully!');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
+            // Handle errors differently for AJAX and non-AJAX
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ], 500);
+            }
+    
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
-        return redirect(route('page.category-list'));
     }
-
+    
     /**
      * Returns all categories
      *
