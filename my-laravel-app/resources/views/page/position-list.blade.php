@@ -56,9 +56,9 @@
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center p-3">
                   <h4 class="card-title mb-5">Position List</h4>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPositionModal">
+                  <a href="{{ route('page.new-position') }}" class="btn btn-primary">
                     <i class="ti tabler-plus me-1"></i> Add New Position
-                  </button>
+                  </a>
                 </div>
 
                 <!-- Response Messages -->
@@ -90,15 +90,10 @@
                           </td>
                           <td>
                             <div class="d-inline-block">
-                              <button type="button" class="btn btn-sm btn-info edit-position" 
-                                data-bs-toggle="modal"
-                                data-bs-target="#editPositionModal"
-                                data-position-id="{{ $position->position_id }}"
-                                data-position-title="{{ $position->position_name }}"
-                                data-position-department="{{ $position->department_code }}"
-                                data-position-description="{{ $position->description }}"
-                                data-position-status="{{ $position->status }}">
-                                <i class="ti tabler-edit me-1"></i> Edit
+                              <button type="button" class="btn btn-sm btn-info">
+                                <a href="{{ route('position.edit', $position->position_id) }}" class="text-white">
+                                  <i class="ti tabler-edit me-1"></i> Edit
+                                </a>
                               </button>
                               
                               <button class="btn btn-sm btn-danger delete-position" 
@@ -194,7 +189,62 @@
       </div>
     </div>
 
- 
+    <!-- Edit Position Modal -->
+    <div class="modal fade" id="editPositionModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form id="editPositionForm" method="POST" action="{{ route('position.update') }}">
+            @csrf
+            @method('PUT')
+            <input type="hidden" id="edit_position_id" name="position_id">
+            
+            <div class="modal-header" style="background-color: #0a3622">
+              <h5 class="modal-title text-white">
+                <i class="ti tabler-edit me-1"></i> Edit Position
+              </h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body">
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label" for="edit_position_name">Position Name</label>
+                  <input type="text" id="edit_position_name" name="position_name" class="form-control" required>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label" for="edit_department_code">Department</label>
+                  <select class="form-select" id="edit_department_code" name="department_code" required>
+                    <option value="">Select Department</option>
+                    @foreach($departments as $department)
+                      <option value="{{ $department->department_code }}">{{ $department->department_name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label" for="edit_description">Description</label>
+                  <textarea class="form-control" id="edit_description" name="description" rows="3" required></textarea>
+                </div>
+
+                <div class="col-12">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="edit_status" name="status">
+                    <label class="form-check-label" for="edit_status">Active Status</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Update Position</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <!-- Delete Position Form (Hidden) -->
     <form id="deletePositionForm" method="POST" action="/position/delete" style="display: none;">
       @csrf
@@ -415,51 +465,89 @@
             });
         });
 
-        // Add position edit handler
+        // Replace the existing edit-position click handler with this:
         $('.edit-position').on('click', function() {
-            const id = $(this).data('position-id');
-            const title = $(this).data('position-title');
-            const department = $(this).data('position-department');
+            const positionId = $(this).data('position-id');
+            const positionName = $(this).data('position-title');
+            const departmentCode = $(this).data('position-department');
             const description = $(this).data('position-description');
             const status = $(this).data('position-status');
 
-            $('#edit_position_id').val(id);
-            $('#edit_position_title').val(title);
-            $('#edit_department').val(department); // This will select the correct department
+            // Populate the edit form
+            $('#edit_position_id').val(positionId);
+            $('#edit_position_name').val(positionName);
+            $('#edit_department_code').val(departmentCode);
             $('#edit_description').val(description);
             $('#edit_status').prop('checked', status == 1);
         });
 
-        // Add edit form submit handler
+        // Add this edit form submit handler
         $('#editPositionForm').on('submit', function(e) {
             e.preventDefault();
             const submitBtn = $(this).find('button[type="submit"]');
             submitBtn.prop('disabled', true);
 
-            $.ajax({
-                url: '{{ route("position.update") }}',
-                type: 'POST',
-                data: $(this).serialize(),
-                success: function(response) {
-                    Swal.fire({
-                        ...swalConfig,
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Position updated successfully!',
-                        timer: 1500
-                    }).then(() => {
-                        $('#editPositionModal').modal('hide');
-                        location.reload();
+            // Clear previous error messages
+            $('.error-feedback').remove();
+            $('.is-invalid').removeClass('is-invalid');
+
+            // Show confirmation dialog
+            Swal.fire({
+                ...swalConfig,
+                title: 'Confirm Update',
+                text: 'Are you sure you want to update this position?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, update it!',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#0a3622',
+                cancelButtonColor: '#d33'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: $(this).serialize(),
+                        success: function(response) {
+                            Swal.fire({
+                                ...swalConfig,
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Position updated successfully!',
+                                timer: 1500
+                            }).then(() => {
+                                $('#editPositionModal').modal('hide');
+                                location.reload();
+                            });
+                        },
+                        error: function(xhr) {
+                            submitBtn.prop('disabled', false);
+                            if (xhr.status === 422) {
+                                const errors = xhr.responseJSON.errors;
+                                Object.keys(errors).forEach(field => {
+                                    const input = $(`[name="${field}"]`);
+                                    input.addClass('is-invalid');
+                                    input.after(`<div class="invalid-feedback error-feedback">${errors[field][0]}</div>`);
+                                });
+                                
+                                Swal.fire({
+                                    ...swalConfig,
+                                    icon: 'error',
+                                    title: 'Validation Error',
+                                    text: 'Please check the form for errors'
+                                });
+                            } else {
+                                Swal.fire({
+                                    ...swalConfig,
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Failed to update position'
+                                });
+                            }
+                        }
                     });
-                },
-                error: function(xhr) {
+                } else {
                     submitBtn.prop('disabled', false);
-                    Swal.fire({
-                        ...swalConfig,
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to update position'
-                    });
                 }
             });
         });
@@ -495,4 +583,3 @@
 
   </body>
 </html>
-``` 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Staff;
 use App\Models\Department;
+
 class positionModel extends Model
 {
     use HasFactory;
@@ -14,14 +15,17 @@ class positionModel extends Model
     protected $primaryKey = 'position_id';
     public $incrementing = false;
     protected $keyType = 'bigInteger';
-    public $timestamps = false;
+    public $timestamps = true; // Add this line
     protected $fillable = [
-        'position_id',
         'position_name',
         'department_code',
         'description',
-        'status',
+        'status'
     ];
+
+    // Add this if your timestamp column names are different
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
 
     protected $casts = [
         'status' => 'boolean'

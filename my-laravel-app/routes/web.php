@@ -218,6 +218,9 @@ Route::get('/position/edit/{id}', [PositionController::class, 'edit'])->name('po
 Route::put('/position/update', [PositionController::class, 'update'])->name('position.update');
 Route::delete('/position/delete', [App\Http\Controllers\PositionController::class, 'delete'])->name('position.delete');
 
+// Add this route
+Route::get('/position/new', [PositionController::class, 'create'])->name('page.new-position');
+Route::post('/position/store', [PositionController::class, 'store'])->name('position.store');
 
 //Department Route
 Route::get('/new-department', [DashboardController::class, 'new_department'])->name('page.new-department');
@@ -256,3 +259,5 @@ Route::post('/patient/medical-record/add', [PatientController::class, 'addMedica
 
 
 Route::get('/waste-list', [DashboardController::class, 'waste_list'])->name('page.waste-list');
+
+Route::put('/position/update', [PositionController::class, 'update'])->name('position.update');

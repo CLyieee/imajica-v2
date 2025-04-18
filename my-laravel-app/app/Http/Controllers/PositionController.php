@@ -4,107 +4,51 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\positionModel;
+use App\Models\Department;  // Add this line
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
 class PositionController extends Controller
 {
-    public function create(Request $request)
+    public function create()
     {
-        try {
-            Log::info('Incoming position data:', $request->all());
-            
-            $validatedData = $request->validate([
-                'position_name' => 'required|string|max:255|unique:position,position_name',
-                'department_code' => 'required|exists:departments,department_code',
-                'description' => 'required|string',
-                'status' => 'nullable|boolean',
-            ]);
-
-            // Generate a position_id
-            $lastPosition = positionModel::orderBy('position_id', 'desc')->first();
-            $nextId = $lastPosition ? $lastPosition->position_id + 1 : 1;
-            
-            // Ensure status is properly set
-            $validatedData['position_id'] = $nextId;
-            $validatedData['status'] = $request->has('status') ? 1 : 0;
-
-            Log::info('Creating position with data:', $validatedData);
-            
-            DB::beginTransaction();
-            try {
-                $position = positionModel::create($validatedData);
-                DB::commit();
-                
-                Log::info('Position created successfully:', $position->toArray());
-
-                if ($request->wantsJson()) {
-                    return response()->json([
-                        'status' => true,
-                        'message' => 'Position created successfully',
-                        'data' => $position
-                    ], 201);
-                }
-
-                return redirect()->route('page.position-list')
-                                ->with('success', 'Position created successfully!');
-            } catch (\Exception $e) {
-                DB::rollback();
-                throw $e;
-            }
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            Log::error('Validation error:', ['errors' => $e->errors()]);
-            
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'message' => 'The given data was invalid.',
-                    'errors' => $e->errors()
-                ], 422);
-            }
-            
-            return redirect()->back()
-                ->withErrors($e->errors())
-                ->withInput();
-                
-        } catch (\Exception $e) {
-            Log::error('Error creating position:', ['error' => $e->getMessage()]);
-            
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'message' => 'Error creating position',
-                    'error' => $e->getMessage()
-                ], 500);
-            }
-            
-            return redirect()->back()
-                ->with('error', 'Error creating position: ' . $e->getMessage())
-                ->withInput();
-        }
+        $departments = Department::all();
+        return view('page.new-position', compact('departments'));
     }
 
     public function update(Request $request)
     {
         try {
             $validatedData = $request->validate([
+                'position_id' => 'required|exists:position,position_id',
                 'position_name' => 'required|string|max:255',
                 'department_code' => 'required|exists:departments,department_code',
                 'description' => 'required|string',
-                'status' => 'nullable|boolean',
-                'position_id' => 'required|exists:position,position_id'
+                'status' => 'boolean'
             ]);
 
             $position = positionModel::findOrFail($request->position_id);
-            $validatedData['status'] = $request->has('status');
-            $position->update($validatedData);
+            
+            $position->update([
+                'position_name' => $validatedData['position_name'],
+                'department_code' => $validatedData['department_code'],
+                'description' => $validatedData['description'],
+                'status' => $request->has('status') ? 1 : 0
+            ]);
 
-            return redirect(route('page.position-list'))
+            return redirect()->route('page.position-list')
                 ->with('success', 'Position updated successfully!');
                 
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation error:', ['errors' => $e->errors()]);
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
         } catch (\Exception $e) {
             Log::error('Error updating position: ' . $e->getMessage());
             return redirect()->back()
-                ->with('error', 'Error updating position: ' . $e->getMessage());
+                ->with('error', 'Error updating position: ' . $e->getMessage())
+                ->withInput();
         }
     }
 
@@ -173,6 +117,67 @@ class PositionController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Error fetching positions'
+            ], 500);
+        }
+    }
+
+    public function edit($id)
+    {
+        try {
+            $position = positionModel::findOrFail($id);
+            $departments = DB::table('departments')->get();
+            
+            return view('page.edit-position', compact('position', 'departments'));
+        } catch (\Exception $e) {
+            Log::error('Error editing position: ' . $e->getMessage());
+            return redirect()->route('page.position-list')
+                ->with('error', 'Position not found or error occurred');
+        }
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'position_name' => 'required|string|max:255',
+                'department_code' => 'required|exists:departments,department_code',
+                'description' => 'required|string',
+                'status' => 'nullable|boolean'
+            ]);
+
+            \DB::beginTransaction();
+            try {
+                $position = positionModel::create([
+                    'position_name' => $validatedData['position_name'],
+                    'department_code' => $validatedData['department_code'],
+                    'description' => $validatedData['description'],
+                    'status' => $request->has('status') ? 1 : 0
+                ]);
+
+                \DB::commit();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Position created successfully',
+                    'data' => $position
+                ], 200);
+
+            } catch (\Exception $e) {
+                \DB::rollback();
+                throw $e;
+            }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error creating position: ' . $e->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to create position: ' . $e->getMessage()
             ], 500);
         }
     }
