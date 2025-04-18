@@ -353,60 +353,7 @@ class DashboardController extends Controller
     }
     public function department_list()
     {
-        // Check if we're in development/testing mode
-        if (config('app.env') === 'local' || config('app.env') === 'testing') {
-            // Create mock departments if none exist
-            if (Department::count() === 0) {
-                $mockDepartments = [
-                    [
-                        'department_code' => 'HR',
-                        'department_name' => 'Human Resources',
-                        'description' => 'Handles recruitment, training, and employee relations'
-                    ],
-                    [
-                        'department_code' => 'IT',
-                        'department_name' => 'Information Technology',
-                        'description' => 'Manages software, hardware, and technical infrastructure'
-                    ],
-                    [
-                        'department_code' => 'FIN',
-                        'department_name' => 'Finance',
-                        'description' => 'Handles accounting, budgeting, and financial planning'
-                    ],
-                    [
-                        'department_code' => 'MKT',
-                        'department_name' => 'Marketing',
-                        'description' => 'Responsible for advertising, promotions, and brand management'
-                    ],
-                    [
-                        'department_code' => 'OPS',
-                        'department_name' => 'Operations',
-                        'description' => 'Manages day-to-day business processes and logistics'
-                    ],
-                    [
-                        'department_code' => 'SALES',
-                        'department_name' => 'Sales',
-                        'description' => 'Handles customer acquisition and revenue generation'
-                    ],
-                    [
-                        'department_code' => 'R&D',
-                        'department_name' => 'Research & Development',
-                        'description' => 'Focuses on innovation and product development'
-                    ],
-                    [
-                        'department_code' => 'LEGAL',
-                        'department_name' => 'Legal',
-                        'description' => 'Provides legal counsel and ensures compliance'
-                    ]
-                ];
-                
-                foreach ($mockDepartments as $department) {
-                    Department::create($department);
-                }
-            }
-        }
-        
-        $departments = Department::with('head')->get();
+        $departments = department::all();
         return view('page.department-list', compact('departments'));
     }
     public function new_branch()

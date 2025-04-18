@@ -30,41 +30,13 @@ class DepartmentController extends Controller
         ]);
 
         try {
-            // Find or create a staff member with the given name
-            $staffName = $request->department_head;
-            $staffEmail = $request->contact_email;
-            
-            // Split the name into firstname and lastname
-            $nameParts = explode(' ', $staffName);
-            $firstName = $nameParts[0];
-            $lastName = count($nameParts) > 1 ? end($nameParts) : '';
-            
-            // Find existing staff or create a new one
-            $staff = Staff::where('email', $staffEmail)->first();
-            
-            if (!$staff) {
-                $staff = Staff::create([
-                    'firstname' => $firstName,
-                    'lastname' => $lastName,
-                    'email' => $staffEmail,
-                    'image_path' => 'default.jpg',
-                    'contact_number' => 'N/A',
-                    'position' => 'Department Head',
-                    'department' => $request->department_name,
-                    'join_date' => now(),
-                    'employment_type' => 'Full-time',
-                    'branch_code' => 'HQ',
-                    'address' => 'N/A',
-                    'emergency_contact_name' => 'N/A',
-                    'emergency_contact_number' => 'N/A'
-                ]);
-            }
+          
             
             // Create the department with the staff ID
             Department::create([
                 'department_name' => $request->department_name,
                 'department_code' => $request->department_code,
-                'department_head' => $staff->id,
+                'department_head' => $request->department_head,
                 'description' => $request->description,
                 'status' => 'active' // Default status
             ]);
