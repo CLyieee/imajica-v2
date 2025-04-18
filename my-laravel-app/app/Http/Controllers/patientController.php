@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Patient;
+use App\Models\patient;
 use App\Models\tier;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -143,7 +143,7 @@ class patientController extends Controller
 
     public function show($id)
     {
-        $patient = Patient::findOrFail($id);
+        $patient = patient::findOrFail($id);
         return view('page.patient-details', compact('patient'));
     }
 
