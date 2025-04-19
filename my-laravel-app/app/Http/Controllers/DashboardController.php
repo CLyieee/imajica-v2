@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\supplier;
 use App\Models\patient;
 use Carbon\Carbon;
-use App\Models\Branch;
+use App\Models\branch;
 use App\Models\coupon;
 use App\Models\tier;
 use App\Models\staff;
@@ -53,7 +53,7 @@ class DashboardController extends Controller
         $allBirthdays = $this->getAllBirthdays();
         
         // Updated branch data fetching
-        $branchData = Branch::with(['bookings', 'bookings.service'])
+        $branchData = branch::with(['bookings', 'bookings.service'])
             ->get()
             ->map(function ($branch) {
                 $totalBookings = $branch->bookings->count();
