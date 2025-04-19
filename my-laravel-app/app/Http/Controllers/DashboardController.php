@@ -13,7 +13,7 @@ use App\Models\category;
 use Illuminate\Http\Request;
 use App\Models\service;
 use App\Models\order;
-use App\Models\Waste;
+use App\Models\waste;
 
 use App\Models\positionModel;
 
@@ -461,7 +461,7 @@ class DashboardController extends Controller
 
     }
     public function waste_list(){
-        $wastes = \App\Models\Waste::all();
+        $wastes = \App\Models\waste::all();
         return view('page.waste-list', compact('wastes'));
     }
     public function system_settings()
