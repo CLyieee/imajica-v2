@@ -33,7 +33,7 @@ class DashboardController extends Controller
     public function index()
     {
         // Get all patients for count
-        $patients = Patient::all();
+        $patients = patient::all();
         $bookings = booking::all();
         $services = service::all();
         
