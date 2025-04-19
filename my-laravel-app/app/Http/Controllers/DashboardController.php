@@ -13,6 +13,7 @@ use App\Models\category;
 use Illuminate\Http\Request;
 use App\Models\service;
 use App\Models\order;
+use App\Models\Waste;
 
 use App\Models\positionModel;
 
