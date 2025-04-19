@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\supplier;
-use App\Models\Patient;
+use App\Models\patient;
 use Carbon\Carbon;
 use App\Models\Branch;
 use App\Models\coupon;
