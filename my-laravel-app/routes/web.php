@@ -229,6 +229,7 @@ Route::get('/department-list', [DashboardController::class, 'department_list'])-
 Route::put('/department/update', [App\Http\Controllers\DepartmentController::class, 'update'])->name('department.update');
 Route::delete('/department/delete', [App\Http\Controllers\DepartmentController::class, 'delete'])->name('department.delete');
 Route::get('/departments/all', [App\Http\Controllers\DepartmentController::class, 'getAllDepartments'])->name('department.getAllDepartments');
+Route::get('/edit-department/{department_code}', [DepartmentController::class, 'edit'])->name('page.edit-department');
 
 //Category Expense Routes
 Route::post('/category_expense/create', [App\Http\Controllers\category_expenseController::class, 'create'])->name('category_expense.create');

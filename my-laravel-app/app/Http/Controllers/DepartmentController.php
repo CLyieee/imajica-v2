@@ -113,4 +113,10 @@ class DepartmentController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
-} 
+
+    public function edit($department_code)
+    {
+        $department = Department::where('department_code', $department_code)->firstOrFail();
+        return view('page.edit-department', compact('department'));
+    }
+}

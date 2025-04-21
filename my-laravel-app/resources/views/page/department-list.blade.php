@@ -117,14 +117,10 @@
                         <td>  {{ $department->department_head }} </td>
                        
                         <td>
-                          <button type="button" class="btn btn-info btn-sm edit-department" 
-                            data-department-code="{{ $department->department_code }}"
-                            data-department-name="{{ $department->department_name }}"
-                            data-description="{{ $department->description }}"
-                    
-                            data-department-head-id="{{ $department->department_head }}">
+                          <a href="{{ route('page.edit-department', ['department_code' => $department->department_code]) }}" 
+                             class="btn btn-info btn-sm">
                             <i class="ti tabler-edit me-1"></i> Edit
-                          </button>
+                          </a>
                           <button type="button" class="btn btn-danger btn-sm delete-department" 
                             data-department-code="{{ $department->department_code }}"
                             data-department-name="{{ $department->department_name }}">
