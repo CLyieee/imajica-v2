@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Staff;
+use App\Models\staff;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
@@ -45,7 +45,7 @@ class staffController extends Controller
             }
             
             // Create the staff record
-            $newStaff = Staff::create($staffData);
+            $newStaff = staff::create($staffData);
             
             // Log success for debugging
             Log::info('Staff created successfully', ['staff_id' => $newStaff->id]);
