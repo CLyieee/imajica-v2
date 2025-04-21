@@ -320,7 +320,7 @@ class DashboardController extends Controller
     public function newcategory_expenses()
     {
     
-        return view('page.newcategory-expenses');
+        return view('page.NewCategory-Expenses');
     }
 
     public function categoryexpenses_list()
