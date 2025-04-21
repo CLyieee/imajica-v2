@@ -1,11 +1,6 @@
 @extends('layouts.app')
-@extends('layouts.layout-collapsed-menu-dark')
-@extends('layouts.layout-container-dark')
-@extends('layouts.layout-content-navbar-and-sidebar-dark')
-@extends('layouts.layout-without-navbar-dark')
-@extends('layouts.layout-content-navbar-dark')
-@extends('layouts.layout-fluid-dark')
-@extends('layouts.layout-without-menu-dark')
+
+
 
 <!DOCTYPE html>
 
@@ -110,15 +105,7 @@
     <script src="../../assets/js/config.js"></script>
     <!-- Add SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        const supplierRoutes = {
-            add: "{{ route('add.supplier') }}",
-            getAll: "{{ route('get.suppliers') }}",
-            get: "{{ route('get.supplier', ['id' => '__ID__']) }}",
-            update: "{{ route('update.supplier', ['id' => '__ID__']) }}",
-            delete: "{{ route('delete.supplier', ['id' => '__ID__']) }}"
-        };
-    </script>
+
   </head>
 
   <body>
@@ -142,204 +129,7 @@
 
         <!-- Layout container -->
         <div class="layout-page">
-          <!-- Navbar -->
 
-          {{-- <nav
-            class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-            id="layout-navbar"
-          >
-            <div
-              class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none"
-            >
-              <a
-                class="nav-item nav-link px-0 me-xl-6"
-                href="javascript:void(0)"
-              >
-                <i class="icon-base ti tabler-menu-2 icon-md"></i>
-              </a>
-            </div>
-
-            <div
-              class="navbar-nav-right d-flex align-items-center justify-content-end"
-              id="navbar-collapse"
-            >
-              <!-- Search -->
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0">
-                  <a
-                    class="nav-item nav-link search-toggler d-flex align-items-center px-0"
-                    href="javascript:void(0);"
-                  >
-                    <span
-                      class="d-inline-block text-body-secondary fw-normal"
-                      id="autocomplete"
-                    ></span>
-                  </a>
-                </div>
-              </div>
-
-              <!-- /Search -->
-
-              <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                <!--/ Language -->
-
-                <!-- Style Switcher -->
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
-                    id="nav-theme"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <i
-                      class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"
-                    ></i>
-                    <span class="d-none ms-2" id="nav-theme-text"
-                      >Toggle theme</span
-                    >
-                  </a>
-                  <ul
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="nav-theme-text"
-                  >
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center active"
-                        data-bs-theme-value="light"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-sun icon-22px me-3"
-                            data-icon="sun"
-                          ></i
-                          >Light</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="dark"
-                        aria-pressed="true"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-moon-stars icon-22px me-3"
-                            data-icon="moon-stars"
-                          ></i
-                          >Dark</span
-                        >
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        class="dropdown-item align-items-center"
-                        data-bs-theme-value="system"
-                        aria-pressed="false"
-                      >
-                        <span
-                          ><i
-                            class="icon-base ti tabler-device-desktop-analytics icon-22px me-3"
-                            data-icon="device-desktop-analytics"
-                          ></i
-                          >System</span
-                        >
-                      </button>
-                    </li>
-                  </ul>
-                </li>
-                <!-- / Style Switcher-->
-
-                <!-- Quick links  -->
-
-                <!-- Quick links -->
-
-                <!-- Notification -->
-
-                <!--/ Notification -->
-
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow p-0"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown"
-                  >
-                    <div class="avatar avatar-online">
-                      <img
-                        src="../../assets/img/avatars/1.png"
-                        alt
-                        class="rounded-circle"
-                      />
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a
-                        class="dropdown-item mt-0"
-                        href="pages-account-settings-account.html"
-                      >
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0 me-2">
-                            <div class="avatar avatar-online">
-                              <img
-                                src="../../assets/img/avatars/1.png"
-                                alt
-                                class="rounded-circle"
-                              />
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="mb-0">Rommel Lacap</h6>
-                            <small class="text-body-secondary">Admin</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-user me-3 icon-md"></i
-                        ><span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base ti tabler-settings me-3 icon-md"></i
-                        ><span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-
-                    <li>
-                      <div class="d-grid px-2 pt-2 pb-1">
-                        <a
-                          class="btn btn-sm btn-danger d-flex"
-                          href="#"
-                          target="_blank"
-                        >
-                          <small class="align-middle">Logout</small>
-                          <i
-                            class="icon-base ti tabler-logout ms-2 icon-14px"
-                          ></i>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
-            </div>
-          </nav> --}}
 
           <!-- / Navbar -->
 
@@ -347,7 +137,6 @@
           <div class="content-wrapper">
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
-              <!-- Sticky Actions -->
               <div class="row">
                 <div class="col-12">
                   <div class="card">
@@ -356,21 +145,24 @@
                       style="background-color: #0a3622"
                     >
                       <h5 class="card-title mb-sm-0 me-2 text-white">
-                        Waste Management
+                        Edit Waste Record
                       </h5>
                     </div>
-                    <div class="card-body pt-6">
+                    <div class="card-body">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
-                          <form id="addWasteForm" action="{{ route('waste.store') }}" method="POST">
+                          <form id="editWasteForm" action="{{ route('waste.update', $waste->id) }}" method="POST">
                             @csrf
-                            <div class="row g-6">
+                            @method('PUT')
+                            <div class="row g-3">
                               <div class="col-12">
                                 <label class="form-label" for="product_id">ITEM NAME</label>
                                 <select id="product_id" name="product_id" class="form-select" required>
                                   <option value="">Search Item</option>
                                   @foreach($products as $product)
-                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                    <option value="{{ $product->id }}" {{ $waste->product_id == $product->id ? 'selected' : '' }}>
+                                      {{ $product->name }}
+                                    </option>
                                   @endforeach
                                 </select>
                               </div>
@@ -382,6 +174,7 @@
                                   id="quantity"
                                   name="quantity" 
                                   class="form-control"
+                                  value="{{ $waste->quantity }}"
                                   required
                                 />
                               </div>
@@ -394,30 +187,23 @@
                                   class="form-control"
                                   rows="4"
                                   required
-                                ></textarea>
+                                >{{ $waste->reason }}</textarea>
                               </div>
                             </div>
 
-                            <br>
-                            <div class="row">
+                            <div class="row mt-4">
                               <div class="col-12">
                                 <button type="button" class="btn btn-secondary" id="cancelBtn">CANCEL</button>
-                                <button type="submit" class="btn btn-primary" id="addItemBtn">ADD ITEM</button>
+                                <button type="submit" class="btn btn-primary" id="updateItemBtn">UPDATE</button>
                               </div>  
                             </div>
-                       
-                          <br />
-                         
-                        </form>
-                          <div id="responseMessage" style="display: none;" class="alert mt-3"></div>
-                       
+                          </form>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- /Sticky Actions -->
             </div>
             <!-- / Content -->
 
@@ -500,43 +286,36 @@
     <!-- Page JS -->
     <script src="../../assets/js/form-layouts.js"></script>
     <script src="../../assets/js/forms-pickers.js"></script>
-    
-    <!-- AJAX Form Submission Script -->
+
+
     <script>
       $(document).ready(function() {
-        // Initialize select2 
+        // Initialize select2
         $('#product_id').select2({
           placeholder: "Search for an item...",
           allowClear: true
         });
 
-     
-      });
-    </script>
-
-
-<script>
-
-
-$('#addWasteForm').on('submit', function(e) {
+        // Handle form submission
+        $('#editWasteForm').on('submit', function(e) {
           e.preventDefault();
           
           Swal.fire({
-            title: 'Confirm Action',
-            text: 'Are you sure you want to add this item to waste?',
+            title: 'Confirm Update',
+            text: 'Are you sure you want to update this waste record?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#0A3622',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, add it!',
+            confirmButtonText: 'Yes, update it!',
             cancelButtonText: 'Cancel'
           }).then((result) => {
             if (result.isConfirmed) {
-              $('#addItemBtn').prop('disabled', true).html('Processing...');
+              $('#updateItemBtn').prop('disabled', true).html('Processing...');
               
               $.ajax({
                 url: $(this).attr('action'),
-                type: "POST",
+                type: 'POST',
                 data: $(this).serialize(),
                 dataType: 'json',
                 success: function(response) {
@@ -546,7 +325,7 @@ $('#addWasteForm').on('submit', function(e) {
                       title: 'Success!',
                       text: response.message,
                       showConfirmButton: true,
-                      confirmButtonText: 'View Waste List',
+                      confirmButtonText: 'OK',
                       allowOutsideClick: false
                     }).then((result) => {
                       if (result.isConfirmed) {
@@ -577,16 +356,15 @@ $('#addWasteForm').on('submit', function(e) {
                   });
                 },
                 complete: function() {
-                  $('#addItemBtn').prop('disabled', false).html('ADD ITEM');
+                  $('#updateItemBtn').prop('disabled', false).html('UPDATE');
                 }
               });
             }
           });
         });
 
-
-
-   $('#cancelBtn').on('click', function() {
+        // Handle cancel button
+        $('#cancelBtn').on('click', function() {
           Swal.fire({
             title: 'Are you sure?',
             text: "You will lose any unsaved changes!",
@@ -601,7 +379,8 @@ $('#addWasteForm').on('submit', function(e) {
             }
           });
         });
-</script>
+      });
+    </script>
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->

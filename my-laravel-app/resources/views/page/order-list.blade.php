@@ -148,11 +148,11 @@
           <div class="col-sm-6 col-lg-3">
             <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-4 pb-sm-0">
               <div>
-                <h4 class="mb-0">56</h4>
+                <h4 class="mb-0">{{ $paymentCounts['pending'] }}</h4>
                 <p class="mb-0">Pending Payment</p>
               </div>
               <span class="avatar me-sm-6">
-                <span class="avatar-initial bg-label-secondary rounded text-heading">
+                <span class="avatar-initial bg-label-warning rounded text-heading">
                   <i class="icon-base ti tabler-calendar-stats icon-26px text-heading"></i>
                 </span>
               </span>
@@ -162,11 +162,11 @@
           <div class="col-sm-6 col-lg-3">
             <div class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-4 pb-sm-0">
               <div>
-                <h4 class="mb-0">12,689</h4>
-                <p class="mb-0">Completed</p>
+                <h4 class="mb-0">{{ $paymentCounts['paid'] }}</h4>
+                <p class="mb-0">Paid</p>
               </div>
               <span class="avatar p-2 me-lg-6">
-                <span class="avatar-initial bg-label-secondary rounded"><i class="icon-base ti tabler-checks icon-26px text-heading"></i></span>
+                <span class="avatar-initial bg-label-success rounded"><i class="icon-base ti tabler-checks icon-26px text-heading"></i></span>
               </span>
             </div>
             <hr class="d-none d-sm-block d-lg-none" />
@@ -174,8 +174,8 @@
           <div class="col-sm-6 col-lg-3">
             <div class="d-flex justify-content-between align-items-start border-end pb-4 pb-sm-0 card-widget-3">
               <div>
-                <h4 class="mb-0">124</h4>
-                <p class="mb-0">Refunded</p>
+                <h4 class="mb-0">{{ $paymentCounts['cancelled'] > 0 ? $paymentCounts['cancelled'] : 'None' }}</h4>
+                <p class="mb-0">Cancelled</p>
               </div>
               <span class="avatar p-2 me-sm-6">
                 <span class="avatar-initial bg-label-secondary rounded"><i class="icon-base ti tabler-wallet icon-26px text-heading"></i></span>
@@ -185,11 +185,11 @@
           <div class="col-sm-6 col-lg-3">
             <div class="d-flex justify-content-between align-items-start">
               <div>
-                <h4 class="mb-0">32</h4>
+                <h4 class="mb-0">{{ $paymentCounts['failed'] > 0 ? $paymentCounts['failed'] : 'None' }}</h4>
                 <p class="mb-0">Failed</p>
               </div>
               <span class="avatar p-2">
-                <span class="avatar-initial bg-label-secondary rounded"><i class="icon-base ti tabler-alert-octagon icon-26px text-heading"></i></span>
+                <span class="avatar-initial bg-label-danger rounded"><i class="icon-base ti tabler-alert-octagon icon-26px text-heading"></i></span>
               </span>
             </div>
           </div>
@@ -208,7 +208,7 @@
           <th>date</th>
           <th>customers</th>
           <th>payment</th>
-          <th>status</th>
+          <th>payment status</th>
           <th>method</th>
           <th>actions</th>
         </tr>
@@ -232,7 +232,15 @@
 
             <td>${{ $order->total }}</td>
             <td>
-              <span class="badge bg-label-{{ $order->order_status == 'completed' ? 'success' : ($order->order_status == 'pending' ? 'warning' : 'danger') }} me-1">{{ ucfirst($order->order_status) }}</span>
+              <span class="badge bg-label-{{ 
+                $order->payment_status == 'Paid' ? 'success' : 
+                ($order->payment_status == 'Pending' ? 'warning' : 
+                ($order->payment_status == 'Failed' ? 'danger' : 
+                ($order->payment_status == 'Cancelled' ? 'secondary' : 'info'))) 
+            }} me-1">
+                {{ ucfirst($order->payment_status) }}
+            </span>
+            
             </td>
             <td>{{ $order->payment_method }}</td>
             <td>
@@ -359,6 +367,22 @@
 
     <script>
       $(document).ready(function () {
+        // Add custom CSS styling for the primary button
+        $('<style>')
+          .prop('type', 'text/css')
+          .html(`
+            .btn-primary {
+              background-color: var(--bs-primary) !important;
+              border-color: var(--bs-primary) !important;
+              color: var(--bs-primary-contrast) !important;
+            }
+            .btn-primary:hover {
+              background-color: color-mix(in sRGB, #000 10%, var(--bs-primary)) !important;
+              border-color: color-mix(in sRGB, #000 10%, var(--bs-primary)) !important;
+            }
+          `)
+          .appendTo('head');
+
         // Existing DataTable initialization 
         $('#orderTable').DataTable({
           layout: {
@@ -501,5 +525,4 @@
 </html>
 
   <!-- beautify ignore:end -->
-```
 

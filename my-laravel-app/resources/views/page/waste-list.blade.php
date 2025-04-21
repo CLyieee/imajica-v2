@@ -169,10 +169,9 @@
                         <td>{{ $waste->date_added }}</td>
                         <td>
                           <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-sm btn-info edit-waste"
-                                    data-id="{{ $waste->id }}">
+                            <a href="{{ route('waste.edit', $waste->id) }}" class="btn btn-sm btn-info">
                               <i class="ti tabler-edit me-1"></i>Edit
-                            </button>
+                            </a>
                             <button type="button" class="btn btn-sm btn-danger delete-waste"
                                     data-id="{{ $waste->id }}">
                               <i class="ti tabler-trash me-1"></i>Delete
@@ -272,8 +271,94 @@
     <script>
       $(document).ready(function() {
         $('#wasteTable').DataTable();
+
+        // Add click handler for edit button
+        $('.edit-waste').on('click', function() {
+          const wasteId = $(this).data('id');
+          window.location.href = `/waste/${wasteId}/edit`;
+        });
       });
 
+    </script>
+
+    <script>
+           // SweetAlert2 confirmation config
+           const swalConfig = {
+          customClass: {
+            confirmButton: 'btn btn-danger me-3',
+            cancelButton: 'btn btn-secondary'
+          },
+          buttonsStyling: false,
+          backdrop: true,
+          allowOutsideClick: false
+        };
+
+        // Handle delete waste button clicks
+        $('.delete-waste').on('click', function() {
+          const wasteId = $(this).data('id');
+          
+          Swal.fire({
+            ...swalConfig,
+            title: 'Confirm Delete',
+            text: 'Are you sure you want to delete this waste record? This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Send AJAX delete request
+              $.ajax({
+                url: `/waste/${wasteId}`,
+                type: 'DELETE',
+                data: {
+                  _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                  Swal.fire({
+                    ...swalConfig,
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: response.message || 'Waste record has been deleted.',
+                    timer: 1500,
+                    showConfirmButton: false
+                  }).then(() => {
+                    location.reload();
+                  });
+                },
+                error: function(xhr) {
+                  Swal.fire({
+                    ...swalConfig,
+                    icon: 'error',
+                    title: 'Error',
+                    text: xhr.responseJSON?.message || 'Failed to delete waste record'
+                  });
+                }
+              });
+            }
+          });
+        });
+
+        // Display success/error messages from session
+        @if(session('success'))
+          Swal.fire({
+            ...swalConfig,
+            icon: 'success',
+            title: 'Success',
+            text: "{{ session('success') }}",
+            timer: 1500,
+            showConfirmButton: false
+          });
+        @endif
+
+        @if(session('error'))
+          Swal.fire({
+            ...swalConfig,
+            icon: 'error',
+            title: 'Error',
+            text: "{{ session('error') }}"
+          });
+        @endif
     </script>
   </body>
 

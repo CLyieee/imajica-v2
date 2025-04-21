@@ -138,6 +138,9 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::with('items')->get();
+
+    
+
         return view('page.order-list', compact('orders'));
     }
 
