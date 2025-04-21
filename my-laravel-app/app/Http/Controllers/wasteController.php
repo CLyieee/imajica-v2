@@ -81,7 +81,7 @@ class WasteController extends Controller
     {
         try {
             $validated = $request->validate([
-                'product_id' => 'required|exists:products,id',
+                'product_id' => 'required|exists:new_product,id',
                 'quantity' => 'required|numeric|min:1',
                 'reason' => 'required|string|max:255',
             ]);

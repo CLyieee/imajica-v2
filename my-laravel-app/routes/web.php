@@ -25,7 +25,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeReportController;
 use App\Http\Controllers\CustomerReportController;
 use App\Http\Controllers\SalesTransactionController;
-
+use App\Http\Controllers\WasteController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -245,7 +245,7 @@ Route::get('/new-waste', [App\Http\Controllers\WasteController::class, 'create']
 Route::post('/waste/store', [App\Http\Controllers\WasteController::class, 'store'])->name('waste.store');
 Route::get('/waste-list', [App\Http\Controllers\WasteController::class, 'index'])->name('page.waste-list');
 Route::get('/waste/{id}/edit', [App\Http\Controllers\WasteController::class, 'edit'])->name('waste.edit');
-Route::put('/waste/{id}', [App\Http\Controllers\WasteController::class, 'update'])->name('waste.update');
+Route::put('/waste/{id}/update', [App\Http\Controllers\WasteController::class, 'update'])->name('waste.update');
 Route::delete('/waste/{id}', [App\Http\Controllers\WasteController::class, 'destroy'])->name('waste.destroy');
 
 // Patient Medical Information Routes
