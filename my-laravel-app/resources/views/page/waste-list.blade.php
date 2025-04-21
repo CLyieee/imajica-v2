@@ -49,9 +49,7 @@
 
     <link rel="stylesheet" href="../../assets/vendor/fonts/iconify-icons.css" />
 
-    <!-- Core CSS -->
-    <!-- build:css assets/vendor/css/theme.css  -->
-
+    
     <link
       rel="stylesheet"
       href="../../assets/vendor/libs/node-waves/node-waves.css"
@@ -65,47 +63,21 @@
     <link rel="stylesheet" href="../../assets/vendor/css/core.css" />
     <link rel="stylesheet" href="../../assets/css/demo.css" />
 
-    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
 
-    <link
-      rel="stylesheet"
-      href="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"
-    />
-    <link
-      rel="stylesheet"
-      href="../../assets/vendor/libs/flatpickr/flatpickr.css"
-    />
-    <link
-      rel="stylesheet"
-      href="../../assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css"
-    />
-    <link
-      rel="stylesheet"
-      href="../../assets/vendor/libs/jquery-timepicker/jquery-timepicker.css"
-    />
+    <link rel="stylesheet" href="../../assets/vendor/libs/select2/select2.css" />
 
-    <!-- endbuild -->
-
-    <link
-      rel="stylesheet"
-      href="../../assets/vendor/libs/select2/select2.css"
-    />
-
-    <!-- Page CSS -->
-
-    <!-- Helpers -->
+  
     <script src="../../assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-
+ 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="../../assets/js/config.js"></script>
-    <!-- Add SweetAlert2 CDN -->
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+  
   </head>
 
   <body>
@@ -224,10 +196,7 @@
       <!-- Drag Target Area To SlideIn Menu On Small Screens -->
       <div class="drag-target"></div>
     </div>
-    <!-- / Layout wrapper -->
 
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/theme.js -->
 
     <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
 
@@ -259,6 +228,22 @@
     <script src="../../assets/vendor/libs/jquery-timepicker/jquery-timepicker.js"></script>
     <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
 
+
+
+    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/datatables-buttons.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/jszip/jszip.js"></script>
+    <script src="../../assets/vendor/libs/pdfmake/pdfmake.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/buttons.html5.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/buttons.print.js"></script>
+
+    <script src="../../assets/vendor/libs/moment/moment.js"></script>
+    <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
+    <script src="../../assets/vendor/libs/%40form-validation/popular.js"></script>
+    <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
+
     <!-- Main JS -->
 
     <script src="../../assets/js/main.js"></script>
@@ -267,18 +252,23 @@
     <script src="../../assets/js/form-layouts.js"></script>
     <script src="../../assets/js/forms-pickers.js"></script>
 
-
+    <!-- Custom Script for Waste Management -->
     <script>
       $(document).ready(function() {
-        $('#wasteTable').DataTable();
+        var table = $('#wasteTable').DataTable({
+          responsive: true,
+          searching: true,
+          lengthChange: true,
+          info: true
+        });
+      });
+    </script>
 
-        // Add click handler for edit button
-        $('.edit-waste').on('click', function() {
+    <script>
+           $('.edit-waste').on('click', function() {
           const wasteId = $(this).data('id');
           window.location.href = `/waste/${wasteId}/edit`;
         });
-      });
-
     </script>
 
     <script>
@@ -360,9 +350,9 @@
           });
         @endif
     </script>
+
   </body>
 
   <!-- Mirrored from demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/form-layouts-sticky.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 08:27:42 GMT -->
 </html>
 
-<!-- beautify ignore:end -->

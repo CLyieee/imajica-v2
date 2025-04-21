@@ -120,14 +120,14 @@
   <div class="layout-wrapper layout-content-navbar  ">
     <div class="layout-container">
       @include ('components.sidebar')
-        
-<div class="menu-mobile-toggler d-xl-none rounded-1">
-  <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large text-bg-secondary p-2 rounded-1">
-    <i class="ti tabler-menu icon-base"></i>
-    <i class="ti tabler-chevron-right icon-base"></i>
-  </a>
-</div>
-<!-- / Menu -->
+                      
+              <div class="menu-mobile-toggler d-xl-none rounded-1">
+                <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large text-bg-secondary p-2 rounded-1">
+                  <i class="ti tabler-menu icon-base"></i>
+                  <i class="ti tabler-chevron-right icon-base"></i>
+                </a>
+              </div>
+
 
       
 
@@ -136,202 +136,182 @@
       
         
 
-<div class="container">
+    <div class="container">
   
 
-  <!-- Category Table Card -->
-  <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center py-3">
-      <div class="flex-grow-1">
-        <h4 class="card-title mb-0">Product Category List</h4>
-      </div>
-      <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEcommerceCategoryList" id="eCommerceCategoryListForm">
-        <i class="ti tabler-plus me-1"></i> Add New Category
-      </button>
-    </div>
-    <div class="card-datatable table-responsive">
-      <table class="table table-striped" id="categoryTable" style="width: 100%">
-        <thead class="table-light">
-          <tr>
-            <th>ID</th>
-            <th>Category</th>
-            <th>Total Products</th>
-            <th>Total Earnings</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($categories as $category)
-          <tr>
-            <td>{{ $category->category_id }}</td>
-            <td>
-              <div class="d-flex justify-content-start align-items-center">
-                <div class="avatar-wrapper me-3">
-                  <div class="avatar rounded-2 bg-label-secondary">
-                    <img src="{{ $category->categoryImage ? asset($category->categoryImage) : asset('assets/img/products/default.jpg') }}" 
-                         class="rounded-2" alt="{{ $category->categoryTitle }}">
+                    <!-- Category Table Card -->
+                    <div class="card">
+                      <div class="card-header d-flex justify-content-between align-items-center py-3">
+                        <div class="flex-grow-1">
+                          <h4 class="card-title mb-0">Product Category List</h4>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEcommerceCategoryList" id="eCommerceCategoryListForm">
+                          <i class="ti tabler-plus me-1"></i> Add New Category
+                        </button>
+                      </div>
+                      <div class="card-datatable table-responsive">
+                        <table class="table table-striped" id="categoryTable" style="width: 100%">
+                          <thead class="table-light">
+                            <tr>
+                              <th>ID</th>
+                              <th>Category</th>
+                              <th>Total Products</th>
+                              <th>Total Earnings</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach ($categories as $category)
+                            <tr>
+                              <td>{{ $category->category_id }}</td>
+                              <td>
+                                <div class="d-flex justify-content-start align-items-center">
+                                  <div class="avatar-wrapper me-3">
+                                    <div class="avatar rounded-2 bg-label-secondary">
+                                      <img src="{{ $category->categoryImage ? asset($category->categoryImage) : asset('assets/img/products/default.jpg') }}" 
+                                          class="rounded-2" alt="{{ $category->categoryTitle }}">
+                                    </div>
+                                  </div>
+                                  <div class="d-flex flex-column">
+                                    <h6 class="mb-0">{{ $category->categoryTitle }}</h6>
+                                    <small class="text-muted">{{ $category->description ?? 'No description available' }}</small>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <span class="fw-semibold align-middle">{{ $category->products_count }}</span>
+
+                              </td>
+                              <td>
+                                <span class="fw-semibold">₱{{ number_format($category->total_earnings, 2) }}</span>
+                              
+                              </td>
+                              <td>
+                                <div class="d-flex gap-2">
+                                  
+                                  <button class="btn btn-sm btn-info edit-category" 
+                                          data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="{{ $category->category_id }}"
+                                          
+                                          data-category-name="{{ $category->categoryTitle }}"
+                                          data-description="{{ $category->description }}"
+                                          data-category-image="{{ $category->categoryImage }}"
+                                          >
+                                    <i class="ti tabler-edit me-1"></i> Edit
+                                  </button>
+                                  <button class="btn btn-sm btn-danger delete-category" 
+                                          data-category-id="{{ $category->category_id }}"
+                                          data-category-name="{{ $category->categoryTitle }}">
+                                    <i class="ti tabler-trash me-1"></i> Delete
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="d-flex flex-column">
-                  <h6 class="mb-0">{{ $category->categoryTitle }}</h6>
-                  <small class="text-muted">{{ $category->description ?? 'No description available' }}</small>
-                </div>
-              </div>
-            </td>
-            <td>
-              <span class="fw-semibold align-middle">{{ $category->products_count }}</span>
 
-            </td>
-            <td>
-              <span class="fw-semibold">₱{{ number_format($category->total_earnings, 2) }}</span>
-             
-            </td>
-            <td>
-              <div class="d-flex gap-2">
-                
-                <button class="btn btn-sm btn-info edit-category" 
-                        data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="{{ $category->category_id }}"
-                        
-                        data-category-name="{{ $category->categoryTitle }}"
-                        data-description="{{ $category->description }}"
-                        data-category-image="{{ $category->categoryImage }}"
-                        >
-                  <i class="ti tabler-edit me-1"></i> Edit
-                </button>
-                <button class="btn btn-sm btn-danger delete-category" 
-                        data-category-id="{{ $category->category_id }}"
-                        data-category-name="{{ $category->categoryTitle }}">
-                  <i class="ti tabler-trash me-1"></i> Delete
-                </button>
-              </div>
-            </td>
-          </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+                  <form id="deleteCategoryForm" method="POST" action="{{ route('category.delete') }}" style="display: none;">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" id="deleteCategoryId" name="category_id">
+                  </form>
 
-<form id="deleteCategoryForm" method="POST" action="{{ route('category.delete') }}" style="display: none;">
-  @csrf
-  @method('DELETE')
-  <input type="hidden" id="deleteCategoryId" name="category_id">
-</form>
+                  <!-- Offcanvas for Adding New Category -->
+                  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList">
+                    <div class="offcanvas-header">
+                      <h5 class="offcanvas-title">Add New Category</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" id="offcanvasEcommerceCategoryListClose"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                      <form id="eCommerceCategoryListForm" method="POST" action="{{ route('category.create') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                          <label for="categoryTitle" class="form-label">Category Title</label>
+                          <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="slug" class="form-label">Slug</label>
+                          <input type="text" class="form-control" id="slug" name="slug" required>
+                          <small class="text-muted">The slug will be automatically generated from the title.</small>
+                        </div>
+                        <div class="mb-3">
+                          <label for="description" class="form-label">Description</label>
+                          <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label for="categoryImage" class="form-label">Category Image</label>
+                          <input type="file" class="form-control" id="categoryImage" name="categoryImage" accept="image/*">
+                          <div id="imagePreview" class="mt-2" style="max-width: 200px;">
+                            <img src="" alt="Preview" style="width: 100%; display: none;">
+                          </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Category</button>
+                      </form>
+                    </div>
+                  </div>
 
-<!-- Offcanvas for Adding New Category -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEcommerceCategoryList">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Add New Category</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" id="offcanvasEcommerceCategoryListClose"></button>
-  </div>
-  <div class="offcanvas-body">
-    <form id="eCommerceCategoryListForm" method="POST" action="{{ route('category.create') }}" enctype="multipart/form-data">
-      @csrf
-      <div class="mb-3">
-        <label for="categoryTitle" class="form-label">Category Title</label>
-        <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" required>
-      </div>
-      <div class="mb-3">
-        <label for="slug" class="form-label">Slug</label>
-        <input type="text" class="form-control" id="slug" name="slug" required>
-        <small class="text-muted">The slug will be automatically generated from the title.</small>
-      </div>
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="categoryImage" class="form-label">Category Image</label>
-        <input type="file" class="form-control" id="categoryImage" name="categoryImage" accept="image/*">
-        <div id="imagePreview" class="mt-2" style="max-width: 200px;">
-          <img src="" alt="Preview" style="width: 100%; display: none;">
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary">Save Category</button>
-    </form>
-  </div>
-</div>
+                  <!-- Edit Category Offcanvas -->
+                  <div class="offcanvas offcanvas-end" tabindex="-1" id="editCategoryOffcanvas">
+                    <div class="offcanvas-header">
+                      <h5 class="offcanvas-title">Edit Category</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" id="editCategoryOffcanvasClose"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                      <form id="editCategoryForm" method="POST" action="{{ route('category.update') }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" id="edit_category_id" name="category_id">
+                        <div class="mb-3">
+                          <label for="edit_categoryTitle" class="form-label">Category Title</label>
+                          <input type="text" class="form-control" id="edit_categoryTitle" name="categoryTitle" required>
+                          <div class="invalid-feedback" id="edit_categoryTitle_error"></div>
+                        </div>
+                        <div class="mb-3">
+                          <label for="edit_description" class="form-label">Description</label>
+                          <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
+                          <div class="invalid-feedback" id="edit_description_error"></div>
+                        </div>
+                        <div class="mb-3">
+                          <label for="edit_categoryImage" class="form-label">Category Image</label>
+                          <input type="file" class="form-control" id="edit_categoryImage" name="categoryImage" accept="image/*">
+                          <div id="edit_imagePreview" class="mt-2" style="max-width: 200px;">
+                            <img src="" alt="Preview" style="width: 100%; display: none;">
+                          </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Category</button>
+                      </form>
+                    </div>
+                  </div>
 
-<!-- Edit Category Offcanvas -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="editCategoryOffcanvas">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Edit Category</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" id="editCategoryOffcanvasClose"></button>
-  </div>
-  <div class="offcanvas-body">
-    <form id="editCategoryForm" method="POST" action="{{ route('category.update') }}" enctype="multipart/form-data">
-      @csrf
-      @method('PUT')
-      <input type="hidden" id="edit_category_id" name="category_id">
-      <div class="mb-3">
-        <label for="edit_categoryTitle" class="form-label">Category Title</label>
-        <input type="text" class="form-control" id="edit_categoryTitle" name="categoryTitle" required>
-        <div class="invalid-feedback" id="edit_categoryTitle_error"></div>
-      </div>
-      <div class="mb-3">
-        <label for="edit_description" class="form-label">Description</label>
-        <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
-        <div class="invalid-feedback" id="edit_description_error"></div>
-      </div>
-      <div class="mb-3">
-        <label for="edit_categoryImage" class="form-label">Category Image</label>
-        <input type="file" class="form-control" id="edit_categoryImage" name="categoryImage" accept="image/*">
-        <div id="edit_imagePreview" class="mt-2" style="max-width: 200px;">
-          <img src="" alt="Preview" style="width: 100%; display: none;">
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary">Update Category</button>
-    </form>
-  </div>
+                <!-- Footer -->
+                <footer class="content-footer footer bg-footer-theme">
+                  <div class="container-xxl">
+                    <div class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
+                      <div class="text-body">
+                        ©
+                        <script>
+                          document.write(new Date().getFullYear());
+                        </script>
+                        Developed by
+                        <a href="https://intra-code.com/" target="_blank" class="footer-link">Intracode IT Solutions</a>
+                      </div>
+                    </div>
+                  </div>
+                </footer>
+                <!-- / Footer -->
+
+                <!-- Overlay -->
+                <div class="layout-overlay layout-menu-toggle"></div>
+
+                <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+                <div class="drag-target"></div>
 </div>
 
 
-
-<!-- Footer -->
-<footer class="content-footer footer bg-footer-theme">
-    <div class="container-xxl">
-      <div class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
-        <div class="text-body">
-          ©
-          <script>
-            document.write(new Date().getFullYear());
-          </script>
-           Developed by <a href="https://intra-code.com/" target="_blank" class="footer-link">Intracode IT Solutions</a>
-        </div>
-       
-      </div>
-    </div>
-  </footer>
-<!-- / Footer -->
-
-          
-          <div class="content-backdrop fade"></div>
-        </div>
-        <!-- Content wrapper -->
-      </div>
-      <!-- / Layout page -->
-    </div>
-
-    
-      
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
-    
-    
-      <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-      <div class="drag-target"></div>
-    
-  </div>
-  <!-- / Layout wrapper -->
-
-    
-    
-
-    
-
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/theme.js -->
+<!-- Core JS -->
     
     
       <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
@@ -617,16 +597,22 @@ console.log("Delete ID:", $('#deleteCategoryId').val());
   });
   </script>
   
-  <script>
-    $(document).ready(function() {
-      $('#categoryTable').DataTable();
-    });
-  </script>
+ 
   
             
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
+<script>
+  $(document).ready(function() {
+    var table = $('#categoryTable').DataTable({
+      responsive: true,
+      searching: true,
+      lengthChange: true,
+      info: true
+    });
+  });
+</script>
 
 </body>
 </html>

@@ -129,22 +129,7 @@
                     </style>
 
                     <!-- Update the DataTable initialization script -->
-                    <script>
-                        $(document).ready(function() {
-                            $('#supplierTable').DataTable({
-                                responsive: true,
-                                dom: 'Bfrtip',
-                                searching: true,
-                                paging: true,
-                                searchPlaceholder: 'Search...',
-                                order: [[0, 'asc']], // Sort by first column by default
-                                language: {
-                                    search: '',
-                                    searchPlaceholder: "Search suppliers..."
-                                }
-                            });
-                        });
-                    </script>
+              
                 </div>
             </div>
         </div>
@@ -296,6 +281,24 @@
     <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
     <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
     <script src="../../assets/vendor/js/menu.js"></script>
+
+
+
+    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/datatables-buttons.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/jszip/jszip.js"></script>
+    <script src="../../assets/vendor/libs/pdfmake/pdfmake.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/buttons.html5.js"></script>
+    <script src="../../assets/vendor/libs/datatables-buttons/buttons.print.js"></script>
+
+    <script src="../../assets/vendor/libs/moment/moment.js"></script>
+    <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
+    <script src="../../assets/vendor/libs/%40form-validation/popular.js"></script>
+    <script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
+
+
 
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -575,6 +578,20 @@
             });
         });
     </script>
+
+
+<script>
+    $(document).ready(function() {
+      var table = $('#supplierTable').DataTable({
+        responsive: true,
+        searching: true,
+        lengthChange: true,
+        info: true
+      });
+    });
+  </script>
+
+
 
 </body>
 </html>

@@ -66,7 +66,7 @@
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3" >
-                  <table class="table table-striped" id="branchTable" style="width: 100%;">
+                  <table class="table table-striped" id="positionTable" style="width: 100%;">
                     <thead class="table-light">
                       <tr>
                         <th>Position Title</th>
@@ -557,29 +557,21 @@
             $('#responseMessage').removeClass('alert-success alert-danger').addClass(alertClass).html(message).fadeIn().delay(3000).fadeOut();
         }
 
-        $('#branchTable').DataTable({
-          responsive: true,
-          order: [[0, 'asc']],
-          pageLength: 10,
-          language: {
-            paginate: {
-              first: '<i class="ti tabler-chevrons-left"></i>',
-              previous: '<i class="ti tabler-chevron-left"></i>', 
-              next: '<i class="ti tabler-chevron-right"></i>',
-              last: '<i class="ti tabler-chevrons-right"></i>'
-            }
-          },
-          drawCallback: function () {
-            // Re-init tooltips after draw
-            $('.dt-buttons .btn').tooltip();
-          },
-          dom: 
-            "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-        });
+    
       });
     </script>
+
+
+<script>
+  $(document).ready(function() {
+    var table = $('#positionTable').DataTable({
+      responsive: true,
+      searching: true,
+      lengthChange: true,
+      info: true
+    });
+  });
+</script>
 
   </body>
 </html>

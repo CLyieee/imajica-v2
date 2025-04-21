@@ -200,7 +200,7 @@
 
   <!-- Order List Table -->
   <div class="card">
-    <table class="table border-top table-striped" id="orderTable">
+    <table class="table border-top table-striped table-responsive" id="orderTable">
       <thead class="table-light">
         <tr>
           <th></th>
