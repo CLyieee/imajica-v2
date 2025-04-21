@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
+use App\Models\order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ class OrderController extends Controller
             ]);
 
             // Create the order
-            $order = Order::create([
+            $order = order::create([
                 'order_date' => $request->order_date . ' ' . $request->order_time,
                 'customer_name' => $request->customer_name,
                 'customer_email' => $request->customer_email,
@@ -137,7 +137,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::with('items')->get();
+        $orders = order::with('items')->get();
 
     
 
@@ -147,7 +147,7 @@ class OrderController extends Controller
     public function show($id)
     {
         try {
-            $order = Order::with(['orderItems.product'])->findOrFail($id);
+            $order = order::with(['orderItems.product'])->findOrFail($id);
             return view('page.order-details', compact('order'));
         } catch (\Exception $e) {
             return redirect()->route('page.order-list')
@@ -157,7 +157,7 @@ class OrderController extends Controller
 
     public function getOrderDetails($orderId)
     {
-        $order = Order::where('order_id', $orderId)->first();
+        $order = order::where('order_id', $orderId)->first();
     
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
@@ -193,8 +193,8 @@ class OrderController extends Controller
     {
         try {
             $orderId = $request->input('order_id');
-            $order = Order::findOrFail($orderId);
-            
+            $order = order::findOrFail($orderId);
+                
             // Delete related order items first 
             $order->orderItems()->delete();
             
