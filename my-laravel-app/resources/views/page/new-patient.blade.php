@@ -15,7 +15,7 @@
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
     <title>Imajica Booking System</title>
@@ -137,6 +137,7 @@
       .avatar-edit label:hover {
         background-color: #0a3622;
         border-color: #0a3622;
+        color: #ffffff;
       }
 
       /* Add to your existing styles */
@@ -600,70 +601,48 @@
 document.addEventListener("DOMContentLoaded", function () {
   const imageUpload = document.getElementById("imageUpload");
   const imagePreview = document.getElementById("imagePreview");
-  const previewContainer = document.querySelector(".avatar-preview");
   const firstnameInput = document.getElementById("firstname");
   const lastnameInput = document.getElementById("lastname");
 
-  function getInitials() {
-    const firstname = firstnameInput.value.trim();
-    const lastname = lastnameInput.value.trim();
-    if (firstname || lastname) {
-      return `${firstname.charAt(0)}${lastname.charAt(0)}`.toUpperCase();
-    }
-    return '';
+  function getInitials(first, last) {
+    return ((first ? first[0] : "") + (last ? last[0] : "")).toUpperCase() || "NA";
   }
 
-  function updateInitials() {
-    const initials = getInitials();
-    if (!imagePreview.style.display || imagePreview.style.display === 'none') {
-      showPlaceholderAvatar(initials);
-    }
+  function createInitialsAvatar(initials) {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width = 150;
+    canvas.height = 150;
+
+    // Draw background circle
+    context.fillStyle = "#0a3622";
+    context.beginPath();
+    context.arc(75, 75, 75, 0, Math.PI * 2);
+    context.fill();
+
+    // Draw initials
+    context.font = "bold 60px Arial";
+    context.fillStyle = "#FFFFFF";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(initials, 75, 75);
+
+    return canvas.toDataURL();
   }
 
-  function showPlaceholderAvatar(initials = '') {
-    // Hide image preview
-    imagePreview.style.display = 'none';
-    
-    // Remove existing placeholder if any
-    const existingPlaceholder = previewContainer.querySelector('.avatar-placeholder');
-    if (existingPlaceholder) {
-      existingPlaceholder.remove();
-    }
+  // Generate avatar when names change
+  [firstnameInput, lastnameInput].forEach((input) => {
+    input.addEventListener("input", function () {
+      if (!imageUpload.files.length) {
+        const initials = getInitials(firstnameInput.value, lastnameInput.value);
+        imagePreview.src = createInitialsAvatar(initials);
+        imagePreview.style.display = 'block';
+      }
+    });
+  });
 
-    // Create new placeholder
-    const placeholder = document.createElement('div');
-    placeholder.className = 'avatar-placeholder';
-    placeholder.innerHTML = `
-      <div class="avatar-circle">
-        ${!initials ? `
-          <div class="avatar-silhouette">
-            <div class="avatar-head"></div>
-            <div class="avatar-body"></div>
-          </div>
-        ` : ''}
-        ${initials ? `<span class="initials">${initials}</span>` : ''}
-      </div>
-    `;
-    previewContainer.appendChild(placeholder);
-  }
-
-  function showImage(src) {
-    // Remove placeholder if exists
-    const placeholder = previewContainer.querySelector('.avatar-placeholder');
-    if (placeholder) {
-      placeholder.remove();
-    }
-    
-    // Show and update image preview
-    imagePreview.style.display = 'block';
-    imagePreview.src = src;
-    imagePreview.style.width = '100%';
-    imagePreview.style.height = '100%';
-    imagePreview.style.objectFit = 'cover';
-  }
-
-  // Handle image upload
-  imageUpload.addEventListener("change", function(e) {
+  // Handle photo upload
+  imageUpload.addEventListener("change", function (e) {
     const file = e.target.files[0];
     if (file) {
       const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -676,7 +655,8 @@ document.addEventListener("DOMContentLoaded", function () {
           text: 'Please upload a JPEG, PNG, or JPG image'
         });
         this.value = '';
-        showPlaceholderAvatar(getInitials());
+        const initials = getInitials(firstnameInput.value, lastnameInput.value);
+        imagePreview.src = createInitialsAvatar(initials);
         return;
       }
 
@@ -687,26 +667,26 @@ document.addEventListener("DOMContentLoaded", function () {
           text: 'Image must be less than 2MB'
         });
         this.value = '';
-        showPlaceholderAvatar(getInitials());
+        const initials = getInitials(firstnameInput.value, lastnameInput.value);
+        imagePreview.src = createInitialsAvatar(initials);
         return;
       }
 
       const reader = new FileReader();
-      reader.onload = function(e) {
-        showImage(e.target.result);
+      reader.onload = function (e) {
+        imagePreview.src = e.target.result;
+        imagePreview.style.display = 'block';
       };
       reader.readAsDataURL(file);
     } else {
-      showPlaceholderAvatar(getInitials());
+      const initials = getInitials(firstnameInput.value, lastnameInput.value);
+      imagePreview.src = createInitialsAvatar(initials);
     }
   });
 
-  // Update initials when name changes
-  firstnameInput.addEventListener('input', updateInitials);
-  lastnameInput.addEventListener('input', updateInitials);
-
-  // Show placeholder on initial load
-  showPlaceholderAvatar();
+  // Set default avatar on page load
+  imagePreview.src = createInitialsAvatar("NA");
+  imagePreview.style.display = 'block';
 });
 </script>
     <button
