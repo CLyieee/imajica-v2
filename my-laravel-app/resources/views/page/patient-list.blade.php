@@ -367,27 +367,23 @@
                       <!-- Patient Header -->
                       <div class="d-flex align-items-center mb-3">
                           <div class="avatar-wrapper">
-                              @if($patient->image_path && Storage::disk('public')->exists($patient->image_path))
-                                  <div class="avatar-preview">
-                                      <img id="imagePreview_{{ $patient->patient_id }}" 
-                                           src="{{ asset('storage/'.$patient->image_path) }}" 
-                                           alt="Profile Preview"
+                              <div class="avatar rounded-circle bg-label-secondary">
+                                  @if($patient->image_path)
+                                      <img src="{{ asset($patient->image_path) }}" 
+                                           alt="{{ $patient->firstname }} {{ $patient->lastname }}"
                                            class="rounded-circle"
+                                           onerror="this.src='{{ asset('assets/img/avatars/default.jpg') }}'"
                                            style="width: 100%; height: 100%; object-fit: cover;">
-                                  </div>
-                              @else
-                                  <div class="avatar-placeholder">
-                                      <div class="avatar-circle">
-                                          <div class="avatar-silhouette">
-                                              <div class="avatar-head"></div>
-                                              <div class="avatar-body"></div>
+                                  @else
+                                      <div class="avatar-placeholder">
+                                          <div class="avatar-circle">
+                                              <span class="initials">
+                                                  {{ strtoupper(substr($patient->firstname ?? '', 0, 1) . substr($patient->lastname ?? '', 0, 1)) }}
+                                              </span>
                                           </div>
-                                          <span class="initials">
-                                              {{ strtoupper(substr($patient->firstname ?? '', 0, 1) . substr($patient->lastname ?? '', 0, 1)) }}
-                                          </span>
                                       </div>
-                                  </div>
-                              @endif
+                                  @endif
+                              </div>
                           </div>
                           <div>
                               <h5 class="mb-1">{{ $patient->firstname }} {{ $patient->lastname }}</h5>
@@ -460,8 +456,8 @@
 
               <style>
                 .avatar-wrapper {
-                  width: 120px;
-                  height: 120px;
+                  width: 150px;
+                  height: 150px;
                   overflow: hidden;
                   border-radius: 50%;
                   border: 3px solid #FFFFFF;
@@ -547,7 +543,7 @@
 
                 .initials {
                   color: #FFFFFF;
-                  font-size: 2.5rem;
+                  font-size: 3.5rem; /* Larger font size for initials */
                   font-weight: 600;
                   position: relative;
                   z-index: 2;
@@ -811,8 +807,8 @@
 
     <style>
       .avatar {
-        width: 48px;
-        height: 48px;
+        width: 150px !important; /* Override any default avatar sizes */
+        height: 150px !important;
         display: inline-flex;
         align-items: center;
         justify-content: center;
