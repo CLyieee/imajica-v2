@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\waste;
-use App\Models\Product;
+use App\Models\product;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +18,7 @@ class wasteController extends Controller
 
     public function create()
     {
-        $products = Product::all();
+        $products = product::all();
         return view('page.new-waste', compact('products'));
     }
 
@@ -68,7 +68,7 @@ class wasteController extends Controller
     {
         try {
             $waste = waste::findOrFail($id);
-            $products = Product::all();
+            $products = product::all();
             return view('page.edit-waste', compact('waste', 'products'));
         } catch (\Exception $e) {
             Log::error('Error loading waste edit form: ' . $e->getMessage());
