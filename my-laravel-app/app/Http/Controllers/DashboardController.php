@@ -435,7 +435,16 @@ class DashboardController extends Controller
     public function order_list()
     {
         $orders = order::all();
-        return view('page.order-list', compact('orders'));
+
+        $paymentCounts = [
+            'pending' => order::where('payment_status', 'Pending')->count(),
+            'paid' => order::where('payment_status', 'Paid')->count(),
+            'failed' => order::where('payment_status', 'Failed')->count(),
+            'cancelled' => order::where('payment_status', 'Cancelled')->count()
+        ];
+
+      
+        return view('page.order-list', compact('orders', 'paymentCounts'));
     }
     public function order_details()
     {

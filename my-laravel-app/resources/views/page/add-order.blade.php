@@ -274,11 +274,11 @@
     <script>
         function discardChanges() {
             Swal.fire({
-                title: 'Discard changes?',
-                text: "You will lose all unsaved changes!",
+                title: 'Cancel order?',
+                text: "You sure you want to cancel this order!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, discard!',
+                confirmButtonText: 'Yes',
                 customClass: {
                     confirmButton: 'btn btn-primary me-3',
                     cancelButton: 'btn btn-label-secondary'
