@@ -138,13 +138,9 @@
                       style="background-color: #0A3622;"
                     >
                       <h5 class="card-title mb-sm-0 me-2 text-white">
-                        Edit Service: {{ $service->service_name }}
+                        Edit Service
                       </h5>
-                      <div class="mt-3 mt-sm-0">
-                        <a href="{{ route('page.services-list') }}" class="btn btn-light">
-                          <i class="ti tabler-arrow-left me-1"></i>Back to Services List
-                        </a>
-                      </div>
+                      
                     </div>
                     <div class="card-body pt-6">
                       <div class="row">

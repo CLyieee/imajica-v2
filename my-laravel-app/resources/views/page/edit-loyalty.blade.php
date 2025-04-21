@@ -208,8 +208,8 @@
 
                             <div class="row">
                               <div class="col-12 d-flex gap-3">
-                                <button type="submit" class="btn btn-primary" id="updateBtn">Update Tier</button>
-                                <a href="{{ route('tier.list') }}" class="btn btn-outline-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary me-1" id="updateBtn">Update Tier</button>
+                                <a href="{{ route('page.loyalty-list') }}" class="btn btn-outline-secondary">Cancel</a>
                               </div>
                             </div>
                           </form>

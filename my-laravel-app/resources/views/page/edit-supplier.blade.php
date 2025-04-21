@@ -40,13 +40,9 @@
                                     <div class="card-header d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
                                          style="background-color: #0A3622;">
                                         <h5 class="card-title mb-sm-0 me-2 text-white">
-                                            Edit Supplier: {{ $supplier->supplier_name }}
+                                            Edit Supplier
                                         </h5>
-                                        <div class="mt-3 mt-sm-0">
-                                            <a href="{{ route('page.supplier-list') }}" class="btn btn-light">
-                                                <i class="ti tabler-arrow-left me-1"></i>Back to Suppliers List
-                                            </a>
-                                        </div>
+                                        
                                     </div>
                                     
                                     <div class="card-body pt-6">

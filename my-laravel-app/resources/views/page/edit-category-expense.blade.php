@@ -145,11 +145,7 @@
                       <h5 class="card-title mb-sm-0 me-2 text-white">
                         Edit Category Expense
                       </h5>
-                      <div>
-                        <a href="{{ route('page.categoryexpenses-list') }}" class="btn btn-sm btn-light">
-                          <i class="ti tabler-arrow-left me-1"></i> Back to List
-                        </a>
-                      </div>
+                     
                     </div>
                     <div class="card-body pt-6">
                       @if ($errors->any())

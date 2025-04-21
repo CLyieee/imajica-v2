@@ -181,13 +181,9 @@
                     <div class="card-header d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row"
                       style="background-color: #0a3622">
                       <h5 class="card-title mb-sm-0 me-2 text-white">
-                        Edit Staff: {{ $staff->firstname }} {{ $staff->lastname }}
+                        Edit Staff
                       </h5>
-                      <div class="mt-3 mt-sm-0">
-                        <a href="{{ route('page.staff-list') }}" class="btn btn-light">
-                          <i class="ti tabler-arrow-left me-1"></i>Back to Staff List
-                        </a>
-                      </div>
+                     
                     </div>
 
                     <div class="card-body pt-6">

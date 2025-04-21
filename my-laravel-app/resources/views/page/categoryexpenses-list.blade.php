@@ -15,7 +15,7 @@
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+      content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"
     />
 
     <title>Imajica Booking System</title>
@@ -361,33 +361,33 @@
 
                 <!-- Table -->
                 <div class="table-responsive text-nowrap px-3">
-                  <table class="table table-striped" id="categoryTable">
-                    <thead style="background-color: #0a3622; color: white;">
+                  <table class="table table-striped" id="servicesTable">
+                    <thead class="table-light">
                       <tr>
-                        <th style="color: white;">Category Name</th>
-                        <th style="color: white;">Description</th>
-                        <th class="text-center" style="color: white;">Actions</th>
+                        <th>Category Name</th>
+                        <th>Description</th>
+                        <th class="text-center">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      
-
-                      <!-- Dynamic Data from Database -->
                       @foreach ($categories as $category)
                         <tr>
                           <td>{{ $category->name }}</td>
                           <td>{{ $category->description }}</td>
                           <td class="text-center">
-                            <button class="btn btn-sm btn-info edit-category" onclick="window.location.href='{{ route('category_expense.edit', $category->category_expense_id) }}'">
-                              <i class="ti tabler-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-category" data-category-id="{{ $category->category_expense_id }}" data-category-name="{{ $category->name }}">
-                              <i class="ti tabler-trash"></i> Delete
-                            </button>
+                            <div class="d-flex gap-2 justify-content-center">
+                              <a href="{{ route('category_expense.edit', $category->category_expense_id) }}" class="btn btn-sm btn-info">
+                                <i class="ti tabler-edit me-1"></i> Edit
+                              </a>
+                              <button class="btn btn-sm btn-danger delete-category" 
+                                data-category-id="{{ $category->category_expense_id }}"
+                                data-category-name="{{ $category->name }}">
+                                <i class="ti tabler-trash me-1"></i> Delete
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       @endforeach
-                        
                     </tbody>
                   </table>
                   <br />

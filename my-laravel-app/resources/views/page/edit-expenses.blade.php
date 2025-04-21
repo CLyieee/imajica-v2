@@ -139,11 +139,9 @@
                       style="background-color: #0a3622"
                     >
                       <h5 class="card-title mb-0 text-white">
-                        Edit Expense
+                        Edit Expenses
                       </h5>
-                      <a href="{{ route('expenses.index') }}" class="btn btn-sm btn-light">
-                        <i class="ti tabler-arrow-left me-1"></i> Back to List
-                      </a>
+                      
                     </div>
                     <div class="card-body pt-4">
                       <!-- Display validation errors if any -->
