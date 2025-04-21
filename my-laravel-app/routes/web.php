@@ -25,7 +25,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeReportController;
 use App\Http\Controllers\CustomerReportController;
 use App\Http\Controllers\SalesTransactionController;
-use App\Http\Controllers\WasteController;
+use App\Http\Controllers\wasteController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -242,12 +242,12 @@ Route::delete('/category_expense/delete/{id}', [App\Http\Controllers\category_ex
 Route::resource('expenses', ExpensesController::class);
 
 // Waste management routes
-Route::get('/new-waste', [App\Http\Controllers\WasteController::class, 'create'])->name('page.new-waste');
-Route::post('/waste/store', [App\Http\Controllers\WasteController::class, 'store'])->name('waste.store');
-Route::get('/waste-list', [App\Http\Controllers\WasteController::class, 'index'])->name('page.waste-list');
-Route::get('/waste/{id}/edit', [App\Http\Controllers\WasteController::class, 'edit'])->name('waste.edit');
-Route::put('/waste/{id}/update', [App\Http\Controllers\WasteController::class, 'update'])->name('waste.update');
-Route::delete('/waste/{id}', [App\Http\Controllers\WasteController::class, 'destroy'])->name('waste.destroy');
+Route::get('/new-waste', [App\Http\Controllers\wasteController::class, 'create'])->name('page.new-waste');
+Route::post('/waste/store', [App\Http\Controllers\wasteController::class, 'store'])->name('waste.store');
+Route::get('/waste-list', [App\Http\Controllers\wasteController::class, 'index'])->name('page.waste-list');
+Route::get('/waste/{id}/edit', [App\Http\Controllers\wasteController::class, 'edit'])->name('waste.edit');
+Route::put('/waste/{id}/update', [App\Http\Controllers\wasteController::class, 'update'])->name('waste.update');
+Route::delete('/waste/{id}', [App\Http\Controllers\wasteController::class, 'destroy'])->name('waste.destroy');
 
 // Patient Medical Information Routes
 Route::post('/patient/allergy/add', [PatientController::class, 'addAllergy'])->name('patient.allergy.add');

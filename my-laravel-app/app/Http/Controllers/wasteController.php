@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Waste;
+use App\Models\waste;
 use App\Models\Product;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +12,7 @@ class WasteController extends Controller
 {
     public function index()
     {
-        $wastes = Waste::with('product')->get();
+        $wastes = waste::with('product')->get();
         return view('page.waste-list', compact('wastes'));
     }
 
@@ -31,7 +31,7 @@ class WasteController extends Controller
                 'reason' => 'required|string|max:255',
             ]);
 
-            $waste = new Waste();
+            $waste = new waste();
             $waste->product_id = $validated['product_id'];
             $waste->quantity = $validated['quantity'];
             $waste->reason = $validated['reason'];
@@ -67,7 +67,7 @@ class WasteController extends Controller
     public function edit($id)
     {
         try {
-            $waste = Waste::findOrFail($id);
+            $waste = waste::findOrFail($id);
             $products = Product::all();
             return view('page.edit-waste', compact('waste', 'products'));
         } catch (\Exception $e) {
@@ -86,7 +86,7 @@ class WasteController extends Controller
                 'reason' => 'required|string|max:255',
             ]);
 
-            $waste = Waste::findOrFail($id);
+            $waste = waste::findOrFail($id);
             $waste->product_id = $validated['product_id'];
             $waste->quantity = $validated['quantity'];
             $waste->reason = $validated['reason'];
@@ -121,7 +121,7 @@ class WasteController extends Controller
     public function destroy($id)
     {
         try {
-            $waste = Waste::findOrFail($id);
+            $waste = waste::findOrFail($id);
             $waste->delete();
 
             if (request()->ajax()) {
