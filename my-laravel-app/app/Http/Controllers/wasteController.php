@@ -8,7 +8,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
-class WasteController extends Controller
+class wasteController extends Controller
 {
     public function index()
     {
