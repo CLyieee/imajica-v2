@@ -416,6 +416,7 @@ class DashboardController extends Controller
             )
             ->leftJoin('bookings', 'staff.id', '=', 'bookings.id')
             ->leftJoin('services', 'bookings.service_id', '=', 'services.service_id')
+            ->where('bookings.status','=', 'Completed')
             ->groupBy('staff.id', 'staff.firstname', 'staff.lastname')
             ->orderBy('staff.firstname')
             ->get();
