@@ -12,25 +12,30 @@ class EmployeeController extends Controller
 {
     public function index()
     {
-        $employees = DB::table('bookings')
-            ->join('staff', 'bookings.staff_id', '=', 'staff.id')
-            ->join('services', 'bookings.service_id', '=', 'services.service_id')
+        $employees = DB::table('staff')
             ->select(
-                'staff.id as staff_id',
+                'staff.id',
                 'staff.firstname',
                 'staff.lastname',
                 DB::raw('COUNT(DISTINCT bookings.booking_id) as service_count'),
                 DB::raw('COUNT(DISTINCT bookings.patient_id) as client_count'),
-                DB::raw('SUM(CASE WHEN bookings.status = "Completed" THEN services.service_cost ELSE 0 END) as total_service_sales'),
-                DB::raw('SUM(CASE WHEN bookings.status = "Completed" THEN 
-                    (services.service_cost + COALESCE(bookings.product_amount, 0)) 
-                    ELSE 0 END) as total_sales')
+                DB::raw('COALESCE(SUM(CASE WHEN bookings.status = "Completed" THEN services.service_cost ELSE 0 END), 0) as total_service_sales'),
+                DB::raw('COALESCE(SUM(CASE WHEN bookings.status = "Completed" THEN services.service_cost ELSE 0 END), 0) as total_sales')
             )
-            ->where('bookings.status', '=', 'Completed')
+            ->leftJoin('bookings', 'staff.id', '=', 'bookings.id')
+            ->leftJoin('services', 'bookings.service_id', '=', 'services.service_id')
             ->groupBy('staff.id', 'staff.firstname', 'staff.lastname')
+            ->orderBy('staff.firstname')
             ->get();
 
-        return view('page.employee-sales', compact('employees'));
+        // Calculate total metrics for the header cards
+        $totalMetrics = [
+            'total_sales' => $employees->sum('total_sales'),
+            'monthly_sales' => $this->getMonthlySales(),
+            'top_employee' => $employees->sortByDesc('total_sales')->first()
+        ];
+
+        return view('page.employee-sales', compact('employees', 'totalMetrics'));
     }
 
     private function getMonthlySales()

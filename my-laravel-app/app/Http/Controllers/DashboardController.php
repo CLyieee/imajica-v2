@@ -406,9 +406,41 @@ class DashboardController extends Controller
     }
     public function employee_sales()
     {
-       
-        $employees = staff::all();
-        return view('page.employee-sales', compact('employees'));
+        $employees = DB::table('staff')
+            ->select(
+                DB::raw('CONCAT(staff.firstname, " ", staff.lastname) as employee_name'),
+                DB::raw('COUNT(DISTINCT bookings.booking_id) as service_count'),
+                DB::raw('COUNT(DISTINCT bookings.patient_id) as client_count'),
+                DB::raw('COALESCE(SUM(CASE WHEN bookings.status = "Completed" THEN services.service_cost ELSE 0 END), 0) as total_service_sales'),
+                DB::raw('COALESCE(SUM(CASE WHEN bookings.status = "Completed" THEN services.service_cost ELSE 0 END), 0) as total_sales')
+            )
+            ->leftJoin('bookings', 'staff.id', '=', 'bookings.id')
+            ->leftJoin('services', 'bookings.service_id', '=', 'services.service_id')
+            ->groupBy('staff.id', 'staff.firstname', 'staff.lastname')
+            ->orderBy('staff.firstname')
+            ->get();
+
+        // Calculate total metrics for the header cards
+        $totalMetrics = [
+            'total_sales' => $employees->sum('total_sales'),
+            'monthly_sales' => $this->getMonthlySales(),
+            'top_employee' => $employees->sortByDesc(function($emp) {
+                // Score based on service count and client count
+                return ($emp->service_count * 0.6) + ($emp->client_count * 0.4);
+            })->first()
+        ];
+
+        return view('page.employee-sales', compact('employees', 'totalMetrics'));
+    }
+
+    private function getMonthlySales()
+    {
+        $currentMonth = now()->month;
+        return DB::table('bookings')
+            ->whereMonth('start_date', $currentMonth)
+            ->leftJoin('services', 'bookings.service_id', '=', 'services.service_id')
+            ->where('bookings.status', 'Completed')
+            ->sum('services.service_cost');
     }
 
     public function commision_employee()

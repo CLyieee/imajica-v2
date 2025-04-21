@@ -163,7 +163,7 @@
                       <div class="card-body d-flex justify-content-between align-items-center">
                           <div>
                               <p class="card-text"><strong>Total Sales:</strong></p>
-                              <h4 class="text-black">₱5,178,492.00</h4>
+                              <h4 class="card-title">₱{{ number_format($totalMetrics['total_sales'], 2) }}</h4>
                           </div>
                           <i class="icon-base ti tabler-chart-pie icon-lg"></i>
                       </div>
@@ -175,7 +175,7 @@
                       <div class="card-body d-flex justify-content-between align-items-center">
                           <div>
                               <p class="card-text"><strong>Monthly Sales</strong></p>
-                              <h4 class="text-black">₱4,850.50</h4>
+                              <h4 class="card-title">₱{{ number_format($totalMetrics['monthly_sales'], 2) }}</h4>
                           </div>
                           <i class="icon-base ti tabler-calendar icon-lg"></i>
                       </div>
@@ -187,7 +187,8 @@
                       <div class="card-body d-flex justify-content-between align-items-center">
                           <div>
                               <p class="card-text"><strong>Top Employee</strong></p>
-                              <h4 class="text-black">Ramil Gonzales</h4>
+                              <h4 class="card-title">{{ $totalMetrics['top_employee']->employee_name ?? 'No data' }}</h4>
+                              <p class="mb-0">₱{{ number_format($totalMetrics['top_employee']->total_sales ?? 0, 2) }}</p>
                           </div>
                           <i class="icon-base ti tabler-user icon-lg"></i>
                       </div>
@@ -204,20 +205,22 @@
           <thead>
             <tr>
               <th>Employee Name</th>
-              <th>No. of Service Sales</th>
-              <th>No. of Clients</th>
-              <th>Total Service Sales</th>
-              <th>Total Sales</th>
+              <th class="text-center">No. of Service Sales</th>
+              <th class="text-center">No. of Clients</th>
+              <th class="text-center">Total Service Sales</th>
+              <th class="text-center">Total Sales</th>
+            
             </tr>
           </thead>
           <tbody>
             @foreach($employees as $employee)
             <tr>
-                <td>{{ $employee->firstname }} {{ $employee->lastname }}</td>
+                <td>{{ $employee->employee_name }}</td>
                 <td class="text-center">{{ number_format($employee->service_count) }}</td>
                 <td class="text-center">{{ number_format($employee->client_count) }}</td>
-                <td class="text-end">₱{{ number_format($employee->total_service_sales, 2) }}</td>
-                <td class="text-end">₱{{ number_format($employee->total_sales, 2) }}</td>
+                <td class="text-center">₱{{ number_format($employee->total_service_sales, 2) }}</td>
+                <td class="text-center">₱{{ number_format($employee->total_sales, 2) }}</td>
+               
             </tr>
             @endforeach
           </tbody>
@@ -319,8 +322,8 @@
  <script src="../../assets/employee-sales.json"></script>
 
 <script>
-    $(document).ready(function () {
-        var table = $("#employeeSales").DataTable({
+    $(document).ready(function() {
+        var table = $('#employeeSales').DataTable({
             dom: '<"row"<"col-md-6 d-flex align-items-center justify-content-start gap-2"lB><"col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12"r>><"row"<"col-sm-12"p>>',
             buttons: [
                 {
@@ -356,11 +359,10 @@
                     ]
                 }
             ],
-            columnDefs: [
-                { className: "text-center", targets: [1, 2] },
-                { className: "text-end", targets: [3, 4] }
-            ],
-            // Add any other DataTable options you need
+            responsive: true,
+            searching: true,
+            lengthChange: true,
+            info: true
         });
 
         // Add custom styling for the export button
