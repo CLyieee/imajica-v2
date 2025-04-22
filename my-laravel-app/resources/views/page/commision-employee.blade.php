@@ -193,7 +193,7 @@
     <div class="content-wrapper">
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4">Employee Sales</h4>
+    <h4 class="fw-bold py-3 mb-4">Commsions for Employees</h4>
 
 
     <div class="card datatable-card mb-4">
@@ -204,8 +204,7 @@
                       <div class="card-body d-flex justify-content-between align-items-center">
                           <div>
                               <p class="card-text"><strong>Total Sales:</strong></p>
-                              <h4 class="text-black">₱1,178,492.00</h4>
-                          </div>
+                              <h4 class="card-title">₱{{ number_format($totalMetrics['total_sales'], 2) }}</h4>                          </div>
                           <i class="icon-base ti tabler-chart-pie icon-lg"></i>
                       </div>
                   </div>
@@ -216,7 +215,7 @@
                       <div class="card-body d-flex justify-content-between align-items-center">
                           <div>
                               <p class="card-text"><strong>Monthly Commission</strong></p>
-                              <h4 class="text-black">₱1,850.50</h4>
+                              <h4 class="card-title">₱{{ number_format($totalMetrics['monthly_commission'], 2) }}</h4>
                           </div>
                           <i class="icon-base ti tabler-calendar icon-lg"></i>
                       </div>
@@ -228,7 +227,9 @@
                       <div class="card-body d-flex justify-content-between align-items-center">
                           <div>
                               <p class="card-text"><strong>Total Commission</strong></p>
-                              <h4 class="text-black">₱6,790.50</h4>
+                              <h4 class="card-title">₱{{ number_format($totalMetrics['total_commission'], 2) }}</h4>
+
+                              
                           </div>
                           <i class="icon-base ti tabler-currency-dollar icon-lg"></i>
                       </div>
@@ -242,22 +243,33 @@
     <div class="card datatable-card ">
       <div class="card-body datatable-container table-responsive">
      
-        <table class="table table-striped table-bordered" id = "commissionsTable">
+        <table class="table table-striped " id = "commissionsTable">
           <thead>
             <tr>
               <th>Employee Name</th>
               <th>Service Sales no</th>
-              <th>Product Sales no</th>
               <th>Clients no</th>
               <th>Total Service Sales</th>
-              <th>Total Product Sales</th>         
               <th>Total Service Commission</th>
               <th>Total Session Commission</th>
-              <th>Total Product Commission</th>
               <th>Total Commission</th>
             </tr>
           </thead>
-         
+          <tbody>
+       @foreach ($commissions as $commission)
+         <tr>
+              <td>{{ $commission->employee_name }}</td>
+              <td>{{ $commission->service_sales_no }}</td>
+              <td>{{ $commission->clients_no }}</td>
+              <td>{{ $commission->total_service_sales }}</td>
+              <td>{{ $commission->total_service_commission }}</td>
+              <td>{{ $commission->total_session_commission }}</td>
+              <td>{{ $commission->total_commission }}</td>
+          
+        </tr>
+        @endforeach
+      </tbody>
+          
         </table>
       </div>
     </div>
@@ -360,13 +372,7 @@
   <script>
       $(document).ready(function () {
         var table = $("#commissionsTable").DataTable({
-            ajax: {
-                url: '/assets/comissions.json',
-                dataSrc: '',
-                responsive: true,
-                scrollX: true,
-                autoWidth: false
-            },
+          
             dom: '<"row"<"col-md-6 d-flex align-items-center justify-content-start gap-2"lB><"col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12"r>><"row"<"col-sm-12"p>>',
             buttons: [
                 {
@@ -402,18 +408,9 @@
                     ]
                 }
             ],
-            columns: [
-                { data: 'employee_name' },
-                { data: 'sales_service_no' },
-                { data: 'product_sales_no' },
-                { data: 'client_no' },
-                { data: 'total_service_sale' },
-                { data: 'total_product_sale' },
-                { data: 'total_service_commission' },
-                { data: 'total_session_commission' },
-                { data: 'total_product_commission' },
-                { data: 'total_commision' }
-            ]
+           
+            lengthMenu: [10, 25, 50, 100],
+            pageLength: 10,
         });
 
         // Add custom styling for the export button
@@ -440,89 +437,6 @@
         );
     });
 </script>
-
-<script>
-    $(document).ready(function() {
-        // Initialize DataTable
-        var table = $('#servicesTable').DataTable({
-            processing: true,
-            pageLength: 10,
-            dom: '<"row"<"col-md-6"l><"col-md-6"f>>' +
-                 '<"row"<"col-sm-12"B>>' +  // Add the Buttons extension
-                 '<"row"<"col-sm-12"tr>>' +
-                 '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-            buttons: [
-                {
-                    extend: 'collection',
-                    className: 'btn btn-primary dropdown-toggle me-2',
-                    text: '<i class="ti tabler-download me-1"></i> Export',
-                    buttons: [
-                        {
-                            extend: 'print',
-                            text: '<i class="ti tabler-printer me-1"></i> Print',
-                            className: 'dropdown-item',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'csv',
-                            text: '<i class="ti tabler-file-text me-1"></i> CSV',
-                            className: 'dropdown-item',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'excel',
-                            text: '<i class="ti tabler-file-spreadsheet me-1"></i> Excel',
-                            className: 'dropdown-item',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'pdf',
-                            text: '<i class="ti tabler-file-type-pdf me-1"></i> PDF',
-                            className: 'dropdown-item',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        }
-                    ]
-                }
-            ],
-            language: {
-                search: "",
-                searchPlaceholder: "Search..."
-            }
-        });
-
-        // Fetch and populate data
-        fetch('/assets/comissions.json')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(item => {
-                    table.row.add([
-                        item.employee_name,
-                        item.sales_service_no,
-                        item.product_sales_no,
-                        item.client_no,
-                        item.total_service_sale,
-                        item.total_product_sale,
-                        item.total_service_commission,
-                        item.total_session_commission,
-                        item.total_product_commission,
-                        item.total_commision
-                    ]).draw(false);
-                });
-            })
-            .catch(error => console.error('Error fetching the JSON data:', error));
-    });
-</script>
-
-
-
 <link
       rel="stylesheet"
       href="../../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css"

@@ -446,7 +446,48 @@ class DashboardController extends Controller
 
     public function commision_employee()
     {
-        return view('page.commision-employee');
+        $commissions = DB::table('staff')
+            ->select(
+                DB::raw('CONCAT(staff.firstname, " ", staff.lastname) as employee_name'),
+                DB::raw('COUNT(bookings.booking_id) as service_sales_no'),
+                DB::raw('COUNT(DISTINCT bookings.patient_id) as clients_no'),
+                DB::raw('COALESCE(SUM(services.service_cost), 0) as total_service_sales'),
+                DB::raw('COALESCE(SUM(services.service_cost) * 0.10, 0) as total_service_commission'),
+                DB::raw('COALESCE(COUNT(bookings.booking_id) * 500, 0) as total_session_commission'),
+                DB::raw('COALESCE((SUM(services.service_cost) * 0.10) + (COUNT(bookings.booking_id) * 500), 0) as total_commission')
+            )
+            ->leftJoin('bookings', 'staff.id', '=', 'bookings.id')
+            ->leftJoin('services', 'bookings.service_id', '=', 'services.service_id')
+            ->where('bookings.status', '=', 'Completed')
+            ->groupBy('staff.id', 'staff.firstname', 'staff.lastname')
+            ->orderBy('employee_name')
+            ->get();
+    
+        // Calculate total metrics for the header cards
+        $totalMetrics = [
+            'total_sales' => $commissions->sum('total_service_sales'),
+            'monthly_commission' => $this->getMonthlyCommission(),
+            'total_commission' => $commissions->sum('total_commission'),
+            'top_employee' => $commissions->sortByDesc(function($emp) {
+                // Score based on service sales and clients
+                return ($emp->service_sales_no * 0.6) + ($emp->clients_no * 0.4);
+            })->first()
+        ];
+    
+        return view('page.commision-employee', compact('commissions', 'totalMetrics'));
+    }
+    
+ 
+    
+    private function getMonthlyCommission()
+    {
+        $currentMonth = now()->month;
+        return DB::table('bookings')
+            ->whereMonth('start_date', $currentMonth)
+            ->leftJoin('services', 'bookings.service_id', '=', 'services.service_id')
+            ->where('bookings.status', 'Completed')
+            ->selectRaw('COALESCE((SUM(services.service_cost) * 0.10) + (COUNT(bookings.booking_id) * 500), 0) as monthly_commission')
+            ->value('monthly_commission');
     }
 
     public function purchase()

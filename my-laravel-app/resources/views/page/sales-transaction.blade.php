@@ -235,17 +235,14 @@
                               </thead>
                             <tbody>
                               @foreach ($sales->where('status', 'Completed') as $sale)
-
                               <tr>
-                            
-                                <td>{{ $sale->service ? $sale->service->service_name : $sale->service_name }}</td>
-                                <td>{{ $sale->patient ? $sale->patient->firstname . ' ' . $sale->patient->lastname : $sale->customer }}</td>
-                                <td>{{ $sale->staff ? $sale->staff->firstname . ' ' . $sale->staff->lastname : $sale->staff }}</td>
-                                <td>₱{{ number_format($sale->service ? $sale->service->service_cost : $sale->service_cost, 2) }}</td>
-                                <td>{{ $sale->status }}</td>
-                                <td>{{ $sale->branch ? $sale->branch->branch_name : $sale->branch }}</td>
-                                <td>{{ $sale->start_date }}</td>
-                               
+                                <td>{{ $sale->service ? $sale->service->service_name : '*Deleted Service' }}</td>
+                                <td>{{ $sale->patient ? $sale->patient->firstname . ' ' . $sale->patient->lastname : '*Deleted Customer' }}</td>
+                                <td>{{ $sale->staff ? $sale->staff->firstname . ' ' . $sale->staff->lastname : '*Deleted Staff' }}</td>
+                                <td>₱{{ number_format($sale->service ? $sale->service->service_cost : $sale->service_cost ?? 0, 2) }}</td>
+                                <td>{{ $sale->status ?? '*Deleted' }}</td>
+                                <td>{{ $sale->branch ? $sale->branch->branch_name : '*Deleted Branch' }}</td>
+                                <td>{{ $sale->start_date ?? '*No Date' }}</td>
                               </tr>
                               @endforeach
                             </tbody>

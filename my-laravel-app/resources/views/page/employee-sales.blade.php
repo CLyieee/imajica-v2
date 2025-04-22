@@ -146,6 +146,33 @@
         .card-monthly-sales {
           background-color: #fff3cd; /* Light yellow */
         }
+         /* Adjust table padding */
+         .datatable-container {
+          padding: 1.5rem;
+        }
+
+        .table {
+          width: 100% !important; 
+          min-width: 1000px;
+        }
+
+        .table thead th {
+          background-color: #f8f9fa !important;
+          color: #333 !important;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          .datatable-card {
+            width: 500%;
+            margin: 0;
+          }
+          
+          .datatable-container {
+            padding: 1rem;
+          }
+        }
+      
       </style>
 
         <!-- Content wrapper -->
@@ -199,7 +226,8 @@
     
 
     <div class="card">
-      <div class="card-body">
+      <div class="card-body datatable-container table-responsive">
+
         <table class="table table-striped" id="employeeSales">
           <thead>
             <tr>
