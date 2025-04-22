@@ -222,8 +222,8 @@
                   title: 'Success!',
                   text: 'Position has been added successfully',
                   confirmButtonColor: '#0A3622',
-                  confirmButtonText: 'View Positions List',
-                  showCancelButton: true,
+                  confirmButtonText: 'OK',
+                  showCancelButton: false,
                   cancelButtonText: 'Add Another Position',
                   cancelButtonColor: '#6c757d'
                 }).then((result) => {

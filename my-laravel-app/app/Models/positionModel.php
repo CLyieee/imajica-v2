@@ -15,17 +15,18 @@ class positionModel extends Model
     protected $primaryKey = 'position_id';
     public $incrementing = false;
     protected $keyType = 'bigInteger';
-    public $timestamps = true; // Add this line
+    public $timestamps = false; // Fixed typo from "falsse" to "false"
     protected $fillable = [
+        'position_id',
         'position_name',
         'department_code',
         'description',
         'status'
     ];
 
-    // Add this if your timestamp column names are different
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
+        // // Add this if your timestamp column names are different
+        // const CREATED_AT = 'created_at';
+        // const UPDATED_AT = 'updated_at';
 
     protected $casts = [
         'status' => 'boolean'

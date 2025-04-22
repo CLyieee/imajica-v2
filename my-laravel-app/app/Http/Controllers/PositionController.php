@@ -142,16 +142,21 @@ class PositionController extends Controller
                 'position_name' => 'required|string|max:255',
                 'department_code' => 'required|exists:departments,department_code',
                 'description' => 'required|string',
-                'status' => 'nullable|boolean'
+                'status' => 'sometimes' // Changed validation rule
             ]);
 
             \DB::beginTransaction();
             try {
+                // Get the latest position_id
+                $latestPosition = positionModel::orderBy('position_id', 'desc')->first();
+                $nextPositionId = $latestPosition ? $latestPosition->position_id + 1 : 1;
+
                 $position = positionModel::create([
+                    'position_id' => $nextPositionId,
                     'position_name' => $validatedData['position_name'],
                     'department_code' => $validatedData['department_code'],
                     'description' => $validatedData['description'],
-                    'status' => $request->has('status') ? 1 : 0
+                    'status' => $request->has('status') ? 1 : 0 // This line remains the same
                 ]);
 
                 \DB::commit();

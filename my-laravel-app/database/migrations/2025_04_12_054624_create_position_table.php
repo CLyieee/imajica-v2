@@ -19,6 +19,7 @@ class CreatePositionTable extends Migration
             $table->string('department');
             $table->text('description');
             $table->boolean('status')->default(true);
+            $table->timestamps(); // Add this line to create created_at and updated_at columns
         });
     }
 
