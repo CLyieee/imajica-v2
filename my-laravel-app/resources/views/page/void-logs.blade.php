@@ -250,7 +250,7 @@
                             <td>{{ $void->booking_id }}</td>
                             <td>{{ $void->service ? $void->service->service_name : '*Deleted service' }}</td>
                             <td>{{ $void->patient ? $void->patient->firstname . ' ' . $void->patient->lastname : '*Deleted customer' }}</td>
-                            <td>{{ $void->staff ? $void->staff->firstname . ' ' . $void->staff->lastname : '*Deleted staff)' }}</td>
+                            <td>{{ $void->staff ? $void->staff->firstname . ' ' . $void->staff->lastname : '*Deleted staff' }}</td>
                             <td>₱{{ number_format($void->service ? $void->service->service_cost : 0, 2) }}</td>
                             <td>{{ $void->status }}</td>
                             <td>{{ $void->start_date }}</td>

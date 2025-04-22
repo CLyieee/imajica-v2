@@ -202,11 +202,11 @@
                         </td>
                         <td>
                           @if($expense->payment_status == 'Paid')
-                            <span class="badge bg-success">Paid</span>
+                            <span class="badge bg-label-success">Paid</span>
                           @elseif($expense->payment_status == 'Pending')
-                            <span class="badge bg-warning">Pending</span>
+                            <span class="badge bg-label-warning">Pending</span>
                           @elseif($expense->payment_status == 'Overdue')
-                            <span class="badge bg-danger">Overdue</span>
+                            <span class="badge bg-label-danger">Overdue</span>
                           @endif
                         </td>
                         <td>{{ $expense->invoice_number ?? 'N/A' }}</td>
