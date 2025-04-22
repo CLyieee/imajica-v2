@@ -35,6 +35,7 @@ use App\Http\Controllers\wasteController;
 Route::get('/', [LoginController::class, 'index'])->name('page.index');
 
 
+Route::get('/patient/attachment/download/{id}', [PatientController::class, 'downloadAttachment'])->name('patient.attachment.download');
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/new-coupon', [DashboardController::class, 'new_coupon'])->name('page.new-coupon');
@@ -275,10 +276,11 @@ Route::prefix('patient')->group(function () {
     Route::put('/health-concern/{id}', [PatientController::class, 'updateHealthConcern'])->name('patient.health-concern.update');
     Route::delete('/health-concern/{id}', [PatientController::class, 'deleteHealthConcern'])->name('patient.health-concern.delete');
     
-    // Patient Attachments
-    Route::get('/patient/attachment/{id}', [PatientController::class, 'getAttachment'])->name('patient.attachment.get');
-    Route::put('/patient/attachment/{id}', [PatientController::class, 'updateAttachment'])->name('patient.attachment.update');
-    Route::delete('/patient/attachment/{id}', [PatientController::class, 'deleteAttachment'])->name('patient.attachment.delete');
+    // Attachments
+    Route::post('/attachment/add', [PatientController::class, 'addAttachment'])->name('patient.attachment.add');
+    Route::get('/attachment/{id}', [PatientController::class, 'getAttachment'])->name('patient.attachment.get');
+    Route::put('/attachment/{id}', [PatientController::class, 'updateAttachment'])->name('patient.attachment.update');
+    Route::delete('/attachment/{id}', [PatientController::class, 'deleteAttachment'])->name('patient.attachment.delete');
 });
 
 Route::get('/waste-list', [DashboardController::class, 'waste_list'])->name('page.waste-list');

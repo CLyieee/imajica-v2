@@ -265,21 +265,36 @@ class patientController extends Controller
     {
         try {
             // Validate the request
-            $request->validate([
+            $validated = $request->validate([
                 'patient_id' => 'required|exists:patients,patient_id',
-                'file' => 'required|file|mimes:jpeg,jpg,png,pdf,doc,docx|max:10240', // Max 10MB
+                'file' => 'required|file|mimes:jpeg,jpg,png,pdf,doc,xlsx,docx|max:10240', // Max 10MB
                 'file_type' => 'required|string|in:Medical Report,Lab Result,X-Ray,MRI,CT Scan,Prescription,Other',
                 'description' => 'nullable|string|max:500'
             ]);
 
-            if ($request->hasFile('file')) {
-                $file = $request->file('file');
+            if (!$request->hasFile('file')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No file was uploaded'
+                ], 400);
+            }
+
+            $file = $request->file('file');
+            if (!$file->isValid()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'File upload failed'
+                ], 400);
+            }
+
+            try {
                 $filename = time() . '_' . $file->getClientOriginalName();
-                
-                // Store file in public/patient_attachments directory
                 $filepath = $file->storeAs('patient_attachments', $filename, 'public');
                 
-                // Create attachment record
+                if (!$filepath) {
+                    throw new \Exception('Failed to store file');
+                }
+
                 $attachment = \App\Models\PatientAttachment::create([
                     'patient_id' => $request->patient_id,
                     'filename' => $filename,
@@ -294,15 +309,28 @@ class patientController extends Controller
                     'message' => 'File uploaded successfully',
                     'data' => $attachment
                 ]);
+
+            } catch (\Exception $e) {
+                // If file was stored but database insert failed, clean up the file
+                if (isset($filepath) && storage::disk('public')->exists($filepath)) {
+                    storage::disk('public')->delete($filepath);
+                }
+                throw $e;
             }
 
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'No file was uploaded'
-            ], 400);
-
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
-            \Log::error('Error uploading attachment: ' . $e->getMessage());
+            \Log::error('Error uploading attachment: ' . $e->getMessage(), [
+                'patient_id' => $request->patient_id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             return response()->json([
                 'success' => false,
                 'message' => 'Error uploading file: ' . $e->getMessage()
@@ -619,22 +647,96 @@ class patientController extends Controller
         }
     }
 
+
+
+ 
+public function downloadAttachment($id)
+{
+    try {
+        $attachment = \App\Models\PatientAttachment::findOrFail($id);
+        
+        // Check if file exists in storage
+        if (!Storage::disk('public')->exists($attachment->filepath)) {
+            throw new \Exception('File not found in storage');
+        }
+
+        // Get the full path of the file
+        $path = Storage::disk('public')->path($attachment->filepath);
+        
+        // Get file's MIME type
+        $mimeType = Storage::disk('public')->mimeType($attachment->filepath);
+        
+        // Log download attempt
+        \Log::info('Downloading attachment', [
+            'id' => $id,
+            'filename' => $attachment->filename,
+            'filepath' => $attachment->filepath
+        ]);
+
+        // Return file download response
+        return response()->download($path, $attachment->filename, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'attachment; filename="' . $attachment->filename . '"'
+        ]);
+
+    } catch (\Exception $e) {
+        \Log::error('Error downloading attachment', [
+            'id' => $id,
+            'error' => $e->getMessage()
+        ]);
+        
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error downloading file: ' . $e->getMessage()
+            ], 500);
+        }
+        
+        return redirect()->back()->with('error', 'Error downloading file: ' . $e->getMessage());
+    }
+}
+
     public function deleteAttachment($id)
     {
         try {
+            // Find the attachment or throw 404
             $attachment = \App\Models\PatientAttachment::findOrFail($id);
             
-            // Delete file from storage
-            Storage::disk('public')->delete($attachment->filepath);
+            // Try to delete the physical file first
+            if ($attachment->filepath && Storage::disk('public')->exists($attachment->filepath)) {
+                if (!Storage::disk('public')->delete($attachment->filepath)) {
+                    throw new \Exception('Failed to delete physical file');
+                }
+            }
             
-            // Delete record from database
-            $attachment->delete();
+            // Delete the database record
+            if (!$attachment->delete()) {
+                throw new \Exception('Failed to delete attachment record');
+            }
+
+            \Log::info('Attachment deleted successfully', [
+                'id' => $id,
+                'filename' => $attachment->filename,
+                'filepath' => $attachment->filepath
+            ]);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Attachment deleted successfully'
             ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            \Log::warning('Attempted to delete non-existent attachment', ['id' => $id]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Attachment not found'
+            ], 404);
         } catch (\Exception $e) {
+            \Log::error('Error deleting attachment', [
+                'id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             return response()->json([
                 'success' => false,
                 'message' => 'Error deleting attachment: ' . $e->getMessage()

@@ -812,21 +812,23 @@
                                                                     <td>{{ $attachment->getFileSizeForHumans() }}</td>
                                                                     <td>
                                                                         <div class="d-inline-block">
-                                                                            <button type="button" class="btn btn-sm btn-info">
-                                                                              <a href="#" class="text-white">
-                                                                                <i class="ti tabler-download me-1"></i> Download
-                                                                              </a>
-                                                                            </button>
+                                                                            <a href="{{ route('patient.attachment.download', $attachment->id) }}" 
+                                                                                class="btn btn-sm btn-info"
+                                                                                download="{{ $attachment->filename }}"
+                                                                                target="_blank">
+                                                                                 <i class="ti tabler-download me-1"></i> Download
+                                                                             </a>
                                                                         
                                                                             <button class="btn btn-sm btn-danger delete-record" 
                                                                               data-id="{{ $attachment->id }}">
                                                                               <i class="ti tabler-trash me-1"></i> Delete
                                                                             </button>
-                                                                          </div>
+                                                                        </div>
                                                                     </td>
                                                                 </tr>
                                                                 @endforeach
                                                             @else
+                                                                <tr>
                                                                 <tr>
                                                                     <td colspan="5" class="text-center">No attachments found</td>
                                                                 </tr>
@@ -1173,6 +1175,67 @@
     <!-- Main JS -->
     <script src="../../assets/js/main.js"></script>
 
+
+
+
+<script>
+    // Add this code after your existing scripts
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click handler for download buttons
+    document.querySelectorAll('[download]').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const downloadUrl = this.href;
+            const filename = this.getAttribute('download');
+
+            Swal.fire({
+                title: 'Download File?',
+                text: `Are you sure you want to download ${filename}?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, download',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#0A3622',
+                cancelButtonColor: '#d33',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show loading state
+                    Swal.fire({
+                        title: 'Downloading...',
+                        text: 'Please wait while we prepare your download',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        willOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    // Create hidden link and trigger download
+                    const link = document.createElement('a');
+                    link.href = downloadUrl;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    // Show success message
+                    setTimeout(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'File download started successfully',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }, 1000);
+                }
+            });
+        });
+    });
+});
+</script>
+
+
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     const editButton = document.querySelector('.edit-mode-toggle');
@@ -1470,7 +1533,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         icon: 'success',
                         title: 'Success!',
                         text: `Record has been ${isEditMode ? 'updated' : 'saved'} successfully.`,
-                        timer: 2000,
+                        timer: 1000,
                         showConfirmButton: false
                     }).then(() => {
                         location.reload(); // Reload page after success
@@ -1481,45 +1544,74 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Delete record handler
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.delete-record')) {
-            e.preventDefault();
-            const row = e.target.closest('tr');
-            
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Simulate delete API call
-                    row.remove();
-                    
-                    // Check if table is empty and add "No records" row
-                    const tbody = row.closest('tbody');
-                    if (tbody.children.length === 0) {
-                        const columnCount = row.cells.length;
-                        tbody.innerHTML = `
-                            <tr>
-                                <td colspan="${columnCount}" class="text-center">No records found</td>
-                            </tr>
-                        `;
-                    }
+    $(document).on('click', '.delete-record', function() {
+        const row = $(this).closest('tr');
+        const id = $(this).data('id');
+        let type = '';
+        let endpoint = '';
 
-                    Swal.fire(
-                        'Deleted!',
-                        'Record has been deleted.',
-                        'success'
-                    ).then(() => {
-                        location.reload(); // Reload page after success
-                    });
-                }
-            });
+        // Determine record type based on the table
+        if (row.closest('#allergies-table').length) {
+            type = 'allergy';
+            endpoint = '/patient/allergy/';
+        } else if (row.closest('#medications-table').length) {
+            type = 'medication';
+            endpoint = '/patient/medication/';
+        } else if (row.closest('#health-concerns-table').length) {
+            type = 'health-concern';
+            endpoint = '/patient/health-concern/';
+        } else if (row.closest('#attachments-table').length) {
+            type = 'attachment';
+            endpoint = '/patient/attachment/';
         }
+
+        if (!endpoint) {
+            console.error('Unknown record type');
+            return;
+        }
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: endpoint + id,
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            row.remove(); // Remove the row from the table
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: response.message || 'Record has been deleted.',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            throw new Error(response.message || 'Failed to delete recorddd');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Delete error:', xhr);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: xhr.responseJSON?.message || 'Failed to delete record. Please try again.',
+                            showConfirmButton: true
+                        });
+                    }
+                });
+            }
+        });
     });
 
     // Add console.log for debugging
@@ -1595,7 +1687,11 @@ $(document).ready(function() {
         } else if (row.closest('#health-concerns-table').length) {
             type = 'health-concern';
             endpoint = '/patient/health-concern/';
+        } else if (row.closest('#attachments-table').length) {
+            type = 'attachment';
+            endpoint = '/patient/attachment/';
         }
+    
 
         if (!endpoint) {
             console.error('Unknown record type');
@@ -1648,7 +1744,7 @@ $(document).ready(function() {
     handleFormSubmit('#medication-form');
     handleFormSubmit('#health-concern-form');
     handleFormSubmit('#prescription-form');
-    handleFormSubmit('#attachment-form');
+    // handleFormSubmit('#attachment-form');
 
 });
 
@@ -1677,27 +1773,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Handle attachment form submission
-    const attachmentForm = document.getElementById('attachment-form');
+   
+});
+</script>
+
+<script>
+
+ const attachmentForm = document.getElementById('attachment-form');
     if (attachmentForm) {
         attachmentForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const formData = new FormData(this);
             const submitBtn = this.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading...';
-
-            // Add CSRF token to headers
-            const headers = {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            };
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Uploading...';
 
             fetch(this.action, {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    // Don't set Content-Type header - browser will set it with proper boundary for multipart/form-data
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 }
             })
             .then(response => response.json())
@@ -1706,38 +1801,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.innerHTML = 'Upload';
                 
                 if (data.success) {
+                    // Close modal immediately 
+                    bootstrap.Modal.getInstance(document.getElementById('addAttachmentModal')).hide();
+                    
+                    // Show quick success message
                     Swal.fire({
                         icon: 'success',
-                        title: 'Success',
-                        text: data.message,
+                        title: 'Success!',
+                        text: data.message || 'File uploaded successfully',
                         timer: 1500,
                         showConfirmButton: false
                     }).then(() => {
-                        bootstrap.Modal.getInstance(document.getElementById('addAttachmentModal')).hide();
                         location.reload();
                     });
                 } else {
-                    // Show validation errors
-                    let errorMessage = data.message;
-                    if (data.errors) {
-                        errorMessage = '<ul class="text-start mb-0">';
-                        Object.values(data.errors).forEach(error => {
-                            errorMessage += `<li>${error[0]}</li>`;
-                        });
-                        errorMessage += '</ul>';
-                    }
-                    
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        html: errorMessage
+                        text: data.message || 'Failed to upload file'
                     });
                 }
             })
             .catch(error => {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Upload';
-                
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -1746,7 +1833,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-});
 </script>
 
 <script>
@@ -1768,83 +1854,105 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Form submit handler with additional logging
-    const attachmentForm = document.getElementById('attachment-form');
-    if (attachmentForm) {
-        attachmentForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    // // Form submit handler with additional logging
+    // const attachmentForm = document.getElementById('attachment-form');
+    // if (attachmentForm) {
+    //     attachmentForm.addEventListener('submit', function(e) {
+    //         e.preventDefault();
             
-            console.log('Form submission started');
-            const formData = new FormData(this);
+    //         console.log('Form submission started');
+    //         const formData = new FormData(this);
             
-            // Log FormData contents
-            console.log('FormData entries:');
-            for (let pair of formData.entries()) {
-                console.log(pair[0], pair[1] instanceof File ? `File: ${pair[1].name}` : pair[1]);
-            }
+    //         // Log FormData contents
+    //         console.log('FormData entries:');
+    //         for (let pair of formData.entries()) {
+    //             console.log(pair[0], pair[1] instanceof File ? `File: ${pair[1].name}` : pair[1]);
+    //         }
 
-            const submitBtn = this.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading...';
+    //         const submitBtn = this.querySelector('button[type="submit"]');
+    //         submitBtn.disabled = true;
+    //         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading...';
 
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                }
-            })
-            .then(response => {
-                console.log('Response status:', response.status);
-                return response.json();
-            })
-            .then(data => {
-                console.log('Response data:', data);
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Upload';
+    //         fetch(this.action, {
+    //             method: 'POST',
+    //             body: formData,
+    //             headers: {
+    //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+    //             }
+    //         })
+    //         .then(response => {
+    //             console.log('Response status:', response.status);
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             console.log('Response data:', data);
+    //             submitBtn.disabled = false;
+    //             submitBtn.innerHTML = 'Upload';
                 
-                if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: data.message,
-                        timer: 1500,
-                        showConfirmButton: false
-                    }).then(() => {
-                        bootstrap.Modal.getInstance(document.getElementById('addAttachmentModal')).hide();
-                        location.reload();
-                    });
-                } else {
-                    // Show validation errors
-                    let errorMessage = data.message;
-                    if (data.errors) {
-                        errorMessage = '<ul class="text-start mb-0">';
-                        Object.values(data.errors).forEach(error => {
-                            errorMessage += `<li>${error[0]}</li>`;
-                        });
-                        errorMessage += '</ul>';
-                    }
+    //             if (data.success) {
+    //                 Swal.fire({
+    //                     customClass: {
+    //                         confirmButton: 'btn btn-success'
+    //                     },
+    //                     buttonsStyling: false,
+    //                     icon: 'success',
+    //                     title: 'Success!',
+    //                     text: data.message || 'File uploaded successfully',
+    //                     timer: 2000,
+    //                     showConfirmButton: false,
+    //                     didClose: () => {
+    //                         bootstrap.Modal.getInstance(document.getElementById('addAttachmentModal')).hide();
+    //                         location.reload();
+    //                     }
+    //                 });
+    //             } else {
+    //                 // Show validation errors
+    //                 let errorMessage = data.message;
+    //                 if (data.errors) {
+    //                     errorMessage = '<ul class="text-start mb-0">';
+    //                     Object.values(data.errors).forEach(error => {
+    //                         errorMessage += `<li>${error[0]}</li>`;
+    //                     });
+    //                     errorMessage += '</ul>';
+    //                 }
                     
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        html: errorMessage
-                    });
-                }
-            })
-            .catch(error => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Upload';
+    //                 Swal.fire({
+    //                     icon: 'error',
+    //                     title: 'Error',
+    //                     html: errorMessage
+    //                 });
+    //             }
+    //         })
+    //         .catch(error => {
+    //             submitBtn.disabled = false;
+    //             submitBtn.innerHTML = 'Upload';
                 
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An error occurred while uploading the file'
-                });
-            });
-        });
-    }
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: 'Error',
+    //                 text: 'An error occurred while uploading the file'
+    //             });
+    //         });
+    //     });
+    // }
 });
 </script>
+
+
+
+<script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+<script src="../../assets/vendor/libs/datatables-buttons/datatables-buttons.js"></script>
+<script src="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js"></script>
+
+<script src="../../assets/vendor/libs/moment/moment.js"></script>
+<script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
+<script src="../../assets/vendor/libs/%40form-validation/popular.js"></script>
+<script src="../../assets/vendor/libs/%40form-validation/bootstrap5.js"></script>
+<script src="../../assets/vendor/libs/%40form-validation/auto-focus.js"></script>
+
+
+
+
+
 </body>
 </html>
