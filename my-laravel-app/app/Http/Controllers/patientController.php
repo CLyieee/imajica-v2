@@ -264,26 +264,29 @@ class patientController extends Controller
     public function addAttachment(Request $request)
     {
         try {
-            $validatedData = $request->validate([
+            // Validate the request
+            $request->validate([
                 'patient_id' => 'required|exists:patients,patient_id',
-                'file' => 'required|file|mimes:jpeg,jpg,png,pdf,doc,docx|max:10240', // Max 10MB, specific file types
+                'file' => 'required|file|mimes:jpeg,jpg,png,pdf,doc,docx|max:10240', // Max 10MB
                 'file_type' => 'required|string|in:Medical Report,Lab Result,X-Ray,MRI,CT Scan,Prescription,Other',
                 'description' => 'nullable|string|max:500'
             ]);
 
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
-                $fileName = time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('patient_attachments', $fileName, 'public');
+                $filename = time() . '_' . $file->getClientOriginalName();
                 
+                // Store file in public/patient_attachments directory
+                $filepath = $file->storeAs('patient_attachments', $filename, 'public');
+                
+                // Create attachment record
                 $attachment = \App\Models\PatientAttachment::create([
-                    'patient_id' => $validatedData['patient_id'],
-                    'file_name' => $fileName,
-                    'file_path' => $filePath,
-                    'file_type' => $validatedData['file_type'],
-                    'file_size' => $file->getSize(),
-                    'description' => $validatedData['description'] ?? null,
-                    'uploaded_at' => now()
+                    'patient_id' => $request->patient_id,
+                    'filename' => $filename,
+                    'filepath' => $filepath,
+                    'file_type' => $request->file_type,
+                    'filesize' => $file->getSize(),
+                    'description' => $request->description
                 ]);
 
                 return response()->json([
@@ -293,14 +296,13 @@ class patientController extends Controller
                 ]);
             }
 
-            throw new \Exception('No file was uploaded.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Validation error',
-                'errors' => $e->errors()
-            ], 422);
+                'message' => 'No file was uploaded'
+            ], 400);
+
         } catch (\Exception $e) {
+            \Log::error('Error uploading attachment: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Error uploading file: ' . $e->getMessage()
@@ -556,6 +558,86 @@ class patientController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error deleting health concern: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Attachment CRUD
+    public function getAttachment($id)
+    {
+        try {
+            $attachment = \App\Models\PatientAttachment::findOrFail($id);
+            return response()->json([
+                'success' => true,
+                'data' => $attachment
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving attachment: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateAttachment(Request $request, $id)
+    {
+        try {
+            $attachment = \App\Models\PatientAttachment::findOrFail($id);
+            
+            $validatedData = $request->validate([
+                'file_type' => 'required|string|in:Medical Report,Lab Result,X-Ray,MRI,CT Scan,Prescription,Other',
+                'description' => 'nullable|string|max:500',
+                'file' => 'nullable|file|mimes:jpeg,jpg,png,pdf,doc,docx|max:10240'
+            ]);
+
+            if ($request->hasFile('file')) {
+                // Delete old file
+                Storage::disk('public')->delete($attachment->filepath);
+                
+                // Store new file
+                $file = $request->file('file');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $filepath = $file->storeAs('patient_attachments', $filename, 'public');
+                
+                $validatedData['filename'] = $filename;
+                $validatedData['filepath'] = $filepath;
+                $validatedData['filesize'] = $file->getSize();
+            }
+
+            $attachment->update($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Attachment updated successfully',
+                'data' => $attachment
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating attachment: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deleteAttachment($id)
+    {
+        try {
+            $attachment = \App\Models\PatientAttachment::findOrFail($id);
+            
+            // Delete file from storage
+            Storage::disk('public')->delete($attachment->filepath);
+            
+            // Delete record from database
+            $attachment->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Attachment deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting attachment: ' . $e->getMessage()
             ], 500);
         }
     }

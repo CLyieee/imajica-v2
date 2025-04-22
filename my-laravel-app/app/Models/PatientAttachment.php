@@ -13,17 +13,17 @@ class PatientAttachment extends Model
     public $timestamps = true;
     protected $fillable = [
         'patient_id',
-        'file_name',
-        'file_path',
+        'filename',
+        'filepath',
         'file_type',
-        'file_size',
-        'description',
-        'uploaded_at'
+        'filesize',
+        'description'
     ];
 
     protected $casts = [
-        'uploaded_at' => 'datetime',
-        'file_size' => 'integer'
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'filesize' => 'integer'
     ];
 
     public function patient()
@@ -33,7 +33,7 @@ class PatientAttachment extends Model
     
     public function getFileSizeForHumans()
     {
-        $bytes = $this->file_size;
+        $bytes = $this->filesize;
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
     
         for ($i = 0; $bytes > 1024; $i++) {

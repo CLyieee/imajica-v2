@@ -274,6 +274,11 @@ Route::prefix('patient')->group(function () {
     Route::get('/health-concern/{id}', [PatientController::class, 'getHealthConcern'])->name('patient.health-concern.get');
     Route::put('/health-concern/{id}', [PatientController::class, 'updateHealthConcern'])->name('patient.health-concern.update');
     Route::delete('/health-concern/{id}', [PatientController::class, 'deleteHealthConcern'])->name('patient.health-concern.delete');
+    
+    // Patient Attachments
+    Route::get('/patient/attachment/{id}', [PatientController::class, 'getAttachment'])->name('patient.attachment.get');
+    Route::put('/patient/attachment/{id}', [PatientController::class, 'updateAttachment'])->name('patient.attachment.update');
+    Route::delete('/patient/attachment/{id}', [PatientController::class, 'deleteAttachment'])->name('patient.attachment.delete');
 });
 
 Route::get('/waste-list', [DashboardController::class, 'waste_list'])->name('page.waste-list');

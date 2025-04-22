@@ -806,20 +806,23 @@
                                                             @if(isset($attachments) && count($attachments) > 0)
                                                                 @foreach($attachments as $attachment)
                                                                 <tr>
-                                                                    <td>{{ $attachment->file_name }}</td>
+                                                                    <td>{{ $attachment->filename }}</td>
                                                                     <td>{{ $attachment->file_type }}</td>
-                                                                    <td>{{ $attachment->uploaded_at->format('Y-m-d H:i:s') }}</td>
+                                                                    <td>{{ $attachment->created_at ? $attachment->created_at->format('Y-m-d H:i:s') : 'N/A' }}</td>
                                                                     <td>{{ $attachment->getFileSizeForHumans() }}</td>
                                                                     <td>
-                                                                        <a href="{{ Storage::url($attachment->file_path) }}" class="btn btn-icon btn-sm btn-text-secondary rounded-pill" download>
-                                                                            <i class="ti ti-download"></i>
-                                                                        </a>
-                                                                        <a href="{{ Storage::url($attachment->file_path) }}" class="btn btn-icon btn-sm btn-text-secondary rounded-pill" target="_blank">
-                                                                            <i class="ti ti-eye"></i>
-                                                                        </a>
-                                                                        <button class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record" data-id="{{ $attachment->id }}">
-                                                                            <i class="ti ti-trash"></i>
-                                                                        </button>
+                                                                        <div class="d-inline-block">
+                                                                            <button type="button" class="btn btn-sm btn-info">
+                                                                              <a href="#" class="text-white">
+                                                                                <i class="ti tabler-download me-1"></i> Download
+                                                                              </a>
+                                                                            </button>
+                                                                        
+                                                                            <button class="btn btn-sm btn-danger delete-record" 
+                                                                              data-id="{{ $attachment->id }}">
+                                                                              <i class="ti tabler-trash me-1"></i> Delete
+                                                                            </button>
+                                                                          </div>
                                                                     </td>
                                                                 </tr>
                                                                 @endforeach
@@ -1684,11 +1687,17 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading...';
 
+            // Add CSRF token to headers
+            const headers = {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            };
+
             fetch(this.action, {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    // Don't set Content-Type header - browser will set it with proper boundary for multipart/form-data
                 }
             })
             .then(response => response.json())
@@ -1697,7 +1706,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.innerHTML = 'Upload';
                 
                 if (data.success) {
-                    // Show success message
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
@@ -1705,38 +1713,133 @@ document.addEventListener('DOMContentLoaded', function() {
                         timer: 1500,
                         showConfirmButton: false
                     }).then(() => {
-                        // Close modal and refresh page
                         bootstrap.Modal.getInstance(document.getElementById('addAttachmentModal')).hide();
                         location.reload();
                     });
                 } else {
-                    // Show validation errors if any
+                    // Show validation errors
+                    let errorMessage = data.message;
                     if (data.errors) {
-                        let errorMessage = '<ul class="text-start mb-0">';
+                        errorMessage = '<ul class="text-start mb-0">';
                         Object.values(data.errors).forEach(error => {
                             errorMessage += `<li>${error[0]}</li>`;
                         });
                         errorMessage += '</ul>';
-                        
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Validation Error',
-                            html: errorMessage
-                        });
-                    } else {
-                        throw new Error(data.message || 'Error uploading file');
                     }
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        html: errorMessage
+                    });
                 }
             })
             .catch(error => {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Upload';
                 
-                console.error('Error:', error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: error.message || 'Error uploading file'
+                    text: 'An error occurred while uploading the file'
+                });
+            });
+        });
+    }
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // File input change handler
+    const fileInput = document.querySelector('#file');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            console.log('File input change event triggered');
+            console.log('Files selected:', this.files);
+            console.log('Number of files:', this.files.length);
+            if (this.files.length > 0) {
+                console.log('File details:', {
+                    name: this.files[0].name,
+                    type: this.files[0].type,
+                    size: this.files[0].size
+                });
+            }
+        });
+    }
+
+    // Form submit handler with additional logging
+    const attachmentForm = document.getElementById('attachment-form');
+    if (attachmentForm) {
+        attachmentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            console.log('Form submission started');
+            const formData = new FormData(this);
+            
+            // Log FormData contents
+            console.log('FormData entries:');
+            for (let pair of formData.entries()) {
+                console.log(pair[0], pair[1] instanceof File ? `File: ${pair[1].name}` : pair[1]);
+            }
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading...';
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                }
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Upload';
+                
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: data.message,
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        bootstrap.Modal.getInstance(document.getElementById('addAttachmentModal')).hide();
+                        location.reload();
+                    });
+                } else {
+                    // Show validation errors
+                    let errorMessage = data.message;
+                    if (data.errors) {
+                        errorMessage = '<ul class="text-start mb-0">';
+                        Object.values(data.errors).forEach(error => {
+                            errorMessage += `<li>${error[0]}</li>`;
+                        });
+                        errorMessage += '</ul>';
+                    }
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        html: errorMessage
+                    });
+                }
+            })
+            .catch(error => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Upload';
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while uploading the file'
                 });
             });
         });
