@@ -258,6 +258,23 @@ Route::post('/patient/attachment/add', [PatientController::class, 'addAttachment
 Route::post('/patient/appointment/add', [PatientController::class, 'addAppointment'])->name('patient.appointment.add');
 Route::post('/patient/medical-record/add', [PatientController::class, 'addMedicalRecord'])->name('patient.medical-record.add');
 
+// Patient Medical Records CRUD Routes
+Route::prefix('patient')->group(function () {
+    // Allergies
+    Route::get('/allergy/{id}', [PatientController::class, 'getAllergy'])->name('patient.allergy.get');
+    Route::put('/allergy/{id}', [PatientController::class, 'updateAllergy'])->name('patient.allergy.update');
+    Route::delete('/allergy/{id}', [PatientController::class, 'deleteAllergy'])->name('patient.allergy.delete');
+    
+    // Medications
+    Route::get('/medication/{id}', [PatientController::class, 'getMedication'])->name('patient.medication.get');
+    Route::put('/medication/{id}', [PatientController::class, 'updateMedication'])->name('patient.medication.update');
+    Route::delete('/medication/{id}', [PatientController::class, 'deleteMedication'])->name('patient.medication.delete');
+    
+    // Health Concerns
+    Route::get('/health-concern/{id}', [PatientController::class, 'getHealthConcern'])->name('patient.health-concern.get');
+    Route::put('/health-concern/{id}', [PatientController::class, 'updateHealthConcern'])->name('patient.health-concern.update');
+    Route::delete('/health-concern/{id}', [PatientController::class, 'deleteHealthConcern'])->name('patient.health-concern.delete');
+});
 
 Route::get('/waste-list', [DashboardController::class, 'waste_list'])->name('page.waste-list');
 

@@ -9,17 +9,16 @@ class PatientHealthConcern extends Model
 {
     use HasFactory;
 
-    protected $table = 'patient_health_concerns';
-    protected $primaryKey = 'health_concern_id';
+    protected $table = 'health_concerns';
+    protected $primaryKey = 'id';
     public $timestamps = true;
 
     protected $fillable = [
         'patient_id',
-        'concern_name',
-        'description',
+        'concern',
         'status',
-        'diagnosis_date',
-        'notes'
+        'date_reported'
+
     ];
 
     public function patient()

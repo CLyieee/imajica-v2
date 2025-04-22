@@ -144,7 +144,13 @@ class patientController extends Controller
     public function show($id)
     {
         $patient = patient::findOrFail($id);
-        return view('page.patient-details', compact('patient'));
+        $medications = \App\Models\PatientMedication::where('patient_id', $id)->get();
+        $allergies = \App\Models\PatientAllergy::where('patient_id', $id)->get();
+        $healthConcerns = \App\Models\PatientHealthConcern::where('patient_id', $id)->get();
+        $prescriptions = \App\Models\Prescription::where('patient_id', $id)->get();
+        $attachments = \App\Models\PatientAttachment::where('patient_id', $id)->get();
+        
+        return view('page.patient-details', compact('patient', 'medications', 'allergies', 'healthConcerns', 'prescriptions', 'attachments'));
     }
 
     public function addAllergy(Request $request)
@@ -152,10 +158,11 @@ class patientController extends Controller
         try {
             $validatedData = $request->validate([
                 'patient_id' => 'required|exists:patients,patient_id',
-                'allergy_name' => 'required|string|max:255',
+                'allergen' => 'required|string|max:255',
                 'severity' => 'required|string|in:Mild,Moderate,Severe',
                 'reaction' => 'required|string',
-                'notes' => 'nullable|string'
+                'date_identified' => 'required|date'
+               
             ]);
 
             // Create a new record in the allergies table
@@ -184,7 +191,7 @@ class patientController extends Controller
                 'frequency' => 'required|string|max:100',
                 'start_date' => 'required|date',
                 'end_date' => 'nullable|date|after_or_equal:start_date',
-                'notes' => 'nullable|string'
+             
             ]);
 
             $medication = \App\Models\PatientMedication::create($validatedData);
@@ -207,14 +214,13 @@ class patientController extends Controller
         try {
             $validatedData = $request->validate([
                 'patient_id' => 'required|exists:patients,patient_id',
-                'concern_name' => 'required|string|max:255',
-                'description' => 'required|string',
-                'date_identified' => 'required|date',
-                'status' => 'required|string|in:Active,Resolved,Ongoing',
-                'notes' => 'nullable|string'
+                'concern' => 'required|string|max:255',
+                'date_reported' => 'required|date',
+                'status' => 'required|string|in:Active,Resolved,Ongoing'
+               
             ]);
 
-            $healthConcern = \App\Models\HealthConcern::create($validatedData);
+            $healthConcern = \App\Models\PatientHealthConcern::create($validatedData);
 
             return response()->json([
                 'success' => true,
@@ -234,13 +240,10 @@ class patientController extends Controller
         try {
             $validatedData = $request->validate([
                 'patient_id' => 'required|exists:patients,patient_id',
-                'medication_name' => 'required|string|max:255',
-                'dosage' => 'required|string|max:100',
-                'frequency' => 'required|string|max:100',
-                'prescribed_date' => 'required|date',
-                'duration' => 'required|string|max:100',
-                'prescriber' => 'required|string|max:255',
-                'notes' => 'nullable|string'
+                'prescription_number' => 'required|string|max:255',
+                'date' => 'required|date',
+                'doctor' => 'required|string|max:100',
+                'status' => 'required|string|in:Pending,Filled,Refill required,Expired',
             ]);
 
             $prescription = \App\Models\Prescription::create($validatedData);
@@ -263,33 +266,44 @@ class patientController extends Controller
         try {
             $validatedData = $request->validate([
                 'patient_id' => 'required|exists:patients,patient_id',
-                'title' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'file' => 'required|file|max:10240', // Max 10MB
-                'document_type' => 'required|string|in:Medical Report,Lab Result,Prescription,Other'
+                'file' => 'required|file|mimes:jpeg,jpg,png,pdf,doc,docx|max:10240', // Max 10MB, specific file types
+                'file_type' => 'required|string|in:Medical Report,Lab Result,X-Ray,MRI,CT Scan,Prescription,Other',
+                'description' => 'nullable|string|max:500'
             ]);
 
-            // Handle file upload
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $filePath = $file->storeAs('patient_attachments', $fileName, 'public');
-                $validatedData['file_path'] = $filePath;
-                $validatedData['file_name'] = $fileName;
-                unset($validatedData['file']); // Remove the file from the data array
+                
+                $attachment = \App\Models\PatientAttachment::create([
+                    'patient_id' => $validatedData['patient_id'],
+                    'file_name' => $fileName,
+                    'file_path' => $filePath,
+                    'file_type' => $validatedData['file_type'],
+                    'file_size' => $file->getSize(),
+                    'description' => $validatedData['description'] ?? null,
+                    'uploaded_at' => now()
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'File uploaded successfully',
+                    'data' => $attachment
+                ]);
             }
 
-            $attachment = \App\Models\PatientAttachment::create($validatedData);
-
+            throw new \Exception('No file was uploaded.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
-                'success' => true,
-                'message' => 'Attachment added successfully',
-                'data' => $attachment
-            ]);
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error adding attachment: ' . $e->getMessage()
+                'message' => 'Error uploading file: ' . $e->getMessage()
             ], 500);
         }
     }
@@ -356,6 +370,192 @@ class patientController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error adding medical record: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Allergy CRUD
+    public function getAllergy($id)
+    {
+        try {
+            $allergy = \App\Models\PatientAllergy::findOrFail($id);
+            return response()->json([
+                'success' => true,
+                'data' => $allergy
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving allergy: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateAllergy(Request $request, $id)
+    {
+        try {
+            $allergy = \App\Models\PatientAllergy::findOrFail($id);
+            
+            $validatedData = $request->validate([
+                'allergen' => 'required|string|max:255',
+                'severity' => 'required|string|in:Mild,Moderate,Severe',
+                'reaction' => 'required|string',
+                'date_identified' => 'required|date'
+            ]);
+
+            $allergy->update($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Allergy updated successfully',
+                'data' => $allergy
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating allergy: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deleteAllergy($id)
+    {
+        try {
+            $allergy = \App\Models\PatientAllergy::findOrFail($id);
+            $allergy->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Allergy deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting allergy: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Medication CRUD
+    public function getMedication($id)
+    {
+        try {
+            $medication = \App\Models\PatientMedication::findOrFail($id);
+            return response()->json([
+                'success' => true,
+                'data' => $medication
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving medication: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateMedication(Request $request, $id)
+    {
+        try {
+            $medication = \App\Models\PatientMedication::findOrFail($id);
+            
+            $validatedData = $request->validate([
+                'medication_name' => 'required|string|max:255',
+                'dosage' => 'required|string|max:100',
+                'frequency' => 'required|string|max:100',
+                'start_date' => 'required|date',
+                'end_date' => 'nullable|date|after_or_equal:start_date'
+            ]);
+
+            $medication->update($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Medication updated successfully',
+                'data' => $medication
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating medication: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deleteMedication($id)
+    {
+        try {
+            $medication = \App\Models\PatientMedication::findOrFail($id);
+            $medication->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Medication deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting medication: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Health Concern CRUD
+    public function getHealthConcern($id)
+    {
+        try {
+            $healthConcern = \App\Models\PatientHealthConcern::findOrFail($id);
+            return response()->json([
+                'success' => true,
+                'data' => $healthConcern
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving health concern: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateHealthConcern(Request $request, $id)
+    {
+        try {
+            $healthConcern = \App\Models\PatientHealthConcern::findOrFail($id);
+            
+            $validatedData = $request->validate([
+                'concern' => 'required|string|max:255',
+                'date_reported' => 'required|date',
+                'status' => 'required|string|in:Active,Resolved,Ongoing,Under observation'
+            ]);
+
+            $healthConcern->update($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Health concern updated successfully',
+                'data' => $healthConcern
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating health concern: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deleteHealthConcern($id)
+    {
+        try {
+            $healthConcern = \App\Models\PatientHealthConcern::findOrFail($id);
+            $healthConcern->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Health concern deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting health concern: ' . $e->getMessage()
             ], 500);
         }
     }

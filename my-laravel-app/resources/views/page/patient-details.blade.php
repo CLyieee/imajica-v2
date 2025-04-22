@@ -554,7 +554,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-hover" id="allergies-table">
+                                                    <table class="table table-hover" >
                                                         <thead>
                                                             <tr>
                                                                 <th>Allergen</th>
@@ -565,27 +565,35 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                           @if(isset($allergies) && count($allergies) > 0)
+                                                            @foreach($allergies as $allergy)
+                                                            <tr>
+                                                                <td>{{ $allergy->allergen }}</td>
+                                                                <td>{{ $allergy->reaction }}</td>
+                                                                <td>{{ $allergy->severity }}</td>
+                                                                <td>{{ $allergy->date_identified }}</td>
+                                                                <td>
+                                                                    <div class="d-inline-block">
+                                                                      <button type="button" class="btn btn-sm btn-info">
+                                                                        <a href="#" class="text-white">
+                                                                          <i class="ti tabler-edit me-1"></i> Edit
+                                                                        </a>
+                                                                      </button>
+                                                                      
+                                                                      <button class="btn btn-sm btn-danger delete-record" 
+                                                                        data-id="{{ $allergy->id }}">
+                                                                        <i class="ti tabler-trash me-1"></i> Delete
+                                                                      </button>
+                                                                    </div>
+                                                                  </td>
+                                                            </tr>
+                                                            @endforeach
+                                                            @else
                                                             <tr>
                                                                 <td colspan="5" class="text-center">No allergies recorded</td>
                                                             </tr>
-                                                            <!-- Example row with actions that will show when data exists -->
-                                                            <tr class="d-none">
-                                                                <td>Penicillin</td>
-                                                                <td>Rash</td>
-                                                                <td>Moderate</td>
-                                                                <td>2023-01-01</td>
-                                                                <td>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                        <i class="ti ti-eye"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                        <i class="ti ti-edit"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
-                                                                        <i class="ti ti-trash"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
+                                                            @endif
+
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -618,28 +626,35 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td colspan="6" class="text-center">No medications recorded</td>
-                                                            </tr>
-                                                            <!-- Example row with actions that will show when data exists -->
-                                                            <tr class="d-none">
-                                                                <td>Lisinopril</td>
-                                                                <td>10mg</td>
-                                                                <td>Once daily</td>
-                                                                <td>2023-01-15</td>
-                                                                <td>2023-07-15</td>
-                                                                <td>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                        <i class="ti ti-eye"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                        <i class="ti ti-edit"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
-                                                                        <i class="ti ti-trash"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
+                                                            @if(isset($medications) && count($medications) > 0)
+                                                                @foreach($medications as $medication)
+                                                                <tr>
+                                                                    <td>{{ $medication->medication_name }}</td>
+                                                                    <td>{{ $medication->dosage }}</td>
+                                                                    <td>{{ $medication->frequency }}</td>
+                                                                    <td>{{ $medication->start_date }}</td>
+                                                                    <td>{{ $medication->end_date ?? 'Ongoing' }}</td>
+                                                                    <td>
+                                                                        <div class="d-inline-block">
+                                                                          <button type="button" class="btn btn-sm btn-info">
+                                                                            <a href="#" class="text-white">
+                                                                              <i class="ti tabler-edit me-1"></i> Edit
+                                                                            </a>
+                                                                          </button>
+                                                                          
+                                                                          <button class="btn btn-sm btn-danger delete-record" 
+                                                                            data-id="{{ $medication->id }}">
+                                                                            <i class="ti tabler-trash me-1"></i> Delete
+                                                                          </button>
+                                                                        </div>
+                                                                      </td>
+                                                                </tr>
+                                                                @endforeach
+                                                            @else
+                                                                <tr>
+                                                                    <td colspan="6" class="text-center">No medications recorded</td>
+                                                                </tr>
+                                                            @endif
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -666,32 +681,38 @@
                                                                 <th>Concern</th>
                                                                 <th>Date Reported</th>
                                                                 <th>Status</th>
-                                                                <th>Notes</th>
                                                                 <th>Actions</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                           @if(isset($healthConcerns) && count($healthConcerns) > 0)
+                                                            @foreach($healthConcerns as $concern)
+                                                            <tr>
+                                                                <td>{{ $concern->concern }}</td>
+                                                                <td>{{ $concern->date_reported }}</td>
+                                                                <td>{{ $concern->status }}</td>
+                                                              
+                                                                <td>
+                                                                    <div class="d-inline-block">
+                                                                      <button type="button" class="btn btn-sm btn-info">
+                                                                        <a href="#" class="text-white">
+                                                                          <i class="ti tabler-edit me-1"></i> Edit
+                                                                        </a>
+                                                                      </button>
+                                                                      
+                                                                      <button class="btn btn-sm btn-danger delete-record" 
+                                                                        data-id="{{ $concern->id }}">
+                                                                        <i class="ti tabler-trash me-1"></i> Delete
+                                                                      </button>
+                                                                    </div>
+                                                                  </td>
+                                                            </tr>
+                                                            @endforeach
+                                                            @else
                                                             <tr>
                                                                 <td colspan="5" class="text-center">No health concerns recorded</td>
                                                             </tr>
-                                                            <!-- Example row with actions that will show when data exists -->
-                                                            <tr class="d-none">
-                                                                <td>Hypertension</td>
-                                                                <td>2023-02-10</td>
-                                                                <td>Active</td>
-                                                                <td>Being monitored</td>
-                                                                <td>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                        <i class="ti ti-eye"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                        <i class="ti ti-edit"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
-                                                                        <i class="ti ti-trash"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
+                                                            @endif
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -723,27 +744,34 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td colspan="5" class="text-center">No prescriptions recorded</td>
-                                                            </tr>
-                                                            <!-- Example row with actions that will show when data exists -->
-                                                            <tr class="d-none">
-                                                                <td>RX2023001</td>
-                                                                <td>2023-03-15</td>
-                                                                <td>Dr. Smith</td>
-                                                                <td>Filled</td>
-                                                                <td>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                        <i class="ti ti-eye"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                        <i class="ti ti-edit"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
-                                                                        <i class="ti ti-trash"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
+                                                            @if(isset($prescriptions) && count($prescriptions) > 0)
+                                                                @foreach($prescriptions as $prescription)
+                                                                <tr>
+                                                                    <td>{{ $prescription->prescription_number }}</td>
+                                                                    <td>{{ $prescription->date }}</td>
+                                                                    <td>{{ $prescription->doctor }}</td>
+                                                                    <td>{{ $prescription->status }}</td>
+                                                                    <td>
+                                                                        <div class="d-inline-block">
+                                                                          <button type="button" class="btn btn-sm btn-info">
+                                                                            <a href="#" class="text-white">
+                                                                              <i class="ti tabler-edit me-1"></i> Edit
+                                                                            </a>
+                                                                          </button>
+                                                                      
+                                                                          <button class="btn btn-sm btn-danger delete-record" 
+                                                                            data-id="{{ $prescription->id }}">
+                                                                            <i class="ti tabler-trash me-1"></i> Delete
+                                                                          </button>
+                                                                        </div>
+                                                                      </td>
+                                                                </tr>
+                                                                @endforeach
+                                                            @else
+                                                                <tr>
+                                                                    <td colspan="5" class="text-center">No prescriptions found</td>
+                                                                </tr>
+                                                            @endif
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -775,30 +803,31 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td colspan="5" class="text-center">No attachments found</td>
-                                                            </tr>
-                                                            <!-- Example row with actions that will show when data exists -->
-                                                            <tr class="d-none">
-                                                                <td>MRI_Results.pdf</td>
-                                                                <td>PDF</td>
-                                                                <td>2023-04-20</td>
-                                                                <td>2.4 MB</td>
-                                                                <td>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                        <i class="ti ti-download"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                        <i class="ti ti-eye"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-secondary rounded-pill">
-                                                                        <i class="ti ti-edit"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record">
-                                                                        <i class="ti ti-trash"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
+                                                            @if(isset($attachments) && count($attachments) > 0)
+                                                                @foreach($attachments as $attachment)
+                                                                <tr>
+                                                                    <td>{{ $attachment->file_name }}</td>
+                                                                    <td>{{ $attachment->file_type }}</td>
+                                                                    <td>{{ $attachment->uploaded_at->format('Y-m-d H:i:s') }}</td>
+                                                                    <td>{{ $attachment->getFileSizeForHumans() }}</td>
+                                                                    <td>
+                                                                        <a href="{{ Storage::url($attachment->file_path) }}" class="btn btn-icon btn-sm btn-text-secondary rounded-pill" download>
+                                                                            <i class="ti ti-download"></i>
+                                                                        </a>
+                                                                        <a href="{{ Storage::url($attachment->file_path) }}" class="btn btn-icon btn-sm btn-text-secondary rounded-pill" target="_blank">
+                                                                            <i class="ti ti-eye"></i>
+                                                                        </a>
+                                                                        <button class="btn btn-icon btn-sm btn-text-danger rounded-pill delete-record" data-id="{{ $attachment->id }}">
+                                                                            <i class="ti ti-trash"></i>
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                                @endforeach
+                                                            @else
+                                                                <tr>
+                                                                    <td colspan="5" class="text-center">No attachments found</td>
+                                                                </tr>
+                                                            @endif
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -834,13 +863,13 @@
                     <h5 class="modal-title">Add New Allergy</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="allergy-form" action="#" method="POST">
+                <form id="allergy-form" action="{{ route('patient.allergy.add') }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="allergen" class="form-label">Allergen</label>
+                                <label for="allergy_name" class="form-label">Allergen</label>
                                 <input type="text" id="allergen" name="allergen" class="form-control" placeholder="e.g., Penicillin, Peanuts" required>
                             </div>
                             <div class="col-12 mb-3">
@@ -854,9 +883,9 @@
                                     <option value="Mild">Mild</option>
                                     <option value="Moderate">Moderate</option>
                                     <option value="Severe">Severe</option>
-                                    <option value="Life-threatening">Life-threatening</option>
                                 </select>
                             </div>
+
                             <div class="col-12 mb-3">
                                 <label for="date_identified" class="form-label">Date Identified</label>
                                 <input type="date" id="date_identified" name="date_identified" class="form-control" required>
@@ -880,10 +909,10 @@
                     <h5 class="modal-title">Add New Medication</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="medication-form" action="#" method="POST">
+                <form id="medication-form" action="{{ route('patient.medication.add') }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="medication_name" class="form-label">Medication Name</label>
@@ -924,10 +953,10 @@
                     <h5 class="modal-title">Add Health Concern</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="health-concern-form" action="#" method="POST">
+                <form id="health-concern-form" action="{{ route('patient.health-concern.add') }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="concern" class="form-label">Concern</label>
@@ -966,10 +995,10 @@
                     <h5 class="modal-title">Add Prescription</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="prescription-form" action="#" method="POST">
+                <form id="prescription-form" action="{{ route('patient.prescription.add') }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="prescription_number" class="form-label">Prescription #</label>
@@ -977,7 +1006,7 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <label for="prescription_date" class="form-label">Date</label>
-                                <input type="date" id="prescription_date" name="date" class="form-control" required>
+                                <input type="date" id="date" name="date" class="form-control" required>
                             </div>
                             <div class="col-12 mb-3">
                                 <label for="doctor" class="form-label">Doctor</label>
@@ -1012,14 +1041,15 @@
                     <h5 class="modal-title">Upload File</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="attachment-form" action="#" method="POST" enctype="multipart/form-data">
+                <form id="attachment-form" action="{{ route('patient.attachment.add') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
-                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                        <input type="hidden" name="patient_id" value="{{ $patient->patient_id }}">
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="file" class="form-label">File</label>
                                 <input type="file" id="file" name="file" class="form-control" required>
+                                <small class="text-muted">Maximum file size: 10MB</small>
                             </div>
                             <div class="col-12 mb-3">
                                 <label for="file_type" class="form-label">Type</label>
@@ -1033,6 +1063,10 @@
                                     <option value="Prescription">Prescription</option>
                                     <option value="Other">Other</option>
                                 </select>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea id="description" name="description" class="form-control" rows="2"></textarea>
                             </div>
                         </div>
                     </div>
@@ -1280,84 +1314,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const formHandlers = {
         'allergy-form': {
             table: '#allergies-table tbody',
-            modal: '#addAllergyModal',
-            rowTemplate: (data) => `
-                <tr data-id="${data.id || ''}" data-record='${JSON.stringify(data)}'>
-                    <td>${data.allergen}</td>
-                    <td>${data.reaction}</td>
-                    <td>${data.severity}</td>
-                    <td>${data.date_identified}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm edit-record">Edit</button>
-                        <button class="btn btn-danger btn-sm delete-record">Delete</button>
-                    </td>
-                </tr>
-            `
+            modal: '#addAllergyModal'
+           
         },
         'medication-form': {
             table: '#medications-table tbody',
-            modal: '#addMedicationModal',
-            rowTemplate: (data) => `
-                <tr data-id="${data.id || ''}" data-record='${JSON.stringify(data)}'>
-                    <td>${data.medication_name}</td>
-                    <td>${data.dosage}</td>
-                    <td>${data.frequency}</td>
-                    <td>${data.start_date}</td>
-                    <td>${data.end_date || 'Ongoing'}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm edit-record">Edit</button>
-                        <button class="btn btn-danger btn-sm delete-record">Delete</button>
-                    </td>
-                </tr>
-            `
+            modal: '#addMedicationModal'
+           
         },
         'health-concern-form': {
             table: '#health-concerns-table tbody',
-            modal: '#addHealthConcernModal',
-            rowTemplate: (data) => `
-                <tr data-id="${data.id || ''}" data-record='${JSON.stringify(data)}'>
-                    <td>${data.concern}</td>
-                    <td>${data.date_reported}</td>
-                    <td>${data.status}</td>
-                    <td>${data.notes || ''}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm edit-record">Edit</button>
-                        <button class="btn btn-danger btn-sm delete-record">Delete</button>
-                    </td>
-                </tr>
-            `
+            modal: '#addHealthConcernModal'
+         
         },
         'prescription-form': {
             table: '#prescriptions-table tbody',
             modal: '#addPrescriptionModal',
-            rowTemplate: (data) => `
-                <tr data-id="${data.id || ''}" data-record='${JSON.stringify(data)}'>
-                    <td>${data.prescription_number}</td>
-                    <td>${data.date}</td>
-                    <td>${data.doctor}</td>
-                    <td>${data.status}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm edit-record">Edit</button>
-                        <button class="btn btn-danger btn-sm delete-record">Delete</button>
-                    </td>
-                </tr>
-            `
+            
         },
         'attachment-form': {
             table: '#attachments-table tbody',
             modal: '#addAttachmentModal',
-            rowTemplate: (data) => `
-                <tr data-id="${data.id || ''}" data-record='${JSON.stringify(data)}'>
-                    <td>${data.file_name}</td>
-                    <td>${data.file_type}</td>
-                    <td>${new Date().toLocaleDateString()}</td>
-                    <td>${data.file_size || 'N/A'}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm edit-record">Edit</button>
-                        <button class="btn btn-danger btn-sm delete-record">Delete</button>
-                    </td>
-                </tr>
-            `
+           
         }
     };
 
@@ -1491,6 +1469,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         text: `Record has been ${isEditMode ? 'updated' : 'saved'} successfully.`,
                         timer: 2000,
                         showConfirmButton: false
+                    }).then(() => {
+                        location.reload(); // Reload page after success
                     });
                 }, 1000);
             });
@@ -1531,7 +1511,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         'Deleted!',
                         'Record has been deleted.',
                         'success'
-                    );
+                    ).then(() => {
+                        location.reload(); // Reload page after success
+                    });
                 }
             });
         }
@@ -1539,6 +1521,226 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add console.log for debugging
     console.log('JavaScript loaded and event listeners attached');
+});
+</script>
+
+<script>
+$(document).ready(function() {
+    // Common function to handle form submissions
+    function handleFormSubmit(formId, successCallback) {
+        const form = $(formId);
+        const submitBtn = form.find('button[type="submit"]');
+        const modal = form.closest('.modal');
+        
+        form.on('submit', function(e) {
+            e.preventDefault();
+            submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Saving...');
+            
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: form.serialize(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+                        form[0].reset();
+                        modal.modal('hide');
+                        if (successCallback) successCallback(response.data);
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    let message = xhr.responseJSON?.message || 'An error occurred while processing your request.';
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: message
+                    });
+                },
+                complete: function() {
+                    submitBtn.prop('disabled', false).text('Save');
+                }
+            });
+        });
+    }
+
+    // Delete record handler with proper type detection
+    $(document).on('click', '.delete-record', function() {
+        const row = $(this).closest('tr');
+        const id = $(this).data('id');
+        let type = '';
+        let endpoint = '';
+
+        // Determine record type based on the table
+        if (row.closest('#allergies-table').length) {
+            type = 'allergy';
+            endpoint = '/patient/allergy/';
+        } else if (row.closest('#medications-table').length) {
+            type = 'medication';
+            endpoint = '/patient/medication/';
+        } else if (row.closest('#health-concerns-table').length) {
+            type = 'health-concern';
+            endpoint = '/patient/health-concern/';
+        }
+
+        if (!endpoint) {
+            console.error('Unknown record type');
+            return;
+        }
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: endpoint + id,
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: response.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload();
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: xhr.responseJSON?.message || 'Failed to delete record'
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // Initialize form handlers
+    handleFormSubmit('#allergy-form');
+    handleFormSubmit('#medication-form');
+    handleFormSubmit('#health-concern-form');
+    handleFormSubmit('#prescription-form');
+    handleFormSubmit('#attachment-form');
+
+});
+
+// Remove all the previous individual form handlers
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Existing code and functions...
+
+    // Setup attachments table
+    const attachmentsTable = document.getElementById('attachments-table');
+    if (attachmentsTable) {
+        new DataTable(attachmentsTable, {
+            responsive: true,
+            searching: true,
+            lengthChange: true,
+            info: true,
+            language: {
+                paginate: {
+                    next: '<i class="ti tabler-chevron-right"></i>',
+                    previous: '<i class="ti tabler-chevron-left"></i>'
+                }
+            }
+        });
+    }
+
+    // Handle attachment form submission
+    const attachmentForm = document.getElementById('attachment-form');
+    if (attachmentForm) {
+        attachmentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading...';
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Upload';
+                
+                if (data.success) {
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: data.message,
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        // Close modal and refresh page
+                        bootstrap.Modal.getInstance(document.getElementById('addAttachmentModal')).hide();
+                        location.reload();
+                    });
+                } else {
+                    // Show validation errors if any
+                    if (data.errors) {
+                        let errorMessage = '<ul class="text-start mb-0">';
+                        Object.values(data.errors).forEach(error => {
+                            errorMessage += `<li>${error[0]}</li>`;
+                        });
+                        errorMessage += '</ul>';
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validation Error',
+                            html: errorMessage
+                        });
+                    } else {
+                        throw new Error(data.message || 'Error uploading file');
+                    }
+                }
+            })
+            .catch(error => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Upload';
+                
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Error uploading file'
+                });
+            });
+        });
+    }
 });
 </script>
 </body>

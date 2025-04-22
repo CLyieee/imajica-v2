@@ -10,7 +10,7 @@ class PatientMedication extends Model
     use HasFactory;
 
     protected $table = 'patient_medications';
-    protected $primaryKey = 'medication_id';
+    protected $primaryKey = 'id';
     public $timestamps = true;
 
     protected $fillable = [
@@ -19,8 +19,8 @@ class PatientMedication extends Model
         'dosage',
         'frequency',
         'start_date',
-        'end_date',
-        'notes'
+        'end_date'
+       
     ];
 
     public function patient()
