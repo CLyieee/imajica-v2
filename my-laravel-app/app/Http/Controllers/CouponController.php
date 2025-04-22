@@ -19,7 +19,7 @@ class CouponController extends Controller
             $data = $request->validate([
                 'coupon_code' => 'required|unique:coupons',
                 'discount_name' => 'required|min:3',  // matches form field
-                'description' => 'required|min:10',
+                'description' => 'required',
                 'discount_type' => 'required|in:fixed,percentage',  // matches new select options
                 'discount_value' => 'required|numeric|min:0',
                 'service_id' => 'required',  // matches form field name
@@ -32,7 +32,6 @@ class CouponController extends Controller
                 'coupon_name.required' => 'Coupon name is required',
                 'coupon_name.min' => 'Coupon name must be at least 3 characters',
                 'description.required' => 'Description is required',
-                'description.min' => 'Description must be at least 10 characters',
                 'discount_type.required' => 'Please select a discount type',
                 'discount_value.required' => 'Discount value is required',
                 'discount_value.numeric' => 'Discount value must be a number',
@@ -71,7 +70,7 @@ class CouponController extends Controller
             $data = $request->validate([
                 'coupon_code' => 'required',
                 'discount_name' => 'required|min:3',  // matches form field
-                'description' => 'required|min:10',
+                'description' => 'required',
                 'discount_type' => 'required|in:fixed,percentage',  // matches new select options
                 'discount_value' => 'required|numeric|min:0',
                 'service_id' => 'required',  // matches form field name
@@ -83,7 +82,6 @@ class CouponController extends Controller
                 'coupon_name.required' => 'Coupon name is required',
                 'coupon_name.min' => 'Coupon name must be at least 3 characters',
                 'description.required' => 'Description is required',
-                'description.min' => 'Description must be at least 10 characters',
                 'discount_type.required' => 'Please select a discount type',
                 'discount_value.required' => 'Discount value is required',
                 'discount_value.numeric' => 'Discount value must be a number',
