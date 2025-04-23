@@ -553,9 +553,9 @@
                                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAllergyModal">Add Allergy</button>
                                             </div>
                                             <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover" >
-                                                        <thead>
+                                                <div>
+                                                    <table class="table table-striped" id="allergies-table">
+                                                        <thead class="table-light">
                                                             <tr>
                                                                 <th>Allergen</th>
                                                                 <th>Reaction</th>
@@ -613,9 +613,9 @@
                                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addMedicationModal">Add Medication</button>
                                             </div>
                                             <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover" id="medications-table">
-                                                        <thead>
+                                                <div>
+                                                    <table class="table table-striped" id="medications-table">
+                                                        <thead class="table-light">
                                                             <tr>
                                                                 <th>Medication Name</th>
                                                                 <th>Dosage</th>
@@ -674,9 +674,9 @@
                                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addHealthConcernModal">Add Health Concern</button>
                                             </div>
                                             <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover" id="health-concerns-table">
-                                                        <thead>
+                                                <div>
+                                                    <table class="table table-striped" id="health-concerns-table">
+                                                        <thead class="table-light">
                                                             <tr>
                                                                 <th>Concern</th>
                                                                 <th>Date Reported</th>
@@ -732,9 +732,9 @@
                                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPrescriptionModal">Add Prescription</button>
                                             </div>
                                             <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover" id="prescriptions-table">
-                                                        <thead>
+                                                <div>
+                                                    <table class="table table-striped" id="prescriptions-table">
+                                                        <thead class="table-light">
                                                             <tr>
                                                                 <th>Prescription #</th>
                                                                 <th>Date</th>
@@ -791,9 +791,9 @@
                                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAttachmentModal">Upload File</button>
                                             </div>
                                             <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover" id="attachments-table">
-                                                        <thead>
+                                                <div>
+                                                    <table class="table table-striped" id="attachments-table">
+                                                        <thead class="table-light">
                                                             <tr>
                                                                 <th>File Name</th>
                                                                 <th>Type</th>
@@ -1753,9 +1753,7 @@ $(document).ready(function() {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Existing code and functions...
-
-    // Setup attachments table
+    
     const attachmentsTable = document.getElementById('attachments-table');
     if (attachmentsTable) {
         new DataTable(attachmentsTable, {
@@ -1771,8 +1769,70 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    const prescriptionsTable = document.getElementById('prescriptions-table');
+    if (prescriptionsTable) {
+        new DataTable(prescriptionsTable, {
+            responsive: true,
+            searching: true,
+            lengthChange: true,
+            info: true,
+            language: {
+                paginate: {
+                    next: '<i class="ti tabler-chevron-right"></i>',
+                    previous: '<i class="ti tabler-chevron-left"></i>'
+                }
+            }
+        });
+    }
 
-    // Handle attachment form submission
+    const healthConcernsTable = document.getElementById('health-concerns-table');
+    if (healthConcernsTable) {
+        new DataTable(healthConcernsTable, {
+            responsive: true,
+            searching: true,
+            lengthChange: true,
+            info: true,
+            language: {
+                paginate: {
+                    next: '<i class="ti tabler-chevron-right"></i>',
+                    previous: '<i class="ti tabler-chevron-left"></i>'
+                }
+            }
+        });
+    }
+    
+    const medicationsTable = document.getElementById('medications-table');
+    if (medicationsTable) {
+        new DataTable(medicationsTable, {
+            responsive: true,
+            searching: true,
+            lengthChange: true,
+            info: true,
+            language: {
+                paginate: {
+                    next: '<i class="ti tabler-chevron-right"></i>',
+                    previous: '<i class="ti tabler-chevron-left"></i>'
+                }
+            }
+        });
+    }
+     
+    const allergiesTable = document.getElementById('allergies-table');
+    if (allergiesTable) {
+        new DataTable(allergiesTable, {
+            responsive: true,
+            searching: true,
+            lengthChange: true,
+            info: true,
+            language: {
+                paginate: {
+                    next: '<i class="ti tabler-chevron-right"></i>',
+                    previous: '<i class="ti tabler-chevron-left"></i>'
+                }
+            }
+        });
+    }
+
    
 });
 </script>
