@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Booking;
-use App\Models\Service;
-use App\Models\Staff;
-use App\Models\Branch;
-use App\Models\Patient;
+use App\Models\booking;
+use App\Models\service;
+use App\Models\staff;
+use App\Models\branch;
+use App\Models\patient;
 use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
     public function index()
     {
-        $bookings = Booking::with(['patient', 'service', 'staff', 'branch'])->get();
-        $services = Service::all();
-        $staffs = Staff::all();
-        $branches = Branch::all();
-        $patients = Patient::all();
+        $bookings = booking::with(['patient', 'service', 'staff', 'branch'])->get();
+        $services = service::all();
+        $staffs = staff::all();
+        $branches = branch::all();
+        $patients = patient::all();
 
         return view('page.booking', compact('bookings', 'services', 'staffs', 'branches', 'patients'));
     }
@@ -37,7 +37,76 @@ class BookingController extends Controller
             'remarks' => 'required',
         ]);
 
-        $newBooking = Booking::create($data);
+        // Create the booking
+        $newBooking = booking::create($data);
+        
+        // Get the service and patient for points calculation
+        $service = service::find($data['service_id']);
+        $patient = patient::find($data['patient_id']);
+        
+        if ($service && $patient) {
+            // Handle points system based on booking status
+            if ($data['status'] == 'Paid') {
+                // Calculate points to be awarded based on service cost
+                $serviceCost = $service->service_cost;
+                $pointsToAdd = 0;
+                
+                // 10 points per 1000 cost, 20 points per 2000 cost, 
+                // 50 points per 3000 and 50 points per 5000
+                if ($serviceCost >= 5000) {
+                    $pointsToAdd = 50;
+                } elseif ($serviceCost >= 3000) {
+                    $pointsToAdd = 50;
+                } elseif ($serviceCost >= 2000) {
+                    $pointsToAdd = 20;
+                } elseif ($serviceCost >= 1000) {
+                    $pointsToAdd = 10;
+                }
+                
+                // Add points to patient's account
+                $patient->points += $pointsToAdd;
+                
+                // Add service cost to patient's total_cost
+                $patient->total_cost += $serviceCost;
+                
+                $patient->save();
+                
+                Log::info("Added {$pointsToAdd} points to Patient ID: {$patient->patient_id}. New total: {$patient->points}");
+                Log::info("Added {$serviceCost} to total_cost for Patient ID: {$patient->patient_id}. New total cost: {$patient->total_cost}");
+            }
+            
+            // If using reward points as payment
+            if ($data['useReward']) {
+                $serviceCost = $service->service_cost;
+                
+                // Convert points to monetary value (assuming 1 point = $1 for simplicity)
+                $pointValue = 1;
+                $maxPointsToUse = $serviceCost / $pointValue;
+                
+                if ($patient->points >= $maxPointsToUse) {
+                    // Patient has enough points to cover the full cost
+                    $patient->points -= $maxPointsToUse;
+                    Log::info("Used {$maxPointsToUse} points for full payment. Patient ID: {$patient->patient_id}, Remaining points: {$patient->points}");
+                } else {
+                    // Use all available points and deduct the balance
+                    $coveredAmount = $patient->points * $pointValue;
+                    $remainingCost = $serviceCost - $coveredAmount;
+                    
+                    // Check if patient has enough balance
+                    if ($patient->balance >= $remainingCost) {
+                        $patient->balance -= $remainingCost;
+                        Log::info("Used {$patient->points} points and deducted \${$remainingCost} from balance. Patient ID: {$patient->patient_id}");
+                        $patient->points = 0;
+                    } else {
+                        // Not enough points or balance - this should be handled according to business logic
+                        // For now, we'll just log it as an insufficient funds situation
+                        Log::warning("Insufficient funds for Patient ID: {$patient->patient_id}. Required: \${$remainingCost}, Available balance: \${$patient->balance}");
+                    }
+                }
+                
+                $patient->save();
+            }
+        }
 
         if($request->wantsJson()) {
             return response()->json([

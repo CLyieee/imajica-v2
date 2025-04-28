@@ -25,16 +25,16 @@ class LoginController extends Controller
     // Handle login
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        // $request->validate([
+        //     'email' => 'required|email',
+        //     'password' => 'required',
+        // ]);
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->intended('/dashboard'); // Redirect to dashboard
-        }
+        // if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        //     return redirect()->intended('/dashboard'); // Redirect to dashboard
+        // }
 
-        return back()->withErrors(['email' => 'Invalid credentials.'])->withInput();
+        // return back()->withErrors(['email' => 'Invalid credentials.'])->withInput();
     }
 
     // Handle logout

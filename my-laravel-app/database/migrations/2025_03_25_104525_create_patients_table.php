@@ -19,6 +19,8 @@ class CreatePatientsTable extends Migration
             $table->foreignId('patient_tier_id')->constrained('tiers');
             $table->string('occupation')->nullable();
             $table->text('address');
+            $table->bigInteger('points');
+            $table->bigInteger('balance')->default(0);
             $table->string('emergency_contact_name')->nullable();
             $table->string('emergency_contact_number', 20)->nullable();
             $table->text('medical_concerns')->nullable();

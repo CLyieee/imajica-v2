@@ -24,6 +24,9 @@ class patientController extends Controller
                 'patient_tier_id' => 'required|exists:tiers,patient_tier_id',
                 'occupation' => 'nullable|string|max:255',
                 'address' => 'required|string',
+                'points' => 'required|integer|min:0',
+                'balance' => 'nullable|integer|min:0',
+                'total_cost' => 'nullable|integer|min:0',
                 'emergency_contact_name' => 'nullable|string|max:255',
                 'emergency_contact_number' => 'nullable|string|max:20',
                 'medical_concerns' => 'nullable|string',
@@ -43,7 +46,7 @@ class patientController extends Controller
                 $validatedData['image_path'] = null;
             }
 
-            $patient = Patient::create($validatedData);
+            $patient = patient::create($validatedData);
 
             return redirect()->back()->with('success', 'Patient created successfully!');
         } catch (\Exception $e) {
@@ -56,7 +59,7 @@ class patientController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $patient = Patient::findOrFail($id);
+            $patient = patient::findOrFail($id);
             
             $validated = $request->validate([
                 'firstname' => 'required|string|max:255',
@@ -67,6 +70,10 @@ class patientController extends Controller
                 'birthdate' => 'nullable|date',
                 'occupation' => 'nullable|string',
                 'address' => 'nullable|string',
+                'patient_tier_id' => 'nullable|exists:tiers,patient_tier_id',
+                'points' => 'nullable|integer|min:0',
+                'balance' => 'nullable|integer|min:0',
+                'total_cost' => 'nullable|integer|min:0',
                 'emergency_contact_name' => 'nullable|string',
                 'emergency_contact_number' => 'nullable|string',
                 'medical_concerns' => 'nullable|string',
@@ -83,7 +90,7 @@ class patientController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            \Log::error('Patient update error: ' . $e->getMessage());
+            Log::error('Patient update error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to update patient: ' . $e->getMessage()
@@ -94,7 +101,7 @@ class patientController extends Controller
     public function destroy($id)
     {
         try {
-            $patient = Patient::findOrFail($id);
+            $patient = patient::findOrFail($id);
             
             // Delete any associated files/images if needed
             if ($patient->image_path) {
@@ -318,14 +325,14 @@ class patientController extends Controller
                 throw $e;
             }
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validation failed',
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
-            \Log::error('Error uploading attachment: ' . $e->getMessage(), [
+            Log::error('Error uploading attachment: ' . $e->getMessage(), [
                 'patient_id' => $request->patient_id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
@@ -667,7 +674,7 @@ public function downloadAttachment($id)
         $mimeType = Storage::disk('public')->mimeType($attachment->filepath);
         
         // Log download attempt
-        \Log::info('Downloading attachment', [
+        Log::info('Downloading attachment', [
             'id' => $id,
             'filename' => $attachment->filename,
             'filepath' => $attachment->filepath
@@ -680,7 +687,7 @@ public function downloadAttachment($id)
         ]);
 
     } catch (\Exception $e) {
-        \Log::error('Error downloading attachment', [
+        Log::error('Error downloading attachment', [
             'id' => $id,
             'error' => $e->getMessage()
         ]);
@@ -714,7 +721,7 @@ public function downloadAttachment($id)
                 throw new \Exception('Failed to delete attachment record');
             }
 
-            \Log::info('Attachment deleted successfully', [
+            Log::info('Attachment deleted successfully', [
                 'id' => $id,
                 'filename' => $attachment->filename,
                 'filepath' => $attachment->filepath
@@ -725,13 +732,13 @@ public function downloadAttachment($id)
                 'message' => 'Attachment deleted successfully'
             ]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            \Log::warning('Attempted to delete non-existent attachment', ['id' => $id]);
+            Log::warning('Attempted to delete non-existent attachment', ['id' => $id]);
             return response()->json([
                 'success' => false,
                 'message' => 'Attachment not found'
             ], 404);
         } catch (\Exception $e) {
-            \Log::error('Error deleting attachment', [
+            Log::error('Error deleting attachment', [
                 'id' => $id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()

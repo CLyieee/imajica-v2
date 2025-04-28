@@ -22,6 +22,9 @@ class Patient extends Model
         'patient_tier_id',
         'occupation',
         'address',
+        'points',
+        'balance',
+        'total_cost',
         'emergency_contact_name',
         'emergency_contact_number',
         'medical_concerns',
@@ -44,9 +47,9 @@ class Patient extends Model
         return $this->hasOne(Contact::class, 'patient_id', 'patient_id');
     }
 
-    public function patientTier(): BelongsTo
+    public function tier(): BelongsTo
     {
-        return $this->belongsTo(PatientTier::class, 'patient_tier_id');
+        return $this->belongsTo(tier::class, 'patient_tier_id');
     }
 
     public function bookings()
