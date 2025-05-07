@@ -285,7 +285,7 @@
                       <input class="form-check-input select-all" type="checkbox" id="selectAll" data-value="all" checked />
                       <label class="form-check-label" for="selectAll">Pending</label>
                     </div>
-                    s
+                    
                     <div class="app-calendar-events-filter text-heading">
                       <div class="form-check mb-5 ms-2">
                         <input class="form-check-input input-filter" type="checkbox" id="select-business" data-value="business" checked />
@@ -555,9 +555,14 @@
                       <h5 class="card-title mb-1">Booking History</h5>
                       <p class="text-muted mb-0 small">Overview of all appointments</p>
                     </div>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="search-box">
+                        <input type="text" id="searchBookings" class="form-control" placeholder="Search bookings...">
+                      </div>
+                    </div>
                   </div>
                   <div class="table-responsive">
-                    <table class="table table-hover booking-table">
+                    <table class="table table-hover" id="bookingsTable">
                       <thead class="table-light">
                         <tr>
 
@@ -1115,6 +1120,67 @@
     .flatpickr-input {
       background-color: #fff !important;
     }
+  </style>
+
+  <!-- Add before closing body tag -->
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script>
+  $(document).ready(function() {
+      // Initialize DataTable
+      const bookingsTable = $('#bookingsTable').DataTable({
+          pageLength: 10,
+          ordering: true,
+          responsive: true,
+          dom: "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+          language: {
+              search: "",
+              searchPlaceholder: "Search bookings...",
+              info: "_START_ - _END_ of _TOTAL_ bookings",
+              infoEmpty: "No bookings found",
+              paginate: {
+                  previous: "<i class='ti ti-chevron-left'></i>",
+                  next: "<i class='ti ti-chevron-right'></i>"
+              }
+          }
+      });
+
+      // Connect custom search box to DataTable
+      $('#searchBookings').on('keyup', function() {
+          bookingsTable.search(this.value).draw();
+      });
+  });
+  </script>
+
+  <style>
+  /* Add these search styles */
+  .search-box {
+      min-width: 250px;
+  }
+
+  .search-box .form-control {
+      padding-right: 2.5rem;
+      border-radius: 0.375rem;
+      border: 1px solid #d9dee3;
+  }
+
+  .search-box .form-control:focus {
+      border-color: #696cff;
+      box-shadow: 0 0 0.25rem rgba(105, 108, 255, 0.1);
+  }
+
+  .dataTables_wrapper .dataTables_filter {
+      display: none;
+  }
+
+  .dataTables_paginate .page-item:not(.active) .page-link {
+      color: #697a8d;
+  }
+
+  .dataTables_paginate .page-item.active .page-link {
+      background-color: #696cff;
+      border-color: #696cff;
+  }
   </style>
 </body>
 
