@@ -479,11 +479,9 @@
                                                     <h5 class="card-title mb-0">Appointment</h5>
                                                     <small class="text-muted">Today</small>
                                                 </div>
-                                                <button class="btn btn-primary btn-sm">Add appointment</button>
                                             </div>
                                             <div class="card-body">
                                                 <div class="text-center py-3">
-                                                    <img src="../../assets/img/icons/unicons/calendar.png" alt="No Appointments" class="mb-2" style="width: 80px;">
                                                     <p class="text-muted mb-0">No appointments to show today</p>
                                                     <a href="#" class="text-primary">See all</a>
                                                 </div>
@@ -494,7 +492,6 @@
                                         <div class="card">
                                             <div class="card-header d-flex justify-content-between align-items-center">
                                                 <h5 class="card-title mb-0">Medical Records</h5>
-                                                <button class="btn btn-primary btn-sm">Add Record</button>
                                             </div>
                                             <div class="card-body">
                                                 @if(isset($medicalRecords) && count($medicalRecords) > 0)
@@ -533,7 +530,6 @@
                                                     </div>
                                                 @else
                                                     <div class="text-center py-3">
-                                                        <img src="../../assets/img/icons/no-records.png" alt="No Records" class="mb-2" style="width: 80px;">
                                                         <p class="text-muted">No medical records available</p>
                                                     </div>
                                                 @endif
@@ -574,10 +570,13 @@
                                                                 <td>{{ $allergy->date_identified }}</td>
                                                                 <td>
                                                                     <div class="d-inline-block">
-                                                                      <button type="button" class="btn btn-sm btn-info">
-                                                                        <a href="#" class="text-white">
-                                                                          <i class="ti tabler-edit me-1"></i> Edit
-                                                                        </a>
+                                                                      <button type="button" class="btn btn-sm btn-info edit-allergy" 
+                                                                        data-id="{{ $allergy->id }}"
+                                                                        data-allergen="{{ $allergy->allergen }}"
+                                                                        data-reaction="{{ $allergy->reaction }}"
+                                                                        data-severity="{{ $allergy->severity }}"
+                                                                        data-date="{{ $allergy->date_identified }}">
+                                                                        <i class="ti tabler-edit me-1"></i> Edit
                                                                       </button>
                                                                       
                                                                       <button class="btn btn-sm btn-danger delete-record" 
@@ -636,10 +635,14 @@
                                                                     <td>{{ $medication->end_date ?? 'Ongoing' }}</td>
                                                                     <td>
                                                                         <div class="d-inline-block">
-                                                                          <button type="button" class="btn btn-sm btn-info">
-                                                                            <a href="#" class="text-white">
-                                                                              <i class="ti tabler-edit me-1"></i> Edit
-                                                                            </a>
+                                                                          <button type="button" class="btn btn-sm btn-info edit-medication" 
+                                                                            data-id="{{ $medication->id }}"
+                                                                            data-name="{{ $medication->medication_name }}"
+                                                                            data-dosage="{{ $medication->dosage }}"
+                                                                            data-frequency="{{ $medication->frequency }}"
+                                                                            data-start="{{ $medication->start_date }}"
+                                                                            data-end="{{ $medication->end_date }}">
+                                                                            <i class="ti tabler-edit me-1"></i> Edit
                                                                           </button>
                                                                           
                                                                           <button class="btn btn-sm btn-danger delete-record" 
@@ -694,10 +697,12 @@
                                                               
                                                                 <td>
                                                                     <div class="d-inline-block">
-                                                                      <button type="button" class="btn btn-sm btn-info">
-                                                                        <a href="#" class="text-white">
-                                                                          <i class="ti tabler-edit me-1"></i> Edit
-                                                                        </a>
+                                                                      <button type="button" class="btn btn-sm btn-info edit-concern" 
+                                                                        data-id="{{ $concern->id }}"
+                                                                        data-concern="{{ $concern->concern }}"
+                                                                        data-date="{{ $concern->date_reported }}"
+                                                                        data-status="{{ $concern->status }}">
+                                                                        <i class="ti tabler-edit me-1"></i> Edit
                                                                       </button>
                                                                       
                                                                       <button class="btn btn-sm btn-danger delete-record" 
@@ -753,10 +758,13 @@
                                                                     <td>{{ $prescription->status }}</td>
                                                                     <td>
                                                                         <div class="d-inline-block">
-                                                                          <button type="button" class="btn btn-sm btn-info">
-                                                                            <a href="#" class="text-white">
-                                                                              <i class="ti tabler-edit me-1"></i> Edit
-                                                                            </a>
+                                                                          <button type="button" class="btn btn-sm btn-info edit-prescription" 
+                                                                            data-id="{{ $prescription->id }}"
+                                                                            data-number="{{ $prescription->prescription_number }}"
+                                                                            data-date="{{ $prescription->date }}"
+                                                                            data-doctor="{{ $prescription->doctor }}"
+                                                                            data-status="{{ $prescription->status }}">
+                                                                            <i class="ti tabler-edit me-1"></i> Edit
                                                                           </button>
                                                                       
                                                                           <button class="btn btn-sm btn-danger delete-record" 
@@ -1998,7 +2006,192 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle edit allergy button clicks
+    document.querySelectorAll('.edit-allergy').forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = document.getElementById('addAllergyModal');
+            const form = modal.querySelector('form');
+            
+            // Update modal title
+            modal.querySelector('.modal-title').textContent = 'Edit Allergy';
+            
+            // Fill form with data
+            form.querySelector('#allergen').value = this.dataset.allergen;
+            form.querySelector('#reaction').value = this.dataset.reaction;
+            form.querySelector('#severity').value = this.dataset.severity;
+            form.querySelector('#date_identified').value = this.dataset.date;
+            
+            // Update form for edit mode
+            form.action = `{{ url('/patient/allergy') }}/${this.dataset.id}`;
+            if (!form.querySelector('input[name="_method"]')) {
+                form.insertAdjacentHTML('beforeend', '<input type="hidden" name="_method" value="PUT">');
+            }
+            
+            // Show modal
+            new bootstrap.Modal(modal).show();
+        });
+    });
 
+    // Handle edit medication button clicks
+    document.querySelectorAll('.edit-medication').forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = document.getElementById('addMedicationModal');
+            const form = modal.querySelector('form');
+            
+            // Update modal title
+            modal.querySelector('.modal-title').textContent = 'Edit Medication';
+            
+            // Fill form with data
+            form.querySelector('#medication_name').value = this.dataset.name;
+            form.querySelector('#dosage').value = this.dataset.dosage;
+            form.querySelector('#frequency').value = this.dataset.frequency;
+            form.querySelector('#start_date').value = this.dataset.start;
+            form.querySelector('#end_date').value = this.dataset.end || '';
+            
+            // Update form for edit mode
+            form.action = `{{ url('/patient/medication') }}/${this.dataset.id}`;
+            if (!form.querySelector('input[name="_method"]')) {
+                form.insertAdjacentHTML('beforeend', '<input type="hidden" name="_method" value="PUT">');
+            }
+            
+            // Show modal
+            new bootstrap.Modal(modal).show();
+        });
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle edit health concern button clicks
+    document.querySelectorAll('.edit-concern').forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = document.getElementById('addHealthConcernModal');
+            const form = modal.querySelector('form');
+            
+            // Update modal title
+            modal.querySelector('.modal-title').textContent = 'Edit Health Concern';
+            
+            // Fill form with data
+            form.querySelector('#concern').value = this.dataset.concern;
+            form.querySelector('#date_reported').value = this.dataset.date;
+            form.querySelector('#status').value = this.dataset.status;
+            
+            // Update form for edit mode
+            form.action = `{{ url('/patient/health-concern') }}/${this.dataset.id}`;
+            if (!form.querySelector('input[name="_method"]')) {
+                form.insertAdjacentHTML('beforeend', '<input type="hidden" name="_method" value="PUT">');
+            }
+            
+            // Show modal
+            new bootstrap.Modal(modal).show();
+        });
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle edit prescription button clicks
+    document.querySelectorAll('.edit-prescription').forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = document.getElementById('addPrescriptionModal');
+            const form = modal.querySelector('form');
+            
+            // Update modal title
+            modal.querySelector('.modal-title').textContent = 'Edit Prescription';
+            
+            // Fill form with data
+            form.querySelector('#prescription_number').value = this.dataset.number;
+            form.querySelector('#date').value = this.dataset.date;
+            form.querySelector('#doctor').value = this.dataset.doctor;
+            form.querySelector('#prescription_status').value = this.dataset.status;
+            
+            // Update form action and method
+            form.action = `{{ url('/patient/prescription') }}/${this.dataset.id}`;
+            
+            // Remove any existing method field
+            const existingMethod = form.querySelector('input[name="_method"]');
+            if (existingMethod) {
+                existingMethod.remove();
+            }
+            
+            // Add PUT method field and ensure CSRF token
+            form.insertAdjacentHTML('beforeend', `
+                <input type="hidden" name="_method" value="PUT">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            `);
+
+            // Update form submit handler
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const formData = new FormData(form);
+
+                // Show loading state
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Saving...';
+
+                // Make the AJAX request
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => Promise.reject(err));
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Hide modal
+                        bootstrap.Modal.getInstance(modal).hide();
+                        
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: data.message || 'Prescription updated successfully',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        throw new Error(data.message || 'Failed to update prescription');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    
+                    // Show error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: error.message || 'An error occurred while updating the prescription. Please try again.'
+                    });
+                })
+                .finally(() => {
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Save';
+                });
+            };
+            
+            // Show modal
+            new bootstrap.Modal(modal).show();
+        });
+    });
+});
+</script>
 
 <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
 <script src="../../assets/vendor/libs/datatables-buttons/datatables-buttons.js"></script>
