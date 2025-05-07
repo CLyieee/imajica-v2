@@ -359,7 +359,7 @@
         <div class="metric-card">
           <i class="ti tabler-receipt mb-2" style="font-size: 24px; color: #dc3545;"></i>
           <h5>Total Expenses</h5>
-          <h4>₱85,430.00</h4>
+          <h4>₱12,450.00</h4>
         </div>
         <div class="metric-card">
           <i class="ti tabler-chart-pie mb-2" style="font-size: 24px; color: #fd7e14;"></i>
