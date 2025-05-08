@@ -35,7 +35,7 @@
     <link rel="canonical" href="Imajica Booking System" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset(path:'logo/logo.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('logo/logo.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -378,6 +378,17 @@
                     <div class="card-body pt-6">
                       <div class="row">
                         <div class="col-lg-8 mx-auto">
+                          <!-- Notification about welcome points -->
+                          <div class="alert alert-info mb-4">
+                            <div class="d-flex">
+                              <i class="ti ti-gift me-2 fs-3"></i>
+                              <div>
+                                <h5 class="alert-heading mb-1">Welcome Bonus!</h5>
+                                <p class="mb-0">All new patients now receive <strong>100 points</strong> as a welcome gift upon registration. These points can be used for discounts on future bookings! We've simplified our system by replacing balance with reward points.</p>
+                              </div>
+                            </div>
+                          </div>
+                          
                           <!-- Update the form tag to include enctype -->
                           <form method="POST" action="{{ route('patient.create') }}" enctype="multipart/form-data" id="patientForm">
                             @csrf

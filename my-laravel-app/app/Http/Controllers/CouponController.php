@@ -202,4 +202,94 @@ class CouponController extends Controller
                 ->with('error', 'Error occurred while editing coupon: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Verify a coupon code via AJAX request
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verify(Request $request)
+    {
+        $couponCode = $request->input('coupon_code');
+        $serviceId = $request->input('service_id');
+        
+        // Find the coupon
+        $coupon = \App\Models\coupon::where('coupon_code', $couponCode)->first();
+        
+        if (!$coupon) {
+            return response()->json([
+                'valid' => false,
+                'message' => 'Coupon code not found'
+            ]);
+        }
+        
+        // Check if the coupon has start/end date constraints
+        if ($coupon->start_end_date) {
+            $dates = explode(' - ', $coupon->start_end_date);
+            if (count($dates) === 2) {
+                $startDate = \Carbon\Carbon::parse($dates[0]);
+                $endDate = \Carbon\Carbon::parse($dates[1]);
+                $currentDate = \Carbon\Carbon::now();
+                
+                if ($currentDate->lt($startDate) || $currentDate->gt($endDate)) {
+                    return response()->json([
+                        'valid' => false,
+                        'message' => 'Coupon is not valid during this period'
+                    ]);
+                }
+            }
+        }
+        
+        // Check if coupon is service-specific and matches the requested service
+        if ($coupon->service_id && $coupon->service_id != $serviceId) {
+            // Get service name for error message
+            $service = service::find($coupon->service_id);
+            $serviceName = $service ? $service->service_name : 'specific services';
+            
+            return response()->json([
+                'valid' => false,
+                'message' => "This coupon is only valid for {$serviceName}"
+            ]);
+        }
+        
+        // Check if coupon is restricted to new customers only
+        if ($coupon->new_customer) {
+            $patientId = $request->input('patient_id');
+            if ($patientId) {
+                $bookingsCount = \App\Models\booking::where('patient_id', $patientId)->count();
+                if ($bookingsCount > 0) {
+                    return response()->json([
+                        'valid' => false,
+                        'message' => 'This coupon is only valid for new customers'
+                    ]);
+                }
+            }
+        }
+        
+        // Check if branch-specific and matches the requested branch
+        if ($coupon->branch_code && $request->has('branch_code') && $coupon->branch_code != $request->input('branch_code')) {
+            $branch = \App\Models\branch::find($coupon->branch_code);
+            $branchName = $branch ? $branch->branch_name : 'specific branches';
+            
+            return response()->json([
+                'valid' => false,
+                'message' => "This coupon is only valid at {$branchName}"
+            ]);
+        }
+        
+        // If we got here, the coupon is valid
+        $service = null;
+        if ($coupon->service_id) {
+            $service = \App\Models\service::find($coupon->service_id);
+        }
+        
+        return response()->json([
+            'valid' => true,
+            'discount_type' => $coupon->discount_type,
+            'discount_value' => $coupon->discount_value,
+            'service_id' => $coupon->service_id,
+            'service_name' => $service ? $service->service_name : null
+        ]);
+    }
 }

@@ -165,6 +165,7 @@ Route::delete('/patient/delete', [PatientController::class, 'destroy'])->name('p
 Route::get('/patients/{id}/view', [PatientController::class, 'view'])->name('patient.view');
 Route::get('/patients/{id}/view', [PatientController::class, 'show'])->name('patient.view');
 Route::get('/patients', [PatientController::class, 'index'])->name('patient.list');
+Route::get('/patient/get-points', [PatientController::class, 'getPatientPoints'])->name('patient.get.points');
 
 Route::get('/service-product', [DashboardController::class, 'service_product'])->name('page.service-product');
 
@@ -286,3 +287,9 @@ Route::prefix('patient')->group(function () {
 Route::get('/waste-list', [DashboardController::class, 'waste_list'])->name('page.waste-list');
 
 Route::put('/position/update', [PositionController::class, 'update'])->name('position.update');
+
+// Coupon verification route
+Route::post('/verify-coupon', [App\Http\Controllers\CouponController::class, 'verify'])->name('coupon.verify');
+
+// Check if a patient is making their first booking
+Route::post('/check-first-time-patient', [App\Http\Controllers\BookingController::class, 'checkFirstTimePatient'])->name('check.first.time.patient');

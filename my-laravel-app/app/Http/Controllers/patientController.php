@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\patient;
 use App\Models\tier;
+use App\Models\PatientPointsHistory;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -24,8 +25,6 @@ class patientController extends Controller
                 'patient_tier_id' => 'required|exists:tiers,patient_tier_id',
                 'occupation' => 'nullable|string|max:255',
                 'address' => 'required|string',
-                'points' => 'required|integer|min:0',
-                'balance' => 'nullable|integer|min:0',
                 'total_cost' => 'nullable|integer|min:0',
                 'emergency_contact_name' => 'nullable|string|max:255',
                 'emergency_contact_number' => 'nullable|string|max:20',
@@ -34,6 +33,9 @@ class patientController extends Controller
                 'note_from_admin' => 'nullable|string',
                 'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
             ]);
+
+            // Automatically assign 100 points to new patients
+            $validatedData['points'] = 100;
 
             // Handle image upload
             if ($request->hasFile('image_path')) {
@@ -46,9 +48,18 @@ class patientController extends Controller
                 $validatedData['image_path'] = null;
             }
 
+            // Create patient record with points
             $patient = patient::create($validatedData);
 
-            return redirect()->back()->with('success', 'Patient created successfully!');
+            // Create a record in the points history
+            // PatientPointsHistory::create([
+            //     'patient_id' => $patient->patient_id,
+            //     'points' => 100,
+            //     'transaction_type' => 'earned',
+            //     'description' => 'Welcome bonus for new patient registration'
+            // ]);
+
+            return redirect()->back()->with('success', 'Patient created successfully! The patient has received 100 welcome points.');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'Error creating patient: ' . $e->getMessage())
@@ -72,7 +83,6 @@ class patientController extends Controller
                 'address' => 'nullable|string',
                 'patient_tier_id' => 'nullable|exists:tiers,patient_tier_id',
                 'points' => 'nullable|integer|min:0',
-                'balance' => 'nullable|integer|min:0',
                 'total_cost' => 'nullable|integer|min:0',
                 'emergency_contact_name' => 'nullable|string',
                 'emergency_contact_number' => 'nullable|string',
@@ -747,6 +757,38 @@ public function downloadAttachment($id)
             return response()->json([
                 'success' => false,
                 'message' => 'Error deleting attachment: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get patient points for the welcome badge feature
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPatientPoints(Request $request)
+    {
+        try {
+            $request->validate([
+                'patient_id' => 'required|exists:patients,patient_id'
+            ]);
+
+            $patient = patient::findOrFail($request->patient_id);
+            
+            return response()->json([
+                'success' => true,
+                'points' => $patient->points
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error getting patient points', [
+                'patient_id' => $request->patient_id ?? 'none',
+                'error' => $e->getMessage()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error getting patient points: ' . $e->getMessage()
             ], 500);
         }
     }

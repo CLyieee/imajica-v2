@@ -19,13 +19,16 @@ class Booking extends Model
     protected $fillable = [
         'service_id',
         'status',
+        'payment', // fixed missing comma
         'start_date',
         'end_date',
         'id',
         'branch_code',
         'patient_id',
         'useReward',
+        'coupon_code',
         'remarks',
+        'price'
     ];
     
 

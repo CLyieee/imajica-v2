@@ -104,159 +104,36 @@
         <div class="content-wrapper">
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
-            <!-- KPI Cards Row -->
-            <div class="row g-4 mb-4">
-              <div class="col-lg-3 col-sm-6">
-                <div class="card card-border-shadow-primary h-100">
-                  <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                      <div class="avatar me-4">
-                        <span class="avatar-initial rounded bg-label-primary">
-                          <i class="icon-base ti tabler-calendar icon-28px"></i>
-                        </span>
-                      </div>
-                      <div>
-                        <h4 class="mb-0">{{ count($bookings) }}</h4>
-                        <span class="badge bg-label-{{ $bookingGrowth >= 0 ? 'success' : 'danger' }}">{{ $bookingGrowth >= 0 ? '+' : '' }}{{ $bookingGrowth }}%</span>
-                      </div>
-                    </div>
-                    <p class="mb-1">Total Completed Bookings</p>
-                    <div class="d-flex align-items-center">
-                      <div class="ms-auto">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-sm-6">
-                <div class="card card-border-shadow-warning h-100">
-                  <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                      <div class="avatar me-4">
-                        <span class="avatar-initial rounded bg-label-warning">
-                          <i class="icon-base ti tabler-shopping-cart icon-28px"></i>
-                        </span>
-                      </div>
-                      <div>
-                        <h4 class="mb-0">₱100,000</h4>
-                        <span class="badge bg-label-success">+8.4%</span>
-                      </div>
-                    </div>
-                    <p class="mb-1">Total Revenue</p>
-                    <div class="d-flex align-items-center">
-                      <div class="ms-auto">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-sm-6">
-                <div class="card card-border-shadow-danger h-100">
-                  <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                      <div class="avatar me-4">
-                        <span class="avatar-initial rounded bg-label-danger">
-                          <i class="icon-base ti tabler-users icon-28px"></i>
-                        </span>
-                      </div>
-                      <div>
-                        <h4 class="mb-0">
-                          {{ count($patients) }}
-                        </h4>
-                      <span class="badge bg-label-{{ $patientGrowth > 0 ? 'success' : 'danger' }}">
-            {{ $patientGrowth > 0 ? '+' : '' }}{{ number_format($patientGrowth, 1) }}%
-          </span>
-                      </div>
-                    </div>
-                    <p class="mb-1">Total Patients</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-sm-6">
-                <div class="card card-border-shadow-danger h-100">
-                  <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                      <div class="avatar me-4">
-
-                        <span class="avatar-initial rounded bg-label-danger">
-
-                          <i class="icon-base ti tabler-receipt icon-28px"></i>
-                        </span>
-                      </div>
-                      <div>
-                        <h4 class="mb-0">₱50,000</h4>
-                        <span class="badge bg-label-warning">+3.2%</span>
-                      </div>
-                    </div>
-                    <p class="mb-1">Total Expenses</p>
-                    <div class="d-flex align-items-center">
-                      <div class="ms-auto">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-
-
-
-
-            <!-- Add spacing here -->
-            <div class="mb-3"></div>
-
-            <!-- Dynamic Banner Section -->
-            <div class="col-12 col-lg-14">
-              <div class="col-lg-12">
+            <!-- Welcome Banner -->
+            <div class="row mb-4">
+              <div class="col-12">
                 @if(count($todayBirthdays) > 0 || count($upcomingBirthdays) > 0)
-                  <!-- Birthday Banner (existing code) -->
-                  <div class="card text-white border-0 shadow-lg"
-                    style="background: linear-gradient(135deg, #47d2b4, #53b5cf); border-radius: 15px;">
-                    <div class="card-body p-4 d-flex justify-content-between align-items-center position-relative overflow-hidden">
-                      <!-- Confetti Animation -->
-                      <div class="position-absolute w-100 h-100" id="confetti-container"></div>
-
-                      <!-- Text Content -->
+                  <!-- Birthday Banner -->
+                  <div class="card bg-primary text-white border-0 shadow">
+                    <div class="card-body p-4 d-flex justify-content-between align-items-center">
                       <div>
-                        <h3 class="text-white fw-bold">🎉 Happy Birthday to Our Valued Clients! 🎂</h3>
+                        <h3 class="text-white fw-semibold mb-1">🎉 Happy Birthday to Our Valued Clients!</h3>
+                        <p class="text-white opacity-75 mb-0">We have {{ count($todayBirthdays) }} birthday{{ count($todayBirthdays) > 1 ? 's' : '' }} today</p>
                       </div>
-
-                      <!-- Birthday Image -->
                       <div class="d-none d-md-block">
-                        <img src="https://png.pngtree.com/template/20241213/ourmid/pngtree-happy-birthday-greeting-vector-design-lettering-in-blue-space-with-gift-image_2037581.jpg"
-                          alt="Birthday celebration"
-                          style="max-height: 200px; transform: rotate(-5deg); border-radius: 10px;">
+                        <img src="{{ asset('logo/imajica.png') }}" alt="Imajica Aesthetics" class="img-fluid" style="max-height: 120px; border-radius: 10px;">
                       </div>
                     </div>
                   </div>
                 @else
-                  <!-- Imajica Aesthetics Banner -->
-                  <div class="card text-white border-0 shadow-lg"
-                    style="background: linear-gradient(135deg, #2c3e50, #3498db); border-radius: 15px;">
-                    <div class="card-body p-4 d-flex justify-content-between align-items-center position-relative overflow-hidden">
-                      <!-- Text Content -->
+                  <!-- Default Welcome Banner -->
+                  <div class="card bg-primary text-white border-0 shadow">
+                    <div class="card-body p-4 d-flex justify-content-between align-items-center">
                       <div>
-                        <h3 class="text-white fw-bold mb-2">✨ Welcome to Imajica Aesthetics</h3>
-                        <p class="text-white mb-3">Experience luxury beauty and wellness treatments tailored just for you.</p>
-                        <a href="{{ route('page.booking') }}" class="btn btn-primary">
+                        <h3 class="text-white fw-semibold mb-1">Welcome to Imajica Aesthetics</h3>
+                        <p class="text-white opacity-75 mb-2">Experience luxury beauty and wellness treatments tailored just for you.</p>
+                        <a href="{{ route('page.booking') }}" class="btn btn-light text-primary">
                           <i class="ti tabler-calendar-plus me-1"></i>
                           Book an Appointment
                         </a>
                       </div>
-
-                      <!-- Decorative Elements -->
                       <div class="d-none d-md-block">
-                        <img src="{{ asset('logo/imajica.png') }}" 
-                          alt="Imajica Aesthetics"
-                          style="max-height: 180px; border-radius: 10px;">
-                      </div>
-
-                      <!-- Background Decoration -->
-                      <div class="position-absolute top-0 end-0 opacity-25">
-                      
+                        <img src="{{ asset('logo/imajica.png') }}" alt="Imajica Aesthetics" class="img-fluid" style="max-height: 120px; border-radius: 10px;">
                       </div>
                     </div>
                   </div>
@@ -264,369 +141,224 @@
               </div>
             </div>
 
-            <!-- Confetti Animation Script -->
-            <script>
-              document.addEventListener("DOMContentLoaded", function () {
-                const confettiContainer = document.getElementById("confetti-container");
-                for (let i = 0; i < 50; i++) {
-                  let confetti = document.createElement("div");
-                  confetti.style.position = "absolute";
-                  confetti.style.width = "10px";
-                  confetti.style.height = "10px";
-                  confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 85%)`;
-                  confetti.style.left = `${Math.random() * 100}%`;
-                  confetti.style.top = `${Math.random() * 100}%`;
-                  confetti.style.opacity = Math.random();
-                  confetti.style.animation = `falling ${3 + Math.random() * 3}s linear infinite`;
-                  confetti.style.borderRadius = "50%";
-                  confettiContainer.appendChild(confetti);
-                }
-              });
-
-              /* Confetti Animation */
-              const style = document.createElement("style");
-              style.innerHTML = `
-    @keyframes falling {
-      0% { transform: translateY(-10px) rotate(0); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-    }
-  `;
-              document.head.appendChild(style);
+            <!-- KPI Cards Row -->
+            <div class="row g-4 mb-4">
+              <div class="col-sm-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                      <div class="avatar rounded bg-label-primary p-2 me-3">
+                        <i class="ti tabler-calendar ti-md"></i>
+                      </div>
+                      <div>
+                        <h5 class="mb-0">{{ count($bookings) }}</h5>
+                        <span class="badge bg-label-{{ $bookingGrowth >= 0 ? 'success' : 'danger' }}">{{ $bookingGrowth >= 0 ? '+' : '' }}{{ $bookingGrowth }}%</span>
+                      </div>
+                    </div>
+                    <small class="text-muted">Total Completed Bookings</small>
+                  </div>
+                </div>
+              </div>
               
-            </script>
-
-
-
-
- <!-- Enhanced Birthday Card -->
- <div class="col-12 col-lg-14">
-                <div class="card">
-                  <div
-                    class="card-header d-flex justify-content-between align-items-center bg-primary bg-opacity-10 p-4">
-                    <div>
-                      <h5 class="card-title mb-1">
-                        <i class="ti tabler-gift me-2 text-primary"></i>
-                        Patient Birthdays
-                      </h5>
-                      <p class="text-muted mb-0 small">
-                        Stay connected with your patients on their special day
-                      </p>
+              <div class="col-sm-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                      <div class="avatar rounded bg-label-success p-2 me-3">
+                        <i class="ti tabler-shopping-cart ti-md"></i>
+                      </div>
+                      <div>
+                        <h5 class="mb-0">₱100,000</h5>
+                        <span class="badge bg-label-success">+8.4%</span>
+                      </div>
                     </div>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#allBirthdaysModal">
-                      <i class="ti tabler-list me-1"></i>View All
-                    </button>
+                    <small class="text-muted">Total Revenue</small>
                   </div>
-
-                  <!-- Today's Birthday Section -->
-                  <div class="card-body border-bottom p-4">
-                    <h6 class="text-primary mb-3">
-                      <i class="ti tabler-confetti me-2"></i>
-                      Today's Birthdays
-                    </h6>
-                    <div class="birthday-today">
-                      @if(count($todayBirthdays) > 0)
-                        @foreach($todayBirthdays as $patient)
-                        <li class="d-flex mb-2 pb-1 birthday-item position-relative">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span
-                              class="avatar-initial rounded-circle bg-label-danger d-flex align-items-center justify-content-center"
-                              style="width: 45px; height: 45px">
-                              <i class="icon-base ti tabler-confetti icon-md"></i>
-                            </span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0 fw-semibold">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
-                              <div class="d-flex align-items-center mt-1">
-                                <i class="ti tabler-calendar-event text-muted me-1"></i>
-                                <small class="text-body-secondary">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d, Y') }} ({{ $patient->age }} years)</small>
-                                <span class="badge bg-label-danger ms-2 px-2 py-1">
-                                  <i class="ti tabler-party-popper me-1"></i>Today
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        @endforeach
-                      @else
-                        <p class="text-center text-muted my-3">No birthdays today</p>
-                      @endif
+                </div>
+              </div>
+              
+              <div class="col-sm-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                      <div class="avatar rounded bg-label-info p-2 me-3">
+                        <i class="ti tabler-users ti-md"></i>
+                      </div>
+                      <div>
+                        <h5 class="mb-0">{{ count($patients) }}</h5>
+                        <span class="badge bg-label-{{ $patientGrowth > 0 ? 'success' : 'danger' }}">{{ $patientGrowth > 0 ? '+' : '' }}{{ number_format($patientGrowth, 1) }}%</span>
+                      </div>
                     </div>
+                    <small class="text-muted">Total Patients</small>
                   </div>
-
-                  <!-- Upcoming Birthdays Section -->
-                  <div class="card-body p-4">
-                    <h6 class="text-primary mb-3">
-                      <i class="ti tabler-calendar-event me-2"></i>
-                      Upcoming Birthdays
-                    </h6>
-                    <ul class="p-0 m-0">
-                      @if(count($upcomingBirthdays) > 0)
-                        @foreach($upcomingBirthdays->take(5) as $patient)
-                        <li class="d-flex mb-4 pb-1 birthday-item position-relative">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span
-                              class="avatar-initial rounded-circle bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} d-flex align-items-center justify-content-center"
-                              style="width: 45px; height: 45px">
-                              <i class="icon-base ti tabler-cake icon-md"></i>
-                            </span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0 fw-semibold">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
-                              <div class="d-flex align-items-center mt-1">
-                                <i class="ti tabler-calendar-event text-muted me-1"></i>
-                                <small class="text-body-secondary">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d, Y') }}</small>
-                                <span class="badge bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} ms-2 px-2 py-1">
-                                  <i class="ti tabler-clock me-1"></i>In {{ $patient->daysUntil }} days
-                                </span>
-                              </div>
-                            </div>
-                            <div class="dropdown">
-                              <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="ti tabler-dots-vertical"></i>
-                              </button>
-                              <ul class="dropdown-menu dropdown-menu-end show-on-hover">
-                                <li>
-                                  <a class="dropdown-item" href="#" data-action="send-wishes" data-patient="{{ $patient->patient_id }}">
-                                    <i class="ti tabler-mail me-2"></i>Send Wishes
-                                  </a>
-                                </li>
-                                <li>
-                                  <a class="dropdown-item" href="#" data-action="send-offers" data-patient="{{ $patient->patient_id }}">
-                                    <i class="ti tabler-gift me-2"></i>Send Offer
-                                  </a>
-                                </li>
-                                <li>
-                                  <a class="dropdown-item" href="#">
-                                    <i class="ti tabler-calendar-plus me-2"></i>Schedule Service
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
-                        @endforeach
-                      @else
-                        <p class="text-center text-muted my-3">No upcoming birthdays in the next 30 days</p>
-                      @endif
-                    </ul>
+                </div>
+              </div>
+              
+              <div class="col-sm-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                      <div class="avatar rounded bg-label-warning p-2 me-3">
+                        <i class="ti tabler-receipt ti-md"></i>
+                      </div>
+                      <div>
+                        <h5 class="mb-0">₱50,000</h5>
+                        <span class="badge bg-label-warning">+3.2%</span>
+                      </div>
+                    </div>
+                    <small class="text-muted">Total Expenses</small>
                   </div>
                 </div>
               </div>
             </div>
 
-
-
             <!-- Charts Row -->
             <div class="row g-4 mb-4">
-              <div class="col-12 col-lg-13">
-                <div class="card">
-                  <div class="card-header d-flex justify-content-between align-items-center">
+              <div class="col-md-8">
+                <div class="card shadow-sm">
+                  <div class="card-header d-flex justify-content-between align-items-center py-3">
                     <h5 class="card-title mb-0">Revenue Overview</h5>
-                    <div class="d-flex gap-2">
-                      <button class="btn btn-sm btn-outline-primary" onclick="exportChartData('revenueChart')">
-                        <i class="ti tabler-download me-1"></i>Export Data
+                    <div class="dropdown">
+                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        2024
                       </button>
-                      <div class="dropdown">
-                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                          data-bs-toggle="dropdown">
-                          2024
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">2024</a></li>
-                          <li><a class="dropdown-item" href="#">2023</a></li>
-                          <li><a class="dropdown-item" href="#">2022</a></li>
-                        </ul>
-                      </div>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">2024</a></li>
+                        <li><a class="dropdown-item" href="#">2023</a></li>
+                        <li><a class="dropdown-item" href="#">2022</a></li>
+                      </ul>
                     </div>
                   </div>
                   <div class="card-body">
-                    <canvas id="revenueChart" class="chartjs" height="350"></canvas>
+                    <canvas id="revenueChart" class="chartjs" height="300"></canvas>
                   </div>
                 </div>
               </div>
-              <!-- Add new line chart -->
-
-              <div class="col-15 col-lg-6">
-                <div class="card">
-                  <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Popular Services</h5>
-                    <button class="btn btn-sm btn-outline-primary" onclick="exportChartData('popularServicesChart')">
-                      <i class="ti tabler-download me-1"></i>Export Data
-                    </button>
+              
+              <div class="col-md-4">
+                <div class="card shadow-sm">
+                  <div class="card-header py-3">
+                    <h5 class="card-title mb-0">Booking Status</h5>
                   </div>
                   <div class="card-body">
-                    <canvas id="popularServicesChart" class="chartjs" height="350"></canvas>
+                    <canvas id="bookingStatusChart" class="chartjs" height="290"></canvas>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- Add new donut chart -->
-              <div class="col-15 col-lg-6">
-                <div class="card">
-                  <div class="card-header d-flex justify-content-between align-items-center">
+            <!-- Patient Birthdays and Services Charts -->
+            <div class="row g-4 mb-4">
+              <div class="col-md-5">
+                <div class="card shadow-sm h-100">
+                  <div class="card-header d-flex justify-content-between align-items-center py-3">
                     <h5 class="card-title mb-0">
-                      Booking Status Distribution
+                      <i class="ti tabler-gift me-1 text-primary"></i>
+                      Patient Birthdays
                     </h5>
-                    <button class="btn btn-sm btn-outline-primary" onclick="exportChartData('bookingStatusChart')">
-                      <i class="ti tabler-download me-1"></i>Export Data
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#allBirthdaysModal">
+                      View All
                     </button>
                   </div>
+                  
                   <div class="card-body">
-                    <canvas id="bookingStatusChart" class="chartjs" height="350"></canvas>
+                    <!-- Today's Birthdays -->
+                    @if(count($todayBirthdays) > 0)
+                    <div class="mb-3 pb-2 border-bottom">
+                      <h6 class="fw-semibold mb-2 text-primary">Today's Birthdays</h6>
+                      @foreach($todayBirthdays as $patient)
+                      <div class="d-flex align-items-center py-2">
+                        <div class="avatar me-3">
+                          <span class="avatar-initial rounded-circle bg-label-danger">
+                            <i class="ti tabler-confetti"></i>
+                          </span>
+                        </div>
+                        <div>
+                          <h6 class="mb-0">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
+                          <small class="text-muted">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d, Y') }} ({{ $patient->age }} years)</small>
+                        </div>
+                      </div>
+                      @endforeach
+                    </div>
+                    @endif
+                    
+                    <!-- Upcoming Birthdays -->
+                    <h6 class="fw-semibold mb-2 text-primary">Upcoming Birthdays</h6>
+                    @if(count($upcomingBirthdays) > 0)
+                      @foreach($upcomingBirthdays->take(3) as $patient)
+                      <div class="d-flex align-items-center mb-3">
+                        <div class="avatar me-3">
+                          <span class="avatar-initial rounded-circle bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }}">
+                            <i class="ti tabler-cake"></i>
+                          </span>
+                        </div>
+                        <div>
+                          <h6 class="mb-0">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
+                          <div class="d-flex align-items-center">
+                            <small class="text-muted me-2">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d') }}</small>
+                            <span class="badge bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }}">
+                              In {{ $patient->daysUntil }} days
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      @endforeach
+                    @else
+                      <p class="text-center text-muted">No upcoming birthdays in the next 30 days</p>
+                    @endif
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-7">
+                <div class="card shadow-sm h-100">
+                  <div class="card-header py-3">
+                    <h5 class="card-title mb-0">Popular Services</h5>
+                  </div>
+                  <div class="card-body d-flex align-items-center justify-content-center">
+                    <div style="height: 360px; width: 100%;">
+                      <canvas id="popularServicesChart" class="chartjs"></canvas>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Branch Performance Chart -->
-            <div class="row g-4 mb-4">
+            <div class="row mb-4">
               <div class="col-12">
-                <div class="card">
-                  <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">
-                      Branch Performance Overview
-                    </h5>
-                    <div class="d-flex gap-2">
-                      <button class="btn btn-sm btn-outline-primary"
-                        onclick="exportChartData('branchPerformanceChart')">
-                        <i class="ti tabler-download me-1"></i>Export Data
+                <div class="card shadow-sm">
+                  <div class="card-header d-flex justify-content-between align-items-center py-3">
+                    <h5 class="card-title mb-0">Branch Performance</h5>
+                    <div class="dropdown">
+                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        This Month
                       </button>
-                      <div class="dropdown">
-                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                          data-bs-toggle="dropdown">
-                          This Month
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li>
-                            <a class="dropdown-item" href="#">This Month</a>
-                          </li>
-                          <li>
-                          <li>
-                            <a class="dropdown-item" href="#">This Month</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#">Last Month</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#">This Quarter</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#">This Year</a>
-                          </li>
-                        </ul>
-                      </div>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">This Month</a></li>
+                        <li><a class="dropdown-item" href="#">Last Month</a></li>
+                        <li><a class="dropdown-item" href="#">This Quarter</a></li>
+                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                      </ul>
                     </div>
                   </div>
                   <div class="card-body">
-                    <canvas id="branchPerformanceChart" height="300"></canvas>
+                    <canvas id="branchPerformanceChart" height="250"></canvas>
                   </div>
                 </div>
               </div>
             </div>
-
-            <!-- Recent Bookings Table
-            <div class="row">
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-header d-flex justify-content-between align-items-center p-4">
-                    <div>
-                      <h5 class="card-title mb-1">Recent Bookings</h5>
-                      <p class="text-muted mb-0 small">
-                        Overview of latest transactions
-                      </p>
-                    </div>
-                    <div class="d-flex gap-2">
-                      <div class="dropdown">
-                        <ul class="dropdown-menu">
-                          <li>
-                            <a class="dropdown-item" href="#">All Bookings</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#">Completed</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#">Pending</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#">Cancelled</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#viewAllBookingsModal">
-                        <i class="ti tabler-list me-1"></i>View All
-                      </button>
-                    </div>
-                  </div>
-                  <div class="table-responsive">
-                    <table class="table table-hover booking-table">
-                      <thead class="table-light">
-                        <tr>
-                          <th>Booking ID</th>
-                          <th>Patient</th>
-                          <th>Service</th>
-                          <th>Date & Time</th>
-                          <th>Amount</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-    @foreach($bookings as $booking)
-    <tr>
-        <td># {{ $booking->booking_id }}</td>
-        <td>
-            @if($booking->patient)
-                {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
-            @else
-                <span class="text-muted">No patient data</span>
-            @endif
-        </td>
-        <td>
-            @if($booking->service)
-                {{ $booking->service->service_name }}
-            @else
-                <span class="text-muted">No service data</span>
-            @endif
-        </td>
-        <td>{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} at {{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</td>
-        <td>
-            @if($booking->service)
-                ₱{{ number_format($booking->service->service_cost, 2) }}
-            @else
-                <span class="text-muted">N/A</span>
-            @endif
-        </td>
-        <td>
-            <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed'  ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger')  }}">
-                {{ ucfirst($booking->status) }}
-            </span>
-        </td>
-    </tr>
-    @endforeach
-</tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
+            
+          </div>
           <!-- / Content -->
 
           <!-- Footer -->
           <footer class="content-footer footer bg-footer-theme">
             <div class="container-xxl">
-              <div
-                class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
+              <div class="footer-container d-flex align-items-center justify-content-between py-3">
                 <div class="text-body">
-                  ©
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  Developed by
-                  <a href="https://intra-code.com/" target="_blank" class="footer-link">Intracode IT Solutions</a>
+                  © <script>document.write(new Date().getFullYear())</script>
+                  Developed by <a href="https://intra-code.com/" target="_blank" class="footer-link">Intracode IT Solutions</a>
                 </div>
               </div>
             </div>
@@ -680,81 +412,29 @@
       // Wait for Chart.js to be available
       const initCharts = () => {
         if (typeof Chart === 'undefined') {
-          // If Chart is not loaded yet, try again in 100ms
           setTimeout(initCharts, 100);
           return;
         }
 
         // Revenue Overview Line Chart
-        const revenueCtx = document
-          .getElementById("revenueChart")
-          .getContext("2d");
+        const revenueCtx = document.getElementById("revenueChart").getContext("2d");
         const revenueChart = new Chart(revenueCtx, {
           type: "line",
           data: {
-            labels: [
-              "Jan",
-              "Feb",
-              "Mar",
-              "Apr",
-              "May",
-              "Jun",
-              "Jul",
-              "Aug",
-              "Sep",
-              "Oct",
-              "Nov",
-              "Dec",
-            ],
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             datasets: [
               {
                 label: "Revenue 2024",
-                data: [
-                  65000, 75000, 85000, 95000, 100000, 120000, 110000, 130000,
-                  140000, 150000, 160000, 170000,
-                ],
-                borderColor: function (context) {
-                  const chart = context.chart;
-                  const { ctx, chartArea } = chart;
-                  if (!chartArea) {
-                    return null;
-                  }
-                  const gradient = ctx.createLinearGradient(
-                    0,
-                    0,
-                    chartArea.width,
-                    0
-                  );
-                  gradient.addColorStop(0, "#c4cfd9"); // Light blue
-                  gradient.addColorStop(1, "#00d761"); // Dark blue
-                  return gradient;
-                },
+                data: [65000, 75000, 85000, 95000, 100000, 120000, 110000, 130000, 140000, 150000, 160000, 170000],
+                borderColor: "#696cff",
                 tension: 0.4,
                 fill: true,
                 backgroundColor: "rgba(105, 108, 255, 0.1)",
               },
               {
                 label: "Revenue 2023",
-                data: [
-                  55000, 65000, 75000, 85000, 90000, 110000, 100000, 120000,
-                  130000, 140000, 150000, 160000,
-                ],
-                borderColor: function (context) {
-                  const chart = context.chart;
-                  const { ctx, chartArea } = chart;
-                  if (!chartArea) {
-                    return null;
-                  }
-                  const gradient = ctx.createLinearGradient(
-                    0,
-                    0,
-                    chartArea.width,
-                    0
-                  );
-                  gradient.addColorStop(0, "#c4cfd9"); // Light gray
-                  gradient.addColorStop(1, "#da9100"); // Dark slate
-                  return gradient;
-                },
+                data: [55000, 65000, 75000, 85000, 90000, 110000, 100000, 120000, 130000, 140000, 150000, 160000],
+                borderColor: "#03c3ec",
                 tension: 0.4,
                 fill: true,
                 backgroundColor: "rgba(3, 195, 236, 0.1)",
@@ -765,19 +445,13 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: {
-                position: "top",
-              },
-              title: {
-                display: true,
-                text: "Monthly Revenue Overview",
-              },
+              legend: { position: "top" },
             },
             scales: {
               y: {
                 beginAtZero: true,
                 ticks: {
-                  callback: function (value) {
+                  callback: function(value) {
                     return "₱" + value.toLocaleString();
                   },
                 },
@@ -787,43 +461,46 @@
         });
 
         // Popular Services Pie Chart
-        const servicesCtx = document
-          .getElementById("popularServicesChart")
-          .getContext("2d");
+        const servicesCtx = document.getElementById("popularServicesChart").getContext("2d");
         const popularServicesChart = new Chart(servicesCtx, {
           type: "pie",
           data: {
             labels: {!! json_encode($services->pluck('service_name')) !!},
-            datasets: [
-              {
-                data: {!! json_encode($services->pluck('service_cost')) !!},
-                backgroundColor: [
-                  "#696cff",
-                  "#03c3ec",
-                  "#ffab00",
-                  "#28c76f",
-                  "#ff3e1d",
-                  "#8592a3",
-                  "#4b465c",
-                  "#ea5455",
-                  "#7367f0",
-                  "#6610f2"
-                ],
-              },
-            ],
+            datasets: [{
+              data: {!! json_encode($services->pluck('service_cost')) !!},
+              backgroundColor: ["#696cff", "#03c3ec", "#ffab00", "#28c76f", "#ff3e1d", "#8592a3", "#4b4b4b", "#7367f0", "#82868b", "#40bfff"],
+            }],
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+              padding: {
+                top: 10,
+                bottom: 10,
+                left: 20,
+                right: 20
+              }
+            },
             plugins: {
-              legend: {
-                position: "bottom",
-              },
-              title: {
-                display: true,
-                text: "Service Distribution",
+              legend: { 
+                position: "right",
+                align: "center",
+                labels: {
+                  boxWidth: 18,
+                  padding: 20,
+                  font: {
+                    size: 14
+                  }
+                }
               },
               tooltip: {
+                titleFont: {
+                  size: 14
+                },
+                bodyFont: {
+                  size: 14
+                },
                 callbacks: {
                   label: function(context) {
                     const label = context.label || '';
@@ -862,28 +539,19 @@
               responsive: true,
               maintainAspectRatio: false,
               plugins: {
-                legend: {
-                  position: "top",
-                },
-                title: {
-                  display: true,
-                  text: "Branch Performance Overview",
-                },
+                legend: { position: "top" },
               },
               scales: {
                 y: {
                   beginAtZero: true,
-                  position: "left",
                   ticks: {
-                    callback: function (value) {
-                      return this.chart.data.datasets[1].label === "Revenue"
-                        ? "₱" + value.toLocaleString()
-                        : value;
+                    callback: function(value) {
+                      return this.chart.data.datasets[1].label === "Revenue" ? "₱" + value.toLocaleString() : value;
                     },
                   },
                 },
               },
-            },
+            }
           }
         );
 
@@ -903,26 +571,20 @@
               ],
               backgroundColor: [
                 "#28c76f",  // Completed - Green
-                "#ffab00",  // Pending - Yellow/Orange
+                "#ffab00",  // Pending - Yellow
                 "#ff3e1d",  // Cancelled - Red
                 "#00cfe8",  // Paid - Blue
                 "#6c757d"   // No Show - Gray
               ],
               borderWidth: 0,
-              cutout: "75%",
+              cutout: "70%",
             }],
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: {
-                position: "bottom",
-              },
-              title: {
-                display: true,
-                text: "Current Month Booking Status",
-              },
+              legend: { position: "right", align: "center" },
               tooltip: {
                 callbacks: {
                   label: function(context) {
@@ -942,958 +604,69 @@
       // Start initialization
       initCharts();
     });
-
-    // Export functionality
-    function exportChartData(chartId) {
-      const chart = Chart.getChart(chartId);
-      if (!chart) return;
-
-      let csvContent = "";
-      let filename = "";
-
-      if (chart.config.type === "bar") {
-        // For bar charts
-        csvContent = "Branch,";
-        // Add headers for each dataset
-        chart.data.datasets.forEach((dataset, index) => {
-          csvContent +=
-            dataset.label +
-            (index < chart.data.datasets.length - 1 ? "," : "\n");
-        });
-        // Add data rows
-        chart.data.labels.forEach((branch, i) => {
-          csvContent += branch + ",";
-          chart.data.datasets.forEach((dataset, j) => {
-            const value =
-              dataset.label === "Revenue"
-                ? "₱" + dataset.data[i].toLocaleString()
-                : dataset.data[i];
-            csvContent +=
-              value + (j < chart.data.datasets.length - 1 ? "," : "\n");
-          });
-        });
-        filename = "branch_performance_data.csv";
-      } else if (
-        chart.config.type === "pie" ||
-        chart.config.type === "doughnut"
-      ) {
-        // Existing pie/donut chart logic
-        csvContent = "Status,Percentage\n";
-        chart.data.labels.forEach((label, i) => {
-          const value = chart.data.datasets[0].data[i];
-          const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-          const percentage = ((value / total) * 100).toFixed(2);
-          csvContent += `${label},${percentage}%\n`;
-        });
-        filename =
-          chartId === "bookingStatusChart"
-            ? "booking_status_data.csv"
-            : "services_data.csv";
-      } else if (chart.config.type === "line") {
-        // Existing line chart logic
-        csvContent = "Month,";
-        chart.data.datasets.forEach((dataset, index) => {
-          csvContent +=
-            dataset.label +
-            (index < chart.data.datasets.length - 1 ? "," : "\n");
-        });
-        chart.data.labels.forEach((label, i) => {
-          csvContent += label + ",";
-          chart.data.datasets.forEach((dataset, j) => {
-            csvContent +=
-              dataset.data[i] +
-              (j < chart.data.datasets.length - 1 ? "," : "\n");
-          });
-        });
-        filename = "revenue_data.csv";
-      }
-
-      // Create and trigger export
-      const blob = new Blob([csvContent], {
-        type: "text/csv;charset=utf-8;",
-      });
-      const link = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-
-      link.setAttribute("href", url);
-      link.setAttribute("download", filename);
-      link.style.visibility = "hidden";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
   </script>
 
   <style>
-    /* Add these styles to your CSS */
-    .birthday-item {
-      transition: all 0.3s ease;
+    .avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+    }
+    
+    .card {
       border-radius: 0.5rem;
-      padding: 1rem;
+      border: none;
     }
-
-    .birthday-item:hover {
-      background-color: rgba(105, 108, 255, 0.04);
-      transform: translateX(5px);
+    
+    .card-header {
+      background-color: transparent;
+      border-bottom: 1px solid rgba(67, 89, 113, 0.1);
     }
-
-    .avatar-initial {
-      transition: all 0.3s ease;
+    
+    .bg-label-primary {
+      background-color: rgba(105, 108, 255, 0.16) !important;
+      color: #696cff !important;
     }
-
-    .birthday-item:hover .avatar-initial {
-      transform: scale(1.1);
+    
+    .bg-label-success {
+      background-color: rgba(40, 199, 111, 0.16) !important;
+      color: #28c76f !important;
     }
-
+    
+    .bg-label-info {
+      background-color: rgba(3, 195, 236, 0.16) !important;
+      color: #03c3ec !important;
+    }
+    
+    .bg-label-warning {
+      background-color: rgba(255, 171, 0, 0.16) !important;
+      color: #ffab00 !important;
+    }
+    
+    .bg-label-danger {
+      background-color: rgba(255, 62, 29, 0.16) !important;
+      color: #ff3e1d !important;
+    }
+    
+    .bg-primary {
+      background: linear-gradient(135deg, #2b6cb0, #4299e1) !important;
+    }
+    
+    .shadow-sm {
+      box-shadow: 0 0.125rem 0.25rem rgba(67, 89, 113, 0.1) !important;
+    }
+    
     .badge {
       font-size: 0.75rem;
-    }
-
-    .dropdown-toggle::after {
-      display: none;
-    }
-
-    /* Add these additional styles */
-    .birthday-today {
-      position: relative;
-      padding: 1rem;
-      background: linear-gradient(to right,
-          rgba(105, 108, 255, 0.04),
-          rgba(105, 108, 255, 0.08));
-      border-radius: 0.5rem;
-      border: 1px dashed rgba(105, 108, 255, 0.4);
-    }
-
-    .birthday-today::before {
-      content: "🎉";
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      font-size: 1.5rem;
-    }
-
-    .action-buttons .btn {
-      transition: all 0.3s ease;
-    }
-
-    .action-buttons .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-    }
-
-
-    /* Add to your existing styles */
-    .menu-sub {
-      display: none;
-    }
-
-    .menu-item.open>.menu-sub {
-      display: block;
-    }
-
-    .menu-item.active>.menu-link {
-      background-color: rgba(10, 54, 34, 0.1) !important;
-      color: #0a3622 !important;
-    }
-
-    .menu-sub .menu-item.active>.menu-link {
-      background-color: rgba(10, 54, 34, 0.1) !important;
-    }
-
-    /* Add after existing styles */
-    .menu-sub {
-      display: none;
-    }
-
-    .menu-sub.show {
-      display: block;
-    }
-
-    .menu-toggle {
-      cursor: pointer;
-
-      /* Add these styles to your existing CSS */
-      .booking-table {
-        --bs-table-hover-bg: rgba(105, 108, 255, 0.04);
-      }
-
-      .booking-row {
-        vertical-align: middle;
-        transition: all 0.3s ease;
-      }
-
-      .booking-row:hover {
-        transform: translateX(5px);
-      }
-
-      .btn-hover-scale {
-        transition: all 0.2s ease;
-      }
-
-      .btn-hover-scale:hover {
-        transform: scale(1.15);
-      }
-
-      .badge {
-        padding: 0.5em 0.9em;
-        font-weight: 500;
-      }
-
-      .avatar-sm {
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .avatar-initial {
-        font-size: 0.8rem;
-        font-weight: 500;
-      }
-
-      /* Status badge colors */
-      .bg-label-success {
-        background-color: rgba(40, 199, 111, 0.16) !important;
-        color: #28c76f !important;
-      }
-
-      .bg-label-warning {
-        background-color: rgba(255, 171, 0, 0.16) !important;
-        color: #ffab00 !important;
-      }
-
-      .bg-label-danger {
-        background-color: rgba(255, 62, 29, 0.16) !important;
-        color: #ff3e1d !important;
-      }
-
-      .table-light {
-        --bs-table-bg: rgba(105, 108, 255, 0.04);
-      }
-
-      .card-header {
-        border-bottom: 1px solid rgba(105, 108, 255, 0.1);
-      }
-
-      /* Add these styles to your existing CSS */
-      .birthday-calendar {
-        max-height: 60vh;
-        overflow-y: auto;
-      }
-
-      .month-grid {
-        display: grid;
-        gap: 1.5rem;
-      }
-
-      .month-card {
-        background: #fff;
-        border-radius: 0.5rem;
-        border: 1px solid rgba(105, 108, 255, 0.1);
-        overflow: hidden;
-      }
-
-      .month-card.current-month {
-        border: 1px solid rgba(105, 108, 255, 0.3);
-        box-shadow: 0 0 0.5rem rgba(105, 108, 255, 0.1);
-      }
-
-      .month-title {
-        padding: 1rem;
-        margin: 0;
-        background: rgba(105, 108, 255, 0.04);
-        border-bottom: 1px solid rgba(105, 108, 255, 0.1);
-      }
-
-      .birthday-list .birthday-item {
-        transition: all 0.3s ease;
-      }
-
-      .birthday-list .birthday-item:hover {
-        background: rgba(105, 108, 255, 0.04);
-      }
-
-      .avatar-md {
-        width: 45px;
-        height: 45px;
-      }
-
-      #birthdaySearch:focus,
-      #birthdayFilter:focus {
-        border-color: #696cff;
-        box-shadow: 0 0 0 0.25rem rgba(105, 108, 255, 0.1);
-      }
-
-      .modal-dialog-scrollable .modal-content {
-        max-height: 80vh;
-      }
-
-      /* Custom scrollbar for the birthday calendar */
-      .birthday-calendar::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      .birthday-calendar::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-      }
-
-      .birthday-calendar::-webkit-scrollbar-thumb {
-        background: #696cff;
-        border-radius: 3px;
-      }
-
-      .birthday-calendar::-webkit-scrollbar-thumb:hover {
-        background: #555;
-      }
-  </style>
-
-  <!-- Send Wishes Modal -->
-  <div class="modal fade" id="sendWishesModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-primary bg-opacity-10">
-          <h5 class="modal-title">
-            <i class="ti tabler-mail me-2 text-primary"></i>
-            Send Birthday Wishes
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-12 mb-3">
-              <div class="d-flex align-items-center mb-3">
-                <div class="avatar avatar-sm me-2">
-                  <span class="avatar-initial rounded-circle bg-label-primary">JS</span>
-                </div>
-                <div>
-                  <h6 class="mb-0">John Smith</h6>
-                  <small class="text-muted">Regular Client</small>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 mb-3">
-              <label class="form-label">Select Template</label>
-              <select class="form-select">
-                <option value="1">Birthday Greeting - Standard</option>
-                <option value="2">Birthday Greeting - VIP Client</option>
-                <option value="3">Birthday Greeting - Premium</option>
-                <option value="4">Custom Message</option>
-              </select>
-            </div>
-            <div class="col-12 mb-3">
-              <label class="form-label">Message</label>
-              <textarea class="form-control" rows="4">
-Dear [Client Name],
-
-Happy Birthday! 🎉 We hope your special day is filled with joy and wonderful moments. As a valued client of Imajica, we want to make your birthday extra special.
-
-Best wishes,
-The Imajica Team</textarea>
-            </div>
-            <div class="col-12">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="sendCopy" />
-                <label class="form-check-label" for="sendCopy">
-                  Send me a copy of this message
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
-            Cancel
-          </button>
-          <button type="button" class="btn btn-primary">
-            <i class="ti tabler-send me-1"></i>
-            Send Wishes
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Send Offers Modal -->
-  <div class="modal fade" id="sendOffersModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-primary bg-opacity-10">
-          <h5 class="modal-title">
-            <i class="ti tabler-gift me-2 text-primary"></i>
-            Send Birthday Offer
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-12 mb-3">
-              <div class="d-flex align-items-center mb-3">
-                <div class="avatar avatar-sm me-2">
-                  <span class="avatar-initial rounded-circle bg-label-primary">JS</span>
-                </div>
-                <div>
-                  <h6 class="mb-0">John Smith</h6>
-                  <small class="text-muted">Regular Client</small>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 mb-3">
-              <label class="form-label">Select Offer Type</label>
-              <select class="form-select mb-3">
-                <option value="1">Birthday Discount - 20% Off</option>
-                <option value="2">Birthday Spa Package</option>
-                <option value="3">Free Service Add-on</option>
-                <option value="4">Custom Offer</option>
-              </select>
-            </div>
-            <div class="col-12 mb-3">
-              <label class="form-label">Validity Period</label>
-              <div class="input-group">
-                <input type="number" class="form-control" value="30" />
-                <span class="input-group-text">days</span>
-              </div>
-              <small class="text-muted">Number of days the offer will be valid</small>
-            </div>
-            <div class="col-12 mb-3">
-              <label class="form-label">Offer Message</label>
-              <textarea class="form-control" rows="4">
-Dear [Client Name],
-
-As a birthday treat, we're delighted to offer you a special 20% discount on any service of your choice. This exclusive offer is valid for 30 days from your birthday.
-
-Terms & Conditions:
-- Valid for one-time use only
-- Cannot be combined with other offers
-- Must be redeemed within the validity period
-
-Happy Birthday!
-The Imajica Team</textarea>
-            </div>
-            <div class="col-12">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="sendSMS" checked />
-                <label class="form-check-label" for="sendSMS">
-                  Also send offer via SMS
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
-            Cancel
-          </button>
-          <button type="button" class="btn btn-primary">
-            <i class="ti tabler-gift me-1"></i>
-            Send Offer
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <style>
-    /* Add these styles to your existing CSS */
-    .modal-header {
-      border-bottom: 1px solid rgba(105, 108, 255, 0.1);
-    }
-
-    .modal-footer {
-      border-top: 1px solid rgba(105, 108, 255, 0.1);
-    }
-
-    .form-check-input:checked {
-      background-color: #696cff;
-      border-color: #696cff;
-    }
-
-    .modal .btn-close {
-      background-color: transparent;
-      border-radius: 50%;
-      padding: 0.5rem;
-      transition: all 0.2s ease;
-    }
-
-    .modal .btn-close:hover {
-      background-color: rgba(105, 108, 255, 0.1);
-      transform: scale(1.1);
-    }
-
-    .modal textarea {
-      resize: none;
-    }
-
-    .modal .form-control:focus,
-    .modal .form-select:focus {
-      border-color: #696cff;
-      box-shadow: 0 0 0 0.25rem rgba(105, 108, 255, 0.1);
-
+      font-weight: 500;
+      padding: 0.25em 0.6em;
     }
   </style>
 
-
-  <script>
-    // Add this to your existing JavaScript
-    document.addEventListener("DOMContentLoaded", function () {
-      // Function to open Send Wishes Modal
-      function openSendWishesModal() {
-        const modal = new bootstrap.Modal(
-          document.getElementById("sendWishesModal")
-        );
-        modal.show();
-      }
-
-      // Function to open Send Offers Modal
-      function openSendOffersModal() {
-        const modal = new bootstrap.Modal(
-          document.getElementById("sendOffersModal")
-        );
-        modal.show();
-      }
-
-      // Add click event listeners to the menu items
-      document
-        .querySelectorAll('[data-action="send-wishes"]')
-        .forEach((button) => {
-          button.addEventListener("click", openSendWishesModal);
-        });
-
-      document
-        .querySelectorAll('[data-action="send-offers"]')
-        .forEach((button) => {
-          button.addEventListener("click", openSendOffersModal);
-        });
-    });
-  </script>
-
-  <!-- All Birthdays Modal -->
-  <div class="modal fade" id="allBirthdaysModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-primary bg-opacity-10">
-          <h5 class="modal-title">
-            <i class="ti tabler-gift me-2 text-primary"></i>
-            All Client Birthdays
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Filter Section -->
-          <div class="row mb-4">
-            <div class="col-md-8">
-              <select class="form-select" id="birthdayFilter">
-                <option value="all">All Months</option>
-                <option value="current">Current Month</option>
-                <option value="upcoming">Upcoming Birthdays</option>
-                <option value="past">Past Birthdays</option>
-              </select>
-            </div>
-           
-          </div>
-
-          <!-- Birthday Calendar View -->
-          <div class="birthday-calendar mb-4">
-            <div class="month-grid">
-              @foreach($allBirthdays as $month => $patients)
-                <div class="month-card {{ $month == Carbon\Carbon::now()->format('F') ? 'current-month' : '' }}">
-                  <h6 class="month-title">{{ $month }}</h6>
-                  <div class="birthday-list">
-                    @foreach($patients as $patient)
-                      <div class="birthday-item d-flex align-items-center p-3 border-bottom">
-                        <div class="avatar avatar-md me-3">
-                          <span class="avatar-initial rounded-circle bg-label-{{ $patient->daysUntil == 0 ? 'danger' : ($patient->daysUntil <= 7 ? 'primary' : 'success') }}">{{ $patient->initials }}</span>
-                        </div>
-                        <div class="flex-grow-1">
-                          <h6 class="mb-0">{{ $patient->firstname }} {{ $patient->lastname }}</h6>
-                          <div class="d-flex align-items-center">
-                            <i class="ti tabler-calendar-event text-muted me-1"></i>
-                            <small class="text-muted">{{ Carbon\Carbon::parse($patient->birthdate)->format('F d') }} ({{ $patient->age }} years)</small>
-                            @if($patient->daysUntil == 0)
-                              <span class="badge bg-label-danger ms-2">Today</span>
-                            @elseif($patient->daysUntil > 0 && $patient->daysUntil <= 30)
-                              <span class="badge bg-label-{{ $patient->daysUntil <= 7 ? 'primary' : 'success' }} ms-2">In {{ $patient->daysUntil }} days</span>
-                            @endif
-                          </div>
-                        </div>
-                        <div class="dropdown">
-                          <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow"
-                            data-bs-toggle="dropdown">
-                            <!-- <i class="ti tabler-dots-vertical"></i> -->
-                          </button>
-                          <ul class="dropdown-menu">
-                            <li>
-                              <a class="dropdown-item" href="#" data-action="send-wishes" data-patient="{{ $patient->patient_id }}">
-                                <i class="ti tabler-mail me-2"></i>Send Wishes
-                              </a>
-                            </li>
-                            <li>
-                              <a class="dropdown-item" href="#" data-action="send-offers" data-patient="{{ $patient->patient_id }}">
-                                <i class="ti tabler-gift me-2"></i>Send Offer
-                              </a>
-                            </li>
-                            <li>
-                              <a class="dropdown-item" href="#">
-                                <i class="ti tabler-calendar-plus me-2"></i>Schedule Service
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    @endforeach
-                  </div>
-                </div>
-              @endforeach
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Add this to your existing JavaScript
-    document.addEventListener("DOMContentLoaded", function() {
-      // Update the View All button click handler
-      const viewAllButton = document.querySelector(
-        "button[data-bs-toggle='modal'][data-bs-target='#allBirthdaysModal']"
-      );
-      
-      // Function to apply birthday filters
-      function applyBirthdayFilter(filterValue = 'all') {
-        const monthCards = document.querySelectorAll(".month-card");
-        
-        // Get current date information
-        const today = new Date();
-        const currentMonth = today.getMonth(); // 0-11
-        const currentDay = today.getDate();
-        const currentMonthName = today.toLocaleString('default', { month: 'long' });
-        const currentYear = today.getFullYear();
-
-        // Process each month card
-        monthCards.forEach((card) => {
-          const monthName = card.querySelector(".month-title").textContent.trim();
-          // Get month index (0-11) from month name
-          const monthIndex = new Date(Date.parse(monthName + " 1, " + currentYear)).getMonth();
-          const birthdayItems = card.querySelectorAll(".birthday-item");
-
-          switch (filterValue) {
-            case "all":
-              // Show all months and birthdays
-              card.style.display = "block";
-              birthdayItems.forEach(item => item.style.display = "flex");
-              break;
-
-            case "current":
-              // Show only current month
-              if (monthName === currentMonthName) {
-                card.style.display = "block";
-                birthdayItems.forEach(item => item.style.display = "flex");
-              } else {
-                card.style.display = "none";
-              }
-              break;
-
-            case "upcoming":
-              if (monthIndex > currentMonth) {
-                // Future months - show all birthdays
-                card.style.display = "block";
-                birthdayItems.forEach(item => item.style.display = "flex");
-              } else if (monthIndex === currentMonth) {
-                // Current month - show only upcoming birthdays
-                card.style.display = "block";
-                birthdayItems.forEach(item => {
-                  // Check if this item has a badge with "days" text - these are upcoming
-                  const badgeElement = item.querySelector(".badge");
-                  if (badgeElement && (badgeElement.textContent.includes("In ") || badgeElement.textContent.includes("Today"))) {
-                    item.style.display = "flex";
-                  } else {
-                    // Otherwise look for the date and compare
-                    const dateText = item.querySelector("small.text-muted").textContent;
-                    // Extract the day from format like "February 15" or "February 15 (30 years)"
-                    const dayMatch = dateText.match(/(\w+)\s+(\d+)/);
-                    if (dayMatch && dayMatch[2]) {
-                      const day = parseInt(dayMatch[2]);
-                      item.style.display = day >= currentDay ? "flex" : "none";
-                    } else {
-                      item.style.display = "none";
-                    }
-                  }
-                });
-              } else {
-                // Past months - hide
-                card.style.display = "none";
-              }
-              break;
-
-            case "past":
-              if (monthIndex < currentMonth) {
-                // Past months - show all birthdays
-                card.style.display = "block";
-                birthdayItems.forEach(item => item.style.display = "flex");
-              } else if (monthIndex === currentMonth) {
-                // Current month - show only past birthdays
-                card.style.display = "block";
-                birthdayItems.forEach(item => {
-                  const badgeElement = item.querySelector(".badge");
-                  if (badgeElement && (badgeElement.textContent.includes("In ") || badgeElement.textContent.includes("Today"))) {
-                    // If has "In X days" badge or "Today" badge, it's not past - hide it
-                    item.style.display = "none";
-                  } else {
-                    // Extract the day and determine if it's past
-                    const dateText = item.querySelector("small.text-muted").textContent;
-                    const dayMatch = dateText.match(/(\w+)\s+(\d+)/);
-                    if (dayMatch && dayMatch[2]) {
-                      const day = parseInt(dayMatch[2]);
-                      item.style.display = day < currentDay ? "flex" : "none";
-                    } else {
-                      item.style.display = "none";
-                    }
-                  }
-                });
-              } else {
-                // Future months - hide
-                card.style.display = "none";
-              }
-              break;
-          }
-
-          // Hide empty month cards
-          if (card.style.display === "block") {
-            const visibleItems = Array.from(birthdayItems).filter(item => 
-              item.style.display === "flex"
-            ).length;
-            if (visibleItems === 0) {
-              card.style.display = "none";
-            }
-          }
-        });
-      }
-      
-      // Apply filter when modal is shown
-      const birthdayModal = document.getElementById('allBirthdaysModal');
-      if (birthdayModal) {
-        birthdayModal.addEventListener('shown.bs.modal', function() {
-          const filterSelect = document.getElementById("birthdayFilter");
-          // Apply default filter (all)
-          applyBirthdayFilter();
-          
-          // When filter changes, apply the new filter
-          if (filterSelect) {
-            filterSelect.value = 'all'; // Reset to "All" when modal opens
-            filterSelect.addEventListener("change", function(e) {
-              applyBirthdayFilter(e.target.value);
-            });
-          }
-        });
-      }
-      
-      // Other existing code...
-    });
-  </script>
-
-  <!-- View All Bookings Modal -->
-  <div class="modal fade" id="viewAllBookingsModal" tabindex="-1" aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">All Bookings</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Filters -->
-          <div class="row mb-4">
-            <div class="col-md-4">
-              <label class="form-label">Filter by Status</label>
-              <select class="form-select" id="statusFilter">
-                <option value="all">All Status</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-                <option value="cancelled">Cancelled</option>
-                <option value="paid">Paid</option>
-                <option value="unpaid">No Show</option>  
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Filter by Date</label>
-              <input type="date" class="form-control" id="dateFilter">
-            </div>
-            <div class="col-md-4 d-flex align-items-end">
-              <button class="btn btn-primary" id="exportBookings">
-                <i class="ti tabler-download me-1"></i>Export Data
-              </button>
-            </div>
-          </div>
-
-          <!-- Bookings Table -->
-          <div class="table-responsive">
-            <table class="table table-hover booking-table">
-              <thead class="table-light">
-                <tr>
-                  <th>Booking ID</th>
-                  <th>Patient</th>
-                  <th>Service</th>
-                  <th>Date & Time</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($bookings as $booking)
-                <tr>
-                  <td># {{ $booking->booking_id }}</td>
-                  <td>
-                    @if($booking->patient)
-                      {{ $booking->patient->firstname }} {{ $booking->patient->lastname }}
-                    @else
-                      <span class="text-muted">No patient data</span>
-                    @endif
-                  </td>
-                  <td>
-                    @if($booking->service)
-                      {{ $booking->service->service_name }}
-                    @else
-                      <span class="text-muted">No service data</span>
-                    @endif
-                  </td>
-                  <td>{{ Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} at {{ Carbon\Carbon::parse($booking->booking_time)->format('h:i A') }}</td>
-                  <td>
-                    @if($booking->service)
-                      ₱{{ number_format($booking->service->service_cost, 2) }}
-                    @else
-                      <span class="text-muted">N/A</span>
-                    @endif
-                  </td>
-                  <td>
-                    <span class="badge bg-label-{{ $booking->status == 'Paid' && 'Completed' ? 'success' : ($booking->status == 'Pending' ? 'warning' : 'danger') }}">
-                      {{ ucfirst($booking->status) }}
-                    </span>
-                  </td>
-                  <td>
-                    <div class="dropdown">
-                      <button class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                        <i class="ti tabler-dots-vertical"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#">
-                            <i class="ti tabler-eye me-2"></i>View Details
-                          </a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#">
-                            <i class="ti tabler-edit me-2"></i>Edit Booking
-                          </a>
-                        </li>
-                        @if($booking->status == 'Pending')
-                        <li>
-                          <a class="dropdown-item text-success" href="#">
-                            <i class="ti tabler-check me-2"></i>Mark as Completed
-                          </a>
-                        </li>
-                        @endif
-                        <li>
-                          <a class="dropdown-item text-danger" href="#">
-                            <i class="ti tabler-trash me-2"></i>Cancel Booking
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Get filter elements
-      const statusFilter = document.getElementById("statusFilter");
-      const dateFilter = document.getElementById("dateFilter");
-      
-      // Function to apply both filters simultaneously
-      function applyFilters() {
-        const selectedStatus = statusFilter.value.toLowerCase();
-        const selectedDate = dateFilter.value ? new Date(dateFilter.value) : null;
-        
-        const rows = document.querySelectorAll(".booking-table tbody tr");
-        
-        rows.forEach((row) => {
-          let showRow = true;
-          
-          // Status filter
-          if (selectedStatus !== 'all') {
-            const statusCell = row.querySelector(".badge").textContent.toLowerCase().trim();
-            if (statusCell !== selectedStatus) {
-              showRow = false;
-            }
-          }
-          
-          // Date filter
-          if (selectedDate) {
-            const dateCell = row.querySelector("td:nth-child(4)").textContent; // Get the date cell
-            const bookingDate = new Date(dateCell.split(" at")[0]); // Split to remove time and convert to date
-            
-            // Compare only the date parts (ignore time)
-            if (
-              bookingDate.getFullYear() !== selectedDate.getFullYear() ||
-              bookingDate.getMonth() !== selectedDate.getMonth() ||
-              bookingDate.getDate() !== selectedDate.getDate()
-            ) {
-              showRow = false;
-            }
-          }
-          
-          // Show/hide row based on combined filter results
-          row.style.display = showRow ? "" : "none";
-        });
-      }
-      
-      // Add event listeners to both filters
-      if (statusFilter) {
-        statusFilter.addEventListener("change", applyFilters);
-      }
-      
-      if (dateFilter) {
-        dateFilter.addEventListener("change", applyFilters);
-      }
-      
-      // Clear filters function
-      function clearFilters() {
-        statusFilter.value = "all";
-        dateFilter.value = "";
-        applyFilters();
-      }
-      
-      // Add clear filters button to the filter section
-      const filterSection = document.querySelector(".modal-body .row.mb-4");
-      if (filterSection) {
-        const clearButton = document.createElement("div");
-        clearButton.className = "col-12 mt-2";
-        clearButton.innerHTML = `
-      
-        `;
-        filterSection.appendChild(clearButton);
-      }
-      
-      // Make clearFilters function globally available
-      window.clearFilters = clearFilters;
-    });
-  </script>
+  <!-- Modals -->
+  @include('components.dashboard.birthday_modals')
 
 </body>
 

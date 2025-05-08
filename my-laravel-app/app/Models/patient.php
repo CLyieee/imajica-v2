@@ -23,14 +23,14 @@ class Patient extends Model
         'occupation',
         'address',
         'points',
-        'balance',
         'total_cost',
         'emergency_contact_name',
         'emergency_contact_number',
         'medical_concerns',
         'current_medications',
         'note_from_admin',
-        'image_path'
+        'image_path',
+        //'referral'
     ];
 
     protected $attributes = [
@@ -39,7 +39,10 @@ class Patient extends Model
         'emergency_contact_number' => null,
         'medical_concerns' => null,
         'current_medications' => null,
-        'note_from_admin' => null
+        'note_from_admin' => null,
+       
+        'points' => 0,
+        'total_cost' => 0
     ];
 
     public function contact()
