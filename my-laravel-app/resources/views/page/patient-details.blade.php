@@ -1571,6 +1571,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (row.closest('#attachments-table').length) {
             type = 'attachment';
             endpoint = '/patient/attachment/';
+        } else if (row.closest('#prescriptions-table').length) {
+            type = 'prescription'; 
+            endpoint = '/patient/prescription/';
         }
 
         if (!endpoint) {
@@ -1579,7 +1582,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         Swal.fire({
-            title: 'Are you sure?',
+            title: `Delete ${type}?`,
             text: "This action cannot be undone!",
             icon: 'warning',
             showCancelButton: true,
@@ -1596,25 +1599,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     success: function(response) {
                         if (response.success) {
-                            row.remove(); // Remove the row from the table
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Deleted!',
-                                text: response.message || 'Record has been deleted.',
+                                text: response.message || `${type} has been deleted successfully.`,
                                 timer: 1500,
                                 showConfirmButton: false
+                            }).then(() => {
+                                location.reload();
                             });
-                        } else {
-                            throw new Error(response.message || 'Failed to delete recorddd');
                         }
                     },
                     error: function(xhr) {
-                        console.error('Delete error:', xhr);
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: xhr.responseJSON?.message || 'Failed to delete record. Please try again.',
-                            showConfirmButton: true
+                            text: xhr.responseJSON?.message || 'Failed to delete record'
                         });
                     }
                 });
@@ -1698,6 +1698,9 @@ $(document).ready(function() {
         } else if (row.closest('#attachments-table').length) {
             type = 'attachment';
             endpoint = '/patient/attachment/';
+        } else if (row.closest('#prescriptions-table').length) {
+            type = 'prescription'; 
+            endpoint = '/patient/prescription/';
         }
     
 
@@ -2110,7 +2113,7 @@ document.addEventListener('DOMContentLoaded', function() {
             form.querySelector('#prescription_status').value = this.dataset.status;
             
             // Update form action and method
-            form.action = `{{ url('/patient/prescription') }}/${this.dataset.id}`;
+            form.action = `/patient/prescription/${this.dataset.id}`;
             
             // Remove any existing method field
             const existingMethod = form.querySelector('input[name="_method"]');

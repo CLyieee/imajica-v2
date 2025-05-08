@@ -750,4 +750,50 @@ public function downloadAttachment($id)
             ], 500);
         }
     }
+
+    public function updatePrescription(Request $request, $id)
+    {
+        try {
+            $validatedData = $request->validate([
+                'prescription_number' => 'required|string|max:255',
+                'date' => 'required|date',
+                'doctor' => 'required|string|max:100',
+                'status' => 'required|string|in:Pending,Filled,Refill required,Expired',
+            ]);
+
+            $prescription = \App\Models\Prescription::findOrFail($id);
+            $prescription->update($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Prescription updated successfully',
+                'data' => $prescription
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error updating prescription: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating prescription: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deletePrescription($id)
+    {
+        try {
+            $prescription = \App\Models\Prescription::findOrFail($id);
+            $prescription->delete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Prescription deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting prescription: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

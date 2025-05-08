@@ -281,6 +281,14 @@ Route::prefix('patient')->group(function () {
     Route::get('/attachment/{id}', [PatientController::class, 'getAttachment'])->name('patient.attachment.get');
     Route::put('/attachment/{id}', [PatientController::class, 'updateAttachment'])->name('patient.attachment.update');
     Route::delete('/attachment/{id}', [PatientController::class, 'deleteAttachment'])->name('patient.attachment.delete');
+    
+    // Add this new route for prescription updates
+    Route::put('/prescription/{id}', [PatientController::class, 'updatePrescription'])
+        ->name('patient.prescription.update');
+    
+    // Add this new route for deleting prescriptions
+    Route::delete('/prescription/{id}', [PatientController::class, 'deletePrescription'])
+        ->name('patient.prescription.delete');
 });
 
 Route::get('/waste-list', [DashboardController::class, 'waste_list'])->name('page.waste-list');
