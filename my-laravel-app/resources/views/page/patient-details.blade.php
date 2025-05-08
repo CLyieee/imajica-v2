@@ -452,7 +452,7 @@
 
                                                     <!-- Gender -->
                                                     <div class="mb-3">
-                                                        <div class="detail-label"><i class="ti tabler-gender-binary text-muted me-2"></i>Gender:</div>
+                                                        <div class="detail-label"><i class="ti tabler-user text-muted me-2"></i>Gender:</div>
                                                         <div class="view-mode">
                                                             <span class="detail-value" data-field="gender">{{ $patient->gender ?? 'N/A' }}</span>
                                                         </div>

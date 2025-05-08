@@ -398,7 +398,7 @@
                           <span class="detail-value">{{ $patient->contact_number ?? 'N/A' }}</span>
                         </div>
                         <div class="detail-item">
-                          <span class="detail-label"><i class="ti tabler-gender-binary text-muted me-2"></i>Gender:</span>
+                          <span class="detail-label"><i class="ti tabler-user text-muted me-2"></i>Gender:</span>
                           <span class="detail-value">{{ $patient->gender ?? 'N/A' }}</span>
                         </div>
                         <div class="detail-item">
