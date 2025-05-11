@@ -23,11 +23,11 @@ document.addEventListener("DOMContentLoaded", function () {
         var M = Array.from(document.querySelectorAll(".input-filter"));
         var A = document.querySelector(".inline-calendar");
         let g = {
-            Pending: "warning", // Yellow for pending
-            Paid: "primary", // Blue for paid
-            Completed: "success", // Green for completed
-            Cancelled: "danger", // Red for cancelled
-            "No Show": "secondary", // Gray for no-show
+            Business: "primary",
+            Holiday: "success",
+            Personal: "danger",
+            Family: "warning",
+            ETC: "info",
         };
         let f = $("#eventLabel");
         let h = $("#eventGuests");
@@ -165,38 +165,15 @@ document.addEventListener("DOMContentLoaded", function () {
             dayMaxEvents: 3,
             eventResizableFromStart: true,
             eventDidMount: function (info) {
-                // Get status from event or default to "Pending"
-                const status = info.event.extendedProps.status || "Pending";
-                
-                // Apply appropriate status color
-                const statusColor = g[status] || "warning";
-                $(info.el).addClass("bg-label-" + statusColor);
-                
-                // Create tooltip content with booking details
-                const tooltipTitle = info.event.title || "Booking #" + info.event.id;
-                const tooltipContent = `
-                    <div class="calendar-tooltip">
-                        <div class="tooltip-title fw-semibold">${tooltipTitle}</div>
-                        <div class="tooltip-datetime">
-                            <i class="ti ti-calendar-event me-1"></i> ${moment(info.event.start).format('MMM D, YYYY')}
-                            <br>
-                            <i class="ti ti-clock me-1"></i> ${moment(info.event.start).format('h:mm A')} - ${moment(info.event.end || new Date(info.event.start.getTime() + 60*60*1000)).format('h:mm A')}
-                        </div>
-                        <div class="tooltip-status mt-1">
-                            <span class="badge bg-label-${statusColor}">${status}</span>
-                        </div>
-                    </div>
-                `;
-                
-                // Add tooltip
+                // Add tooltips
                 $(info.el).tooltip({
-                    title: tooltipContent,
+                    title: info.event.extendedProps.description,
                     placement: "top",
                     trigger: "hover",
                     container: "body",
-                    html: true
+                    html: true,
                 });
-                
+
                 // Add booking ID as a data attribute for easy access
                 if (info.event.id) {
                     $(info.el).attr("data-booking-id", info.event.id);
@@ -211,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
             initialDate: new Date(),
             navLinks: true,
             eventClassNames: function ({ event: e }) {
-                return ["bg-label-" + g[e._def.extendedProps.status]];
+                return ["bg-label-" + g[e._def.extendedProps.calendar]];
             },
             dateClick: function (info) {
                 // Show the quick note popup

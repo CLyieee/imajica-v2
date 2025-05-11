@@ -3,7 +3,7 @@
     <br />
     <div class="app-brand demo">
         <a href="/dashboard" class="app-brand-link">
-            <img src="{{ asset(path: 'logo/logo.png') }}" alt="Logo" width="100%" height="30%" />
+            <img src="{{ asset('logo/logo.png') }}" alt="Logo" width="100%" height="30%" />
         </a>
     </div>
     <br />
@@ -32,7 +32,7 @@
         </li>
 
 
-        <li class="menu-item {{ request()->is('new-services') || request()->is('services-list') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->is('new-services') || request()->is('services-list') || request()->is('new-package') || request()->is('packages-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-plus"></i>
                 <div data-i18n="Services">Services</div>
@@ -47,6 +47,18 @@
                 <li class="menu-item {{ request()->is('services-list') ? 'active' : '' }}">
                     <a href="/services-list" class="menu-link">
                         <div data-i18n="Services List">Services List</div>
+                    </a>
+                </li>
+                
+                <li class="menu-item {{ request()->is('new-package') ? 'active' : '' }}">
+                    <a href="/new-package" class="menu-link">
+                        <div data-i18n="New Package">New Package</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('packages-list') ? 'active' : '' }}">
+                    <a href="/packages-list" class="menu-link">
+                        <div data-i18n="Packages List">Packages List</div>
                     </a>
                 </li>
             </ul>

@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PackageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +27,7 @@ Route::prefix('products')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('api.products.index');
     Route::delete('/{id}', [ProductController::class, 'destroy'])->name('api.products.destroy');
 });
+
+Route::get('/bookings/{booking_id}', [BookingController::class, 'getBookingDetails']);
+Route::get('/bookings/{booking_id}/notes', [BookingController::class, 'getBookingNotes']);
+Route::get('/package-price/{package_id}', [PackageController::class, 'getPackagePrice']);

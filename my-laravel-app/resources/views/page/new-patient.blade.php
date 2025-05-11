@@ -384,7 +384,7 @@
                               <i class="ti ti-gift me-2 fs-3"></i>
                               <div>
                                 <h5 class="alert-heading mb-1">Welcome Bonus!</h5>
-                                <p class="mb-0">All new patients now receive <strong>100 points</strong> as a welcome gift upon registration. These points can be used for discounts on future bookings! We've simplified our system by replacing balance with reward points.</p>
+                                <p class="mb-0">All new patients now receive <strong>100 points</strong> as a welcome gift upon registration. These points can be used for discounts on future bookings!</p>
                               </div>
                             </div>
                           </div>
@@ -502,17 +502,10 @@
                                 <textarea name="note_from_admin" class="form-control" id="adminNotes" rows="3">{{ old('note_from_admin') }}</textarea>
                               </div>
 
-                              <div class="col-12">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" id="terms" required />
-                                  <label class="form-check-label" for="terms">
-                                    I agree to the terms and conditions and privacy policy
-                                  </label>
-                                </div>
-                              </div>
+
 
                               <div class="col-12 mt-4">
-                                <button type="submit" class="btn btn-primary">Add Patient</button>
+                                <button type="submit" class="btn btn-primary">Add Customer</button>
                               </div>
                             </div>
                           </form>
@@ -657,7 +650,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const file = e.target.files[0];
     if (file) {
       const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-      const maxSize = 2 * 1024 * 1024; // 2MB
+      const maxSize = 10 * 1024 * 1024; // 2MB
 
       if (!validTypes.includes(file.type)) {
         Swal.fire({
@@ -675,7 +668,7 @@ document.addEventListener("DOMContentLoaded", function () {
         Swal.fire({
           icon: 'error',
           title: 'File Too Large',
-          text: 'Image must be less than 2MB'
+          text: 'Image must be less than 10MB'
         });
         this.value = '';
         const initials = getInitials(firstnameInput.value, lastnameInput.value);
@@ -866,7 +859,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show loading indicator
         Swal.fire({
             title: 'Processing...',
-            text: 'Please wait while we create the patient record',
+            text: 'Please wait while we create the customer record',
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading();

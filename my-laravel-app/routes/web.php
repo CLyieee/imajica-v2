@@ -293,3 +293,12 @@ Route::post('/verify-coupon', [App\Http\Controllers\CouponController::class, 've
 
 // Check if a patient is making their first booking
 Route::post('/check-first-time-patient', [App\Http\Controllers\BookingController::class, 'checkFirstTimePatient'])->name('check.first.time.patient');
+
+// Package management routes
+Route::get('/new-package', [DashboardController::class, 'new_package'])->name('page.new-package');
+Route::get('/packages-list', [DashboardController::class, 'packages_list'])->name('page.packages-list');
+Route::post('/package/create', [App\Http\Controllers\PackageController::class, 'create'])->name('package.create');
+Route::get('/package/edit/{id}', [App\Http\Controllers\PackageController::class, 'edit'])->name('package.edit');
+Route::put('/package/update', [App\Http\Controllers\PackageController::class, 'update'])->name('package.update');
+Route::delete('/package/delete', [App\Http\Controllers\PackageController::class, 'delete'])->name('package.delete');
+Route::get('/package/all', [App\Http\Controllers\PackageController::class, 'index'])->name('get.packages');

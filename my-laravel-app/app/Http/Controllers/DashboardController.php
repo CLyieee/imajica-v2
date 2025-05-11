@@ -553,11 +553,8 @@ class DashboardController extends Controller
     }
     public function new_services()
     {
-        // Get all branches to display in the form
-        $branches = Branch::all();
-        $services = service::all();
-        
-        return view('page.new-services', compact('branches')); 
+        $branches = branch::all();
+        return view('page.new-services', compact('branches'));
     }
     public function services_list()
     {
@@ -584,6 +581,18 @@ class DashboardController extends Controller
         
     }
 
+    public function new_package()
+    {
+        $branches = branch::all();
+        $services = service::all();
+        return view('page.new-package', compact('branches', 'services'));
+    }
+
+    public function packages_list()
+    {
+        $packages = \App\Models\Package::with(['branch', 'services'])->get();
+        return view('page.packages-list', compact('packages'));
+    }
 
 }
 

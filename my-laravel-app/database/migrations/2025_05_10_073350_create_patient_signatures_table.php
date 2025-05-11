@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWastesTable extends Migration
+class CreatePatientSignaturesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateWastesTable extends Migration
      */
     public function up()
     {
-        Schema::create('wastes', function (Blueprint $table) {
+        Schema::create('patient_signatures', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('new_product', 'id');
-            $table->integer('quantity');
-            $table->text('reason')->nullable();
-            $table->date('date_added');
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ class CreateWastesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wastes');
+        Schema::dropIfExists('patient_signatures');
     }
 }

@@ -355,34 +355,34 @@ class patientController extends Controller
         }
     }
 
-    public function addAppointment(Request $request)
-    {
-        try {
-            $validatedData = $request->validate([
-                'patient_id' => 'required|exists:patients,patient_id',
-                'appointment_date' => 'required|date',
-                'appointment_time' => 'required',
-                'duration' => 'required|integer|min:15',
-                'purpose' => 'required|string|max:255',
-                'staff_id' => 'nullable|exists:staff,staff_id',
-                'notes' => 'nullable|string',
-                'status' => 'required|string|in:Scheduled,Completed,Cancelled,No-Show'
-            ]);
+    // public function addAppointment(Request $request)
+    // {
+    //     try {
+    //         $validatedData = $request->validate([
+    //             'patient_id' => 'required|exists:patients,patient_id',
+    //             'appointment_date' => 'required|date',
+    //             'appointment_time' => 'required',
+    //             'duration' => 'required|integer|min:15',
+    //             'purpose' => 'required|string|max:255',
+    //             'staff_id' => 'nullable|exists:staff,staff_id',
+    //             'notes' => 'nullable|string',
+    //             'status' => 'required|string|in:Scheduled,Completed,Cancelled,No-Show'
+    //         ]);
 
-            $appointment = \App\Models\Appointment::create($validatedData);
+    //         $appointment = \App\Models\Appointment::create($validatedData);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Appointment added successfully',
-                'data' => $appointment
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error adding appointment: ' . $e->getMessage()
-            ], 500);
-        }
-    }
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Appointment added successfully',
+    //             'data' => $appointment
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Error adding appointment: ' . $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
 
     public function addMedicalRecord(Request $request)
     {

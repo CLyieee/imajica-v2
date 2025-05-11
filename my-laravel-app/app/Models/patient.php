@@ -30,7 +30,7 @@ class Patient extends Model
         'current_medications',
         'note_from_admin',
         'image_path',
-        //'referral'
+
     ];
 
     protected $attributes = [
