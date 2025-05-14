@@ -180,18 +180,18 @@
         <li class="menu-item {{ request()->is('new-patient') || request()->is('patient-list') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>
-                <div data-i18n="Patient">Patient</div>
+                <div data-i18n="Patient">Customer</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item {{ request()->is('new-patient') ? 'active' : '' }}">
                     <a href="/new-patient" class="menu-link">
-                        <div data-i18n="New Patient">New Patient</div>
+                        <div data-i18n="New Patient">New Customer</div>
                     </a>
                 </li>
 
                 <li class="menu-item {{ request()->is('patient-list') ? 'active' : '' }}">
                     <a href="/patient-list" class="menu-link">
-                        <div data-i18n="Patient List">Patient List</div>
+                        <div data-i18n="Patient List">Customer List</div>
                     </a>
                 </li>
             </ul>
