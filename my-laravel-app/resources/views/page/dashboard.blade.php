@@ -117,7 +117,7 @@
                       </div>
                       <div>
                         <h4 class="mb-0">{{ count($bookings) }}</h4>
-                        <span class="badge bg-label-{{ $bookingGrowth >= 0 ? 'success' : 'danger' }}">{{ $bookingGrowth >= 0 ? '+' : '' }}{{ $bookingGrowth }}%</span>
+                        <!-- <span class="badge bg-label-{{ $bookingGrowth >= 0 ? 'success' : 'danger' }}">{{ $bookingGrowth >= 0 ? '+' : '' }}{{ $bookingGrowth }}%</span> -->
                       </div>
                     </div>
                     <p class="mb-1">Total Completed Bookings</p>
@@ -139,8 +139,10 @@
                         </span>
                       </div>
                       <div>
-                        <h4 class="mb-0">₱100,000</h4>
-                        <span class="badge bg-label-success">+8.4%</span>
+                        <h4 class="mb-0">₱{{ number_format($bookings->where('status', 'Completed')->sum(function($booking) {
+                            return $booking->service ? $booking->service->service_cost : 0;
+                        }), 2) }}</h4>
+                        <!-- <span class="badge bg-label-success">+8.4%</span> -->
                       </div>
                     </div>
                     <p class="mb-1">Total Revenue</p>
@@ -165,9 +167,9 @@
                         <h4 class="mb-0">
                           {{ count($patients) }}
                         </h4>
-                      <span class="badge bg-label-{{ $patientGrowth > 0 ? 'success' : 'danger' }}">
+                      <!-- <span class="badge bg-label-{{ $patientGrowth > 0 ? 'success' : 'danger' }}">
             {{ $patientGrowth > 0 ? '+' : '' }}{{ number_format($patientGrowth, 1) }}%
-          </span>
+          </span> -->
                       </div>
                     </div>
                     <p class="mb-1">Total Patients</p>
@@ -180,15 +182,13 @@
                   <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
                       <div class="avatar me-4">
-
                         <span class="avatar-initial rounded bg-label-danger">
-
                           <i class="icon-base ti tabler-receipt icon-28px"></i>
                         </span>
                       </div>
                       <div>
-                        <h4 class="mb-0">₱50,000</h4>
-                        <span class="badge bg-label-warning">+3.2%</span>
+                        <h4 class="mb-0">₱{{ number_format($branchData->sum('total_expenses'), 2) }}</h4>
+                        <!-- <span class="badge bg-label-warning">+3.2%</span> -->
                       </div>
                     </div>
                     <p class="mb-1">Total Expenses</p>
@@ -429,7 +429,7 @@
                       <button class="btn btn-sm btn-outline-primary" onclick="exportChartData('revenueChart')">
                         <i class="ti tabler-download me-1"></i>Export Data
                       </button>
-                      <div class="dropdown">
+                      <!-- <div class="dropdown">
                         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
                           data-bs-toggle="dropdown">
                           2024
@@ -439,7 +439,7 @@
                           <li><a class="dropdown-item" href="#">2023</a></li>
                           <li><a class="dropdown-item" href="#">2022</a></li>
                         </ul>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                   <div class="card-body">
@@ -494,7 +494,7 @@
                         onclick="exportChartData('branchPerformanceChart')">
                         <i class="ti tabler-download me-1"></i>Export Data
                       </button>
-                      <div class="dropdown">
+                      <!-- <div class="dropdown">
                         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
                           data-bs-toggle="dropdown">
                           This Month
@@ -517,7 +517,7 @@
                             <a class="dropdown-item" href="#">This Year</a>
                           </li>
                         </ul>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                   <div class="card-body">
@@ -708,10 +708,32 @@
             ],
             datasets: [
               {
-                label: "Revenue 2024",
+                label: "Revenue {{ date('Y') }}",
                 data: [
-                  65000, 75000, 85000, 95000, 100000, 120000, 110000, 130000,
-                  140000, 150000, 160000, 170000,
+                  @php
+                    $currentYear = date('Y');
+                    $monthlyRevenue = [];
+                    
+                    // Initialize monthly revenue array with zeros
+                    for ($i = 1; $i <= 12; $i++) {
+                      $monthlyRevenue[$i] = 0;
+                    }
+                    
+                    // Calculate revenue for each month
+                    foreach ($bookings as $booking) {
+                      if ($booking->status === 'Completed' || $booking->status === 'Paid') {
+                        $month = Carbon\Carbon::parse($booking->booking_date)->month;
+                        $year = Carbon\Carbon::parse($booking->booking_date)->year;
+                        
+                        if ($year == $currentYear) {
+                          $monthlyRevenue[$month] += $booking->service ? $booking->service->service_cost : 0;
+                        }
+                      }
+                    }
+                    
+                    // Output the monthly revenue data
+                    echo implode(', ', $monthlyRevenue);
+                  @endphp
                 ],
                 borderColor: function (context) {
                   const chart = context.chart;
@@ -734,10 +756,32 @@
                 backgroundColor: "rgba(105, 108, 255, 0.1)",
               },
               {
-                label: "Revenue 2023",
+                label: "Revenue {{ date('Y') - 1 }}",
                 data: [
-                  55000, 65000, 75000, 85000, 90000, 110000, 100000, 120000,
-                  130000, 140000, 150000, 160000,
+                  @php
+                    $lastYear = date('Y') - 1;
+                    $lastYearMonthlyRevenue = [];
+                    
+                    // Initialize last year's monthly revenue array with zeros
+                    for ($i = 1; $i <= 12; $i++) {
+                      $lastYearMonthlyRevenue[$i] = 0;
+                    }
+                    
+                    // Calculate revenue for each month of last year
+                    foreach ($bookings as $booking) {
+                      if ($booking->status === 'Completed' || $booking->status === 'Paid') {
+                        $month = Carbon\Carbon::parse($booking->booking_date)->month;
+                        $year = Carbon\Carbon::parse($booking->booking_date)->year;
+                        
+                        if ($year == $lastYear) {
+                          $lastYearMonthlyRevenue[$month] += $booking->service ? $booking->service->service_cost : 0;
+                        }
+                      }
+                    }
+                    
+                    // Output the last year's monthly revenue data
+                    echo implode(', ', $lastYearMonthlyRevenue);
+                  @endphp
                 ],
                 borderColor: function (context) {
                   const chart = context.chart;
